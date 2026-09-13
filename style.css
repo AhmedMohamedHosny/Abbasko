@@ -1,57 +1,61 @@
 /* ==========================================================================
-   متجر عباسكو (Abasco) - إكسسوارات الهواتف المحمولة
+   متجر عباسكو (Abasco) - النمط المطابق لموقع راية شوب (Raya Shop Exact Clone)
    الملف: style.css
-   التصميم: طابع أمازون الأبيض مع حركات ديناميكية وتأثيرات بصرية ثلاثية الأبعاد
+   التصميم: واجهة بيضاء نقية، أزرق راية الملكي، أشرطة متحركة، وبطاقات مفرغة دقيقة
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. متغيرات الألوان والسمات (Design Tokens & CSS Variables)
+   1. متغيرات الألوان والأنيميشن (Design System Tokens)
    -------------------------------------------------------------------------- */
 :root {
-  /* درجات ألوان أمازون الأساسية والواجهات البيضاء */
-  --amazon-nav-dark: #131921;       /* كحلي داكن كلاسيكي للشريط العلوي */
-  --amazon-sub-dark: #232f3e;       /* لون الشريط الفرعي */
-  --amazon-orange: #febd69;         /* البرتقالي الذهبي لأزرار وتحديدات أمازون */
-  --amazon-orange-hover: #f3a847;
-  --amazon-cta-yellow: #ffd814;     /* أصفر أزرار الشراء الفوري */
-  --amazon-cta-yellow-hover: #f7ca00;
-  --amazon-accent-red: #cc0c39;     /* أحمر شارات الخصومات والعروض */
-  --amazon-star: #ffa41c;           /* لون نجوم التقييم */
+  /* درجات أزرق راية شوب الرسمية */
+  --raya-blue-top: #004b93;         /* أزرق الشريط العلوي العميق */
+  --raya-blue-primary: #0056b3;     /* أزرق الأزرار وعربات التسوق */
+  --raya-blue-hover: #003d80;
+  --raya-blue-light: #e8f0fe;       /* خلفية شارات التوثيق (منتج من عباسكو) */
+  --raya-footer-blue: #004494;      /* الأزرق الغني لتذييل الموقع */
+
+  /* ألوان التمييز والعروض */
+  --valu-orange-start: #ff7700;     /* برتقالي شريط فاليو وعروض التقسيط */
+  --valu-orange-end: #ff4800;
+  --discount-red: #d90429;          /* أحمر شارات الخصم */
+  --discount-bg: #fee2e2;
+  --badge-navy: #0b1a30;            /* كحلي شارات "الأكثر مبيعاً" */
+  --star-gold: #ffb800;             /* نجوم التقييم */
+  --lucky-green: #00875a;           /* زر "جرب حظك" الأخضر العائم */
+
+  /* الخلفيات والحدود البيضاء */
+  --bg-main: #ffffff;
+  --bg-canvas: #f8f9fa;             /* رمادي فاتح جداً يبرز الكروت البيضاء */
+  --border-card: #eaeded;
+  --border-subtle: #e2e8f0;
   
-  /* خلفيات بيضاء ورمادية فائقة النقاء */
-  --bg-pure-white: #ffffff;
-  --bg-light-gray: #f7f8f8;
-  --bg-card-hover: #fdfdfd;
-  --border-light: #e7e7e7;
-  --border-subtle: #d5d9d9;
-  
-  /* ألوان النصوص */
+  /* النصوص */
   --text-dark: #0f1111;
-  --text-muted: #565959;
-  --text-price: #b12704;            /* أحمر أسعار أمازون المشهور */
+  --text-body: #334155;
+  --text-muted: #64748b;
+  --text-price-navy: #0b1a30;
 
-  /* الظلال والتأثيرات */
-  --shadow-subtle: 0 2px 5px rgba(213, 217, 217, 0.5);
-  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.05);
-  --shadow-card-hover: 0 16px 32px rgba(0, 0, 0, 0.12);
-  --shadow-floating: 0 20px 40px rgba(0, 0, 0, 0.15);
+  /* الظلال */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 12px 24px rgba(0, 75, 147, 0.09);
+  --shadow-btn: 0 4px 12px rgba(0, 86, 179, 0.35);
 
-  /* منحنيات الحركة للأنيميشن فائق النعومة */
-  --transition-smooth: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
-  --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-round: 50px;
+  /* الأبعاد والزوايا */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 50px;
 }
 
 /* --------------------------------------------------------------------------
-   2. إعادة الضبط والتهيئة العامة (Global Reset & Typography)
+   2. إعادة الضبط والخطوط (Reset & Typography)
    -------------------------------------------------------------------------- */
 *, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html {
@@ -60,17 +64,17 @@ html {
 
 body {
   font-family: 'Cairo', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-light-gray);
+  background-color: var(--bg-canvas);
   color: var(--text-dark);
-  line-height: 1.6;
   direction: rtl;
+  line-height: 1.5;
   overflow-x: hidden;
 }
 
 a {
   text-decoration: none;
   color: inherit;
-  transition: var(--transition-smooth);
+  transition: all 0.25s ease;
 }
 
 ul {
@@ -78,1067 +82,1221 @@ ul {
 }
 
 button {
+  font-family: inherit;
   border: none;
   background: none;
   cursor: pointer;
-  font-family: inherit;
-  transition: var(--transition-smooth);
+  transition: all 0.25s ease;
+}
+
+img {
+  max-width: 100%;
+  display: block;
 }
 
 .container {
-  width: 92%;
-  max-width: 1400px;
+  width: 94%;
+  max-width: 1440px;
   margin: 0 auto;
 }
 
 /* --------------------------------------------------------------------------
-   3. الشريط العلوي الترويجي (Top Announcement Bar)
+   3. الشريط الأزرق العلوي المتحرك (Raya Top Blue Bar)
    -------------------------------------------------------------------------- */
-.top-announcement-bar {
-  background-color: #0b0e14;
-  color: #fff;
-  font-size: 0.85rem;
+.raya-top-nav-bar {
+  background-color: var(--raya-blue-top);
   padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
-.announcement-content {
+.raya-top-nav-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.top-categories-list {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 22px;
 }
 
-.announcement-content span i {
-  color: var(--amazon-orange);
-  margin-left: 6px;
+.top-categories-list a {
+  color: #ffffff;
+  opacity: 0.92;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.top-links a {
-  color: #ccc;
-  margin: 0 8px;
+.top-categories-list a:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.12);
 }
 
-.top-links a:hover {
-  color: #fff;
-  text-decoration: underline;
+.top-categories-list a.active-badge {
+  background-color: rgba(255, 255, 255, 0.2);
+  opacity: 1;
+  font-weight: 800;
 }
 
 /* --------------------------------------------------------------------------
-   4. رأس المتجر والبحث المتقدم (Main Header - Amazon Style)
+   4. رأس المتجر الرئيسي وشريط البحث التفاعلي (Main Header & Live Search)
    -------------------------------------------------------------------------- */
-.main-header {
-  background-color: var(--amazon-nav-dark);
-  color: #fff;
+.raya-main-header {
+  background-color: var(--bg-main);
+  border-bottom: 1px solid var(--border-card);
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
 }
 
-.nav-wrapper {
+.raya-header-flex {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 24px;
   padding: 12px 0;
 }
 
-/* الشعار المميز */
-.logo {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid transparent;
-}
-
-.logo:hover {
-  border-color: #fff;
-}
-
-.brand-name {
-  font-size: 1.85rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  color: #ffffff;
-  line-height: 1;
-}
-
-.brand-sub {
-  font-size: 0.68rem;
-  font-weight: 700;
-  color: var(--amazon-orange);
-  letter-spacing: 3px;
-  margin-top: 2px;
-}
-
-/* صندوق البحث المركزي على نمط أمازون */
-.search-container {
-  flex: 1;
-  max-width: 760px;
-  display: flex;
-  height: 44px;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: var(--transition-smooth);
-}
-
-.search-container:focus-within {
-  box-shadow: 0 0 0 3px var(--amazon-orange);
-}
-
-.search-category-select {
-  background-color: #e6e6e6;
-  border: none;
-  outline: none;
-  font-family: inherit;
-  font-size: 0.85rem;
-  padding: 0 12px;
-  cursor: pointer;
-  border-left: 1px solid #ccc;
-  color: #333;
-}
-
-.search-container input {
-  flex: 1;
-  border: none;
-  outline: none;
-  padding: 0 16px;
-  font-size: 0.95rem;
-  font-family: inherit;
-}
-
-.search-btn {
-  background-color: var(--amazon-orange);
-  color: #111;
-  padding: 0 24px;
-  font-size: 1.15rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.search-btn:hover {
-  background-color: var(--amazon-orange-hover);
-}
-
-/* أزرار الحساب والمفضلة والسلة */
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.nav-action-item {
+/* شعار عباسكو بتصميم هوية راية */
+.raya-brand-logo {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.logo-symbol {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, var(--raya-blue-primary), var(--raya-blue-top));
   color: #fff;
-  padding: 6px 10px;
   border-radius: var(--radius-sm);
-  border: 1px solid transparent;
-}
-
-.nav-action-item:hover {
-  border-color: #fff;
-}
-
-.action-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-}
-
-.action-text small {
-  font-size: 0.72rem;
-  color: #ccc;
-}
-
-.action-text strong {
-  font-size: 0.88rem;
-}
-
-.icon-badge-wrapper {
-  position: relative;
-  font-size: 1.4rem;
-}
-
-.badge {
-  position: absolute;
-  top: -8px;
-  left: -8px;
-  background-color: var(--amazon-accent-red);
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: var(--radius-round);
-  border: 2px solid var(--amazon-nav-dark);
-  animation: badgePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* --------------------------------------------------------------------------
-   5. شريط الأقسام السريع (Sub-Navigation Bar)
-   -------------------------------------------------------------------------- */
-.sub-nav {
-  background-color: var(--amazon-sub-dark);
-  font-size: 0.88rem;
-  padding: 4px 0;
-}
-
-.sub-nav-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3);
+  animation: logoPulse 3s infinite ease-in-out;
 }
 
-.all-categories-trigger {
-  color: #fff;
+.logo-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.arabic-logo {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--raya-blue-top);
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.english-logo {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+}
+
+/* محرك البحث المركزي الممتد ذو التأثير الضوئي اللحظي (Search Ticker Glow) */
+.raya-search-box {
+  flex: 1;
+  max-width: 680px;
+  height: 44px;
+  border: 1.5px solid #d5d9d9;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  padding: 2px 6px 2px 18px;
+  background-color: #fff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* تأثير التوهج عند تفعيل البحث */
+.raya-search-box:focus-within {
+  border-color: var(--raya-blue-primary);
+  box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.12);
+}
+
+.raya-search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: var(--text-dark);
+}
+
+.search-action-btn {
+  width: 36px;
+  height: 36px;
+  background-color: var(--star-gold);
+  color: #111;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 6px rgba(255, 184, 0, 0.4);
+}
+
+.search-action-btn:hover {
+  background-color: #f3a847;
+  transform: scale(1.08);
+}
+
+/* الأزرار العلوية للحساب واللغة والسلة */
+.raya-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.lang-switch-btn, .user-account-btn {
+  font-size: 0.88rem;
   font-weight: 700;
+  color: var(--text-body);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.lang-switch-btn:hover, .user-account-btn:hover {
+  color: var(--raya-blue-primary);
+  background: var(--bg-canvas);
+}
+
+.header-divider {
+  width: 1px;
+  height: 20px;
+  background-color: #cbd5e1;
+}
+
+.cart-quick-btn {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
+  background-color: var(--raya-blue-light);
+  color: var(--raya-blue-primary);
+  font-weight: 800;
 }
 
-.all-categories-trigger:hover {
-  border-color: #fff;
+.cart-quick-btn:hover {
+  background-color: #dbeafe;
+  transform: translateY(-1px);
 }
 
-.nav-menu-links {
+.cart-icon-wrap {
+  position: relative;
+  font-size: 1.25rem;
+}
+
+.cart-badge-count {
+  position: absolute;
+  top: -8px;
+  left: -10px;
+  background-color: var(--discount-red);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  animation: badgePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* --------------------------------------------------------------------------
+   5. شريط الخدمات الثلاثي الأنيق (Services Bar - صيانة، استلام، تقسيط)
+   -------------------------------------------------------------------------- */
+.quick-services-bar {
+  padding: 16px 0 10px;
+}
+
+.services-three-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.service-pill-card {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-pill);
+  padding: 12px 20px;
   display: flex;
   align-items: center;
-  gap: 18px;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-price-navy);
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s ease;
 }
 
-.nav-menu-links a {
-  color: #e3e6e6;
-  padding: 6px 8px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+.service-pill-card i {
+  font-size: 1.15rem;
+  color: var(--raya-blue-primary);
+  transition: transform 0.3s ease;
 }
 
-.nav-menu-links a:hover,
-.nav-menu-links a.active {
-  border-color: #fff;
+.service-pill-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--raya-blue-primary);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.service-pill-card:hover i {
+  transform: rotate(12deg) scale(1.15);
+}
+
+.highlighted-service {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.highlighted-service i {
+  color: #16a34a;
+}
+
+/* --------------------------------------------------------------------------
+   6. شريط الفوائد والتقسيط البرتقالي المتحرك (Moving Valu Strip Ticker)
+   -------------------------------------------------------------------------- */
+.orange-valu-strip {
+  margin: 10px 0 20px;
+}
+
+.valu-strip-content {
+  background: linear-gradient(90deg, var(--valu-orange-start), var(--valu-orange-end), #ff8800, var(--valu-orange-start));
+  background-size: 300% 100%;
+  animation: valuGradientShift 8s infinite linear;
+  border-radius: var(--radius-md);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 106, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.valu-strip-content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: lightSweep 4s infinite ease-in-out;
+}
+
+.valu-brand {
+  display: flex;
+  align-items: baseline;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.valu-brand span {
+  font-size: 1.6rem;
   color: #fff;
 }
 
-.support-phone {
-  color: var(--amazon-orange);
-  font-size: 0.84rem;
-  font-weight: 600;
-}
-
-/* --------------------------------------------------------------------------
-   6. لافتة البانر الرئيسية والصور المتحركة العائمة (Hero Section)
-   -------------------------------------------------------------------------- */
-.hero-section {
-  padding: 30px 0 40px;
-}
-
-.hero-banner {
-  background: linear-gradient(135deg, #ffffff 0%, #edf2f7 100%);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  padding: 50px 60px;
+.promo-points-list {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
+  gap: 12px;
 }
 
-/* تأثير الإشعاع الضوئي الخلفي */
-.hero-banner::before {
-  content: '';
-  position: absolute;
-  top: -80px;
-  left: -80px;
-  width: 380px;
-  height: 380px;
-  background: radial-gradient(circle, rgba(254, 189, 105, 0.25) 0%, rgba(255, 255, 255, 0) 70%);
-  border-radius: 50%;
-  pointer-events: none;
-  animation: pulseGlow 6s ease-in-out infinite alternate;
+.promo-box {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 4px 14px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.hero-text {
-  max-width: 600px;
-  z-index: 2;
-}
-
-.deal-tag {
-  display: inline-block;
-  background: rgba(204, 12, 57, 0.1);
-  color: var(--amazon-accent-red);
-  padding: 6px 14px;
-  border-radius: var(--radius-round);
-  font-size: 0.85rem;
-  font-weight: 700;
-  margin-bottom: 16px;
-  border: 1px solid rgba(204, 12, 57, 0.2);
-}
-
-.hero-text h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  line-height: 1.3;
-  margin-bottom: 16px;
-  color: var(--text-dark);
-}
-
-.hero-text p {
+.promo-box strong {
   font-size: 1.15rem;
-  color: var(--text-muted);
-  margin-bottom: 28px;
+  font-weight: 900;
 }
 
-.hero-buttons {
-  display: flex;
-  gap: 16px;
-}
-
-.btn {
-  padding: 13px 30px;
-  border-radius: var(--radius-round);
-  font-size: 0.98rem;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: var(--transition-bounce);
-}
-
-.btn-primary {
-  background-color: var(--amazon-orange);
-  color: #111;
-  box-shadow: 0 4px 14px rgba(254, 189, 105, 0.5);
-}
-
-.btn-primary:hover {
-  background-color: var(--amazon-orange-hover);
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 8px 20px rgba(243, 168, 71, 0.6);
-}
-
-.btn-outline {
-  border: 2px solid var(--border-subtle);
-  background-color: #fff;
-  color: var(--text-dark);
-}
-
-.btn-outline:hover {
-  border-color: var(--text-dark);
-  transform: translateY(-3px);
-}
-
-/* مجسم البانر المتحرك العائم ثلاثي الأبعاد */
-.hero-visual {
-  position: relative;
-  z-index: 2;
-  perspective: 1200px;
-}
-
-.hero-card-preview {
-  width: 280px;
-  height: 280px;
-  background: #ffffff;
-  border-radius: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-floating);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  position: relative;
-  /* أنيميشن الطفو المستمر المتوازن */
-  animation: floatLevitate 5s ease-in-out infinite;
-  transform-style: preserve-3d;
-}
-
-.hero-main-icon {
-  font-size: 9.5rem;
-  color: var(--amazon-sub-dark);
-  filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15));
-  transition: var(--transition-bounce);
-}
-
-.hero-card-preview:hover .hero-main-icon {
-  transform: scale(1.1) rotate(-8deg);
-  color: var(--amazon-orange);
-}
-
-/* --------------------------------------------------------------------------
-   7. شريط مميزات المتجر (Trust Badges & Perks)
-   -------------------------------------------------------------------------- */
-.store-perks {
-  padding-bottom: 40px;
-}
-
-.perks-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.perk-box {
-  background-color: var(--bg-pure-white);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  padding: 22px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  transition: var(--transition-smooth);
-}
-
-.perk-box:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-card);
-  border-color: var(--amazon-orange);
-}
-
-.perk-box i {
-  font-size: 2.2rem;
-  color: var(--amazon-sub-dark);
-  transition: var(--transition-bounce);
-}
-
-.perk-box:hover i {
-  transform: scale(1.18) rotate(6deg);
-  color: var(--amazon-orange);
-}
-
-.perk-box h4 {
-  font-size: 0.98rem;
-  font-weight: 700;
-  margin-bottom: 2px;
-}
-
-.perk-box p {
+.promo-box span {
   font-size: 0.82rem;
-  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.highlight-box {
+  background: #ffffff;
+  color: var(--valu-orange-end);
+  border-color: #fff;
+}
+
+.cash-guarantee-text {
+  font-size: 0.92rem;
+  font-weight: 800;
 }
 
 /* --------------------------------------------------------------------------
-   8. تصنيفات المنتجات التفاعلية (Interactive Categories)
+   7. سلايدر البانر الترويجي الكبير (Hero Slider Banner)
    -------------------------------------------------------------------------- */
-.categories-section {
-  padding-bottom: 50px;
-}
-
-.section-title-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+.main-slider-section {
   margin-bottom: 24px;
 }
 
-.section-title-row h2 {
-  font-size: 1.65rem;
+.slider-container-relative {
+  position: relative;
+}
+
+.hero-banner-card {
+  background: #ffffff;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 40px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  box-shadow: var(--shadow-card);
+  min-height: 360px;
+}
+
+.banner-info-pane {
+  max-width: 600px;
+}
+
+.campaign-tag {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.8rem;
   font-weight: 800;
-  position: relative;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 14px;
 }
 
-.section-subtitle {
-  font-size: 0.9rem;
+.banner-info-pane h1 {
+  font-size: 2.3rem;
+  font-weight: 900;
+  color: var(--text-price-navy);
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.banner-info-pane p {
   color: var(--text-muted);
-  margin-top: 4px;
+  font-size: 1rem;
+  margin-bottom: 24px;
 }
 
-.view-all {
-  color: #007185;
-  font-size: 0.92rem;
-  font-weight: 600;
+.btn-raya-shop-now {
+  background-color: var(--raya-blue-primary);
+  color: #fff;
+  font-size: 0.98rem;
+  font-weight: 800;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: var(--shadow-btn);
+  transition: all 0.3s;
 }
 
-.view-all:hover {
-  color: #c7511f;
-  text-decoration: underline;
+.btn-raya-shop-now:hover {
+  background-color: var(--raya-blue-hover);
+  transform: translateY(-3px) scale(1.02);
 }
 
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 18px;
+.banner-image-pane {
+  flex-shrink: 0;
+  width: 440px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.category-card {
-  background: var(--bg-pure-white);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  padding: 26px 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: var(--transition-smooth);
-  position: relative;
-  overflow: hidden;
+.banner-image-pane img {
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.12));
+  transition: transform 0.5s ease;
 }
 
-.category-card::before {
-  content: '';
+.hero-banner-card:hover .banner-image-pane img {
+  transform: scale(1.06) rotate(-2deg);
+}
+
+/* الأسهم الدائرية للسلايدر على الجانبين (Raya Carousel Arrows) */
+.slider-arrow {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 60%, rgba(254, 189, 105, 0.15) 100%);
-  opacity: 0;
-  transition: var(--transition-smooth);
-}
-
-.category-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: var(--amazon-orange);
-}
-
-.category-card:hover::before {
-  opacity: 1;
-}
-
-.cat-icon {
-  width: 65px;
-  height: 65px;
-  margin: 0 auto 16px;
-  background-color: var(--bg-light-gray);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background-color: #ffffff;
+  border: 1px solid var(--border-card);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.7rem;
-  color: var(--amazon-sub-dark);
-  transition: var(--transition-bounce);
+  font-size: 1.1rem;
+  color: var(--text-price-navy);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  z-index: 10;
+  cursor: pointer;
+  transition: all 0.25s;
 }
 
-.category-card:hover .cat-icon {
-  background-color: var(--amazon-orange);
-  color: #111;
-  transform: scale(1.15) rotate(-6deg);
-}
+.arrow-prev { right: -20px; }
+.arrow-next { left: -20px; }
 
-.category-card h3 {
-  font-size: 0.96rem;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.category-card span {
-  font-size: 0.78rem;
-  color: var(--text-muted);
+.slider-arrow:hover {
+  background-color: var(--raya-blue-primary);
+  color: #fff;
+  border-color: var(--raya-blue-primary);
+  transform: translateY(-50%) scale(1.12);
 }
 
 /* --------------------------------------------------------------------------
-   9. شبكة المنتجات وتأثيرات الصور الفاخرة (Products Grid & Image Animation)
+   8. شريط الفئات الدائري (Circular Categories Strip)
    -------------------------------------------------------------------------- */
-.products-section {
-  padding-bottom: 60px;
+.circle-categories-section {
+  margin-bottom: 35px;
 }
 
-.filter-pills {
+.circle-categories-flex {
   display: flex;
-  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 10px 4px;
 }
 
-.pill-btn {
-  padding: 7px 18px;
-  background-color: #fff;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-round);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-dark);
+.circle-categories-flex::-webkit-scrollbar {
+  display: none;
 }
 
-.pill-btn.active,
-.pill-btn:hover {
-  background-color: var(--amazon-nav-dark);
-  color: #fff;
-  border-color: var(--amazon-nav-dark);
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 22px;
-}
-
-/* بطاقة المنتج - تحفة بيضاء بتفاصيل أمازون */
-.product-card {
-  background: var(--bg-pure-white);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  position: relative;
+.circle-cat-item {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  transition: var(--transition-smooth);
-  overflow: hidden;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  width: 95px;
+  text-align: center;
 }
 
-.product-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: #c4c7c7;
-}
-
-/* شارة الخصم النابضة */
-.badge-discount {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  background-color: var(--amazon-accent-red);
-  color: #fff;
-  font-size: 0.78rem;
-  font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 4px;
-  z-index: 3;
-  animation: badgeGlow 2.5s infinite;
-}
-
-/* حاوية الصورة وتأثير الشعاع الضوئي (Light Sheen / Sweep Effect) */
-.product-thumb {
-  width: 100%;
-  height: 230px;
-  background-color: #fafafa;
-  border-radius: var(--radius-sm);
+.circle-img-wrap {
+  width: 82px;
+  height: 82px;
+  background-color: #ffffff;
+  border: 1px solid var(--border-card);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 14px;
-  position: relative;
   overflow: hidden;
-  perspective: 800px;
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* طبقة الشعاع الضوئي اللامع الذي يمر على الصورة */
-.product-thumb::after {
-  content: '';
-  position: absolute;
-  top: -60%;
-  left: -120%;
-  width: 60%;
-  height: 220%;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.6) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  transform: rotate(35deg);
-  transition: left 0.85s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: none;
-}
-
-.product-card:hover .product-thumb::after {
-  left: 180%;
-}
-
-/* حركة صورة المنتج التفاعلية ثلاثية الأبعاد */
-.product-thumb img {
-  max-width: 85%;
-  max-height: 85%;
+.circle-img-wrap img {
+  width: 70%;
+  height: 70%;
   object-fit: contain;
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s ease;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.08));
+  transition: transform 0.3s ease;
 }
 
-.product-card:hover .product-thumb img {
-  transform: scale(1.12) translateY(-6px) rotate(-2.5deg);
-  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.16));
+.circle-cat-item:hover .circle-img-wrap {
+  border-color: var(--raya-blue-primary);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 18px rgba(0, 86, 179, 0.18);
 }
 
-/* الأيقونة البديلة بحال عدم توفر صورة فورية */
-.fallback-icon {
-  font-size: 5rem;
-  color: #adb5bd;
-  transition: var(--transition-bounce);
+.circle-cat-item:hover .circle-img-wrap img {
+  transform: scale(1.15);
 }
 
-.product-card:hover .fallback-icon {
-  transform: scale(1.18) translateY(-8px) rotate(-4deg);
-  color: var(--amazon-sub-dark);
+.circle-cat-item span {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-dark);
 }
 
-/* بيانات المنتج والتقييم والأسعار */
-.product-info {
+/* --------------------------------------------------------------------------
+   9. بطاقات المنتجات المطابقة لراية شوب بالمليمتر (Raya Product Cards)
+   -------------------------------------------------------------------------- */
+.raya-products-section {
+  margin-bottom: 50px;
+}
+
+.section-title-center {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.section-title-center h2 {
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: var(--text-price-navy);
+}
+
+.raya-grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+/* بطاقة المنتج البيضاء النقية */
+.raya-product-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  justify-content: space-between;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: var(--shadow-card);
 }
 
-.product-cat {
-  font-size: 0.74rem;
+.raya-product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: #cbd5e1;
+}
+
+/* الزاوية العلوية: شارة الأكثر مبيعاً والأيقونات السريعة */
+.card-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 28px;
+  margin-bottom: 8px;
+}
+
+.badge-bestseller {
+  background-color: var(--badge-navy);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: var(--radius-xs);
+}
+
+.quick-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.action-icon-circle {
+  width: 30px;
+  height: 30px;
+  background-color: #f8f9fa;
+  border: 1px solid #edf2f7;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-icon-circle:hover {
+  background-color: var(--discount-red);
+  color: #fff;
+  border-color: var(--discount-red);
+}
+
+/* صندوق الصورة المفرغة النقية مع زر السلة العائم */
+.product-image-container {
+  width: 100%;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 12px;
+  background-color: #ffffff;
+}
+
+.product-image-container img {
+  max-width: 86%;
+  max-height: 86%;
+  object-fit: contain;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.raya-product-card:hover .product-image-container img {
+  transform: scale(1.08);
+}
+
+/* زر السلة الأزرق الدائري المميز العائم أسفل يسار الصورة */
+.raya-blue-cart-btn {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  width: 38px;
+  height: 38px;
+  background-color: var(--raya-blue-primary);
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: var(--shadow-btn);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+
+.raya-blue-cart-btn:hover {
+  background-color: var(--raya-blue-hover);
+  transform: scale(1.18) rotate(-6deg);
+}
+
+.raya-blue-cart-btn:active {
+  transform: scale(0.92);
+}
+
+/* بيانات المنتج والأسعار وشارات راية */
+.product-data {
+  display: flex;
+  flex-direction: column;
+}
+
+.rating-line {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  margin-bottom: 6px;
+}
+
+.rating-line i {
+  color: var(--star-gold);
+}
+
+.rating-line span {
   color: var(--text-muted);
-  text-transform: uppercase;
-  font-weight: 700;
-  margin-bottom: 4px;
 }
 
-.product-title {
-  font-size: 0.94rem;
+.product-name {
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-dark);
   line-height: 1.4;
-  height: 42px;
+  height: 40px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  margin-bottom: 10px;
+}
+
+.product-name:hover {
+  color: var(--raya-blue-primary);
+}
+
+.price-discount-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sale-price {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--text-price-navy);
+}
+
+.discount-pill {
+  background-color: var(--discount-bg);
+  color: var(--discount-red);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+}
+
+.regular-price {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  text-decoration: line-through;
+  display: block;
   margin-bottom: 8px;
 }
 
-.product-title:hover {
-  color: #c7511f;
-}
-
-.product-rating {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 10px;
-  font-size: 0.78rem;
-  color: var(--amazon-star);
-}
-
-.product-rating span {
-  color: #007185;
-  margin-right: 4px;
-}
-
-.product-price-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px dashed var(--border-light);
-}
-
-.prices {
-  display: flex;
-  flex-direction: column;
-}
-
-.current-price {
-  font-size: 1.25rem;
+/* شارة التوثيق (منتج معتمد من عباسكو) مثل Fulfilled by Raya */
+.fulfilled-badge {
+  background-color: var(--raya-blue-light);
+  color: var(--raya-blue-primary);
+  font-size: 0.74rem;
   font-weight: 800;
-  color: var(--text-price);
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+  width: fit-content;
 }
 
-.old-price {
+/* سطر حساب القسط الشهري */
+.installment-line {
+  border-top: 1px dashed var(--border-card);
+  padding-top: 8px;
   font-size: 0.78rem;
-  color: var(--text-muted);
-  text-decoration: line-through;
+  color: var(--text-body);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* زر أضف إلى السلة (Add to Cart Button) */
-.add-cart-btn {
-  width: 42px;
-  height: 42px;
-  background-color: var(--amazon-cta-yellow);
-  color: #111;
+.installment-line strong {
+  color: var(--text-price-navy);
+}
+
+/* زر الاستكشاف البيضاوي الأزرق الكبير (Raya Oval Pill Button) */
+.center-btn-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-explore-blue-pill {
+  background-color: #ffffff;
+  border: 1.5px solid var(--raya-blue-primary);
+  color: var(--raya-blue-primary);
+  border-radius: var(--radius-pill);
+  padding: 10px 28px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 12px rgba(0, 86, 179, 0.08);
+  transition: all 0.3s ease;
+}
+
+.pill-arrow-icon {
+  width: 30px;
+  height: 30px;
+  background-color: var(--raya-blue-primary);
+  color: #fff;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: var(--transition-bounce);
+  font-size: 0.85rem;
+  transition: transform 0.3s ease;
 }
 
-.add-cart-btn:hover {
-  background-color: var(--amazon-cta-yellow-hover);
-  transform: scale(1.15) rotate(5deg);
-  box-shadow: 0 4px 12px rgba(247, 202, 0, 0.5);
+.btn-explore-blue-pill:hover {
+  background-color: var(--raya-blue-primary);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-btn);
 }
 
-.add-cart-btn:active {
-  transform: scale(0.92);
+.btn-explore-blue-pill:hover .pill-arrow-icon {
+  background-color: #fff;
+  color: var(--raya-blue-primary);
+  transform: rotate(-45deg);
 }
 
 /* --------------------------------------------------------------------------
-   10. درج سلة المشتريات الجانبي (Side Cart Drawer)
+   10. شريط البنوك وشركاء التقسيط المتحرك (Infinite Moving Partners Bar)
    -------------------------------------------------------------------------- */
-.cart-overlay {
+.financing-partners-banner {
+  margin-bottom: 50px;
+}
+
+.financing-flex-box {
+  background-color: #ffffff;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 30px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.partners-logos-list {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  animation: partnersFloat 6s ease-in-out infinite alternate;
+}
+
+.bank-pill {
+  background-color: var(--bg-canvas);
+  border: 1px solid var(--border-subtle);
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-price-navy);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.financing-text-cta h3 {
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: var(--text-price-navy);
+  margin-bottom: 6px;
+}
+
+.financing-text-cta p {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  margin-bottom: 14px;
+}
+
+.btn-learn-more-blue {
+  background-color: var(--raya-blue-primary);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-learn-more-blue:hover {
+  background-color: var(--raya-blue-hover);
+}
+
+/* --------------------------------------------------------------------------
+   11. البطاقات الملونة الست (Color Theme Story Cards)
+   -------------------------------------------------------------------------- */
+.color-theme-cards-section {
+  margin-bottom: 50px;
+}
+
+.theme-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+}
+
+.theme-card {
+  height: 140px;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+
+.theme-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15);
+}
+
+.theme-card h4 {
+  font-size: 0.92rem;
+  font-weight: 900;
+  line-height: 1.3;
+  z-index: 2;
+}
+
+.theme-card-icon {
+  font-size: 3rem;
+  position: absolute;
+  bottom: -6px;
+  left: -4px;
+  opacity: 0.25;
+  transition: transform 0.3s ease;
+}
+
+.theme-card:hover .theme-card-icon {
+  transform: scale(1.2) rotate(8deg);
+  opacity: 0.4;
+}
+
+.tc-1 { background: linear-gradient(135deg, #0284c7, #0369a1); }
+.tc-2 { background: linear-gradient(135deg, #e11d48, #be123c); }
+.tc-3 { background: linear-gradient(135deg, #059669, #047857); }
+.tc-4 { background: linear-gradient(135deg, #d97706, #b45309); }
+.tc-5 { background: linear-gradient(135deg, #ea580c, #c2410c); }
+.tc-6 { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+
+/* --------------------------------------------------------------------------
+   12. البطاقات الزرقاء المقوسة "متاح الآن في عباسكو" (Curved Arched Cards)
+   -------------------------------------------------------------------------- */
+.available-now-section {
+  margin-bottom: 50px;
+}
+
+.curved-blue-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.curved-card {
+  background-color: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: all 0.3s ease;
+}
+
+.curved-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--raya-blue-primary);
+}
+
+.curved-top-label {
+  background-color: var(--raya-blue-primary);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-align: center;
+  padding: 12px 10px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.curved-card-body {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+}
+
+.curved-card-body img {
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+  transition: transform 0.35s ease;
+}
+
+.curved-card:hover .curved-card-body img {
+  transform: scale(1.12);
+}
+
+/* --------------------------------------------------------------------------
+   13. تبويبات أفضل العروض (Deals Filter Pills)
+   -------------------------------------------------------------------------- */
+.best-deals-tabs-section {
+  margin-bottom: 60px;
+}
+
+.deals-tabs-bar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.deal-tab-btn {
+  background-color: #ffffff;
+  border: 1px solid var(--border-card);
+  padding: 8px 22px;
+  border-radius: var(--radius-pill);
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-body);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.deal-tab-btn.active, .deal-tab-btn:hover {
+  background-color: var(--raya-blue-primary);
+  color: #ffffff;
+  border-color: var(--raya-blue-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 86, 179, 0.25);
+}
+
+/* --------------------------------------------------------------------------
+   14. درج سلة المشتريات الجانبي (Side Flyout Cart)
+   -------------------------------------------------------------------------- */
+.cart-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(2px);
   z-index: 1500;
   opacity: 0;
   visibility: hidden;
-  transition: var(--transition-smooth);
+  transition: all 0.3s ease;
 }
 
-.cart-overlay.active {
+.cart-backdrop.active {
   opacity: 1;
   visibility: visible;
 }
 
-.cart-sidebar {
+.cart-side-drawer {
   position: fixed;
   top: 0;
-  left: -440px; /* لفتح السلة من الجهة المقابلة في العربي */
+  left: -420px;
   width: 100%;
-  max-width: 420px;
-  height: 100%;
-  background: #ffffff;
+  max-width: 400px;
+  height: 100vh;
+  background-color: #ffffff;
   z-index: 1600;
-  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
+  box-shadow: -8px 0 25px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cart-sidebar.active {
+.cart-side-drawer.active {
   left: 0;
 }
 
-.cart-header {
+.drawer-header {
   padding: 18px 22px;
-  background-color: var(--amazon-nav-dark);
-  color: #fff;
+  background-color: var(--raya-blue-top);
+  color: #ffffff;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
 }
 
-.cart-title {
+.drawer-header h3 {
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 1.1rem;
 }
 
-.close-cart-btn {
-  color: #fff;
-  font-size: 1.4rem;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+.close-drawer-btn {
+  color: #ffffff;
+  font-size: 1.3rem;
+  cursor: pointer;
 }
 
-.close-cart-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: rotate(90deg);
-}
-
-.cart-items-list {
+.drawer-body {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
 }
 
-.empty-cart-message {
+.empty-cart-state {
   text-align: center;
-  padding: 60px 20px;
+  padding: 60px 10px;
   color: var(--text-muted);
 }
 
-.empty-cart-message i {
-  font-size: 4rem;
-  color: #ccc;
-  margin-bottom: 14px;
-}
-
-.cart-item-row {
-  display: flex;
-  gap: 14px;
-  padding-bottom: 16px;
-  margin-bottom: 16px;
-  border-bottom: 1px solid var(--border-light);
-  align-items: center;
-}
-
-.cart-item-row img {
-  width: 65px;
-  height: 65px;
-  object-fit: contain;
-  background: var(--bg-light-gray);
-  border-radius: var(--radius-sm);
-  padding: 4px;
-}
-
-.cart-item-details {
-  flex: 1;
-}
-
-.cart-item-details h4 {
-  font-size: 0.88rem;
-  font-weight: 700;
-  margin-bottom: 4px;
-  line-height: 1.3;
-}
-
-.cart-item-price {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--text-price);
-}
-
-.cart-item-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 6px;
-}
-
-.qty-btn {
-  background-color: var(--bg-light-gray);
-  border: 1px solid var(--border-subtle);
-  width: 26px;
-  height: 26px;
-  border-radius: 4px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.qty-btn:hover {
-  background-color: #e3e6e6;
-}
-
-.cart-footer {
-  padding: 20px;
-  background-color: #fafafa;
-  border-top: 1px solid var(--border-light);
-}
-
-.cart-summary-line {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  font-size: 0.92rem;
-}
-
-.free-badge {
-  color: #067d62;
-  font-weight: 700;
-}
-
-.total-line {
-  font-size: 1.2rem;
-  font-weight: 800;
-  margin: 12px 0 16px;
-}
-
-.checkout-btn {
-  width: 100%;
-  background-color: var(--amazon-cta-yellow);
-  color: #111;
-  padding: 14px;
-  border-radius: var(--radius-round);
-  font-size: 1rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.checkout-btn:hover {
-  background-color: var(--amazon-cta-yellow-hover);
-  transform: translateY(-2px);
-}
-
-.clear-cart-link {
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-size: 0.8rem;
-  color: var(--amazon-accent-red);
-  margin-top: 12px;
-}
-
-.clear-cart-link:hover {
-  text-decoration: underline;
-}
-
-/* --------------------------------------------------------------------------
-   11. تذييل الصفحة الفاخر (Amazon Style Footer)
-   -------------------------------------------------------------------------- */
-.main-footer {
-  background-color: var(--amazon-sub-dark);
-  color: #fff;
-  margin-top: 40px;
-}
-
-.back-to-top {
-  background-color: #37475a;
-  text-align: center;
-  padding: 14px 0;
-  font-size: 0.88rem;
-  font-weight: 600;
-  transition: var(--transition-smooth);
-}
-
-.back-to-top:hover {
-  background-color: #485769;
-}
-
-.footer-links-container {
-  padding: 50px 0 40px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.footer-columns {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.5fr;
-  gap: 40px;
-}
-
-.footer-brand h4 {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--amazon-orange);
+.empty-cart-state i {
+  font-size: 3.5rem;
+  color: #cbd5e1;
   margin-bottom: 12px;
 }
 
-.footer-brand p {
-  font-size: 0.86rem;
-  color: #ccc;
-  line-height: 1.7;
-  margin-bottom: 20px;
+.drawer-footer {
+  padding: 20px;
+  background-color: #f8fafc;
+  border-top: 1px solid var(--border-card);
 }
 
-.social-icons {
+.footer-total-line {
   display: flex;
-  gap: 12px;
+  justify-content: space-between;
+  font-size: 1.15rem;
+  font-weight: 900;
+  margin-bottom: 14px;
 }
 
-.social-icons a {
-  width: 38px;
-  height: 38px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
+.btn-checkout-whatsapp {
+  width: 100%;
+  background-color: #25d366;
+  color: #ffffff;
+  padding: 13px;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+  cursor: pointer;
 }
 
-.social-icons a:hover {
-  background: var(--amazon-orange);
-  color: #111;
-  transform: translateY(-4px);
+.btn-checkout-whatsapp:hover {
+  background-color: #1ebc57;
+  transform: translateY(-2px);
+}
+
+.btn-empty-cart {
+  width: 100%;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--discount-red);
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+/* --------------------------------------------------------------------------
+   15. تذييل الموقع الأزرق الفاخر (Raya Official Blue Footer)
+   -------------------------------------------------------------------------- */
+.raya-blue-footer {
+  background-color: var(--raya-footer-blue);
+  color: #ffffff;
+  padding: 50px 0 25px;
+}
+
+.footer-four-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.6fr;
+  gap: 30px;
 }
 
 .footer-col h4 {
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: 900;
   margin-bottom: 18px;
-  color: #fff;
+  color: #ffffff;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 8px;
+  display: inline-block;
 }
 
 .footer-col ul li {
@@ -1146,143 +1304,228 @@ button {
 }
 
 .footer-col ul li a {
-  color: #ddd;
+  color: #e2e8f0;
   font-size: 0.85rem;
 }
 
 .footer-col ul li a:hover {
-  color: var(--amazon-orange);
-  text-decoration: underline;
+  color: var(--star-gold);
   padding-right: 4px;
 }
 
-.payment-methods {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 14px;
+.newsletter-col p {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  margin-bottom: 14px;
+  line-height: 1.6;
 }
 
-.pay-tag {
-  background: rgba(255, 255, 255, 0.08);
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
+.newsletter-form {
+  display: flex;
+  background-color: #ffffff;
+  border-radius: var(--radius-pill);
+  padding: 3px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+.newsletter-form input {
+  flex: 1;
+  border: none;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.newsletter-form button {
+  background-color: var(--raya-blue-primary);
+  color: #ffffff;
+  width: 40px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-social-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.footer-social-icons a {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.footer-social-icons a:hover {
+  background-color: #ffffff;
+  color: var(--raya-blue-primary);
+  transform: translateY(-3px);
+}
+
+.footer-separator {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin: 35px 0 20px;
+}
+
+.footer-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 0.82rem;
+  color: #cbd5e1;
+}
+
+.payment-methods-strip {
+  display: flex;
+  gap: 14px;
+}
+
+.payment-methods-strip span {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   16. الزر العائم "جرب حظك" (Floating Lucky Wheel Widget)
+   -------------------------------------------------------------------------- */
+.lucky-wheel-widget {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  background-color: var(--lucky-green);
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 0.88rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   gap: 8px;
+  box-shadow: 0 8px 22px rgba(0, 135, 90, 0.35);
+  z-index: 1200;
+  cursor: pointer;
+  animation: floatWidget 4s ease-in-out infinite;
 }
 
-.pay-tag i {
-  color: var(--amazon-orange);
-}
-
-.footer-bottom-bar {
-  background-color: var(--amazon-nav-dark);
-  padding: 20px 0;
-  text-align: center;
-  font-size: 0.82rem;
-  color: #999;
+.lucky-wheel-widget i {
+  font-size: 1.15rem;
+  animation: spinSlow 8s linear infinite;
 }
 
 /* --------------------------------------------------------------------------
-   12. الحركات والأنيميشن التفاعلي (Keyframe Animations)
+   17. الحركات والأنيميشن الاحترافي (Keyframe Animations)
    -------------------------------------------------------------------------- */
-/* أنيميشن الطفو الدائري الناعم للبانر */
-@keyframes floatLevitate {
-  0% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-16px) rotate(2deg);
-  }
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
+@keyframes valuGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* نبضات الإضاءة الدائرية خلف الهيرو */
-@keyframes pulseGlow {
-  0% {
-    transform: scale(0.95);
-    opacity: 0.3;
-  }
-  100% {
-    transform: scale(1.15);
-    opacity: 0.6;
-  }
+@keyframes lightSweep {
+  0% { left: -100%; }
+  50%, 100% { left: 200%; }
 }
 
-/* انبثاق أرقام الشارات السريعة بالسلة */
+@keyframes logoPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes partnersFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+@keyframes floatWidget {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 @keyframes badgePop {
-  0% {
-    transform: scale(0);
-  }
-  80% {
-    transform: scale(1.3);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* نبض وتوهج شارات الخصم */
-@keyframes badgeGlow {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(204, 12, 57, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 10px 3px rgba(204, 12, 57, 0.3);
-  }
+  0% { transform: scale(0); }
+  80% { transform: scale(1.3); }
+  100% { transform: scale(1); }
 }
 
 /* --------------------------------------------------------------------------
-   13. التجاوب مع مختلف الشاشات (Responsive Design)
+   18. التجاوب الكامل مع الهواتف الذكية (Responsive Media Queries)
    -------------------------------------------------------------------------- */
-@media (max-width: 1024px) {
-  .hero-banner {
-    padding: 40px 30px;
+@media (max-width: 1200px) {
+  .theme-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
-  .hero-text h1 {
-    font-size: 2rem;
-  }
-  .footer-columns {
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
+  .curved-blue-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 768px) {
-  .nav-wrapper {
-    flex-wrap: wrap;
-  }
-  .search-container {
-    order: 3;
-    max-width: 100%;
-    width: 100%;
-  }
-  .search-category-select {
-    display: none;
-  }
-  .nav-menu-links, .support-phone {
-    display: none;
-  }
-  .hero-banner {
+@media (max-width: 900px) {
+  .hero-banner-card {
     flex-direction: column;
     text-align: center;
-    gap: 30px;
+    padding: 30px 20px;
   }
-  .hero-buttons {
-    justify-content: center;
-  }
-  .hero-card-preview {
-    width: 220px;
+  .banner-image-pane {
+    width: 100%;
     height: 220px;
   }
-  .hero-main-icon {
-    font-size: 7rem;
-  }
-  .footer-columns {
+  .services-three-grid {
     grid-template-columns: 1fr;
+  }
+  .valu-strip-content {
+    flex-direction: column;
+    gap: 14px;
+    text-align: center;
+  }
+  .promo-points-list {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .financing-flex-box {
+    flex-direction: column;
+    text-align: center;
+  }
+  .footer-four-columns {
+    grid-template-columns: 1fr;
+  }
+  .footer-bottom-row {
+    flex-direction: column;
+    gap: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .raya-header-flex {
+    flex-wrap: wrap;
+  }
+  .raya-search-box {
+    order: 3;
+    max-width: 100%;
+  }
+  .theme-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .curved-blue-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
