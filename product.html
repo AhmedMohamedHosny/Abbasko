@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تفاصيل المنتج | عباسكو - Abasco</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .breadcrumb-nav {
+      padding: 16px 0;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .breadcrumb-nav a { color: #0056b3; font-weight: 700; }
+    .breadcrumb-nav span { margin: 0 6px; }
+
+    .product-details-layout {
+      display: grid;
+      grid-template-columns: 480px 1fr 340px;
+      gap: 30px;
+      background: #ffffff;
+      border: 1px solid #eaeded;
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+
+    /* معرض صور المنتج */
+    .gallery-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .main-image-display {
+      width: 100%;
+      height: 400px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .main-image-display img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s;
+    }
+    .main-image-display:hover img {
+      transform: scale(1.1);
+    }
+
+    /* بيانات ومواصفات المنتج الوسطى */
+    .info-column h1 {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #0b1a30;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+    .brand-pill-badge {
+      display: inline-block;
+      background: #e8f0fe;
+      color: #0056b3;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      margin-bottom: 18px;
+      color: #ffb800;
+    }
+    .rating-row span { color: #64748b; }
+
+    .price-box-large {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .current-val {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #004b93;
+    }
+    .old-val {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      text-decoration: line-through;
+    }
+    .save-badge {
+      background: #fee2e2;
+      color: #d90429;
+      font-size: 0.85rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .specs-bullet-list {
+      margin: 20px 0;
+      padding-top: 16px;
+      border-top: 1px solid #f1f5f9;
+    }
+    .specs-bullet-list li {
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .specs-bullet-list li i {
+      color: #0056b3;
+      font-size: 0.85rem;
+    }
+
+    /* صندوق الشراء الجانبي (Buy Box) */
+    .buy-box-column {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      height: fit-content;
+    }
+    .stock-status-tag {
+      color: #166534;
+      font-weight: 800;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .delivery-estimate {
+      font-size: 0.85rem;
+      color: #475569;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .qty-select-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .btn-action-cart {
+      width: 100%;
+      background: #0056b3;
+      color: #fff;
+      padding: 14px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3);
+      transition: background 0.2s;
+    }
+    .btn-action-cart:hover { background: #003d80; }
+
+    .btn-action-buy-now {
+      width: 100%;
+      background: #ffb800;
+      color: #111;
+      padding: 14px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-action-buy-now:hover { background: #f3a847; }
+
+    @media (max-width: 1100px) {
+      .product-details-layout {
+        grid-template-columns: 1fr;
+      }
+      .main-image-display {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- شريط الموقع العلوي -->
+  <header class="raya-main-header">
+    <div class="container raya-header-flex">
+      <a href="index.html" class="raya-brand-logo">
+        <div class="logo-symbol"><i class="fa-solid fa-bolt-lightning"></i></div>
+        <div class="logo-text-group">
+          <span class="arabic-logo">عباسكو</span>
+          <span class="english-logo">ABASCO</span>
+        </div>
+      </a>
+      <div class="raya-header-actions">
+        <a href="index.html" class="lang-switch-btn"><i class="fa-solid fa-house"></i> الرئيسية</a>
+        <div class="header-divider"></div>
+        <a href="cart.html" class="cart-quick-btn">
+          <div class="cart-icon-wrap">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-badge-count" id="header-cart-count">0</span>
+          </div>
+          <span class="cart-label">السلة</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- مسار التنقل (Breadcrumbs) -->
+  <div class="container">
+    <div class="breadcrumb-nav">
+      <a href="index.html">الرئيسية</a>
+      <span>/</span>
+      <span id="crumb-category">إكسسوارات الهواتف</span>
+      <span>/</span>
+      <strong id="crumb-title">تفاصيل المنتج</strong>
+    </div>
+  </div>
+
+  <!-- محتوى المنتج الفعلي -->
+  <main class="container">
+    <div class="product-details-layout">
+      
+      <!-- 1. صورة المنتج -->
+      <div class="gallery-column">
+        <div class="main-image-display">
+          <img id="product-img" src="" alt="صورة المنتج">
+        </div>
+      </div>
+
+      <!-- 2. المواصفات والأسعار -->
+      <div class="info-column">
+        <span class="brand-pill-badge" id="product-badge">ضمان أصلي من عباسكو</span>
+        <h1 id="product-name">جاري تحميل بيانات الملحق...</h1>
+        
+        <div class="rating-row">
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <i class="fa-solid fa-star"></i>
+          <strong id="product-rating">4.9</strong>
+          <span id="product-reviews">(140 تقييم مشتري حقيقي)</span>
+        </div>
+
+        <div class="price-box-large">
+          <span class="current-val" id="product-price">0 ج.م</span>
+          <span class="old-val" id="product-old-price">0 ج.م</span>
+          <span class="save-badge" id="product-discount">وفر 0 ج.م</span>
+        </div>
+
+        <ul class="specs-bullet-list">
+          <li><i class="fa-solid fa-shield-check"></i> خامات أصلية عالية التحمل ومقاومة للصدمات والحرارة.</li>
+          <li><i class="fa-solid fa-arrows-rotate"></i> استرجاع واستبدال مجاني خلال 14 يوماً من الاستلام.</li>
+          <li><i class="fa-solid fa-box-open"></i> إمكانية فتح ومعاينة الشحنة أمام مندوب الشحن قبل سداد الثمن.</li>
+          <li><i class="fa-solid fa-bolt"></i> يدعم أحدث معايير الأجهزة الذكية الحديثة (Apple & Samsung).</li>
+        </ul>
+      </div>
+
+      <!-- 3. صندوق الشراء الفوري -->
+      <div class="buy-box-column">
+        <div class="stock-status-tag">
+          <i class="fa-solid fa-circle-check"></i> متوفر في مخزن عباسكو (جاهز للشحن)
+        </div>
+        <p class="delivery-estimate">
+          التوصيل خلال <strong>24 إلى 48 ساعة</strong> لجميع محافظات مصر مع الدفع عند الاستلام.
+        </p>
+
+        <div class="qty-select-row">
+          <span style="font-weight: 700;">الكمية:</span>
+          <select id="selected-quantity" style="padding: 6px 16px; border-radius: 6px; border: 1.5px solid #cbd5e1; font-family: inherit;">
+            <option value="1">1 قطعة</option>
+            <option value="2">2 قطعة</option>
+            <option value="3">3 قطع</option>
+          </select>
+        </div>
+
+        <button class="btn-action-cart" id="btn-add-cart">
+          <i class="fa-solid fa-cart-plus"></i> أضف إلى عربة التسوق
+        </button>
+
+        <button class="btn-action-buy-now" id="btn-buy-now">
+          <i class="fa-solid fa-bolt"></i> شراء الآن مباشرة
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // قاعدة بيانات المنتجات المطابقة
+    const catalog = [
+      {
+        id: 1,
+        name: 'جراب MagSafe مغناطيسي شفاف ومقاوم للصدمات لآيفون 15 و16 برو ماكس',
+        category: 'كفرات وجرابات',
+        price: 349,
+        oldPrice: 469,
+        discount: 120,
+        image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 2,
+        name: 'شاحن GaN فائق السرعة بقدرة 65 واط بـ 3 منافذ Type-C + USB من عباسكو',
+        category: 'شواحن وكابلات',
+        price: 680,
+        oldPrice: 850,
+        discount: 170,
+        image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 3,
+        name: 'اسكرينة زجاجية يابانية 9D للحماية القصوى مع شبلونة سهلة التركيب',
+        category: 'اسكرينات وحماية',
+        price: 185,
+        oldPrice: 250,
+        discount: 65,
+        image: 'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 4,
+        name: 'باور بانك 20,000 مللي أمبير بقوة 22.5W وشاشة رقمية لعرض نسبة الشحن',
+        category: 'بنوك طاقة',
+        price: 799,
+        oldPrice: 999,
+        discount: 200,
+        image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 5,
+        name: 'سماعة أذن لاسلكية Pro بعزل ضوضاء فعال ANC وبطارية حتى 32 ساعة',
+        category: 'سماعات وصوتيات',
+        price: 899,
+        oldPrice: 1199,
+        discount: 300,
+        image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80'
+      }
+    ];
+
+    // استخراج معرّف المنتج من الرابط (مثال: product.html?id=2)
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = parseInt(urlParams.get('id')) || 1;
+    const currentProduct = catalog.find(p => p.id === productId) || catalog[0];
+
+    // ملء بيانات الصفحة فورياً
+    document.getElementById('crumb-category').textContent = currentProduct.category;
+    document.getElementById('crumb-title').textContent = currentProduct.name;
+    document.getElementById('product-name').textContent = currentProduct.name;
+    document.getElementById('product-img').src = currentProduct.image;
+    document.getElementById('product-price').textContent = `${currentProduct.price.toLocaleString('ar-EG')} ج.م`;
+    document.getElementById('product-old-price').textContent = `${currentProduct.oldPrice.toLocaleString('ar-EG')} ج.م`;
+    document.getElementById('product-discount').textContent = `وفر ${currentProduct.discount} ج.م`;
+
+    function updateHeaderCartCount() {
+      const cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];
+      const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById('header-cart-count').textContent = totalCount;
+    }
+
+    function addCurrentToCart(quantity) {
+      let cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];
+      const existing = cart.find(i => i.id === currentProduct.id);
+      if (existing) {
+        existing.quantity += quantity;
+      } else {
+        cart.push({
+          id: currentProduct.id,
+          name: currentProduct.name,
+          price: currentProduct.price,
+          image: currentProduct.image,
+          quantity: quantity
+        });
+      }
+      localStorage.setItem('abasco_raya_cart', JSON.stringify(cart));
+      updateHeaderCartCount();
+    }
+
+    document.getElementById('btn-add-cart').addEventListener('click', () => {
+      const qty = parseInt(document.getElementById('selected-quantity').value) || 1;
+      addCurrentToCart(qty);
+      alert('تمت إضافة الملحق إلى سلة مشترياتك بنجاح!');
+    });
+
+    document.getElementById('btn-buy-now').addEventListener('click', () => {
+      const qty = parseInt(document.getElementById('selected-quantity').value) || 1;
+      addCurrentToCart(qty);
+      window.location.href = 'cart.html';
+    });
+
+    document.addEventListener('DOMContentLoaded', updateHeaderCartCount);
+  </script>
+</body>
+</html>
