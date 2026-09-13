@@ -294,18 +294,16 @@ function renderProductCardHTML(product) {
                   title="أضف للمفضلة">
             <i class="${isWish ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
           </button>
-          <button class="action-icon-circle" title="مقارنة المواصفات">
-            <i class="fa-solid fa-code-compare"></i>
-          </button>
         </div>
       </div>
 
-      <div class="product-image-container">
+      <!-- الضغط على الصورة ينقل لصفحة تفاصيل المنتج -->
+      <a href="product.html?id=${product.id}" class="product-image-container">
         <img src="${product.image}" alt="${product.name}" loading="lazy">
-        <button class="raya-blue-cart-btn" onclick="addToCart(${product.id})" title="أضف إلى السلة">
+        <button type="button" class="raya-blue-cart-btn" onclick="event.preventDefault(); addToCart(${product.id})" title="أضف إلى السلة فوراً">
           <i class="fa-solid fa-cart-shopping"></i>
         </button>
-      </div>
+      </a>
 
       <div class="product-data">
         <div class="rating-line">
@@ -314,7 +312,10 @@ function renderProductCardHTML(product) {
           <span>(${product.reviewsCount})</span>
         </div>
 
-        <h3 class="product-name" title="${product.name}">${product.name}</h3>
+        <!-- الضغط على اسم المنتج ينقل لصفحة تفاصيل المنتج -->
+        <h3 class="product-name">
+          <a href="product.html?id=${product.id}" title="${product.name}">${product.name}</a>
+        </h3>
 
         <div class="price-discount-line">
           <span class="sale-price">${product.price.toLocaleString('ar-EG')} ج.م</span>
