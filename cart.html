@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عربة التسوق | عباسكو - Abasco</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* تنسيقات صفحة السلة المستقلة بنمط راية شوب */
+    .cart-page-wrapper {
+      padding: 40px 0 80px;
+      min-height: 70vh;
+    }
+
+    .cart-page-header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .cart-page-header h1 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #004b93;
+      margin-bottom: 6px;
+    }
+
+    .cart-page-header p {
+      color: #64748b;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    /* حالة السلة الفارغة (مطابقة للصورة الثالثة) */
+    .empty-cart-fullscreen {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #eaeded;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .empty-cart-illustration {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 24px;
+      border: 3px dashed #cbd5e1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .empty-cart-illustration i.fa-cart-shopping {
+      font-size: 3.8rem;
+      color: #94a3b8;
+    }
+
+    .empty-cart-illustration .cross-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      background: #fee2e2;
+      color: #d90429;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      border: 2px solid #fff;
+    }
+
+    .empty-cart-fullscreen h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #0f1111;
+      margin-bottom: 12px;
+    }
+
+    .empty-cart-fullscreen p {
+      color: #64748b;
+      font-size: 0.95rem;
+      max-width: 520px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    /* تقسيم صفحة السلة الممتلئة (مطابقة للصورة الرابعة) */
+    .cart-content-grid {
+      display: none;
+      grid-template-columns: 1fr 380px;
+      gap: 30px;
+      align-items: flex-start;
+    }
+
+    /* قائمة المنتجات في اليمين */
+    .cart-items-column {
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #eaeded;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+
+    .cart-item-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid #f1f5f9;
+      position: relative;
+    }
+
+    .cart-item-card:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item-img-box {
+      width: 100px;
+      height: 100px;
+      background: #f8fafc;
+      border: 1px solid #eaeded;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      flex-shrink: 0;
+    }
+
+    .cart-item-img-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .cart-item-main-info {
+      flex: 1;
+    }
+
+    .cart-item-main-info h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #0f1111;
+      margin-bottom: 8px;
+    }
+
+    .cart-item-pricing {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .cart-current-price {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #004b93;
+    }
+
+    .cart-old-price {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      text-decoration: line-through;
+    }
+
+    .cart-item-actions-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .item-stepper {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid #d5d9d9;
+      border-radius: 50px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .stepper-btn {
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: #334155;
+      background: #f8fafc;
+      transition: background 0.2s;
+    }
+
+    .stepper-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .stepper-val {
+      width: 40px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .item-delete-btn, .item-wishlist-btn {
+      color: #94a3b8;
+      font-size: 1.1rem;
+      margin-right: 14px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .item-delete-btn:hover { color: #d90429; }
+    .item-wishlist-btn:hover { color: #0056b3; }
+
+    .back-shopping-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #0056b3;
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-top: 20px;
+    }
+
+    /* صندوق تفاصيل الدفع في اليسار (Sticky Checkout Box) */
+    .cart-summary-column {
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #eaeded;
+      padding: 24px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+      position: sticky;
+      top: 90px;
+    }
+
+    .cart-summary-column h2 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #004b93;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 0.92rem;
+      color: #475569;
+    }
+
+    .summary-line strong {
+      color: #0f1111;
+      font-weight: 800;
+    }
+
+    .summary-divider {
+      border: none;
+      border-top: 1px dashed #cbd5e1;
+      margin: 18px 0;
+    }
+
+    .summary-total-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #0f1111;
+      margin-bottom: 20px;
+    }
+
+    .summary-total-line .highlight-price {
+      font-size: 1.5rem;
+      color: #004b93;
+    }
+
+    .installment-alert-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 20px;
+      font-size: 0.8rem;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    .installment-alert-box strong {
+      display: block;
+      color: #0f1111;
+      margin-bottom: 4px;
+    }
+
+    /* الأزرار الرئيسية */
+    .btn-checkout-direct {
+      width: 100%;
+      background-color: #0056b3;
+      color: #ffffff;
+      padding: 14px;
+      border-radius: 50px;
+      font-size: 1.05rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(0, 86, 179, 0.3);
+      cursor: pointer;
+      margin-bottom: 12px;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-checkout-direct:hover {
+      background-color: #004085;
+      transform: translateY(-2px);
+    }
+
+    .or-divider {
+      text-align: center;
+      position: relative;
+      margin: 14px 0;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .or-divider::before, .or-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: 1px;
+      background: #e2e8f0;
+    }
+    .or-divider::before { right: 0; }
+    .or-divider::after { left: 0; }
+
+    .btn-installment-checkout {
+      width: 100%;
+      background: #ffffff;
+      border: 1.5px solid #0056b3;
+      color: #0056b3;
+      padding: 12px;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-installment-checkout:hover {
+      background: #f0f7ff;
+    }
+
+    .accepted-payments-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      font-size: 1.6rem;
+      color: #64748b;
+    }
+
+    @media (max-width: 992px) {
+      .cart-content-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. الشريط الأزرق العلوي -->
+  <nav class="raya-top-nav-bar">
+    <div class="container nav-top-flex">
+      <ul class="top-categories-list">
+        <li><a href="index.html#offers" class="active-badge"><i class="fa-solid fa-gift"></i> عروض عباسكو الحصرية</a></li>
+        <li><a href="index.html#cases">كفرات iPhone وسامسونج</a></li>
+        <li><a href="index.html#chargers">شواحن GaN السريعة</a></li>
+        <li><a href="index.html#screen-protectors">اسكرينات 9D وعدسات</a></li>
+        <li><a href="index.html#powerbanks">بنوك طاقة (باور بانك)</a></li>
+        <li><a href="index.html#audio">سماعات بلوتوث</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 2. رأس الموقع -->
+  <header class="raya-main-header">
+    <div class="container raya-header-flex">
+      <a href="index.html" class="raya-brand-logo">
+        <div class="logo-symbol"><i class="fa-solid fa-bolt-lightning"></i></div>
+        <div class="logo-text-group">
+          <span class="arabic-logo">عباسكو</span>
+          <span class="english-logo">ABASCO</span>
+        </div>
+      </a>
+
+      <div class="raya-search-box">
+        <input type="text" placeholder="ابحث عن جراب، شاحن، اسكرينة..." readonly>
+        <button class="search-action-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
+
+      <div class="raya-header-actions">
+        <a href="index.html" class="lang-switch-btn"><i class="fa-solid fa-house"></i> الرئيسية</a>
+        <div class="header-divider"></div>
+        <a href="cart.html" class="cart-quick-btn">
+          <div class="cart-icon-wrap">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-badge-count" id="header-cart-count">0</span>
+          </div>
+          <span class="cart-label">السلة</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. مساحة عربة التسوق التفاعلية -->
+  <main class="container cart-page-wrapper">
+    <div class="cart-page-header">
+      <h1>عربة التسوق</h1>
+      <p id="cart-page-subtitle">لديك 0 منتجات في عربة التسوق</p>
+    </div>
+
+    <!-- شاشة السلة الفارغة (تظهر تلقائياً إذا كانت السلة 0) -->
+    <section class="empty-cart-fullscreen" id="empty-cart-view">
+      <div class="empty-cart-illustration">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <div class="cross-badge"><i class="fa-solid fa-xmark"></i></div>
+      </div>
+      <h2>لا توجد منتجات في عربة التسوق حالياً</h2>
+      <p>تسوق الآن وأضف كفرات وشواحن وملحقات هاتفك إلى عربة التسوق وأكمل عملية الشراء بخطوات بسيطة عبر الدفع عند الاستلام.</p>
+      <a href="index.html" class="btn-explore-blue-pill">
+        <span>استعراض المنتجات</span>
+        <div class="pill-arrow-icon"><i class="fa-solid fa-arrow-up-left"></i></div>
+      </a>
+    </section>
+
+    <!-- شاشة السلة الممتلئة (المطابقة لراية شوب) -->
+    <section class="cart-content-grid" id="filled-cart-view">
+      
+      <!-- قائمة المنتجات المضافة -->
+      <div class="cart-items-column">
+        <div id="cart-items-container">
+          <!-- يتم بناء المنتجات هنا برمجياً -->
+        </div>
+
+        <a href="index.html" class="back-shopping-link">
+          <i class="fa-solid fa-angle-right"></i> متابعة التسوق وإضافة منتجات أخرى
+        </a>
+      </div>
+
+      <!-- ملخص الدفع والشراء -->
+      <aside class="cart-summary-column">
+        <h2>تفاصيل الدفع</h2>
+        
+        <div class="summary-line">
+          <span>الإجمالي الفرعي</span>
+          <strong id="summary-subtotal">0 ج.م</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>الخصومات والعروض</span>
+          <strong style="color: #16a34a;">تم تطبيق الخصم</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>تكاليف التوصيل</span>
+          <strong style="color: #0056b3;">يتم احتسابها عند إدخال العنوان</strong>
+        </div>
+
+        <hr class="summary-divider">
+
+        <div class="summary-total-line">
+          <span>الإجمالي النهائي</span>
+          <strong class="highlight-price" id="summary-final-total">0 ج.م</strong>
+        </div>
+
+        <div class="installment-alert-box">
+          <strong>الدفع عند الاستلام متاح</strong>
+          معاينة الشحنة بالكامل والتأكد من سلامة الملحقات قبل سداد أي مبالغ للمندوب.
+        </div>
+
+        <!-- زر الانتقال لصفحة إدخال البيانات -->
+        <button class="btn-checkout-direct" onclick="window.location.href='checkout.html'">
+          <span>الشراء مباشرة</span>
+          <i class="fa-solid fa-arrow-up-left"></i>
+        </button>
+
+        <div class="or-divider">أو</div>
+
+        <button class="btn-installment-checkout" onclick="window.location.href='checkout.html'">
+          طلب التقسيط عبر فاليو / المحافظ
+        </button>
+
+        <div class="accepted-payments-row">
+          <i class="fa-brands fa-cc-visa"></i>
+          <i class="fa-brands fa-cc-mastercard"></i>
+          <i class="fa-solid fa-money-bill-wave"></i>
+        </div>
+      </aside>
+
+    </section>
+  </main>
+
+  <!-- التذييل الأزرق -->
+  <footer class="raya-blue-footer">
+    <div class="container">
+      <div class="footer-bottom-row" style="justify-content: center; padding: 20px 0;">
+        <p>&copy; 2026 جميع الحقوق محفوظة لمتجر <strong>عباسكو (Abasco)</strong></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- جافاسكريبت إدارة السلة والمزامنة اللحظية -->
+  <script>
+    function getStoredCart() {
+      return JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];
+    }
+
+    function saveStoredCart(cart) {
+      localStorage.setItem('abasco_raya_cart', JSON.stringify(cart));
+      renderCartPage();
+    }
+
+    function renderCartPage() {
+      const cart = getStoredCart();
+      const emptyView = document.getElementById('empty-cart-view');
+      const filledView = document.getElementById('filled-cart-view');
+      const itemsContainer = document.getElementById('cart-items-container');
+      const subtitle = document.getElementById('cart-page-subtitle');
+      const headerCount = document.getElementById('header-cart-count');
+      const subtotalEl = document.getElementById('summary-subtotal');
+      const finalTotalEl = document.getElementById('summary-final-total');
+
+      const totalItemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+      const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+      headerCount.textContent = totalItemsCount;
+
+      if (cart.length === 0) {
+        emptyView.style.display = 'block';
+        filledView.style.display = 'none';
+        subtitle.textContent = 'لا توجد منتجات في عربة التسوق';
+        return;
+      }
+
+      emptyView.style.display = 'none';
+      filledView.style.display = 'grid';
+      subtitle.textContent = `لديك ${totalItemsCount} منتجات في عربة التسوق`;
+
+      itemsContainer.innerHTML = cart.map(item => `
+        <div class="cart-item-card">
+          <div class="cart-item-img-box">
+            <img src="${item.image}" alt="${item.name}">
+          </div>
+          
+          <div class="cart-item-main-info">
+            <h3>${item.name}</h3>
+            <div class="cart-item-pricing">
+              <span class="cart-current-price">${(item.price * item.quantity).toLocaleString('ar-EG')} ج.م</span>
+              <span class="cart-old-price">${((item.price + 120) * item.quantity).toLocaleString('ar-EG')} ج.م</span>
+            </div>
+
+            <div class="cart-item-actions-row">
+              <div class="item-stepper">
+                <button class="stepper-btn" onclick="updateQty(${item.id}, 1)">+</button>
+                <span class="stepper-val">${item.quantity}</span>
+                <button class="stepper-btn" onclick="updateQty(${item.id}, -1)">-</button>
+              </div>
+
+              <div>
+                <button class="item-wishlist-btn" title="حفظ لاحقاً"><i class="fa-regular fa-heart"></i></button>
+                <button class="item-delete-btn" onclick="deleteItem(${item.id})" title="حذف من السلة"><i class="fa-regular fa-trash-can"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      subtotalEl.textContent = `${totalPrice.toLocaleString('ar-EG')} ج.م`;
+      finalTotalEl.textContent = `${totalPrice.toLocaleString('ar-EG')} ج.م`;
+    }
+
+    function updateQty(id, change) {
+      let cart = getStoredCart();
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+
+      item.quantity += change;
+      if (item.quantity <= 0) {
+        cart = cart.filter(i => i.id !== id);
+      }
+      saveStoredCart(cart);
+    }
+
+    function deleteItem(id) {
+      let cart = getStoredCart();
+      cart = cart.filter(i => i.id !== id);
+      saveStoredCart(cart);
+    }
+
+    document.addEventListener('DOMContentLoaded', renderCartPage);
+  </script>
+</body>
+</html>
