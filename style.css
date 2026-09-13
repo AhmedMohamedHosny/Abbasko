@@ -1,0 +1,1288 @@
+/* ==========================================================================
+   متجر عباسكو (Abasco) - إكسسوارات الهواتف المحمولة
+   الملف: style.css
+   التصميم: طابع أمازون الأبيض مع حركات ديناميكية وتأثيرات بصرية ثلاثية الأبعاد
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. متغيرات الألوان والسمات (Design Tokens & CSS Variables)
+   -------------------------------------------------------------------------- */
+:root {
+  /* درجات ألوان أمازون الأساسية والواجهات البيضاء */
+  --amazon-nav-dark: #131921;       /* كحلي داكن كلاسيكي للشريط العلوي */
+  --amazon-sub-dark: #232f3e;       /* لون الشريط الفرعي */
+  --amazon-orange: #febd69;         /* البرتقالي الذهبي لأزرار وتحديدات أمازون */
+  --amazon-orange-hover: #f3a847;
+  --amazon-cta-yellow: #ffd814;     /* أصفر أزرار الشراء الفوري */
+  --amazon-cta-yellow-hover: #f7ca00;
+  --amazon-accent-red: #cc0c39;     /* أحمر شارات الخصومات والعروض */
+  --amazon-star: #ffa41c;           /* لون نجوم التقييم */
+  
+  /* خلفيات بيضاء ورمادية فائقة النقاء */
+  --bg-pure-white: #ffffff;
+  --bg-light-gray: #f7f8f8;
+  --bg-card-hover: #fdfdfd;
+  --border-light: #e7e7e7;
+  --border-subtle: #d5d9d9;
+  
+  /* ألوان النصوص */
+  --text-dark: #0f1111;
+  --text-muted: #565959;
+  --text-price: #b12704;            /* أحمر أسعار أمازون المشهور */
+
+  /* الظلال والتأثيرات */
+  --shadow-subtle: 0 2px 5px rgba(213, 217, 217, 0.5);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover: 0 16px 32px rgba(0, 0, 0, 0.12);
+  --shadow-floating: 0 20px 40px rgba(0, 0, 0, 0.15);
+
+  /* منحنيات الحركة للأنيميشن فائق النعومة */
+  --transition-smooth: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-round: 50px;
+}
+
+/* --------------------------------------------------------------------------
+   2. إعادة الضبط والتهيئة العامة (Global Reset & Typography)
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-light-gray);
+  color: var(--text-dark);
+  line-height: 1.6;
+  direction: rtl;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-smooth);
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: var(--transition-smooth);
+}
+
+.container {
+  width: 92%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   3. الشريط العلوي الترويجي (Top Announcement Bar)
+   -------------------------------------------------------------------------- */
+.top-announcement-bar {
+  background-color: #0b0e14;
+  color: #fff;
+  font-size: 0.85rem;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.announcement-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.announcement-content span i {
+  color: var(--amazon-orange);
+  margin-left: 6px;
+}
+
+.top-links a {
+  color: #ccc;
+  margin: 0 8px;
+}
+
+.top-links a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   4. رأس المتجر والبحث المتقدم (Main Header - Amazon Style)
+   -------------------------------------------------------------------------- */
+.main-header {
+  background-color: var(--amazon-nav-dark);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 0;
+}
+
+/* الشعار المميز */
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+}
+
+.logo:hover {
+  border-color: #fff;
+}
+
+.brand-name {
+  font-size: 1.85rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.brand-sub {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--amazon-orange);
+  letter-spacing: 3px;
+  margin-top: 2px;
+}
+
+/* صندوق البحث المركزي على نمط أمازون */
+.search-container {
+  flex: 1;
+  max-width: 760px;
+  display: flex;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: var(--transition-smooth);
+}
+
+.search-container:focus-within {
+  box-shadow: 0 0 0 3px var(--amazon-orange);
+}
+
+.search-category-select {
+  background-color: #e6e6e6;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0 12px;
+  cursor: pointer;
+  border-left: 1px solid #ccc;
+  color: #333;
+}
+
+.search-container input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0 16px;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.search-btn {
+  background-color: var(--amazon-orange);
+  color: #111;
+  padding: 0 24px;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-btn:hover {
+  background-color: var(--amazon-orange-hover);
+}
+
+/* أزرار الحساب والمفضلة والسلة */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-action-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+}
+
+.nav-action-item:hover {
+  border-color: #fff;
+}
+
+.action-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.action-text small {
+  font-size: 0.72rem;
+  color: #ccc;
+}
+
+.action-text strong {
+  font-size: 0.88rem;
+}
+
+.icon-badge-wrapper {
+  position: relative;
+  font-size: 1.4rem;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  background-color: var(--amazon-accent-red);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: var(--radius-round);
+  border: 2px solid var(--amazon-nav-dark);
+  animation: badgePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* --------------------------------------------------------------------------
+   5. شريط الأقسام السريع (Sub-Navigation Bar)
+   -------------------------------------------------------------------------- */
+.sub-nav {
+  background-color: var(--amazon-sub-dark);
+  font-size: 0.88rem;
+  padding: 4px 0;
+}
+
+.sub-nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.all-categories-trigger {
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+}
+
+.all-categories-trigger:hover {
+  border-color: #fff;
+}
+
+.nav-menu-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nav-menu-links a {
+  color: #e3e6e6;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+}
+
+.nav-menu-links a:hover,
+.nav-menu-links a.active {
+  border-color: #fff;
+  color: #fff;
+}
+
+.support-phone {
+  color: var(--amazon-orange);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   6. لافتة البانر الرئيسية والصور المتحركة العائمة (Hero Section)
+   -------------------------------------------------------------------------- */
+.hero-section {
+  padding: 30px 0 40px;
+}
+
+.hero-banner {
+  background: linear-gradient(135deg, #ffffff 0%, #edf2f7 100%);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 50px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+/* تأثير الإشعاع الضوئي الخلفي */
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 380px;
+  height: 380px;
+  background: radial-gradient(circle, rgba(254, 189, 105, 0.25) 0%, rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: pulseGlow 6s ease-in-out infinite alternate;
+}
+
+.hero-text {
+  max-width: 600px;
+  z-index: 2;
+}
+
+.deal-tag {
+  display: inline-block;
+  background: rgba(204, 12, 57, 0.1);
+  color: var(--amazon-accent-red);
+  padding: 6px 14px;
+  border-radius: var(--radius-round);
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  border: 1px solid rgba(204, 12, 57, 0.2);
+}
+
+.hero-text h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.3;
+  margin-bottom: 16px;
+  color: var(--text-dark);
+}
+
+.hero-text p {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  margin-bottom: 28px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.btn {
+  padding: 13px 30px;
+  border-radius: var(--radius-round);
+  font-size: 0.98rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-bounce);
+}
+
+.btn-primary {
+  background-color: var(--amazon-orange);
+  color: #111;
+  box-shadow: 0 4px 14px rgba(254, 189, 105, 0.5);
+}
+
+.btn-primary:hover {
+  background-color: var(--amazon-orange-hover);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(243, 168, 71, 0.6);
+}
+
+.btn-outline {
+  border: 2px solid var(--border-subtle);
+  background-color: #fff;
+  color: var(--text-dark);
+}
+
+.btn-outline:hover {
+  border-color: var(--text-dark);
+  transform: translateY(-3px);
+}
+
+/* مجسم البانر المتحرك العائم ثلاثي الأبعاد */
+.hero-visual {
+  position: relative;
+  z-index: 2;
+  perspective: 1200px;
+}
+
+.hero-card-preview {
+  width: 280px;
+  height: 280px;
+  background: #ffffff;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-floating);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  position: relative;
+  /* أنيميشن الطفو المستمر المتوازن */
+  animation: floatLevitate 5s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+.hero-main-icon {
+  font-size: 9.5rem;
+  color: var(--amazon-sub-dark);
+  filter: drop-shadow(0 15px 15px rgba(0,0,0,0.15));
+  transition: var(--transition-bounce);
+}
+
+.hero-card-preview:hover .hero-main-icon {
+  transform: scale(1.1) rotate(-8deg);
+  color: var(--amazon-orange);
+}
+
+/* --------------------------------------------------------------------------
+   7. شريط مميزات المتجر (Trust Badges & Perks)
+   -------------------------------------------------------------------------- */
+.store-perks {
+  padding-bottom: 40px;
+}
+
+.perks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.perk-box {
+  background-color: var(--bg-pure-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: var(--transition-smooth);
+}
+
+.perk-box:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-card);
+  border-color: var(--amazon-orange);
+}
+
+.perk-box i {
+  font-size: 2.2rem;
+  color: var(--amazon-sub-dark);
+  transition: var(--transition-bounce);
+}
+
+.perk-box:hover i {
+  transform: scale(1.18) rotate(6deg);
+  color: var(--amazon-orange);
+}
+
+.perk-box h4 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.perk-box p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   8. تصنيفات المنتجات التفاعلية (Interactive Categories)
+   -------------------------------------------------------------------------- */
+.categories-section {
+  padding-bottom: 50px;
+}
+
+.section-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.section-title-row h2 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  position: relative;
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.view-all {
+  color: #007185;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.view-all:hover {
+  color: #c7511f;
+  text-decoration: underline;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 18px;
+}
+
+.category-card {
+  background: var(--bg-pure-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 26px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.category-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(254, 189, 105, 0.15) 100%);
+  opacity: 0;
+  transition: var(--transition-smooth);
+}
+
+.category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--amazon-orange);
+}
+
+.category-card:hover::before {
+  opacity: 1;
+}
+
+.cat-icon {
+  width: 65px;
+  height: 65px;
+  margin: 0 auto 16px;
+  background-color: var(--bg-light-gray);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  color: var(--amazon-sub-dark);
+  transition: var(--transition-bounce);
+}
+
+.category-card:hover .cat-icon {
+  background-color: var(--amazon-orange);
+  color: #111;
+  transform: scale(1.15) rotate(-6deg);
+}
+
+.category-card h3 {
+  font-size: 0.96rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.category-card span {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   9. شبكة المنتجات وتأثيرات الصور الفاخرة (Products Grid & Image Animation)
+   -------------------------------------------------------------------------- */
+.products-section {
+  padding-bottom: 60px;
+}
+
+.filter-pills {
+  display: flex;
+  gap: 10px;
+}
+
+.pill-btn {
+  padding: 7px 18px;
+  background-color: #fff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-round);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.pill-btn.active,
+.pill-btn:hover {
+  background-color: var(--amazon-nav-dark);
+  color: #fff;
+  border-color: var(--amazon-nav-dark);
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px;
+}
+
+/* بطاقة المنتج - تحفة بيضاء بتفاصيل أمازون */
+.product-card {
+  background: var(--bg-pure-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: var(--transition-smooth);
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: #c4c7c7;
+}
+
+/* شارة الخصم النابضة */
+.badge-discount {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background-color: var(--amazon-accent-red);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  z-index: 3;
+  animation: badgeGlow 2.5s infinite;
+}
+
+/* حاوية الصورة وتأثير الشعاع الضوئي (Light Sheen / Sweep Effect) */
+.product-thumb {
+  width: 100%;
+  height: 230px;
+  background-color: #fafafa;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+  perspective: 800px;
+}
+
+/* طبقة الشعاع الضوئي اللامع الذي يمر على الصورة */
+.product-thumb::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -120%;
+  width: 60%;
+  height: 220%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(35deg);
+  transition: left 0.85s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.product-card:hover .product-thumb::after {
+  left: 180%;
+}
+
+/* حركة صورة المنتج التفاعلية ثلاثية الأبعاد */
+.product-thumb img {
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s ease;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.08));
+}
+
+.product-card:hover .product-thumb img {
+  transform: scale(1.12) translateY(-6px) rotate(-2.5deg);
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.16));
+}
+
+/* الأيقونة البديلة بحال عدم توفر صورة فورية */
+.fallback-icon {
+  font-size: 5rem;
+  color: #adb5bd;
+  transition: var(--transition-bounce);
+}
+
+.product-card:hover .fallback-icon {
+  transform: scale(1.18) translateY(-8px) rotate(-4deg);
+  color: var(--amazon-sub-dark);
+}
+
+/* بيانات المنتج والتقييم والأسعار */
+.product-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.product-cat {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.product-title {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.4;
+  height: 42px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: 8px;
+}
+
+.product-title:hover {
+  color: #c7511f;
+}
+
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+  font-size: 0.78rem;
+  color: var(--amazon-star);
+}
+
+.product-rating span {
+  color: #007185;
+  margin-right: 4px;
+}
+
+.product-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-light);
+}
+
+.prices {
+  display: flex;
+  flex-direction: column;
+}
+
+.current-price {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-price);
+}
+
+.old-price {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+/* زر أضف إلى السلة (Add to Cart Button) */
+.add-cart-btn {
+  width: 42px;
+  height: 42px;
+  background-color: var(--amazon-cta-yellow);
+  color: #111;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: var(--transition-bounce);
+}
+
+.add-cart-btn:hover {
+  background-color: var(--amazon-cta-yellow-hover);
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 0 4px 12px rgba(247, 202, 0, 0.5);
+}
+
+.add-cart-btn:active {
+  transform: scale(0.92);
+}
+
+/* --------------------------------------------------------------------------
+   10. درج سلة المشتريات الجانبي (Side Cart Drawer)
+   -------------------------------------------------------------------------- */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 1500;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition-smooth);
+}
+
+.cart-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  left: -440px; /* لفتح السلة من الجهة المقابلة في العربي */
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  background: #ffffff;
+  z-index: 1600;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cart-sidebar.active {
+  left: 0;
+}
+
+.cart-header {
+  padding: 18px 22px;
+  background-color: var(--amazon-nav-dark);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+}
+
+.close-cart-btn {
+  color: #fff;
+  font-size: 1.4rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.close-cart-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.cart-items-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.empty-cart-message {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-muted);
+}
+
+.empty-cart-message i {
+  font-size: 4rem;
+  color: #ccc;
+  margin-bottom: 14px;
+}
+
+.cart-item-row {
+  display: flex;
+  gap: 14px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border-light);
+  align-items: center;
+}
+
+.cart-item-row img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  background: var(--bg-light-gray);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+}
+
+.cart-item-details {
+  flex: 1;
+}
+
+.cart-item-details h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.cart-item-price {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-price);
+}
+
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.qty-btn {
+  background-color: var(--bg-light-gray);
+  border: 1px solid var(--border-subtle);
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-btn:hover {
+  background-color: #e3e6e6;
+}
+
+.cart-footer {
+  padding: 20px;
+  background-color: #fafafa;
+  border-top: 1px solid var(--border-light);
+}
+
+.cart-summary-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.92rem;
+}
+
+.free-badge {
+  color: #067d62;
+  font-weight: 700;
+}
+
+.total-line {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 12px 0 16px;
+}
+
+.checkout-btn {
+  width: 100%;
+  background-color: var(--amazon-cta-yellow);
+  color: #111;
+  padding: 14px;
+  border-radius: var(--radius-round);
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-btn:hover {
+  background-color: var(--amazon-cta-yellow-hover);
+  transform: translateY(-2px);
+}
+
+.clear-cart-link {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--amazon-accent-red);
+  margin-top: 12px;
+}
+
+.clear-cart-link:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   11. تذييل الصفحة الفاخر (Amazon Style Footer)
+   -------------------------------------------------------------------------- */
+.main-footer {
+  background-color: var(--amazon-sub-dark);
+  color: #fff;
+  margin-top: 40px;
+}
+
+.back-to-top {
+  background-color: #37475a;
+  text-align: center;
+  padding: 14px 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: var(--transition-smooth);
+}
+
+.back-to-top:hover {
+  background-color: #485769;
+}
+
+.footer-links-container {
+  padding: 50px 0 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 40px;
+}
+
+.footer-brand h4 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--amazon-orange);
+  margin-bottom: 12px;
+}
+
+.footer-brand p {
+  font-size: 0.86rem;
+  color: #ccc;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-icons a {
+  width: 38px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.social-icons a:hover {
+  background: var(--amazon-orange);
+  color: #111;
+  transform: translateY(-4px);
+}
+
+.footer-col h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #fff;
+}
+
+.footer-col ul li {
+  margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+  color: #ddd;
+  font-size: 0.85rem;
+}
+
+.footer-col ul li a:hover {
+  color: var(--amazon-orange);
+  text-decoration: underline;
+  padding-right: 4px;
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.pay-tag {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pay-tag i {
+  color: var(--amazon-orange);
+}
+
+.footer-bottom-bar {
+  background-color: var(--amazon-nav-dark);
+  padding: 20px 0;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #999;
+}
+
+/* --------------------------------------------------------------------------
+   12. الحركات والأنيميشن التفاعلي (Keyframe Animations)
+   -------------------------------------------------------------------------- */
+/* أنيميشن الطفو الدائري الناعم للبانر */
+@keyframes floatLevitate {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(2deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+/* نبضات الإضاءة الدائرية خلف الهيرو */
+@keyframes pulseGlow {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0.6;
+  }
+}
+
+/* انبثاق أرقام الشارات السريعة بالسلة */
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+  }
+  80% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* نبض وتوهج شارات الخصم */
+@keyframes badgeGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(204, 12, 57, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 10px 3px rgba(204, 12, 57, 0.3);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. التجاوب مع مختلف الشاشات (Responsive Design)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .hero-banner {
+    padding: 40px 30px;
+  }
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+  .footer-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-wrapper {
+    flex-wrap: wrap;
+  }
+  .search-container {
+    order: 3;
+    max-width: 100%;
+    width: 100%;
+  }
+  .search-category-select {
+    display: none;
+  }
+  .nav-menu-links, .support-phone {
+    display: none;
+  }
+  .hero-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+  }
+  .hero-buttons {
+    justify-content: center;
+  }
+  .hero-card-preview {
+    width: 220px;
+    height: 220px;
+  }
+  .hero-main-icon {
+    font-size: 7rem;
+  }
+  .footer-columns {
+    grid-template-columns: 1fr;
+  }
+}
