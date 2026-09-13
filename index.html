@@ -17,86 +17,90 @@
 </head>
 <body>
 
-<!-- الشريط الأزرق العلوي مع القائمة المنسدلة العملاقة (Mega Menu) -->
+<!-- الشريط الأزرق العلوي مع الميجا منيو التفاعلية المعتمة للخلفية -->
 <nav class="raya-top-nav-bar">
-  <div class="container nav-top-flex">
+  <div class="container nav-top-container-relative">
     <ul class="top-categories-list">
       
-      <!-- قسم مفعل به الميجا منيو بالكامل -->
+      <!-- 1. قسم كفرات وجرابات (مع الميجا منيو المطابقة لراية) -->
       <li class="has-mega-menu">
-        <a href="#cases" class="nav-item-link active-badge">
+        <a href="#cases" class="nav-item-link active-indicator">
           <span>كفرات وجرابات</span>
-          <i class="fa-solid fa-chevron-down nav-arrow"></i>
+          <i class="fa-solid fa-chevron-down nav-arrow-icon"></i>
         </a>
 
-        <!-- نافذة الميجا منيو المنبثقة المطابقة لراية شوب -->
-        <div class="mega-menu-wrapper">
-          <div class="mega-menu-content">
+        <!-- نافذة الميجا منيو المنسدلة -->
+        <div class="mega-menu-dropdown">
+          <div class="mega-menu-inner">
             
-            <!-- البانر الترويجي الجانبي (أقصى اليسار مثل الصورة) -->
-            <div class="mega-promo-card">
-              <img src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80" alt="كفرات ماج سيف">
-              <div class="mega-promo-overlay">
-                <h4>كفرات MagSafe<br>المقاومة للصدمات</h4>
-                <span>خصم 30% لفترة محدودة</span>
+            <!-- أقصى اليسار: كرت صورة القسم ثلاثية الأبعاد مع البادج الأزرق -->
+            <div class="mega-left-promo-card">
+              <div class="promo-image-holder">
+                <img src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=500&q=80" alt="كفرات وجرابات">
+              </div>
+              <div class="promo-bottom-title">
+                <span>كفرات وجرابات</span>
               </div>
             </div>
 
-            <!-- أعمدة التصنيفات الفرعية (4 أعمدة منظمة) -->
-            <div class="mega-columns-grid">
+            <!-- اليمين والوسط: أعمدة التصنيفات والماركات (RTL) -->
+            <div class="mega-right-content-grid">
               
-              <div class="mega-col">
-                <h5 class="mega-col-title">كفرات Apple iPhone</h5>
-                <ul class="mega-links-list">
-                  <li><a href="#iphone-16">كفرات iPhone 16 Pro Max</a></li>
-                  <li><a href="#iphone-15">كفرات iPhone 15 Series</a></li>
-                  <li><a href="#iphone-14">كفرات iPhone 14 Series</a></li>
-                  <li><a href="#iphone-magsafe">جرابات MagSafe الشفافة</a></li>
-                  <li><a href="#iphone-leather">جرابات جلد طبيعي فاخرة</a></li>
-                  <li><a href="#iphone-armor">كفرات حماية ضد الصدمات العنيفة</a></li>
+              <!-- العمود 1: كفرات آبل -->
+              <div class="mega-category-column">
+                <h4 class="column-title">كفرات Apple iPhone</h4>
+                <ul class="column-links">
+                  <li><a href="product.html?id=1">كفرات iPhone 16 Pro Max</a></li>
+                  <li><a href="product.html?id=1">كفرات iPhone 16 Plus / 16</a></li>
+                  <li><a href="product.html?id=1">كفرات iPhone 15 Pro Max</a></li>
+                  <li><a href="product.html?id=1">جرابات MagSafe الشفافة</a></li>
+                  <li><a href="product.html?id=1">كفرات سيليكون أصلية بألوان متعددة</a></li>
+                  <li><a href="product.html?id=1">جرابات جلد طبيعي فاخرة</a></li>
                 </ul>
               </div>
 
-              <div class="mega-col">
-                <h5 class="mega-col-title">كفرات Samsung Galaxy</h5>
-                <ul class="mega-links-list">
-                  <li><a href="#samsung-s24">جرابات Galaxy S24 Ultra</a></li>
-                  <li><a href="#samsung-s23">جرابات Galaxy S23 Series</a></li>
-                  <li><a href="#samsung-fold">كفرات Z Fold & Z Flip</a></li>
-                  <li><a href="#samsung-a">كفرات سلسلة Galaxy A</a></li>
-                  <li><a href="#samsung-silicone">جرابات سيليكون أصلية مع قلم</a></li>
+              <!-- العمود 2: كفرات سامسونج -->
+              <div class="mega-category-column">
+                <h4 class="column-title">كفرات Samsung Galaxy</h4>
+                <ul class="column-links">
+                  <li><a href="product.html?id=1">جرابات Galaxy S24 Ultra</a></li>
+                  <li><a href="product.html?id=1">جرابات Galaxy S24 Plus / S24</a></li>
+                  <li><a href="product.html?id=1">كفرات Galaxy Z Fold 6 / Flip 6</a></li>
+                  <li><a href="product.html?id=1">جرابات حماية سلسلة Galaxy A</a></li>
+                  <li><a href="product.html?id=1">كفرات بحامل مدمج ومسكة أصبع</a></li>
                 </ul>
               </div>
 
-              <div class="mega-col">
-                <h5 class="mega-col-title">أشهر الماركات العالمية</h5>
-                <ul class="mega-links-list">
-                  <li><a href="#brand-spigen">Spigen الأصلية</a></li>
-                  <li><a href="#brand-baseus">Baseus</a></li>
-                  <li><a href="#brand-nillkin">Nillkin Frosted Shield</a></li>
-                  <li><a href="#brand-uag">UAG العسكرية للخدمة الشاقة</a></li>
-                  <li><a href="#brand-torras">Torras مع استاند مدمج</a></li>
+              <!-- العمود 3: حماية متقدمة ومسكات -->
+              <div class="mega-category-column">
+                <h4 class="column-title">ملحقات الكفرات</h4>
+                <ul class="column-links">
+                  <li><a href="product.html?id=1">محافظ MagSafe المغناطيسية</a></li>
+                  <li><a href="product.html?id=1">مسكات بوب سوكيت (PopSockets)</a></li>
+                  <li><a href="product.html?id=1">حبال وأربطة تعليق الهاتف</a></li>
+                  <li><a href="product.html?id=1">كفرات الخدمة الشاقة المقاومة للصدمات</a></li>
                 </ul>
               </div>
 
-              <div class="mega-col">
-                <h5 class="mega-col-title">ملحقات الجرابات</h5>
-                <ul class="mega-links-list">
-                  <li><a href="#pop-sockets">مساكات هواتف (PopSockets)</a></li>
-                  <li><a href="#magsafe-wallets">محافظ MagSafe مغناطيسية</a></li>
-                  <li><a href="#phone-straps">حبال وأحزمة تعليق الهاتف</a></li>
-                  <li><a href="#camera-rings">حلقات حماية عدسات الكاميرا</a></li>
-                  <li><a href="#kickstands">استاندات تثبيت مكتبية قابلة للطي</a></li>
-                </ul>
+              <!-- العمود 4: أشهر الماركات العالمية المتوفرة في عباسكو -->
+              <div class="mega-category-column">
+                <h4 class="column-title">الماركات المعتمدة</h4>
+                <div class="mega-brands-logos-grid">
+                  <span class="brand-text-badge">SPIGEN</span>
+                  <span class="brand-text-badge">BASEUS</span>
+                  <span class="brand-text-badge">NILLKIN</span>
+                  <span class="brand-text-badge">JOYROOM</span>
+                  <span class="brand-text-badge">UAG</span>
+                  <span class="brand-text-badge">TORRAS</span>
+                </div>
               </div>
 
             </div>
-
           </div>
 
-          <!-- شريط التصفح السفلي مثل راية -->
-          <div class="mega-menu-footer">
-            <a href="#all-cases" class="mega-footer-link">
+          <!-- الشريط السفلي لرابط التصفح الكامل مثل راية -->
+          <div class="mega-bottom-bar">
+            <a href="index.html#bestseller-container" class="view-all-category-link">
               <span>تسوق جميع كفرات وجرابات الهواتف</span>
               <i class="fa-solid fa-angle-left"></i>
             </a>
@@ -104,14 +108,76 @@
         </div>
       </li>
 
-      <!-- باقي الأقسام العلوية -->
+      <!-- 2. قسم شواحن وكابلات (Mega Menu ثانية) -->
       <li class="has-mega-menu">
         <a href="#chargers" class="nav-item-link">
           <span>شواحن GaN وكابلات</span>
-          <i class="fa-solid fa-chevron-down nav-arrow"></i>
+          <i class="fa-solid fa-chevron-down nav-arrow-icon"></i>
         </a>
+
+        <div class="mega-menu-dropdown">
+          <div class="mega-menu-inner">
+            <div class="mega-left-promo-card">
+              <div class="promo-image-holder">
+                <img src="https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=500&q=80" alt="شواحن GaN">
+              </div>
+              <div class="promo-bottom-title">
+                <span>شواحن وكابلات GaN</span>
+              </div>
+            </div>
+
+            <div class="mega-right-content-grid">
+              <div class="mega-category-column">
+                <h4 class="column-title">شواحن جدارية سريعة</h4>
+                <ul class="column-links">
+                  <li><a href="product.html?id=2">شواحن GaN بقدرة 65 واط</a></li>
+                  <li><a href="product.html?id=2">شواحن فائقة بقدرة 100 واط و120 واط</a></li>
+                  <li><a href="product.html?id=2">رؤوس شحن ثنائية وثلاثية المنافذ</a></li>
+                  <li><a href="product.html?id=2">شواحن آيفون 20 واط الأصلية</a></li>
+                </ul>
+              </div>
+
+              <div class="mega-category-column">
+                <h4 class="column-title">كابلات شحن معتمدة</h4>
+                <ul class="column-links">
+                  <li><a href="product.html?id=2">كابلات Type-C to Type-C 100W</a></li>
+                  <li><a href="product.html?id=2">كابلات Type-C to Lightning</a></li>
+                  <li><a href="product.html?id=2">كابلات نايلون مضفرة ضد القطع 2 متر</a></li>
+                  <li><a href="product.html?id=2">وصلات تحويل وتطويل الصوت والشحن</a></li>
+                </ul>
+              </div>
+
+              <div class="mega-category-column">
+                <h4 class="column-title">شواحن لاسلكية وماج سيف</h4>
+                <ul class="column-links">
+                  <li><a href="product.html?id=2">قواعد شحن لاسلكي 3 في 1 (هاتف + ساعة + سماعة)</a></li>
+                  <li><a href="product.html?id=2">شواحن MagSafe المغناطيسية السريعة</a></li>
+                  <li><a href="product.html?id=2">شواحن سيارات تدعم التثبيت المغناطيسي</a></li>
+                </ul>
+              </div>
+
+              <div class="mega-category-column">
+                <h4 class="column-title">ماركات الشحن المعتمدة</h4>
+                <div class="mega-brands-logos-grid">
+                  <span class="brand-text-badge">ANKER</span>
+                  <span class="brand-text-badge">BASEUS</span>
+                  <span class="brand-text-badge">LDNIO</span>
+                  <span class="brand-text-badge">UGREEN</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mega-bottom-bar">
+            <a href="index.html#bestseller-container" class="view-all-category-link">
+              <span>تسوق جميع الشواحن والوصلات السريعة</span>
+              <i class="fa-solid fa-angle-left"></i>
+            </a>
+          </div>
+        </div>
       </li>
 
+      <!-- باقي الأقسام السريعة -->
       <li><a href="#screen-protectors" class="nav-item-link">اسكرينات 9D وعدسات</a></li>
       <li><a href="#powerbanks" class="nav-item-link">بنوك طاقة (باور بانك)</a></li>
       <li><a href="#audio" class="nav-item-link">سماعات بلوتوث</a></li>
@@ -121,6 +187,9 @@
     </ul>
   </div>
 </nav>
+
+<!-- طبقة التعتيم على باقي الصفحة عند فتح الميجا منيو -->
+<div class="mega-menu-backdrop-overlay" id="mega-backdrop"></div>
 
   <!-- ========================================================================
        2. رأس الموقع الرئيسي (الهيدر الأبيض، البحث، اللوجو، وحساب المستخدم)
