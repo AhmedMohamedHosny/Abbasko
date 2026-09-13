@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="متجر عباسكو (Abasco) - وجهتك الأولى لأحدث إكسسوارات الهواتف الذكية: كفرات، شواحن، حماية شاشة، وسماعات بأعلى جودة وأفضل الأسعار.">
+  <title>عباسكو | Abasco - إكسسوارات الهاتف الذكي</title>
+  
+  <!-- خط تجوال / كايرو لمظهر متطابق مع المتاجر العالمية -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- أيقونات Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- ملف التنسيق الأساسي -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- شريط الإعلان العلوي الترويجي -->
+  <aside class="top-announcement-bar">
+    <div class="container announcement-content">
+      <span><i class="fa-solid fa-truck-fast"></i> شحن مجاني للطلبات فوق 300 جنيه | ضمان استرجاع 14 يومًا</span>
+      <div class="top-links">
+        <a href="#track-order">تتبع طلبك</a>
+        <span>|</span>
+        <a href="#help">المساعدة</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- رأس الصفحة والبحث الرئيسي (أسلوب أمازون) -->
+  <header class="main-header">
+    <div class="container nav-wrapper">
+      
+      <!-- شعار المتجر -->
+      <a href="index.html" class="logo">
+        <span class="brand-name">عباسكو</span>
+        <span class="brand-sub">ABASCO</span>
+      </a>
+
+      <!-- محرك البحث المركزي مع تحديد القسم -->
+      <form class="search-container" id="search-form">
+        <select class="search-category-select" id="search-category" aria-label="اختر القسم">
+          <option value="all">كل الأقسام</option>
+          <option value="cases">جرابات وكفرات</option>
+          <option value="chargers">شواحن وكابلات</option>
+          <option value="screen-protectors">اسكرينات وحماية</option>
+          <option value="audio">سماعات وصوتيات</option>
+          <option value="holders">حوامل وماسك سيارة</option>
+          <option value="powerbanks">بنوك طاقة (باور بانك)</option>
+        </select>
+        <input type="text" id="search-input" placeholder="ابحث عن جراب آيفون، شاحن سريع، حامي شاشة..." autocomplete="off">
+        <button type="submit" class="search-btn" aria-label="بحث">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </form>
+
+      <!-- إجراءات المستخدم: الحساب، المفضلة، وسلة الشراء -->
+      <div class="nav-actions">
+        <a href="#account" class="nav-action-item">
+          <i class="fa-regular fa-user"></i>
+          <div class="action-text">
+            <small>مرحبًا بك</small>
+            <strong>تسجيل الدخول</strong>
+          </div>
+        </a>
+
+        <a href="#wishlist" class="nav-action-item" id="wishlist-btn">
+          <div class="icon-badge-wrapper">
+            <i class="fa-regular fa-heart"></i>
+            <span class="badge" id="wishlist-count">0</span>
+          </div>
+          <span class="action-label">المفضلة</span>
+        </a>
+
+        <button class="nav-action-item cart-btn" id="cart-toggle-btn" aria-label="سلة التسوق">
+          <div class="icon-badge-wrapper">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="badge" id="cart-count">0</span>
+          </div>
+          <div class="action-text">
+            <small>السلة</small>
+            <strong id="cart-total-header">0.00 ج.م</strong>
+          </div>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- شريط الأقسام الثانوي والتنقل السريع -->
+    <nav class="sub-nav">
+      <div class="container sub-nav-content">
+        <button class="all-categories-trigger" id="menu-toggle">
+          <i class="fa-solid fa-bars"></i>
+          <span>جميع الفئات</span>
+        </button>
+        <ul class="nav-menu-links">
+          <li><a href="#featured" class="active">أبرز العروض</a></li>
+          <li><a href="#iphone-accessories">إكسسوارات iPhone</a></li>
+          <li><a href="#samsung-accessories">إكسسوارات Samsung</a></li>
+          <li><a href="#fast-chargers">شواحن GaN سريعة</a></li>
+          <li><a href="#protective-glass">زجاج حماية 9D</a></li>
+          <li><a href="#car-accessories">ملحقات السيارات</a></li>
+        </ul>
+        <span class="support-phone"><i class="fa-solid fa-headset"></i> دعم 24/7: 01000000000</span>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- لافتة الترويج الرئيسية (Hero Banner) -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-banner">
+          <div class="hero-text">
+            <span class="deal-tag">تخفيضات موسمية حصرية</span>
+            <h1>حماية فائقة وأناقة لهاتفك مع تشكيلة عباسكو الجديدة</h1>
+            <p>خصم يصل إلى 40% على شواحن ماج سيف وكفرات الصدمات المعتمدة.</p>
+            <div class="hero-buttons">
+              <a href="#products-section" class="btn btn-primary">تسوق العروض الآن</a>
+              <a href="#new-arrivals" class="btn btn-outline">وصل حديثاً</a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-card-preview">
+              <i class="fa-solid fa-mobile-screen-button hero-main-icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- شريط مميزات المتجر وثقة العملاء -->
+    <section class="store-perks">
+      <div class="container perks-grid">
+        <div class="perk-box">
+          <i class="fa-solid fa-shield-halved"></i>
+          <div>
+            <h4>منتجات أصلية 100%</h4>
+            <p>ضمان رسمي ضد عيوب الصناعة</p>
+          </div>
+        </div>
+        <div class="perk-box">
+          <i class="fa-solid fa-truck-fast"></i>
+          <div>
+            <h4>توصيل سريع لباب بيتك</h4>
+            <p>خلال 24-48 ساعة في كل المحافظات</p>
+          </div>
+        </div>
+        <div class="perk-box">
+          <i class="fa-solid fa-hand-holding-dollar"></i>
+          <div>
+            <h4>الدفع عند الاستلام</h4>
+            <p>معاينة المنتج قبل الاستلام والدفع</p>
+          </div>
+        </div>
+        <div class="perk-box">
+          <i class="fa-solid fa-arrows-rotate"></i>
+          <div>
+            <h4>استرجاع واستبدال مرن</h4>
+            <p>خلال 14 يوم بكل سهولة</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- تصفح حسب الفئات السريعة -->
+    <section class="categories-section">
+      <div class="container">
+        <div class="section-title-row">
+          <h2>تسوق حسب نوع الملحق</h2>
+          <a href="#all-categories" class="view-all">مشاهدة الكل &larr;</a>
+        </div>
+        <div class="categories-grid">
+          <div class="category-card" data-category="cases">
+            <div class="cat-icon"><i class="fa-solid fa-shield-cat"></i></div>
+            <h3>جرابات وحافظات</h3>
+            <span>+150 منتج</span>
+          </div>
+          <div class="category-card" data-category="chargers">
+            <div class="cat-icon"><i class="fa-solid fa-bolt"></i></div>
+            <h3>شواحن ووصلات</h3>
+            <span>+90 منتج</span>
+          </div>
+          <div class="category-card" data-category="screen-protectors">
+            <div class="cat-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+            <h3>اسكرينات شاشة وعدسات</h3>
+            <span>+80 منتج</span>
+          </div>
+          <div class="category-card" data-category="audio">
+            <div class="cat-icon"><i class="fa-solid fa-headphones"></i></div>
+            <h3>سماعات وايرلس وسلكية</h3>
+            <span>+60 منتج</span>
+          </div>
+          <div class="category-card" data-category="holders">
+            <div class="cat-icon"><i class="fa-solid fa-car"></i></div>
+            <h3>حوامل للسيارة والمكتب</h3>
+            <span>+45 منتج</span>
+          </div>
+          <div class="category-card" data-category="powerbanks">
+            <div class="cat-icon"><i class="fa-solid fa-battery-three-quarters"></i></div>
+            <h3>بنوك طاقة متنقلة</h3>
+            <span>+35 منتج</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- شبكة المنتجات الرئيسية -->
+    <section class="products-section" id="products-section">
+      <div class="container">
+        <div class="section-title-row">
+          <div>
+            <h2>الأكثر مبيعاً في عباسكو</h2>
+            <p class="section-subtitle">إكسسوارات مختارة بعناية لحماية وتجهيز جهازك</p>
+          </div>
+          <div class="filter-pills">
+            <button class="pill-btn active" data-filter="all">الكل</button>
+            <button class="pill-btn" data-filter="cases">كفرات</button>
+            <button class="pill-btn" data-filter="chargers">شواحن</button>
+            <button class="pill-btn" data-filter="screen-protectors">حماية</button>
+          </div>
+        </div>
+
+        <!-- هنا تُرسم كروت المنتجات ديناميكياً بواسطة script.js -->
+        <div class="products-grid" id="products-container">
+          <!-- كروت تجريبية تضمن المظهر قبل ربط الجافاسكريبت -->
+          <article class="product-card" data-id="1">
+            <span class="badge-discount">-25%</span>
+            <div class="product-thumb">
+              <i class="fa-solid fa-shield-halved fallback-icon"></i>
+            </div>
+            <div class="product-info">
+              <span class="product-cat">جرابات</span>
+              <h3 class="product-title">جراب حماية MagSafe مقاوم للصدمات لآيفون 15 برو ماكس</h3>
+              <div class="product-rating">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star-half-stroke"></i>
+                <span>(128 تقييم)</span>
+              </div>
+              <div class="product-price-row">
+                <div class="prices">
+                  <span class="current-price">349 ج.م</span>
+                  <span class="old-price">465 ج.م</span>
+                </div>
+                <button class="add-cart-btn" onclick="addToCart(1)" aria-label="أضف إلى السلة">
+                  <i class="fa-solid fa-cart-plus"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- درج سلة التسوق الجانبي (Side Drawer Cart) -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <div class="cart-title">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <h3>سلة مشترياتك (<span id="cart-items-count">0</span>)</h3>
+      </div>
+      <button class="close-cart-btn" id="close-cart" aria-label="إغلاق السلة">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- قائمة عناصر السلة -->
+    <div class="cart-items-list" id="cart-items-list">
+      <div class="empty-cart-message">
+        <i class="fa-solid fa-cart-arrow-down"></i>
+        <p>سلة التسوق فارغة حالياً</p>
+        <span>ابدأ بإضافة ملحقاتك المفضلة!</span>
+      </div>
+    </div>
+
+    <!-- ملخص السلة والحساب -->
+    <div class="cart-footer">
+      <div class="cart-summary-line">
+        <span>المجموع الفرعي:</span>
+        <strong id="cart-subtotal">0.00 ج.م</strong>
+      </div>
+      <div class="cart-summary-line">
+        <span>الشحن:</span>
+        <span class="free-badge">محسوب عند الدفع</span>
+      </div>
+      <hr>
+      <div class="cart-summary-line total-line">
+        <span>الإجمالي النهائي:</span>
+        <strong id="cart-final-total">0.00 ج.م</strong>
+      </div>
+      <button class="checkout-btn" id="checkout-btn">
+        <i class="fa-solid fa-lock"></i> إتمام الطلب والدفع عند الاستلام
+      </button>
+      <button class="clear-cart-link" id="clear-cart-btn">تفريغ السلة بالكامل</button>
+    </div>
+  </aside>
+
+  <!-- التذييل السفلي على نمط أمازون المنظم -->
+  <footer class="main-footer">
+    <div class="back-to-top" id="back-to-top">
+      <a href="#"><i class="fa-solid fa-chevron-up"></i> العودة للأعلى</a>
+    </div>
+
+    <div class="footer-links-container">
+      <div class="container footer-columns">
+        <div class="footer-col">
+          <div class="footer-brand">
+            <h4>عباسكو | ABASCO</h4>
+            <p>متجرك المتخصص رقم 1 في مصر لتوريد كافة إكسسوارات ومستلزمات الهواتف المحمولة بجودة أصلية وبأسعار تنافسية.</p>
+          </div>
+          <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>أقسام سريعة</h4>
+          <ul>
+            <li><a href="#cases">كفرات وجرابات صلبة</a></li>
+            <li><a href="#screen-protectors">شاشات حماية سيراميك وزجاج</a></li>
+            <li><a href="#chargers">شواحن حائطية ووصلات Type-C</a></li>
+            <li><a href="#audio">سماعات بلوتوث رياضية</a></li>
+            <li><a href="#powerbanks">باور بانك سعة 20,000mAh</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>خدمة العملاء</h4>
+          <ul>
+            <li><a href="#track">متابعة شحنتك</a></li>
+            <li><a href="#policy">سياسة الاستبدال والاسترجاع</a></li>
+            <li><a href="#shipping">تفاصيل الشحن والتوصيل</a></li>
+            <li><a href="#faq">الأسئلة الشائعة</a></li>
+            <li><a href="#contact">تواصل مع إدارة عباسكو</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>طرق الدفع الآمنة</h4>
+          <p>نوفر خيارات دفع مريحة وآمنة لراحتك التامة:</p>
+          <div class="payment-methods">
+            <span class="pay-tag"><i class="fa-solid fa-money-bill-wave"></i> الدفع عند الاستلام</span>
+            <span class="pay-tag"><i class="fa-brands fa-cc-visa"></i> فيزا / ماستركارد</span>
+            <span class="pay-tag"><i class="fa-solid fa-wallet"></i> فودافون كاش والمحافظ</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="container bottom-content">
+        <p>&copy; 2026 جميع الحقوق محفوظة لمتجر <strong>عباسكو (Abasco)</strong> - تم التطوير بحرفية.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ملف الجافاسكريبت للتحكم بالسلة وعرض المنتجات -->
+  <script src="script.js"></script>
+</body>
+</html>
