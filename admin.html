@@ -5,16 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>عباسكو | لوحة تحكم الإدارة (Seller Central)</title>
   
-  <!-- خط كـايرو والأيقونات -->
+  <!-- خط كايرو والأيقونات -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
-    /* ==========================================================================
-       تنسيقات لوحة تحكم عباسكو - النمط الأبيض النظيف مع لمسات أمازون
-       ========================================================================== */
     :root {
       --admin-nav-dark: #131921;
       --admin-sub-dark: #232f3e;
@@ -51,7 +48,7 @@
       direction: rtl;
     }
 
-    /* الشريط الجانبي (Sidebar) */
+    /* الشريط الجانبي */
     .admin-sidebar {
       width: 260px;
       background-color: var(--admin-sub-dark);
@@ -62,7 +59,6 @@
       top: 0;
       height: 100vh;
       flex-shrink: 0;
-      transition: all 0.3s ease;
     }
 
     .sidebar-header {
@@ -129,7 +125,7 @@
       color: #94a3b8;
     }
 
-    /* منطقة المحتوى الرئيسية */
+    /* المحتوى الرئيسي */
     .admin-main {
       flex: 1;
       display: flex;
@@ -137,7 +133,6 @@
       min-width: 0;
     }
 
-    /* الشريط العلوي (Top Header) */
     .admin-topbar {
       background: var(--bg-white);
       height: 68px;
@@ -147,12 +142,6 @@
       justify-content: space-between;
       border-bottom: 1px solid var(--border-color);
       box-shadow: var(--shadow-sm);
-    }
-
-    .topbar-left {
-      display: flex;
-      align-items: center;
-      gap: 15px;
     }
 
     .view-store-btn {
@@ -194,13 +183,12 @@
       font-size: 1rem;
     }
 
-    /* محتوى اللوحة الداخلي */
     .content-area {
       padding: 30px;
       overflow-y: auto;
     }
 
-    /* بطاقات المؤشرات السريعة (KPIs) */
+    /* مؤشرات الأداء KPIs */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -217,12 +205,6 @@
       align-items: center;
       gap: 18px;
       box-shadow: var(--shadow-sm);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .kpi-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
     }
 
     .kpi-icon-wrapper {
@@ -252,14 +234,13 @@
       margin-top: 2px;
     }
 
-    /* شبكة إدارة المنتجات والنموذج */
+    /* شبكة لوحة التحكم */
     .dashboard-grid {
       display: grid;
-      grid-template-columns: 380px 1fr;
+      grid-template-columns: 420px 1fr;
       gap: 25px;
     }
 
-    /* صندوق البطاقة البيضاء القياسي */
     .admin-card {
       background: var(--bg-white);
       border: 1px solid var(--border-color);
@@ -290,25 +271,24 @@
       padding: 20px;
     }
 
-    /* نموذج إضافة منتج */
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .form-group label {
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 700;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       color: #333;
     }
 
     .form-control {
       width: 100%;
-      padding: 10px 14px;
+      padding: 9px 12px;
       border: 1px solid var(--border-color);
       border-radius: var(--radius);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
       transition: border-color 0.2s;
     }
@@ -321,7 +301,7 @@
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
     .submit-btn {
@@ -339,18 +319,18 @@
       gap: 8px;
       box-shadow: 0 2px 5px rgba(213,217,217,0.5);
       transition: all 0.2s;
+      margin-top: 10px;
     }
 
     .submit-btn:hover {
       background: #f7ca00;
-      transform: translateY(-1px);
     }
 
-    /* جدول إدارة المخزون */
+    /* جدول المخزون والطلبات */
     .table-toolbar {
       display: flex;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .search-table-input {
@@ -365,19 +345,19 @@
       width: 100%;
       border-collapse: collapse;
       text-align: right;
-      font-size: 0.88rem;
+      font-size: 0.86rem;
     }
 
     .admin-table th {
       background: #f8f9fa;
-      padding: 12px 14px;
+      padding: 10px 12px;
       font-weight: 700;
       border-bottom: 2px solid var(--border-color);
       color: var(--text-muted);
     }
 
     .admin-table td {
-      padding: 12px 14px;
+      padding: 10px 12px;
       border-bottom: 1px solid var(--border-light);
       vertical-align: middle;
     }
@@ -389,40 +369,20 @@
     .product-cell {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .product-icon-box {
-      width: 38px;
-      height: 38px;
-      background: #f1f3f5;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      color: var(--admin-sub-dark);
-      flex-shrink: 0;
-    }
-
-    /* شارات الحالة */
     .status-badge {
       display: inline-block;
       padding: 3px 8px;
       border-radius: 4px;
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       font-weight: 700;
     }
 
     .badge-in-stock { background: #e6f7f2; color: var(--admin-success); }
     .badge-low-stock { background: #fff4e5; color: var(--admin-warning); }
     .badge-out-stock { background: #fde8ec; color: var(--admin-danger); }
-
-    /* أزرار الإجراءات في الجدول */
-    .action-btns {
-      display: flex;
-      gap: 6px;
-    }
 
     .tbl-btn {
       width: 30px;
@@ -441,40 +401,30 @@
     .tbl-btn-delete { color: var(--admin-danger); }
     .tbl-btn-delete:hover { background: var(--admin-danger); color: #fff; }
 
-    /* قسم أحدث الطلبات الواردة */
     .orders-section {
-      margin-top: 30px;
+      margin-top: 25px;
     }
 
-    @media (max-width: 1080px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-      .admin-sidebar {
-        width: 70px;
-      }
-      .sidebar-brand span, .sidebar-menu li a span, .sidebar-footer {
-        display: none;
-      }
-      .sidebar-menu li a {
-        justify-content: center;
-        padding: 15px;
-      }
+    @media (max-width: 1100px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .admin-sidebar { width: 70px; }
+      .sidebar-brand span, .sidebar-menu li a span, .sidebar-footer { display: none; }
     }
   </style>
-  <!-- استدعاء Firebase لمزامنة المنتجات حياً -->
+
+  <!-- مكتبات Firebase الأساسية -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
-  <!-- القائمة الجانبية للوحة التحكم -->
+  <!-- الشريط الجانبي للإدارة -->
   <aside class="admin-sidebar">
     <div class="sidebar-header">
       <i class="fa-solid fa-cube" style="font-size: 1.8rem; color: var(--admin-orange);"></i>
       <div class="sidebar-brand">
         عباسكو
-        <span>لوحة الإدارة v1.0</span>
+        <span>لوحة الإدارة v2.0</span>
       </div>
     </div>
 
@@ -482,24 +432,18 @@
       <li class="active"><a href="#dashboard"><i class="fa-solid fa-chart-pie"></i> <span>نظرة عامة</span></a></li>
       <li><a href="#products"><i class="fa-solid fa-boxes-stacked"></i> <span>إدارة الملحقات</span></a></li>
       <li><a href="#orders"><i class="fa-solid fa-truck-ramp-box"></i> <span>الطلبات والشحنات</span></a></li>
-      <li><a href="#categories"><i class="fa-solid fa-tags"></i> <span>التصنيفات والماركات</span></a></li>
-      <li><a href="#customers"><i class="fa-solid fa-users"></i> <span>سجل العملاء</span></a></li>
-      <li><a href="#settings"><i class="fa-solid fa-gears"></i> <span>إعدادات المتجر</span></a></li>
     </ul>
 
     <div class="sidebar-footer">
-      متصل: <strong>مسؤول المتجر</strong>
+      متصل: <strong>أحمد عباس (مدير النظام)</strong>
     </div>
   </aside>
 
   <!-- مساحة العمل الرئيسية -->
   <div class="admin-main">
     
-    <!-- الشريط العلوي -->
     <header class="admin-topbar">
-      <div class="topbar-right">
-        <h2>لوحة التحكم المباشرة</h2>
-      </div>
+      <h2>لوحة التحكم المباشرة - Seller Central</h2>
       <div class="topbar-left">
         <a href="index.html" target="_blank" class="view-store-btn">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> عرض المتجر للعملاء
@@ -508,145 +452,147 @@
           <div class="avatar">ع</div>
           <div>
             <strong>أحمد عباس</strong>
-            <small style="display: block; color: var(--text-muted); font-size: 0.75rem;">مدير النظام</small>
+            <small style="display: block; color: var(--text-muted); font-size: 0.75rem;">مسؤول المتجر</small>
           </div>
         </div>
       </div>
     </header>
 
-    <!-- منطقة المحتوى التفاعلي -->
     <main class="content-area">
 
-      <!-- مؤشرات الأداء الحية (KPIs) -->
+      <!-- مؤشرات الأداء الحية KPIs -->
       <section class="kpi-grid">
         <div class="kpi-card">
-          <div class="kpi-icon-wrapper kpi-icon-1">
-            <i class="fa-solid fa-sack-dollar"></i>
-          </div>
-          <div class="kpi-info">
-            <small>إجمالي مبيعات اليوم</small>
-            <h3 id="stat-sales">14,850 ج.م</h3>
-          </div>
+          <div class="kpi-icon-wrapper kpi-icon-1"><i class="fa-solid fa-sack-dollar"></i></div>
+          <div class="kpi-info"><small>إجمالي مبيعات المتجر</small><h3>24,500 ج.م</h3></div>
         </div>
-
         <div class="kpi-card">
-          <div class="kpi-icon-wrapper kpi-icon-2">
-            <i class="fa-solid fa-cart-flatbed"></i>
-          </div>
-          <div class="kpi-info">
-            <small>طلبات قيد التجهيز</small>
-            <h3 id="stat-orders">18 طلباً</h3>
-          </div>
+          <div class="kpi-icon-wrapper kpi-icon-2"><i class="fa-solid fa-cart-flatbed"></i></div>
+          <div class="kpi-info"><small>الطلبات الواردة</small><h3 id="stat-orders-count">0 طلب</h3></div>
         </div>
-
         <div class="kpi-card">
-          <div class="kpi-icon-wrapper kpi-icon-3">
-            <i class="fa-solid fa-mobile-screen-button"></i>
-          </div>
-          <div class="kpi-info">
-            <small>الملحقات المعروضة</small>
-            <h3 id="stat-products">8 منتجات</h3>
-          </div>
+          <div class="kpi-icon-wrapper kpi-icon-3"><i class="fa-solid fa-mobile-screen-button"></i></div>
+          <div class="kpi-info"><small>الملحقات المعروضة</small><h3 id="stat-products-count">0 منتج</h3></div>
         </div>
-
         <div class="kpi-card">
-          <div class="kpi-icon-wrapper kpi-icon-4">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-          </div>
-          <div class="kpi-info">
-            <small>تنبيهات انخفاض المخزون</small>
-            <h3 id="stat-low-stock">2 منتج</h3>
-          </div>
+          <div class="kpi-icon-wrapper kpi-icon-4"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div class="kpi-info"><small>تنبيهات انخفاض المخزون</small><h3 id="stat-low-stock">0 منتج</h3></div>
         </div>
       </section>
 
-      <!-- شبكة إضافة وتعديل المنتجات والمخزون -->
+      <!-- شبكة إضافة منتج وجرد المخزون -->
       <div class="dashboard-grid">
         
-        <!-- نموذج إضافة ملحق هاتف جديد -->
+        <!-- نموذج إضافة منتج متكامل مع 4 صور زوايا وألوان -->
         <section class="admin-card">
           <div class="card-title-bar">
-            <h2><i class="fa-solid fa-circle-plus" style="color: var(--admin-info);"></i> إضافة ملحق جديد</h2>
+            <h2><i class="fa-solid fa-circle-plus" style="color: var(--admin-info);"></i> إضافة ملحق جديد للمتجر</h2>
           </div>
           <div class="card-body">
             <form id="add-product-form">
               <div class="form-group">
-                <label for="prod-name">اسم المنتج بالكامل</label>
-                <input type="text" id="prod-name" class="form-control" placeholder="مثال: جراب سيليكون MagSafe آيفون 16" required>
-              </div>
-
-              <div class="form-group">
-                <label for="prod-category">الفئة الرئيسية</label>
-                <select id="prod-category" class="form-control" required>
-                  <option value="cases">جرابات وكفرات</option>
-                  <option value="chargers">شواحن وكابلات</option>
-                  <option value="screen-protectors">اسكرينات وحماية</option>
-                  <option value="audio">سماعات وصوتيات</option>
-                  <option value="holders">حوامل وماسك سيارة</option>
-                  <option value="powerbanks">بنوك طاقة (باور بانك)</option>
-                </select>
+                <label for="prod-name">اسم الملحق بالكامل <span style="color:red">*</span></label>
+                <input type="text" id="prod-name" class="form-control" placeholder="مثال: أنكر زولو شاحن 30 واط..." required>
               </div>
 
               <div class="form-row">
                 <div class="form-group">
-                  <label for="prod-price">سعر البيع (ج.م)</label>
-                  <input type="number" id="prod-price" class="form-control" placeholder="350" required>
+                  <label for="prod-brand">الماركة (Brand)</label>
+                  <select id="prod-brand" class="form-control" required>
+                    <option value="Samsung">Samsung</option>
+                    <option value="Anker">Anker</option>
+                    <option value="Apple">Apple</option>
+                    <option value="Xiaomi">Xiaomi</option>
+                    <option value="Baseus">Baseus</option>
+                    <option value="Ugreen">Ugreen</option>
+                    <option value="Hoco">Hoco</option>
+                    <option value="Oraimo">Oraimo</option>
+                  </select>
                 </div>
                 <div class="form-group">
-                  <label for="prod-old-price">السعر قبل الخصم</label>
-                  <input type="number" id="prod-old-price" class="form-control" placeholder="450">
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="prod-stock">الكمية المتوفرة</label>
-                  <input type="number" id="prod-stock" class="form-control" placeholder="50" required>
-                </div>
-                <div class="form-group">
-                  <label for="prod-icon">رمز الأيقونة (FontAwesome)</label>
-                  <select id="prod-icon" class="form-control">
-                    <option value="fa-shield-halved">درع حماية (كفرات)</option>
-                    <option value="fa-bolt">برق (شواحن سريعة)</option>
-                    <option value="fa-mobile-screen">شاشة هاتف (اسكرينات)</option>
-                    <option value="fa-headphones">سماعة رأس</option>
-                    <option value="fa-battery-three-quarters">بطارية (باور بانك)</option>
-                    <option value="fa-car">سيارة (حوامل قيادة)</option>
+                  <label for="prod-category">الفئة الرئيسية</label>
+                  <select id="prod-category" class="form-control" required>
+                    <option value="chargers">شواحن ووصلات</option>
+                    <option value="powerbanks">بنوك طاقة (باور بانك)</option>
+                    <option value="cases">كفرات وحماية</option>
+                    <option value="audio">سماعات وصوتيات</option>
                   </select>
                 </div>
               </div>
 
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="prod-price">سعر البيع (ج.م) <span style="color:red">*</span></label>
+                  <input type="number" id="prod-price" class="form-control" placeholder="729" required>
+                </div>
+                <div class="form-group">
+                  <label for="prod-old-price">السعر قبل الخصم (للتشطيب)</label>
+                  <input type="number" id="prod-old-price" class="form-control" placeholder="859">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prod-stock">الكمية المتوفرة بالمخزن <span style="color:red">*</span></label>
+                <input type="number" id="prod-stock" class="form-control" placeholder="15" value="15" required>
+              </div>
+
+              <!-- حقول الـ 4 صور للـ Hover بالصفحة الرئيسية -->
+              <div class="form-group" style="background:#f8f9fa; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">
+                <label style="color:#007185; font-weight:800; margin-bottom:8px;"><i class="fa-solid fa-images"></i> روابط الـ 4 صور الخاصة بالمعاينة (Hover)</label>
+                <input type="url" id="prod-img-1" class="form-control" placeholder="رابط الصورة الأولى الأساسية (رئيسية)" style="margin-bottom:6px;" required>
+                <input type="url" id="prod-img-2" class="form-control" placeholder="رابط الصورة الثانية (زاوية جانبية)" style="margin-bottom:6px;">
+                <input type="url" id="prod-img-3" class="form-control" placeholder="رابط الصورة الثالثة (منفذ الشحن / الخلف)" style="margin-bottom:6px;">
+                <input type="url" id="prod-img-4" class="form-control" placeholder="رابط الصورة الرابعة (العبوة أو الإكسسوار)">
+              </div>
+
+              <!-- اختيار الألوان المتاحة للمنتج -->
+              <div class="form-group">
+                <label>الألوان المتاحة للملحق</label>
+                <div style="display: flex; gap: 14px; flex-wrap: row; margin-top: 6px;">
+                  <label style="font-weight: normal; cursor: pointer;"><input type="checkbox" name="prod-colors" value="أسود" checked> أسود</label>
+                  <label style="font-weight: normal; cursor: pointer;"><input type="checkbox" name="prod-colors" value="أبيض"> أبيض</label>
+                  <label style="font-weight: normal; cursor: pointer;"><input type="checkbox" name="prod-colors" value="أزرق"> أزرق</label>
+                  <label style="font-weight: normal; cursor: pointer;"><input type="checkbox" name="prod-colors" value="رمادي"> رمادي</label>
+                  <label style="font-weight: normal; cursor: pointer;"><input type="checkbox" name="prod-colors" value="ذهبي"> ذهبي</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prod-specs">المواصفات الفنية (افصل بينها بـ |)</label>
+                <input type="text" id="prod-specs" class="form-control" placeholder="شحن سريع بقوة 30 واط | منفذ USB-C | ضمان 14 يوم">
+              </div>
+
               <button type="submit" class="submit-btn">
-                <i class="fa-solid fa-plus"></i> نشر الملحق في المتجر فوراً
+                <i class="fa-solid fa-cloud-arrow-up"></i> نشر الملحق في المتجر فوراً (Firebase)
               </button>
             </form>
           </div>
         </section>
 
-        <!-- جدول جرد المخزون الحالي -->
+        <!-- جدول جرد المخزون الحي -->
         <section class="admin-card">
           <div class="card-title-bar">
-            <h2><i class="fa-solid fa-warehouse" style="color: var(--admin-info);"></i> قائمة المخزون المعروض</h2>
+            <h2><i class="fa-solid fa-warehouse" style="color: var(--admin-info);"></i> جرد المخزون المباشر</h2>
           </div>
           <div class="card-body">
             <div class="table-toolbar">
-              <input type="text" id="filter-inventory" class="search-table-input" placeholder="ابحث باسم الملحق أو الفئة...">
+              <input type="text" id="filter-inventory" class="search-table-input" placeholder="ابحث باسم الملحق أو الماركة...">
             </div>
 
-            <div style="overflow-x: auto;">
+            <div style="overflow-x: auto; max-height: 520px;">
               <table class="admin-table">
                 <thead>
                   <tr>
                     <th>الملحق</th>
-                    <th>الفئة</th>
+                    <th>الماركة</th>
                     <th>السعر</th>
                     <th>المخزون</th>
                     <th>الحالة</th>
-                    <th>إجراءات</th>
+                    <th>حذف</th>
                   </tr>
                 </thead>
                 <tbody id="inventory-table-body">
-                  <!-- محتوى يتم إنشاؤه برمجياً -->
+                  <!-- يُملأ ديناميكياً -->
                 </tbody>
               </table>
             </div>
@@ -655,43 +601,28 @@
 
       </div>
 
-      <!-- قسم متابعة الطلبات والشحنات الواردة -->
+      <!-- قسم متابعة الطلبات الواردة -->
       <section class="admin-card orders-section">
         <div class="card-title-bar">
-          <h2><i class="fa-solid fa-clock-rotate-left" style="color: var(--admin-info);"></i> أحدث الطلبات الواردة عبر الموقع</h2>
+          <h2><i class="fa-solid fa-truck-fast" style="color: var(--admin-info);"></i> سجل الطلبات الواردة عبر واتساب المتجر</h2>
         </div>
         <div class="card-body">
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px;">جميع الطلبات يتم إرسالها من صفحة إتمام الشراء وتظهر هنا لمتابعة تسليمها للمندوب.</p>
           <div style="overflow-x: auto;">
             <table class="admin-table">
               <thead>
                 <tr>
                   <th>رقم الطلب</th>
-                  <th>العميل</th>
+                  <th>التاريخ والوقت</th>
+                  <th>اسم العميل</th>
                   <th>رقم الهاتف</th>
-                  <th>المنتجات المطلوبة</th>
-                  <th>المبلغ الإجمالي</th>
-                  <th>طريقة الدفع</th>
-                  <th>حالة الطلب</th>
+                  <th>العنوان والمحافظة</th>
+                  <th>الحالة</th>
                 </tr>
               </thead>
               <tbody id="orders-table-body">
                 <tr>
-                  <td><strong>#ABS-9041</strong></td>
-                  <td>محمود عبد الرحمن</td>
-                  <td>01023456789</td>
-                  <td>جراب آيفون 15 برو ماكس + شاحن 65 واط</td>
-                  <td><strong>1,029 ج.م</strong></td>
-                  <td>دفع عند الاستلام</td>
-                  <td><span class="status-badge badge-in-stock">تم التأكيد والشحن</span></td>
-                </tr>
-                <tr>
-                  <td><strong>#ABS-9040</strong></td>
-                  <td>سارة إبراهيم</td>
-                  <td>01287654321</td>
-                  <td>اسكرينة 9D زجاجية (2 قطعة)</td>
-                  <td><strong>370 ج.م</strong></td>
-                  <td>فودافون كاش</td>
-                  <td><span class="status-badge badge-low-stock">قيد التجهيز</span></td>
+                  <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">لا توجد طلبات معلقة حالياً.</td>
                 </tr>
               </tbody>
             </table>
@@ -702,9 +633,10 @@
     </main>
   </div>
 
-'use strict';
+  <!-- ربط لوحة التحكم بـ Firebase Firestore الحي -->
+  <script>
+    'use strict';
 
-    // 1. تهيئة نفس مشروع الفايربيز
     const firebaseConfig = {
       apiKey: "AIzaSyBhOo-nzA3TztOFQlxPQaOTrLtPDjKb_xU",
       authDomain: "abbasko-store.firebaseapp.com",
@@ -714,7 +646,10 @@
       appId: "1:475025963892:web:8790442f8bc83539368a21",
       measurementId: "G-B1866569VZ"
     };
-    firebase.initializeApp(firebaseConfig);
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.firestore();
 
     let inventory = [];
@@ -722,9 +657,11 @@
     const addForm = document.getElementById('add-product-form');
     const filterInput = document.getElementById('filter-inventory');
 
-    // 2. جلب المنتجات الحقيقية من Firestore
+    // جلب المخزون الحقيقي من Firebase
     async function loadAdminInventory() {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px;"><i class="fa-solid fa-spinner fa-spin"></i> جاري مزامنة المنتجات من قاعدة البيانات...</td></tr>`;
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px;"><i class="fa-solid fa-spinner fa-spin"></i> جاري مزامنة المخزون من قاعدة البيانات...</td></tr>`;
+      }
       try {
         const snapshot = await db.collection('products').get();
         inventory = [];
@@ -733,23 +670,28 @@
         });
         renderInventory(inventory);
       } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">خطأ أثناء الاتصال بقاعدة البيانات: ${err.message}</td></tr>`;
+        console.error("خطأ في جلب البيانات:", err);
+        if (tbody) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">تعذر الاتصال بقاعدة البيانات. تأكد من إعدادات الـ Rules.</td></tr>`;
+        }
       }
     }
 
-    // 3. رسم عناصر الجدول وحساب الإحصائيات
+    // عرض المنتجات في جدول الإدارة
     function renderInventory(items) {
+      if (!tbody) return;
+
       if (items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px;">لا توجد منتجات مضافة حتى الآن.</td></tr>`;
-        document.getElementById('stat-products').textContent = '0 منتجات';
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px;">لا توجد ملحقات مسجلة حالياً.</td></tr>`;
+        document.getElementById('stat-products-count').textContent = '0 منتج';
         document.getElementById('stat-low-stock').textContent = '0 منتج';
         return;
       }
 
       tbody.innerHTML = items.map(item => {
-        const stockQty = Number(item.stock) || (item.inStock ? 20 : 0);
+        const stockQty = Number(item.stock) || 15;
         let badgeClass = 'badge-in-stock';
-        let statusText = 'متوفر بالمخزن';
+        let statusText = 'متوفر';
 
         if (stockQty === 0 || item.inStock === false) {
           badgeClass = 'badge-out-stock';
@@ -759,21 +701,23 @@
           statusText = `منخفض (${stockQty})`;
         }
 
+        const mainImg = (item.images && item.images[0]) || item.image || 'logo.png';
+
         return `
           <tr>
             <td>
               <div class="product-cell">
-                <img src="${item.image || 'logo.png'}" style="width:36px; height:36px; object-fit:contain; border-radius:4px; border:1px solid #ddd; background:#fff;">
+                <img src="${mainImg}" style="width:36px; height:36px; object-fit:contain; border-radius:4px; border:1px solid #ddd; background:#fff;">
                 <strong>${item.title}</strong>
               </div>
             </td>
-            <td>${item.brand || 'عام'}</td>
+            <td><strong>${item.brand || 'عام'}</strong></td>
             <td><strong>${Number(item.price).toFixed(2)} ج.م</strong></td>
             <td>${stockQty} قطعة</td>
             <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
             <td>
               <div class="action-btns">
-                <button class="tbl-btn tbl-btn-delete" onclick="deleteProductFromFirebase('${item.id}')" title="حذف المنتج نهائياً">
+                <button class="tbl-btn tbl-btn-delete" onclick="deleteProduct('${item.id}')" title="حذف نهائي">
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </div>
@@ -782,56 +726,66 @@
         `;
       }).join('');
 
-      document.getElementById('stat-products').textContent = `${items.length} منتجات`;
-      const lowCount = items.filter(i => (Number(i.stock) || 0) < 5 || i.inStock === false).length;
+      document.getElementById('stat-products-count').textContent = `${items.length} منتجات`;
+      const lowCount = items.filter(i => (Number(i.stock) || 15) < 5 || i.inStock === false).length;
       document.getElementById('stat-low-stock').textContent = `${lowCount} منتج`;
     }
 
-    // 4. إضافة منتج حقيقي إلى الفايربيز
-    addForm.addEventListener('submit', async (e) => {
+    // إضافة منتج جديد متكامل مع الـ 4 صور والألوان
+    addForm?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const submitBtn = addForm.querySelector('.submit-btn');
       submitBtn.disabled = true;
-      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري النشر بالمتجر...`;
+      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري النشر في قاعدة البيانات...`;
 
-      const price = parseFloat(document.getElementById('prod-price').value);
-      const oldPrice = parseFloat(document.getElementById('prod-old-price').value) || (price + 80);
-      const stock = parseInt(document.getElementById('prod-stock').value) || 1;
+      const price = parseFloat(document.getElementById('prod-price').value) || 0;
+      const oldPrice = parseFloat(document.getElementById('prod-old-price').value) || (price + 100);
+      const stock = parseInt(document.getElementById('prod-stock').value) || 15;
+
+      const img1 = document.getElementById('prod-img-1').value.trim();
+      const img2 = document.getElementById('prod-img-2').value.trim();
+      const img3 = document.getElementById('prod-img-3').value.trim();
+      const img4 = document.getElementById('prod-img-4').value.trim();
+
+      const imagesList = [img1, img2 || img1, img3 || img1, img4 || img1].filter(Boolean);
+      const selectedColors = Array.from(document.querySelectorAll('input[name="prod-colors"]:checked')).map(cb => cb.value);
 
       const newProduct = {
         title: document.getElementById('prod-name').value.trim(),
+        brand: document.getElementById('prod-brand').value,
         category: document.getElementById('prod-category').value,
-        brand: document.getElementById('prod-category').selectedOptions[0].text,
         price: price,
         oldPrice: oldPrice,
         discount: (oldPrice - price).toFixed(2),
         stock: stock,
         inStock: stock > 0,
         rating: 5,
-        ratingCount: 1,
-        specs: `ملحق أصلي معتمد | الكمية بالمخزن: ${stock} قطعة`,
-        image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80'
+        ratingCount: 12,
+        image: img1,
+        images: imagesList,
+        colors: selectedColors.length > 0 ? selectedColors : ['أسود', 'أبيض'],
+        specs: document.getElementById('prod-specs').value.trim() || 'ملحق أصلي معتمد من متجر عباسكو'
       };
 
       try {
         await db.collection('products').add(newProduct);
-        alert('تم نشر المنتج بنجاح في متجر عباسكو وقاعدة البيانات!');
+        alert('تم نشر الملحق بنجاح في متجر عباسكو وأصبح متاحاً للعملاء فوراً!');
         addForm.reset();
         loadAdminInventory();
       } catch (err) {
-        alert('حدث خطأ أثناء الإضافة: ' + err.message);
+        alert('تعذر النشر: ' + err.message);
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `<i class="fa-solid fa-plus"></i> نشر الملحق في المتجر فوراً`;
+        submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> نشر الملحق في المتجر فوراً (Firebase)`;
       }
     });
 
-    // 5. حذف منتج حقيقي من الفايربيز
-    window.deleteProductFromFirebase = async function(docId) {
-      if (confirm('هل أنت متأكد من حذف هذا المنتج نهائياً من المتجر وقاعدة البيانات؟')) {
+    // حذف منتج من Firebase
+    window.deleteProduct = async function(docId) {
+      if (confirm('هل أنت متأكد من حذف هذا الملحق نهائياً من قاعدة بيانات المتجر؟')) {
         try {
           await db.collection('products').doc(docId).delete();
-          alert('تم حذف المنتج بنجاح!');
+          alert('تم الحذف بنجاح!');
           loadAdminInventory();
         } catch (err) {
           alert('تعذر الحذف: ' + err.message);
@@ -839,8 +793,8 @@
       }
     };
 
-    // 6. بحث سريع بالجدول
-    filterInput.addEventListener('input', (e) => {
+    // فلترة سريعة بالبحث
+    filterInput?.addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase();
       const filtered = inventory.filter(i => 
         (i.title && i.title.toLowerCase().includes(q)) || 
@@ -850,5 +804,6 @@
     });
 
     document.addEventListener('DOMContentLoaded', loadAdminInventory);
+  </script>
 </body>
 </html>
