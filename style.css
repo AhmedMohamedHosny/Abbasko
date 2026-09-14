@@ -691,63 +691,60 @@ img { max-width: 100%; display: block; }
 }
 
 /* --------------------------------------------------------------------------
-   5. الشريط الجانبي للفلاتر (Sidebar)
+   5. الشريط الجانبي للفلاتر بنمط دريم 2000 (صناديق مقوسة مغلقة مثل الصورة)
    -------------------------------------------------------------------------- */
 .dream-filters-sidebar {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  padding: 16px;
-  box-shadow: var(--shadow-card);
+  width: 270px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
 }
 
-.filters-sidebar-header {
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 12px;
-}
-
-.filters-sidebar-header h3 {
-  font-size: 1.05rem;
+/* عنوان تصفية العريض */
+.sidebar-main-title {
+  font-size: 1.15rem;
   font-weight: 800;
-  color: var(--text-main);
+  color: #111827;
+  text-align: right;
+  margin-bottom: 18px;
 }
 
-.in-stock-group {
+/* سطر متوفر بالمخزون */
+.stock-toggle-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border-light);
-  font-size: 0.9rem;
+  align-items: center;
+  margin-bottom: 18px;
+  font-size: 0.92rem;
   font-weight: 800;
-  color: var(--text-main);
+  color: #111827;
 }
 
-/* زر التبديل الأخضر المطابق للصورة 3 */
-.in-stock-switch {
+/* السويتش الرمادي الدائري */
+.clean-switch {
   position: relative;
   display: inline-block;
-  width: 46px;
+  width: 44px;
   height: 24px;
 }
 
-.in-stock-switch input {
+.clean-switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.in-stock-slider {
+.clean-slider {
   position: absolute;
   inset: 0;
-  background-color: #d1d5db; /* رمادي عند الإغلاق */
+  background-color: #cbd5e1; /* رمادي عند عدم التفعيل */
   border-radius: 50px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s ease;
 }
 
-.in-stock-slider::before {
+.clean-slider::before {
   position: absolute;
   content: "";
   height: 18px;
@@ -756,45 +753,80 @@ img { max-width: 100%; display: block; }
   bottom: 3px;
   background-color: #ffffff;
   border-radius: 50%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: all 0.25s ease;
 }
 
-/* عندما يكون مفعل يتحول لأخضر دريم 2000 */
-.in-stock-switch input:checked + .in-stock-slider {
+/* يتحول للأخضر عند الضغط عليه */
+.clean-switch input:checked + .clean-slider {
   background-color: #7cb342 !important;
 }
 
-.in-stock-switch input:checked + .in-stock-slider::before {
-  transform: translateX(-22px);
+.clean-switch input:checked + .clean-slider::before {
+  transform: translateX(-20px);
 }
 
-.accordion-filter-block {
-  border-bottom: 1px solid var(--border-light);
-  padding: 10px 0;
+/* قائمة الصناديق المستقلة */
+.filter-boxes-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.accordion-header {
+/* تصميم الصندوق الفردي ذي الزوايا الدائرية */
+.filter-card-accordion {
+  background-color: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.filter-card-accordion:hover {
+  border-color: #cbd5e1;
+}
+
+/* رأس الصندوق: الكلمة يميناً والسهم يساراً */
+.filter-card-header {
+  padding: 12px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  font-size: 0.88rem;
+  background-color: #ffffff;
+}
+
+.filter-card-header span {
+  font-size: 0.92rem;
   font-weight: 800;
+  color: #111827;
 }
 
-.accordion-header i {
+.filter-card-header i {
   font-size: 0.72rem;
-  color: var(--text-muted);
+  color: #64748b;
+  transition: transform 0.25s ease;
 }
 
-.accordion-body {
-  padding-top: 8px;
+/* محتوى الصندوق مغلق تماماً ولا يظهر إلا بعد النقر */
+.filter-card-body {
+  display: none;
+  padding: 12px 16px;
+  background-color: #fafafa;
+  border-top: 1px solid #f1f5f9;
 }
 
-.brand-items-scrollable {
-  max-height: 220px;
-  overflow-y: auto;
+/* عند فتح الصندوق */
+.filter-card-accordion.open {
+  border-color: #7cb342;
+}
+
+.filter-card-accordion.open .filter-card-header i {
+  transform: rotate(180deg);
+}
+
+.filter-card-accordion.open .filter-card-body {
+  display: block;
 }
 
 .custom-chk {
@@ -802,15 +834,25 @@ img { max-width: 100%; display: block; }
   align-items: center;
   gap: 8px;
   font-size: 0.82rem;
-  color: var(--text-muted);
-  margin-bottom: 6px;
+  color: #475569;
+  margin-bottom: 8px;
   cursor: pointer;
+  font-weight: 600;
 }
 
 .custom-chk input {
-  accent-color: var(--dream-green);
+  accent-color: #7cb342;
   width: 15px;
   height: 15px;
+}
+
+.price-limits-text {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  color: #64748b;
+  font-weight: 700;
+  margin-top: 6px;
 }
 
 /* --------------------------------------------------------------------------
