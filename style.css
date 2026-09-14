@@ -478,305 +478,286 @@ img { max-width: 100%; display: block; }
 }
 
 /* --------------------------------------------------------------------------
-   4. ضبط كروت المنتجات للشكلين الرأسي والأفقي بدقة 100% مثل دريم 2000
+   4. كروت المنتجات: تبديل حقيقي بين العرض الشبكي (4 أعمدة) والقائمة (عمودين)
    -------------------------------------------------------------------------- */
 .dream-products-grid {
   display: grid;
   gap: 16px;
   margin-bottom: 35px;
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
 }
 
-.dream-product-card {
-  background-color: #ffffff !important;
-  border: 1px solid #e5e7eb !important;
-  border-radius: 6px !important;
+/* 1. وضع القائمة (List View - عمودين أفقيين) */
+body.view-list-active .dream-products-grid {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+
+body.view-list-active .card-top-horizontal-split {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  transition: all 0.2s ease;
-  position: relative;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.dream-product-card:hover {
-  border-color: var(--dream-green) !important;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+body.view-list-active .card-details-pane {
+  text-align: right;
+  flex: 1;
 }
 
-/* ==========================================================================
-   أ) الشكل الرأسي (Grid View - 4 أعمدة مثل الصورة 1 تماماً)
-   ========================================================================== */
+body.view-list-active .specs-summary-text {
+  display: block;
+}
+
+/* 2. الوضع الشبكي (Grid View - 4 أعمدة طولية كلاسيكية مثل الصورة المرجعية الأولى) */
 body.view-grid-active .dream-products-grid {
   grid-template-columns: repeat(4, 1fr) !important;
 }
 
 body.view-grid-active .dream-product-card {
-  padding: 14px !important;
+  padding: 14px;
 }
 
-/* قلب المحتوى: الصورة للأعلى والتفاصيل للأسفل */
 body.view-grid-active .card-top-horizontal-split {
-  display: flex !important;
-  flex-direction: column-reverse !important;
-  align-items: center !important;
-  width: 100% !important;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
 }
 
-/* منطقة الصورة الكبيرة في الرأسي */
 body.view-grid-active .card-image-pane {
   width: 100% !important;
-  min-width: 0 !important;
-  position: relative !important;
-  margin-bottom: 12px !important;
-  display: flex !important;
-  justify-content: center !important;
-}
-
-body.view-grid-active .discount-ribbon-tag {
-  position: absolute !important;
-  top: 0 !important;
-  right: 0 !important;
-  background-color: var(--discount-red);
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 3px;
-  z-index: 2;
-}
-
-body.view-grid-active .media-square-box {
-  width: 100% !important;
-  height: 200px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: #ffffff !important;
-}
-
-body.view-grid-active .media-square-box img {
-  max-width: 85% !important;
-  max-height: 85% !important;
-  object-fit: contain !important;
-}
-
-/* التفاصيل متوسطة بالكامل */
-body.view-grid-active .card-details-pane {
-  text-align: center !important;
-  width: 100% !important;
-}
-
-body.view-grid-active .brand-label-text {
-  font-size: 0.74rem;
-  color: #9ca3af;
-  margin-bottom: 2px;
-  display: block;
-}
-
-body.view-grid-active .product-item-title {
-  font-size: 0.84rem;
-  font-weight: 800;
-  color: #1f2937;
-  height: 38px;
-  overflow: hidden;
-  line-height: 1.4;
-  margin-bottom: 6px;
-}
-
-body.view-grid-active .card-stars-row,
-body.view-grid-active .price-block-dream,
-body.view-grid-active .stock-dot-indicator {
-  justify-content: center !important;
-}
-
-/* إخفاء سطر المواصفات في الرأسي لتوحيد الارتفاع */
-body.view-grid-active .specs-summary-text {
-  display: none !important;
-}
-
-/* إخفاء زر نظرة سريعة تماماً في الرأسي (مثل الصورة 1) */
-body.view-grid-active .btn-quick-view-olive {
-  display: none !important;
-}
-
-/* سطر الأزرار السفلي: Choose option على اليمين والعداد على الشمال في سطر واحد */
-body.view-grid-active .card-bottom-actions-full {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 8px !important;
-  width: 100% !important;
-  padding-top: 10px !important;
-  border-top: 1px solid #f3f4f6 !important;
-}
-
-body.view-grid-active .btn-choose-option-green {
-  flex: 1 !important;
-  height: 34px !important;
-}
-
-body.view-grid-active .item-mini-stepper {
-  height: 34px !important;
-}
-
-/* ==========================================================================
-   ب) الشكل الأفقي (List View - عمودين مثل الصورة 2 تماماً)
-   ========================================================================== */
-body.view-list-active .dream-products-grid {
-  grid-template-columns: repeat(2, 1fr) !important;
-}
-
-body.view-list-active .dream-product-card {
-  padding: 16px 20px !important;
-}
-
-body.view-list-active .card-top-horizontal-split {
-  display: flex !important;
-  flex-direction: row !important;
-  justify-content: space-between !important;
-  align-items: flex-start !important;
-  gap: 16px !important;
-  width: 100% !important;
-}
-
-/* التفاصيل على اليمين بمحاذاة اليمين */
-body.view-list-active .card-details-pane {
-  flex: 1 !important;
-  text-align: right !important;
-  min-width: 0 !important;
-}
-
-body.view-list-active .brand-label-text {
-  font-size: 0.74rem;
-  color: #9ca3af;
-  margin-bottom: 2px;
-  display: block;
-}
-
-body.view-list-active .product-item-title {
-  font-size: 0.88rem;
-  font-weight: 800;
-  color: #1f2937;
-  height: 38px;
-  overflow: hidden;
-  line-height: 1.4;
-  margin-bottom: 6px;
-}
-
-body.view-list-active .card-stars-row,
-body.view-list-active .price-block-dream,
-body.view-list-active .stock-dot-indicator {
-  justify-content: flex-start !important;
-}
-
-/* إظهار سطرين المواصفات في الأفقي */
-body.view-list-active .specs-summary-text {
-  display: -webkit-box !important;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  height: 34px;
-  font-size: 0.74rem;
-  color: #6b7280;
-  line-height: 1.5;
   margin-bottom: 8px;
 }
 
-/* الصورة وبادج الخصم على اليسار */
-body.view-list-active .card-image-pane {
-  width: 140px !important;
-  min-width: 140px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  position: relative !important;
+body.view-grid-active .card-details-pane {
+  text-align: center;
+  width: 100%;
 }
 
-body.view-list-active .discount-ribbon-tag {
-  position: static !important;
-  align-self: flex-start !important;
-  margin-bottom: 6px !important;
+body.view-grid-active .price-block-dream,
+body.view-grid-active .card-stars-row,
+body.view-grid-active .stock-dot-indicator {
+  justify-content: center;
+}
+
+body.view-grid-active .specs-summary-text {
+  display: none; /* إخفاء المواصفات في العرض الشبكي الرأسي لتناسق الارتفاع */
+}
+
+body.view-grid-active .card-bottom-actions-full {
+  flex-direction: column;
+}
+
+body.view-grid-active .btn-choose-option-green {
+  width: 100%;
+}
+
+.dream-product-card {
+  background-color: #ffffff !important;
+  border: 1px solid #eaeded !important;
+  border-radius: 10px !important;
+  padding: 18px 20px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+}
+
+.dream-product-card:hover {
+  border-color: #7cb342 !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07) !important;
+}
+
+/* الجزء العلوي للكارت: تفاصيل يميناً وصورة يساراً */
+.card-top-horizontal-split {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* بيانات المنتج على اليمين */
+.card-details-pane {
+  flex: 1;
+  text-align: right;
+  min-width: 0;
+}
+
+.brand-label-text {
+  font-size: 0.74rem;
+  color: var(--text-subtle);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.product-item-title {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.4;
+  height: 38px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.product-item-title a:hover {
+  color: var(--dream-green);
+}
+
+.card-stars-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--star-gold);
+  margin-bottom: 6px;
+}
+
+.card-stars-row span {
+  color: var(--text-subtle);
+  font-size: 0.72rem;
+}
+
+.price-block-dream {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.price-val-red {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--discount-red);
+}
+
+.price-struck-gray {
+  font-size: 0.78rem;
+  color: var(--text-subtle);
+  text-decoration: line-through;
+}
+
+.specs-summary-text {
+  font-size: 0.72rem;
+  color: #6b7280;
+  line-height: 1.5;
+  height: 34px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.stock-dot-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #4b5563;
+  margin-bottom: 12px;
+}
+
+.blue-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--stock-blue);
+  flex-shrink: 0;
+}
+
+/* جانب الصورة على اليسار */
+.card-image-pane {
+  width: 140px;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.discount-ribbon-tag {
   background-color: var(--discount-red);
-  color: #fff;
+  color: #ffffff;
   font-size: 0.7rem;
   font-weight: 800;
   padding: 2px 8px;
-  border-radius: 3px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  align-self: flex-start;
 }
 
-body.view-list-active .media-square-box {
-  width: 130px !important;
-  height: 130px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: #ffffff !important;
+.media-square-box {
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
 }
 
-body.view-list-active .media-square-box img {
-  max-width: 90% !important;
-  max-height: 90% !important;
-  object-fit: contain !important;
+.media-square-box img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
 }
 
-/* سطر الأزرار السفلي في الأفقي: 3 عناصر على سطر واحد (يمين: نظرة سريعة / وسط: Choose option / شمال: العداد) */
-body.view-list-active .card-bottom-actions-full {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 8px !important;
-  width: 100% !important;
-  padding-top: 12px !important;
-  border-top: 1px solid #f3f4f6 !important;
+/* صف الأزرار الثلاثة بالأسفل ممتد بعرض الكارت */
+.card-bottom-actions-full {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-light);
+  flex-wrap: wrap;
 }
 
-body.view-list-active .btn-quick-view-olive {
-  display: block !important;
-  background-color: #8cb83e !important;
-  color: #ffffff !important;
-  padding: 7px 16px !important;
-  border-radius: 4px !important;
-  font-size: 0.82rem !important;
-  font-weight: 800 !important;
-  white-space: nowrap !important;
+.btn-quick-view-olive {
+  background-color: var(--quick-view-olive);
+  color: #ffffff;
+  padding: 7px 14px;
+  border-radius: var(--radius-xs);
+  font-size: 0.8rem;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
-body.view-list-active .btn-choose-option-green {
-  flex: 1 !important;
-  height: 34px !important;
-  background-color: var(--dream-green) !important;
-  color: #ffffff !important;
-  border-radius: 4px !important;
-  font-size: 0.82rem !important;
-  font-weight: 800 !important;
-  text-align: center !important;
-  white-space: nowrap !important;
+.btn-quick-view-olive:hover {
+  background-color: #7ba333;
 }
 
-body.view-list-active .item-mini-stepper {
-  height: 34px !important;
+.btn-choose-option-green {
+  flex: 1;
+  background-color: var(--dream-green);
+  color: #ffffff;
+  padding: 7px 12px;
+  border-radius: var(--radius-xs);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
 }
 
-/* ستايل أزرار عام */
+.btn-choose-option-green:hover {
+  background-color: var(--dream-green-hover);
+}
+
 .item-mini-stepper {
   display: flex;
   align-items: center;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  background: #fafafa;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  background: var(--bg-elevated);
 }
 
 .mini-step-btn {
   width: 26px;
-  height: 100%;
+  height: 30px;
   font-size: 0.85rem;
   font-weight: 800;
-  color: #6b7280;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
 }
 
 .mini-step-val {
@@ -784,13 +765,9 @@ body.view-list-active .item-mini-stepper {
   text-align: center;
   font-size: 0.82rem;
   font-weight: 800;
-  color: #111827;
+  color: var(--text-main);
 }
 
-.btn-choose-option-green {
-  border: none;
-  cursor: pointer;
-}
 /* --------------------------------------------------------------------------
    5. الشريط الجانبي للفلاتر بنمط دريم 2000 المطابق لصورك
    -------------------------------------------------------------------------- */
