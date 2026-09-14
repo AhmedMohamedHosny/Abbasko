@@ -265,7 +265,32 @@ img { max-width: 100%; display: block; }
 /* 3. تخطيط الكتالوج الرئيسي */
 .dream-catalog-canvas { padding: 24px 0 60px; }
 .catalog-heading-title h1 { font-size: 1.85rem; font-weight: 900; margin-bottom: 20px; }
-.dream-main-layout { display: grid; grid-template-columns: 1fr 280px; gap: 24px; align-items: flex-start; }
+/* المنتجات تملأ الشاشة بالكامل افتراضياً */
+.dream-main-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* شريط التصفية مخفي تماماً عند فتح الموقع */
+.dream-filters-sidebar {
+  display: none;
+  order: 1; /* يثبت مكانه في أقصى اليمين */
+}
+
+.products-showcase-column {
+  order: 2; /* عمود المنتجات يكون على اليسار */
+}
+
+/* عند النقر على زر تصفية: يفتح الفلتر على اليمين والمنتجات على اليسار */
+body.filters-opened .dream-main-layout {
+  grid-template-columns: 280px 1fr;
+}
+
+body.filters-opened .dream-filters-sidebar {
+  display: block;
+}
 
 /* شريط التحكم العلوي وأزرار العرض */
 .catalog-top-bar {
@@ -552,7 +577,18 @@ body.view-list-active .quick-view-eye-btn {
 .page-num.active, .page-arrow:hover:not(:disabled) { background-color: var(--dream-green); color: #fff; border-color: var(--dream-green); }
 .page-arrow:disabled { opacity: 0.4; }
 
-.dream-footer { background-color: #1a1a1a; color: #d1d5db; padding: 40px 0 20px; margin-top: 40px; border-top: 3px solid var(--dream-green); }
+.dream-footer {
+  /* تدرج هادئ يصنع هالة إضاءة خضراء في المنتصف السفلي */
+  background: radial-gradient(circle at 50% 85%, rgba(124, 179, 66, 0.35) 0%, rgba(26, 26, 26, 0) 65%), #171717;
+  color: #d1d5db;
+  padding: 60px 0 25px;
+  margin-top: 60px;
+  /* القوس المنحني الضخم أعلى التذييل */
+  border-radius: 80px 80px 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  overflow: hidden;
+}
 .footer-content-row { display: grid; grid-template-columns: 2fr 1fr 1.5fr; gap: 35px; margin-bottom: 25px; }
 .footer-brand-title { font-size: 1.2rem; font-weight: 900; color: #fff; margin-bottom: 8px; }
 .footer-shop-about p { font-size: 0.84rem; color: #9ca3af; line-height: 1.6; }
@@ -616,4 +652,32 @@ body.view-list-active .quick-view-eye-btn {
   .mobile-bottom-nav { display: flex; }
   .alternating-chat-widget { bottom: 75px; left: 16px; }
   body { padding-bottom: 60px; }
+}
+/* الـ 4 شرط أسفل صور المنتجات */
+.image-dash-indicators {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 8px auto 4px;
+  width: 80%;
+}
+
+.image-dash-indicators span {
+  height: 3px;
+  flex: 1;
+  background-color: #d1d5db;
+  border-radius: 2px;
+  transition: background-color 0.25s ease;
+}
+
+.image-dash-indicators span.active,
+.image-dash-indicators span:hover {
+  background-color: #111827; /* الشرطة النشطة باللون الأسود الداكن */
+}
+
+/* تنظيف خلفية الصورة لتكون بيضاء نقية بدون فواصل */
+.card-media-box {
+  background-color: #ffffff !important;
+  border: none !important;
 }
