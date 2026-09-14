@@ -200,7 +200,7 @@
               </div>
             </div>
 
-            <!-- 2. الماركة -->
+            <!-- 2. الماركة (كاملة كما طلبت) -->
             <div class="filter-card-accordion">
               <div class="filter-card-header">
                 <span>الماركة</span>
@@ -211,7 +211,21 @@
                   <span class="reset-filter-btn" onclick="resetFilterGroup('brand')">إعادة تعيين</span>
                   <span class="selected-count-label" id="count-brand">تم تحديد 0 عناصر</span>
                 </div>
-                <div class="filter-options-scroll" id="dynamic-brands-list"></div>
+                <div class="filter-options-scroll" id="brand-checkboxes-container">
+                  <label class="custom-chk"><span>Samsung <b class="count-tag" data-val="Samsung">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Samsung"></label>
+                  <label class="custom-chk"><span>Anker <b class="count-tag" data-val="Anker">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Anker"></label>
+                  <label class="custom-chk"><span>Apple <b class="count-tag" data-val="Apple">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Apple"></label>
+                  <label class="custom-chk"><span>Xiaomi <b class="count-tag" data-val="Xiaomi">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Xiaomi"></label>
+                  <label class="custom-chk"><span>Baseus <b class="count-tag" data-val="Baseus">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Baseus"></label>
+                  <label class="custom-chk"><span>Ugreen <b class="count-tag" data-val="Ugreen">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Ugreen"></label>
+                  <label class="custom-chk"><span>Hoco <b class="count-tag" data-val="Hoco">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Hoco"></label>
+                  <label class="custom-chk"><span>Joyroom <b class="count-tag" data-val="Joyroom">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Joyroom"></label>
+                  <label class="custom-chk"><span>LDNIO <b class="count-tag" data-val="LDNIO">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="LDNIO"></label>
+                  <label class="custom-chk"><span>Oraimo <b class="count-tag" data-val="Oraimo">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Oraimo"></label>
+                  <label class="custom-chk"><span>Remax <b class="count-tag" data-val="Remax">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Remax"></label>
+                  <label class="custom-chk"><span>Acefast <b class="count-tag" data-val="Acefast">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Acefast"></label>
+                  <label class="custom-chk"><span>Aukey <b class="count-tag" data-val="Aukey">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="brand" value="Aukey"></label>
+                </div>
               </div>
             </div>
 
@@ -226,7 +240,12 @@
                   <span class="reset-filter-btn" onclick="resetFilterGroup('screen')">إعادة تعيين</span>
                   <span class="selected-count-label" id="count-screen">تم تحديد 0 عناصر</span>
                 </div>
-                <div class="filter-options-scroll" id="dynamic-screen-list"></div>
+                <div class="filter-options-scroll">
+                  <label class="custom-chk"><span>1.75 inches <b class="count-tag" data-val="1.75">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="screen" value="1.75"></label>
+                  <label class="custom-chk"><span>1.27 inches <b class="count-tag" data-val="1.27">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="screen" value="1.27"></label>
+                  <label class="custom-chk"><span>اسكرينة زجاج 9D <b class="count-tag" data-val="9D">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="screen" value="9D"></label>
+                  <label class="custom-chk"><span>اسكرينات خصوصية <b class="count-tag" data-val="خصوصية">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="screen" value="خصوصية"></label>
+                </div>
               </div>
             </div>
 
@@ -241,7 +260,12 @@
                   <span class="reset-filter-btn" onclick="resetFilterGroup('mic')">إعادة تعيين</span>
                   <span class="selected-count-label" id="count-mic">تم تحديد 0 عناصر</span>
                 </div>
-                <div class="filter-options-scroll" id="dynamic-mic-list"></div>
+                <div class="filter-options-scroll">
+                  <label class="custom-chk"><span>Supported <b class="count-tag" data-val="Supported">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="mic" value="Supported"></label>
+                  <label class="custom-chk"><span>2 Mics <b class="count-tag" data-val="2 Mics">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="mic" value="2 Mics"></label>
+                  <label class="custom-chk"><span>4 Mics <b class="count-tag" data-val="4 Mics">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="mic" value="4 Mics"></label>
+                  <label class="custom-chk"><span>عزل ضوضاء ENC <b class="count-tag" data-val="ENC">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="mic" value="ENC"></label>
+                </div>
               </div>
             </div>
 
@@ -256,7 +280,13 @@
                   <span class="reset-filter-btn" onclick="resetFilterGroup('type')">إعادة تعيين</span>
                   <span class="selected-count-label" id="count-type">تم تحديد 0 عناصر</span>
                 </div>
-                <div class="filter-options-scroll" id="dynamic-types-list"></div>
+                <div class="filter-options-scroll">
+                  <label class="custom-chk"><span>شواحن جدارية <b class="count-tag" data-val="شاحن">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="type" value="شاحن"></label>
+                  <label class="custom-chk"><span>كابلات ووصلات <b class="count-tag" data-val="كابل">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="type" value="كابل"></label>
+                  <label class="custom-chk"><span>بنوك طاقة (باور بانك) <b class="count-tag" data-val="باور بانك">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="type" value="باور بانك"></label>
+                  <label class="custom-chk"><span>جرابات وحماية <b class="count-tag" data-val="جراب">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="type" value="جراب"></label>
+                  <label class="custom-chk"><span>سماعات وصوتيات <b class="count-tag" data-val="سماعة">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="type" value="سماعة"></label>
+                </div>
               </div>
             </div>
 
@@ -271,7 +301,15 @@
                   <span class="reset-filter-btn" onclick="resetFilterGroup('conn')">إعادة تعيين</span>
                   <span class="selected-count-label" id="count-conn">تم تحديد 0 عناصر</span>
                 </div>
-                <div class="filter-options-scroll" id="dynamic-conn-list"></div>
+                <div class="filter-options-scroll">
+                  <label class="custom-chk"><span>Type-C <b class="count-tag" data-val="Type-C">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="conn" value="Type-C"></label>
+                  <label class="custom-chk"><span>Type-C To Type-C <b class="count-tag" data-val="Type-C To Type-C">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="conn" value="Type-C To Type-C"></label>
+                  <label class="custom-chk"><span>Type-C To Lightning <b class="count-tag" data-val="Type-C To Lightning">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="conn" value="Type-C To Lightning"></label>
+                  <label class="custom-chk"><span>USB To Type-C <b class="count-tag" data-val="USB To Type-C">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="conn" value="USB To Type-C"></label>
+                  <label class="custom-chk"><span>Lightning <b class="count-tag" data-val="Lightning">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="conn" value="Lightning"></label>
+                  <label class="custom-chk"><span>Bluetooth 5.3 <b class="count-tag" data-val="5.3">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="conn" value="5.3"></label>
+                  <label class="custom-chk"><span>Bluetooth 5.2 <b class="count-tag" data-val="5.2">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="conn" value="5.2"></label>
+                </div>
               </div>
             </div>
 
@@ -286,7 +324,16 @@
                   <span class="reset-filter-btn" onclick="resetFilterGroup('power')">إعادة تعيين</span>
                   <span class="selected-count-label" id="count-power">تم تحديد 0 عناصر</span>
                 </div>
-                <div class="filter-options-scroll" id="dynamic-power-list"></div>
+                <div class="filter-options-scroll">
+                  <label class="custom-chk"><span>20W <b class="count-tag" data-val="20W">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="power" value="20W"></label>
+                  <label class="custom-chk"><span>25W <b class="count-tag" data-val="25W">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="power" value="25W"></label>
+                  <label class="custom-chk"><span>30W <b class="count-tag" data-val="30W">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="power" value="30W"></label>
+                  <label class="custom-chk"><span>35W <b class="count-tag" data-val="35W">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="power" value="35W"></label>
+                  <label class="custom-chk"><span>45W <b class="count-tag" data-val="45W">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="power" value="45W"></label>
+                  <label class="custom-chk"><span>65W <b class="count-tag" data-val="65W">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="power" value="65W"></label>
+                  <label class="custom-chk"><span>100W <b class="count-tag" data-val="100W">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="power" value="100W"></label>
+                  <label class="custom-chk"><span>140W <b class="count-tag" data-val="140W">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="power" value="140W"></label>
+                </div>
               </div>
             </div>
 
@@ -301,7 +348,12 @@
                   <span class="reset-filter-btn" onclick="resetFilterGroup('battery')">إعادة تعيين</span>
                   <span class="selected-count-label" id="count-battery">تم تحديد 0 عناصر</span>
                 </div>
-                <div class="filter-options-scroll" id="dynamic-battery-list"></div>
+                <div class="filter-options-scroll">
+                  <label class="custom-chk"><span>10,000 mAh <b class="count-tag" data-val="10000">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="battery" value="10000"></label>
+                  <label class="custom-chk"><span>20,000 mAh <b class="count-tag" data-val="20000">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="battery" value="20000"></label>
+                  <label class="custom-chk"><span>Up to 10 Days <b class="count-tag" data-val="10 Days">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="battery" value="10 Days"></label>
+                  <label class="custom-chk"><span>Up to 15 Days <b class="count-tag" data-val="15 Days">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="battery" value="15 Days"></label>
+                </div>
               </div>
             </div>
 
@@ -316,7 +368,14 @@
                   <span class="reset-filter-btn" onclick="resetFilterGroup('color')">إعادة تعيين</span>
                   <span class="selected-count-label" id="count-color">تم تحديد 0 عناصر</span>
                 </div>
-                <div class="filter-options-scroll" id="dynamic-color-list"></div>
+                <div class="filter-options-scroll">
+                  <label class="custom-chk"><span>Black (أسود) <b class="count-tag" data-val="Black">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="color" value="Black"></label>
+                  <label class="custom-chk"><span>White (أبيض) <b class="count-tag" data-val="White">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="color" value="White"></label>
+                  <label class="custom-chk"><span>Blue (أزرق) <b class="count-tag" data-val="Blue">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="color" value="Blue"></label>
+                  <label class="custom-chk"><span>Gray (رمادي) <b class="count-tag" data-val="Gray">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="color" value="Gray"></label>
+                  <label class="custom-chk"><span>Gold (ذهبي) <b class="count-tag" data-val="Gold">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="color" value="Gold"></label>
+                  <label class="custom-chk"><span>Silver (فضي) <b class="count-tag" data-val="Silver">(0)</b></span><input type="checkbox" class="filter-checkbox" data-type="color" value="Silver"></label>
+                </div>
               </div>
             </div>
 
