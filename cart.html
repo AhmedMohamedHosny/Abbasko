@@ -513,11 +513,16 @@
   <script>
     'use strict';
 
+// قراءة السلة من أي اسم تم الحفظ به لضمان عدم ضياع أي منتج
     function getCart() {
-      return JSON.parse(localStorage.getItem('abassco_raya_cart')) || [];
+      return JSON.parse(localStorage.getItem('abasco_raya_cart')) || 
+             JSON.parse(localStorage.getItem('abassco_raya_cart')) || 
+             [];
     }
 
+    // حفظ التعديلات في الاسمين معاً لتوحيد العداد في كل الصفحات
     function saveCart(cart) {
+      localStorage.setItem('abasco_raya_cart', JSON.stringify(cart));
       localStorage.setItem('abassco_raya_cart', JSON.stringify(cart));
       renderCart();
     }
@@ -530,9 +535,13 @@
       const subtitle = document.getElementById('cart-counter-subtitle');
       const subtotalEl = document.getElementById('subtotal-display');
       const finalTotalEl = document.getElementById('final-total-display');
+      const mobCounter = document.getElementById('mob-cart-counter');
 
-      const totalItems = cart.reduce((acc, i) => acc + i.quantity, 0);
-      const totalPrice = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+      const totalItems = cart.reduce((acc, i) => acc + (Number(i.quantity) || 1), 0);
+      const totalPrice = cart.reduce((acc, i) => acc + (Number(i.price) * (Number(i.quantity) || 1)), 0);
+
+      // تحديث عداد الموبايل لو موجود
+      if (mobCounter) mobCounter.textContent = totalItems;
 
       if (cart.length === 0) {
         emptyBox.style.display = 'block';
@@ -549,23 +558,23 @@
         <div class="cart-item-row-card">
           <div class="cart-item-left-info">
             <div class="cart-thumb-box">
-              <img src="${item.image}" alt="${item.name}">
+              <img src="${item.image || 'logo.png'}" alt="${item.name}">
             </div>
             <div class="cart-meta-info">
               <h3>${item.name}</h3>
               <div class="cart-item-stepper">
-                <button class="stepper-action-btn" onclick="updateItemQuantity(${item.id}, 1)">+</button>
+                <button class="stepper-action-btn" onclick="updateItemQuantity('${item.id}', 1)">+</button>
                 <span class="stepper-count-val">${item.quantity}</span>
-                <button class="stepper-action-btn" onclick="updateItemQuantity(${item.id}, -1)">-</button>
+                <button class="stepper-action-btn" onclick="updateItemQuantity('${item.id}', -1)">-</button>
               </div>
             </div>
           </div>
 
           <div class="cart-item-right-pricing">
-            <button class="btn-trash-item" onclick="deleteCartItem(${item.id})" title="حذف الملحق">
+            <button class="btn-trash-item" onclick="deleteCartItem('${item.id}')" title="حذف الملحق">
               <i class="fa-regular fa-trash-can"></i>
             </button>
-            <span class="item-price-sum">LE ${(item.price * item.quantity).toFixed(2)}</span>
+            <span class="item-price-sum">LE ${(Number(item.price) * Number(item.quantity)).toFixed(2)}</span>
           </div>
         </div>
       `).join('');
@@ -574,37 +583,39 @@
       finalTotalEl.textContent = `LE ${totalPrice.toFixed(2)}`;
     }
 
+    // تعديل الكمية (+ أو -)
     window.updateItemQuantity = function(id, delta) {
       let cart = getCart();
-      const item = cart.find(i => i.id === id);
+      const item = cart.find(i => String(i.id) === String(id));
       if (!item) return;
 
-      item.quantity += delta;
+      item.quantity = (Number(item.quantity) || 1) + delta;
       if (item.quantity <= 0) {
-        cart = cart.filter(i => i.id !== id);
+        cart = cart.filter(i => String(i.id) !== String(id));
       }
       saveCart(cart);
     };
 
+    // حذف منتج بالكامل من السلة
     window.deleteCartItem = function(id) {
       let cart = getCart();
-      cart = cart.filter(i => i.id !== id);
+      cart = cart.filter(i => String(i.id) !== String(id));
       saveCart(cart);
     };
 
     // مزامنة الدارك مود
     const darkCheckbox = document.getElementById('dark-mode-checkbox');
-    if (localStorage.getItem('abassco_dark_mode') === 'enabled') {
+    if (localStorage.getItem('abasco_dark_mode') === 'enabled' || localStorage.getItem('abassco_dark_mode') === 'enabled') {
       document.body.classList.add('dark-mode');
       if (darkCheckbox) darkCheckbox.checked = true;
     }
     darkCheckbox?.addEventListener('change', (e) => {
       if (e.target.checked) {
         document.body.classList.add('dark-mode');
-        localStorage.setItem('abassco_dark_mode', 'enabled');
+        localStorage.setItem('abasco_dark_mode', 'enabled');
       } else {
         document.body.classList.remove('dark-mode');
-        localStorage.setItem('abassco_dark_mode', 'disabled');
+        localStorage.setItem('abasco_dark_mode', 'disabled');
       }
     });
 
@@ -614,6 +625,7 @@
     let isWhatsApp = true;
     setInterval(() => {
       isWhatsApp = !isWhatsApp;
+      if (!chatIcon || !chatLink) return;
       chatIcon.classList.add('rotate-anim');
       setTimeout(() => {
         if (isWhatsApp) {
@@ -622,7 +634,7 @@
           chatIcon.className = 'fa-brands fa-whatsapp chat-icon';
         } else {
           chatLink.className = 'chat-circle-link messenger-mode';
-          chatLink.href = 'https://m.me/absascostore';
+          chatLink.href = 'https://m.me/abasscostore';
           chatIcon.className = 'fa-brands fa-facebook-messenger chat-icon';
         }
         chatIcon.classList.remove('rotate-anim');
