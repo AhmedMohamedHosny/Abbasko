@@ -569,17 +569,51 @@
       border: 1px solid var(--admin-border);
     }
 
-    .stock-pill {
+.stock-pill {
       display: inline-block;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 0.74rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.76rem;
       font-weight: 800;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      position: relative;
     }
 
-    .stock-available { background: #dcfce7; color: #15803d; }
-    .stock-low { background: #fef3c7; color: #b45309; }
-    .stock-out { background: #fee2e2; color: #b91c1c; }
+    .stock-pill:hover {
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    .stock-available { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .stock-low { background: #fef3c7; color: #b45309; border: 1px solid #fde047; animation: pulseShake 0.4s ease; }
+    .stock-out { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+    /* أنيميشن اهتزاز بسيط عند خروج الشرار */
+    @keyframes pulseShake {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.15) rotate(-3deg); }
+      75% { transform: scale(1.15) rotate(3deg); }
+    }
+
+    /* حبيبات الشرار النارية المتطايرة */
+    .spark-particle {
+      position: fixed;
+      pointer-events: none;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffeb3b 0%, #ff5722 100%);
+      box-shadow: 0 0 10px #ff9800, 0 0 16px #ff5722;
+      z-index: 99999;
+      animation: sparkFly 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes sparkFly {
+      0% { opacity: 1; transform: translate(0, 0) scale(1.4); }
+      100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.1); }
+    }
 
     .action-icons-wrap {
       display: flex;
@@ -722,37 +756,39 @@
                 </div>
 
 <div class="form-row">
+                  <!-- تحكم الماركات -->
                   <div class="form-group">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                      <label for="prod-brand" style="margin:0;">الماركة (Brand)</label>
-                      <button type="button" onclick="addNewBrandPrompt()" style="background:none; border:none; color:var(--admin-green); font-size:0.75rem; font-weight:800; cursor:pointer;">
-                        <i class="fa-solid fa-plus"></i> إضافة ماركة جديدة
-                      </button>
+                      <label for="prod-brand" style="margin:0; font-weight:800;">الماركة (Brand)</label>
+                      <div style="display:flex; gap:8px;">
+                        <button type="button" onclick="addNewBrandPrompt()" style="background:none; border:none; color:var(--admin-green); font-size:0.75rem; font-weight:800; cursor:pointer;" title="إضافة ماركة جديدة للمتجر">
+                          <i class="fa-solid fa-plus"></i> إضافة
+                        </button>
+                        <button type="button" onclick="deleteCurrentBrandPrompt()" style="background:none; border:none; color:var(--danger); font-size:0.75rem; font-weight:800; cursor:pointer;" title="حذف الماركة المختارة">
+                          <i class="fa-solid fa-trash"></i> حذف
+                        </button>
+                      </div>
                     </div>
                     <select id="prod-brand" class="form-control" required>
-                      <option value="Samsung">Samsung</option>
-                      <option value="Anker">Anker</option>
-                      <option value="Apple">Apple</option>
-                      <option value="Xiaomi">Xiaomi</option>
-                      <option value="Baseus">Baseus</option>
-                      <option value="Ugreen">Ugreen</option>
-                      <option value="Hoco">Hoco</option>
-                      <option value="Joyroom">Joyroom</option>
-                      <option value="LDNIO">LDNIO</option>
-                      <option value="Oraimo">Oraimo</option>
-                      <option value="Remax">Remax</option>
-                      <option value="Acefast">Acefast</option>
-                      <option value="Aukey">Aukey</option>
+                      <!-- يتم تحميل الماركات تلقائياً من الفايربيز والذاكرة -->
                     </select>
                   </div>
+
+                  <!-- تحكم الفئات -->
                   <div class="form-group">
-                    <label for="prod-category">الفئة</label>
-                    
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                      <label for="prod-category" style="margin:0; font-weight:800;">الفئة / القسم</label>
+                      <div style="display:flex; gap:8px;">
+                        <button type="button" onclick="addNewCategoryPrompt()" style="background:none; border:none; color:var(--admin-green); font-size:0.75rem; font-weight:800; cursor:pointer;" title="إضافة قسم جديد">
+                          <i class="fa-solid fa-plus"></i> إضافة
+                        </button>
+                        <button type="button" onclick="deleteCurrentCategoryPrompt()" style="background:none; border:none; color:var(--danger); font-size:0.75rem; font-weight:800; cursor:pointer;" title="حذف القسم المختار">
+                          <i class="fa-solid fa-trash"></i> حذف
+                        </button>
+                      </div>
+                    </div>
                     <select id="prod-category" class="form-control" required>
-                      <option value="chargers">شواحن وكابلات</option>
-                      <option value="powerbanks">بنوك طاقة (باور بانك)</option>
-                      <option value="cases">كفرات وحماية</option>
-                      <option value="audio">سماعات وصوتيات</option>
+                      <!-- يتم تحميل الفئات تلقائياً من الفايربيز والذاكرة -->
                     </select>
                   </div>
                 </div>
@@ -1030,19 +1066,109 @@
       document.getElementById('topbar-heading').textContent = headingMap[tabId] || 'لوحة التحكم';
     };
 
-    // 3. إضافة ماركة جديدة لقائمة الفئات بنقرة زر
-    window.addNewBrandPrompt = function() {
-      const newBrand = prompt("أدخل اسم الماركة الجديدة لإضافتها للقائمة:");
-      if (newBrand && newBrand.trim() !== "") {
-        const brandSelect = document.getElementById('prod-brand');
-        const opt = document.createElement('option');
-        opt.value = newBrand.trim();
-        opt.textContent = newBrand.trim();
-        opt.selected = true;
-        brandSelect.appendChild(opt);
-        alert(`تمت إضافة ماركة [${newBrand.trim()}] واختيارها بنجاح!`);
+// ==========================================================================
+    // إدارة ومزامنة الماركات والأقسام الحية مع المتجر
+    // ==========================================================================
+    const DEFAULT_BRANDS = ["Samsung", "Anker", "Apple", "Xiaomi", "Baseus", "Ugreen", "Hoco", "Joyroom", "LDNIO", "Oraimo", "Remax", "Acefast", "Aukey"];
+    const DEFAULT_CATEGORIES = [
+      { id: "chargers", name: "شواحن وكابلات" },
+      { id: "powerbanks", name: "بنوك طاقة (باور بانك)" },
+      { id: "cases", name: "كفرات وحماية" },
+      { id: "audio", name: "سماعات وصوتيات" }
+    ];
+
+    let currentBrands = JSON.parse(localStorage.getItem('abasco_store_brands')) || DEFAULT_BRANDS;
+    let currentCategories = JSON.parse(localStorage.getItem('abasco_store_categories')) || DEFAULT_CATEGORIES;
+
+    async function syncTaxonomyWithFirebase() {
+      try {
+        const doc = await db.collection('settings').doc('taxonomy').get();
+        if (doc.exists) {
+          const data = doc.data();
+          if (data.brands && data.brands.length) currentBrands = data.brands;
+          if (data.categories && data.categories.length) currentCategories = data.categories;
+        } else {
+          await db.collection('settings').doc('taxonomy').set({ brands: currentBrands, categories: currentCategories });
+        }
+      } catch (e) {
+        console.warn("تنبيه: مزامنة التصنيفات محلياً:", e.message);
+      }
+      localStorage.setItem('abasco_store_brands', JSON.stringify(currentBrands));
+      localStorage.setItem('abasco_store_categories', JSON.stringify(currentCategories));
+      populateTaxonomySelects();
+    }
+
+    function populateTaxonomySelects() {
+      const brandSel = document.getElementById('prod-brand');
+      const catSel = document.getElementById('prod-category');
+      if (brandSel) {
+        brandSel.innerHTML = currentBrands.map(b => `<option value="${b}">${b}</option>`).join('');
+      }
+      if (catSel) {
+        catSel.innerHTML = currentCategories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      }
+    }
+
+    // إضافة ماركة جديدة
+    window.addNewBrandPrompt = async function() {
+      const brand = prompt("أدخل اسم الماركة الجديدة:");
+      if (brand && brand.trim()) {
+        const val = brand.trim();
+        if (!currentBrands.includes(val)) {
+          currentBrands.push(val);
+          await saveTaxonomy();
+          populateTaxonomySelects();
+          document.getElementById('prod-brand').value = val;
+          alert(`✅ تمت إضافة ماركة [${val}] وستظهر في واجهة المتجر فوراً!`);
+        }
       }
     };
+
+    // حذف الماركة المحددة
+    window.deleteCurrentBrandPrompt = async function() {
+      const brandSel = document.getElementById('prod-brand');
+      const selected = brandSel.value;
+      if (confirm(`هل أنت متأكد من حذف ماركة [${selected}] من المتجر تماماً؟`)) {
+        currentBrands = currentBrands.filter(b => b !== selected);
+        await saveTaxonomy();
+        populateTaxonomySelects();
+        alert(`🗑️ تم حذف ماركة [${selected}] من المتجر بنجاح.`);
+      }
+    };
+
+    // إضافة فئة جديدة
+    window.addNewCategoryPrompt = async function() {
+      const catName = prompt("أدخل اسم الفئة / القسم الجديد (مثال: ساعات ذكية):");
+      if (catName && catName.trim()) {
+        const catId = "cat_" + Date.now();
+        currentCategories.push({ id: catId, name: catName.trim() });
+        await saveTaxonomy();
+        populateTaxonomySelects();
+        document.getElementById('prod-category').value = catId;
+        alert(`✅ تمت إضافة قسم [${catName.trim()}] بنجاح!`);
+      }
+    };
+
+    // حذف الفئة المحددة
+    window.deleteCurrentCategoryPrompt = async function() {
+      const catSel = document.getElementById('prod-category');
+      const selectedId = catSel.value;
+      const selectedObj = currentCategories.find(c => c.id === selectedId);
+      if (confirm(`هل أنت متأكد من حذف قسم [${selectedObj ? selectedObj.name : selectedId}] من المتجر؟`)) {
+        currentCategories = currentCategories.filter(c => c.id !== selectedId);
+        await saveTaxonomy();
+        populateTaxonomySelects();
+        alert(`🗑️ تم حذف القسم من المتجر بنجاح.`);
+      }
+    };
+
+    async function saveTaxonomy() {
+      localStorage.setItem('abasco_store_brands', JSON.stringify(currentBrands));
+      localStorage.setItem('abasco_store_categories', JSON.stringify(currentCategories));
+      try {
+        await db.collection('settings').doc('taxonomy').set({ brands: currentBrands, categories: currentCategories });
+      } catch(e) {}
+    }
 
 // ==========================================================================
     // إعدادات Cloudinary لرفع الصور مجاناً وبأعلى سرعة
@@ -1179,7 +1305,11 @@
                 <span style="font-size:0.75rem; color:var(--text-muted);">قطعة</span>
               </div>
             </td>
-            <td><span class="stock-pill ${badgeClass}">${statusText}</span></td>
+<td>
+              <span class="stock-pill ${badgeClass}" onclick="cycleProductStatus('${item.id}', event)" title="اضغط للتبديل: متوفر ➔ وشك النفاذ ➔ نفذ المخزون">
+                ${statusText}
+              </span>
+            </td>            
             <td>
               <div class="action-icons-wrap">
                 <button class="action-btn-mini btn-edit-action" onclick="editProduct('${item.id}')" title="تعديل الملحق">
@@ -1494,8 +1624,72 @@ uploadedCloudinaryUrls = [];
       const lowStock = adminInventory.filter(i => (Number(i.stock) || 0) < 5).length;
       document.getElementById('stat-low-stock').textContent = `${lowStock} منتج`;
     }
+// ==========================================================================
+    // محرك تبديل الحالة بنقرة واحدة + إطلاق تأثير الشرار الناري
+    // ==========================================================================
+    window.cycleProductStatus = async function(id, event) {
+      const item = adminInventory.find(i => String(i.id) === String(id));
+      if (!item) return;
 
-    document.addEventListener('DOMContentLoaded', () => {
+      const currentStock = Number(item.stock) || 0;
+      let newStock = 15;
+      let newInStock = true;
+
+      // دورة الحالات الثلاث:
+      // 1. متوفر (أكبر من 5) ➔ 2. على وشك النفاذ (بين 1 و 4) مع شرار ➔ 3. نفذ المخزون (0) وممنوع يطلبه العميل
+      if (item.inStock !== false && currentStock >= 5) {
+        // التحويل إلى: على وشك النفاذ 🔥
+        newStock = 2;
+        newInStock = true;
+        triggerSparksEffect(event.clientX, event.clientY);
+      } else if (item.inStock !== false && currentStock > 0 && currentStock < 5) {
+        // التحويل إلى: نفذ المخزون ❌ (يُقفل على العميل فوراً)
+        newStock = 0;
+        newInStock = false;
+      } else {
+        // التحويل إلى: متوفر بالمخزن ✅
+        newStock = 15;
+        newInStock = true;
+      }
+
+      item.stock = newStock;
+      item.inStock = newInStock;
+      renderInventoryTable(adminInventory);
+      updateDashboardKPIs();
+
+      try {
+        await db.collection('products').doc(id).update({
+          stock: newStock,
+          inStock: newInStock
+        });
+      } catch (e) {
+        console.warn("تحديث محلي للحالة:", e.message);
+      }
+    };
+
+    // دالة تفجير الشرار الناري في مكان الضغطة بالضبط
+    function triggerSparksEffect(x, y) {
+      const sparkCount = 18;
+      for (let i = 0; i < sparkCount; i++) {
+        const spark = document.createElement('div');
+        spark.className = 'spark-particle';
+        document.body.appendChild(spark);
+
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 40 + Math.random() * 80;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+
+        spark.style.left = `${x}px`;
+        spark.style.top = `${y}px`;
+        spark.style.setProperty('--tx', `${tx}px`);
+        spark.style.setProperty('--ty', `${ty}px`);
+
+        setTimeout(() => spark.remove(), 650);
+      }
+    }
+document.addEventListener('DOMContentLoaded', () => {
+      syncTaxonomyWithFirebase();
       loadInventoryData();
       loadOrdersData();
 
