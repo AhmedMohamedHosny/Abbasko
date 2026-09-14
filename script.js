@@ -22,8 +22,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// مصفوفة المنتجات (ستُملأ تلقائياً من الفايربيز)
-// مصفوفة المنتجات مجهزة بـ 4 صور زوايا لكل ملحق
 let abascoInventory = [
   {
     id: '1',
@@ -40,8 +38,8 @@ let abascoInventory = [
     images: [
       'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
       'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80'
+      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=400&q=80'
     ],
     stock: 15,
     inStock: true
@@ -61,8 +59,8 @@ let abascoInventory = [
     images: [
       'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
       'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80'
+      'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80'
     ],
     stock: 10,
     inStock: true
@@ -81,9 +79,9 @@ let abascoInventory = [
     image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
     images: [
       'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80',
       'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80'
+      'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=400&q=80'
     ],
     stock: 20,
     inStock: true
@@ -102,9 +100,9 @@ let abascoInventory = [
     image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
     images: [
       'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=400&q=80',
       'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
-      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80'
+      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80'
     ],
     stock: 8,
     inStock: true
@@ -232,22 +230,20 @@ function renderCatalog(items) {
 <div class="card-image-pane" onmouseleave="resetCardSlice('${product.id}')">
             ${product.discount ? `<span class="discount-ribbon-tag">وفر ${product.discount} جنيه</span>` : ''}
             
-            <!-- زر العين الخضراء السريع بأعلى الكارت -->
-            <button class="quick-hover-eye" onclick="window.location.href='product.html?id=${product.id}'" title="معاينة المنتج">
+            <!-- زر العين الخضراء السريع -->
+            <button class="quick-hover-eye" onclick="window.location.href='product.html?id=${product.id}'" title="نظرة سريعة">
               <i class="fa-solid fa-eye"></i>
             </button>
 
             <div class="media-square-box">
-              <a href="product.html?id=${product.id}">
-                <img id="prod-img-${product.id}" src="${(product.images && product.images[0]) || product.image || 'logo.png'}" alt="${product.title}" loading="lazy">
-              </a>
+              <img id="prod-img-${product.id}" src="${(product.images && product.images[0]) || product.image || 'logo.png'}" alt="${product.title}" loading="lazy">
               
-              <!-- 4 شرائح أفقية شفافة تتحسس حركة الماوس -->
+              <!-- 4 شرائح أفقية شفافة تستجيب لحركة الماوس وعند النقر تفتح المنتج -->
               <div class="hover-slices-overlay">
-                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 0)"></div>
-                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 1)"></div>
-                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 2)"></div>
-                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 3)"></div>
+                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 0)" onclick="window.location.href='product.html?id=${product.id}'"></div>
+                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 1)" onclick="window.location.href='product.html?id=${product.id}'"></div>
+                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 2)" onclick="window.location.href='product.html?id=${product.id}'"></div>
+                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 3)" onclick="window.location.href='product.html?id=${product.id}'"></div>
               </div>
             </div>
 
