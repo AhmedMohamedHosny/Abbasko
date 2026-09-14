@@ -140,7 +140,7 @@ DOM.productsContainer.innerHTML = items.map(product => {
               <span>(${product.ratingCount})</span>
             </div>
 
-            <div class="price-block-dream">
+<div class="price-block-dream" onclick="window.location.href='product.html?id=${product.id}'" style="cursor: pointer;">
               <span class="price-val-red">LE ${product.price.toFixed(2)}</span>
               <span class="price-struck-gray">LE ${product.oldPrice.toFixed(2)}</span>
             </div>
@@ -408,79 +408,52 @@ document.addEventListener('DOMContentLoaded', () => {
   renderCatalog(state.products);
   syncCartBadge();
 });
-// فتح وإغلاق قائمة التصفية باليمين عند الضغط
-document.getElementById('filter-toggle-btn')?.addEventListener('click', () => {
-  document.body.classList.toggle('filters-opened');
-});
-// 1. زر تصفية: فتح وإغلاق القائمة في اليمين عند النقر
-const filterBtn = document.getElementById('filter-toggle-btn');
-const mainLayout = document.querySelector('.dream-main-layout');
-
-filterBtn?.addEventListener('click', () => {
-  mainLayout?.classList.toggle('sidebar-active');
-});
-
-// 2. زر متوفر بالمخزون: فلترة المنتجات لحظياً
-const stockCheckbox = document.getElementById('stock-filter');
-stockCheckbox?.addEventListener('change', (e) => {
-  if (e.target.checked) {
-    // إظهار المنتجات المتوفرة فقط بالمخزون
-    const inStockItems = abascoInventory.filter(item => item.inStock === true);
-    renderCatalog(inStockItems);
-  } else {
-    // إظهار كل المنتجات
-    renderCatalog(abascoInventory);
-  }
-});
-document.querySelectorAll('.filter-card-header').forEach(header => {
-  header.addEventListener('click', () => {
-    header.parentElement.classList.toggle('open');
-  });
-});
 /* ==========================================================================
-   محرك الفلترة الحقيقية لجميع الخيارات والأعداد (Interactive Multi-Filtering)
+   تشغيل التصفية وفتح الصناديق وتفعيل النقرات
    ========================================================================== */
 
-// 1. فتح وغلق الصناديق عند الضغط
-document.querySelectorAll('.filter-card-header').forEach(header => {
-  header.addEventListener('click', () => {
-    header.parentElement.classList.toggle('open');
-  });
+// 1. فتح وغلق شريط التصفية الجانبي عند الضغط على زر "تصفية"
+document.getElementById('filter-toggle-btn')?.addEventListener('click', () => {
+  document.querySelector('.dream-main-layout')?.classList.toggle('sidebar-active');
 });
 
-// 2. تتبع الفلاتر المختارة
+// 2. فتح وغلق صناديق الفلاتر (السعر، الماركة، الشاشة...) عند النقر عليها
+document.addEventListener('click', (e) => {
+  const header = e.target.closest('.filter-card-header');
+  if (header) {
+    const card = header.closest('.filter-card-accordion');
+    if (card) {
+      card.classList.toggle('open');
+    }
+  }
+});
+
+// 3. مفتاح متوفر بالمخزون: فلترة المنتجات فورياً
+document.getElementById('stock-filter')?.addEventListener('change', (e) => {
+  executeFiltering();
+});
+
+// 4. تتبع مربعات الاختيار (Checkboxes) وتحديث العدادات
 const activeFilters = {
-  brand: [],
-  screen: [],
-  mic: [],
-  type: [],
-  conn: [],
-  power: [],
-  battery: [],
-  color: []
+  brand: [], screen: [], mic: [], type: [], conn: [], power: [], battery: [], color: []
 };
 
-// الاستماع لجميع checkboxes الفلترة
 document.querySelectorAll('.filter-checkbox').forEach(chk => {
   chk.addEventListener('change', () => {
     const type = chk.getAttribute('data-type');
     const val = chk.value;
-
     if (chk.checked) {
       if (!activeFilters[type].includes(val)) activeFilters[type].push(val);
     } else {
       activeFilters[type] = activeFilters[type].filter(v => v !== val);
     }
-
-    // تحديث عداد "تم تحديد X عناصر"
     const countEl = document.getElementById(`count-${type}`);
     if (countEl) countEl.textContent = `تم تحديد ${activeFilters[type].length} عناصر`;
-
     executeFiltering();
   });
 });
 
-// زر إعادة التعيين لمجموعة محددة
+// 5. زر إعادة التعيين داخل كل صندوق
 window.resetFilterGroup = function(type) {
   if (type === 'price') {
     const priceEl = document.getElementById('price-range');
@@ -497,37 +470,21 @@ window.resetFilterGroup = function(type) {
   executeFiltering();
 };
 
-// تنفيذ الفلترة الفورية على الكتالوج
+// 6. تنفيذ الفلترة على المنتجات
 function executeFiltering() {
   let result = [...abascoInventory];
-
-  // فلتر متوفر بالمخزون
-  const stockOnly = document.getElementById('stock-filter')?.checked;
-  if (stockOnly) {
+  if (document.getElementById('stock-filter')?.checked) {
     result = result.filter(item => item.inStock === true);
   }
-
-  // فلتر السعر الأقصى
   result = result.filter(item => item.price <= state.maxPrice);
-
-  // فلتر الماركات المختارة
   if (activeFilters.brand.length > 0) {
     result = result.filter(item => activeFilters.brand.includes(item.brand));
   }
-
-  // فلتر قدرة الشحن بالواط (Power)
   if (activeFilters.power.length > 0) {
-    result = result.filter(item => {
-      return activeFilters.power.some(pw => item.specs.includes(pw) || item.title.includes(pw));
-    });
+    result = result.filter(item => activeFilters.power.some(pw => item.specs.includes(pw) || item.title.includes(pw)));
   }
-
-  // فلتر النوع (Type)
   if (activeFilters.type.length > 0) {
-    result = result.filter(item => {
-      return activeFilters.type.some(tp => item.specs.toLowerCase().includes(tp.toLowerCase()) || item.title.toLowerCase().includes(tp.toLowerCase()));
-    });
+    result = result.filter(item => activeFilters.type.some(tp => item.specs.toLowerCase().includes(tp.toLowerCase()) || item.title.toLowerCase().includes(tp.toLowerCase())));
   }
-
   renderCatalog(result);
 }
