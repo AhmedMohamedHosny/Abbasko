@@ -896,33 +896,42 @@
       restartAutoSlide();
     });
 
-    // ==========================================================================
-    // محرك ألوان المنتج
+// ==========================================================================
+    // محرك ألوان المنتج الحقيقي المربوط بما أدخله المشرف
     // ==========================================================================
     function setupColorSelection(prod) {
       const colorsBox = document.getElementById('color-options-container');
       const labelEl = document.getElementById('selected-color-name');
       if (!colorsBox) return;
 
-      // ألوان المنتج الحقيقية أو افتراضية ذكية حسب اسم المنتج
-      const palette = [
-        { name: 'أسود', hex: '#111827' },
-        { name: 'أبيض', hex: '#ffffff' },
-        { name: 'أزرق', hex: '#1d4ed8' },
-        { name: 'رمادي', hex: '#64748b' }
-      ];
+      // خريطة درجات الألوان للـ Hex
+      const hexMap = {
+        'أسود': '#111827',
+        'أبيض': '#ffffff',
+        'أزرق': '#1d4ed8',
+        'رمادي': '#64748b',
+        'ذهبي': '#d97706',
+        'فضي': '#94a3b8'
+      };
 
-      chosenColor = palette[0].name;
+      // استخدام الألوان التي حددها المشرف للمنتج، أو افتراضي إن لم يحدد
+      let availableColors = (prod.colors && Array.isArray(prod.colors) && prod.colors.length > 0) 
+        ? prod.colors 
+        : ['أسود', 'أبيض'];
+
+      chosenColor = availableColors[0];
       if (labelEl) labelEl.textContent = chosenColor;
 
-      colorsBox.innerHTML = palette.map((col, i) => `
-        <div class="color-swatch-badge ${i === 0 ? 'active' : ''}" onclick="selectProductColor('${col.name}', this)">
-          <span class="color-circle-preview" style="background-color: ${col.hex};"></span>
-          <span>${col.name}</span>
-        </div>
-      `).join('');
+      colorsBox.innerHTML = availableColors.map((colorName, i) => {
+        const hex = hexMap[colorName] || '#7cb342';
+        return `
+          <div class="color-swatch-badge ${i === 0 ? 'active' : ''}" onclick="selectProductColor('${colorName}', this)">
+            <span class="color-circle-preview" style="background-color: ${hex};"></span>
+            <span>${colorName}</span>
+          </div>
+        `;
+      }).join('');
     }
-
     window.selectProductColor = function(colorName, el) {
       chosenColor = colorName;
       const labelEl = document.getElementById('selected-color-name');
