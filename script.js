@@ -6,60 +6,24 @@
  */
 
 'use strict';
-const abascoInventory = [
-  {
-    id: 1,
-    title: 'سامسونج شاحن منزلي بقوة 45 واط مع كابل من Type-C إلي Type-C بطول 1.8 متر',
-    brand: 'Samsung',
-    category: 'chargers',
-    price: 1999.00,
-    oldPrice: 2360.00,
-    discount: '361.00',
-    ratingCount: 0,
-    specs: 'الماركة: سامسونج | المميزات: شحن فائق السرعة 2.0 كحد أقصى 45 واط | يتضمن كابل USB من النوع C بطول 1.8 متر.',
-    image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
-    inStock: true
-  },
-  {
-    id: 2,
-    title: 'سامسونج 25 واط شاحن PD Type-C',
-    brand: 'Samsung',
-    category: 'chargers',
-    price: 449.00,
-    oldPrice: 529.00,
-    discount: '80.00',
-    ratingCount: 1,
-    specs: 'النوع: Adapter | الطاقة: 25 Watt | المدخل: 100-240 V | المخرج: 5 V | شحن فائق السرعة للبقاء على قيد الحياة.',
-    image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
-    inStock: true
-  },
-  {
-    id: 3,
-    title: 'أنكر زولو شاحن 30 واط، A2698L11 - أسود فائق السرعة',
-    brand: 'Anker',
-    category: 'chargers',
-    price: 729.00,
-    oldPrice: 859.00,
-    discount: '130.00',
-    ratingCount: 0,
-    specs: 'النوع: شاحن طاقة | شحن سريع بقوة 30 واط | المدخل: تيار متردد 100-240V | الإخراج: منفذ USB-C أقصى طاقة 30 واط.',
-    image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
-    inStock: true
-  },
-  {
-    id: 4,
-    title: 'سامسونج EP-T2510 شاحن محول طاقة 25 واط يو اس بي-C',
-    brand: 'Samsung',
-    category: 'chargers',
-    price: 749.00,
-    oldPrice: 879.00,
-    discount: '130.00',
-    ratingCount: 0,
-    specs: 'الطاقة: 25 واط | المنافذ: منفذ يو اس بي-C | المدخل: 100-240V | المخرج: 3A, 5V | اللون: أسود.',
-    image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
-    inStock: true
-  }
-];
+
+// 1. إعدادات مشروع فايربيز الخاص بك (abbasko-store)
+const firebaseConfig = {
+  apiKey: "AIzaSyBhOo-nzA3TztOFQlxPQaOTrLtPDjKb_xU",
+  authDomain: "abbasko-store.firebaseapp.com",
+  projectId: "abbasko-store",
+  storageBucket: "abbasko-store.firebasestorage.app",
+  messagingSenderId: "475025963892",
+  appId: "1:475025963892:web:8790442f8bc83539368a21",
+  measurementId: "G-B1866569VZ"
+};
+
+// تهيئة الفايربيز وقاعدة البيانات
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// مصفوفة المنتجات (ستُملأ تلقائياً من الفايربيز)
+let abascoInventory = [];
 
 const state = {
   products: [...abascoInventory],
@@ -455,8 +419,103 @@ setInterval(() => {
   }, 250);
 }, 5000);
 
+// جلب المنتجات من Firestore
+async function fetchProductsFromFirebase() {
+  const container = document.getElementById('catalog-products-container');
+  if (container) {
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: var(--dream-green); margin-bottom: 12px;"></i>
+        <h3 style="font-weight: 800;">جاري تحميل المنتجات من قاعدة البيانات...</h3>
+      </div>
+    `;
+  }
+
+  try {
+    const snapshot = await db.collection('products').get();
+    
+    // إذا كانت قاعدة البيانات فارغة في أول مرة، يتم رفع المنتجات التجريبية تلقائياً
+    if (snapshot.empty) {
+      await seedInitialProducts();
+      return;
+    }
+
+    abascoInventory = [];
+    snapshot.forEach(doc => {
+      abascoInventory.push({ id: doc.id, ...doc.data() });
+    });
+
+    state.products = [...abascoInventory];
+    executeFiltering();
+  } catch (error) {
+    console.error("خطأ أثناء جلب المنتجات:", error);
+    if (container) {
+      container.innerHTML = `<h3 style="grid-column: 1 / -1; text-align: center; color: red;">فشل الاتصال بقاعدة البيانات. تأكد من ضبط الـ Rules.</h3>`;
+    }
+  }
+}
+
+// دالة رفع المنتجات الأولية للفايربيز لمرة واحدة فقط إن كانت فارغة
+async function seedInitialProducts() {
+  const initialData = [
+    {
+      title: 'سامسونج شاحن منزلي بقوة 45 واط مع كابل من Type-C إلي Type-C بطول 1.8 متر',
+      brand: 'Samsung',
+      category: 'chargers',
+      price: 1999.00,
+      oldPrice: 2360.00,
+      discount: '361.00',
+      ratingCount: 0,
+      specs: 'الماركة: سامسونج | شحن فائق السرعة 2.0 كحد أقصى 45 واط | كابل تايب سي 1.8 متر.',
+      image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+      inStock: true
+    },
+    {
+      title: 'سامسونج 25 واط شاحن PD Type-C',
+      brand: 'Samsung',
+      category: 'chargers',
+      price: 449.00,
+      oldPrice: 529.00,
+      discount: '80.00',
+      ratingCount: 1,
+      specs: 'النوع: Adapter | الطاقة: 25 Watt | شحن فائق السرعة للبقاء على قيد الحياة.',
+      image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+      inStock: true
+    },
+    {
+      title: 'أنكر زولو شاحن 30 واط، A2698L11 - أسود فائق السرعة',
+      brand: 'Anker',
+      category: 'chargers',
+      price: 729.00,
+      oldPrice: 859.00,
+      discount: '130.00',
+      ratingCount: 0,
+      specs: 'النوع: شاحن طاقة | شحن سريع بقوة 30 واط | منفذ USB-C.',
+      image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+      inStock: true
+    },
+    {
+      title: 'سامسونج EP-T2510 شاحن محول طاقة 25 واط يو اس بي-C',
+      brand: 'Samsung',
+      category: 'chargers',
+      price: 749.00,
+      oldPrice: 879.00,
+      discount: '130.00',
+      ratingCount: 0,
+      specs: 'الطاقة: 25 واط | منفذ يو اس بي-C | اللون: أسود.',
+      image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+      inStock: true
+    }
+  ];
+
+  for (const item of initialData) {
+    await db.collection('products').add(item);
+  }
+  fetchProductsFromFirebase();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  renderCatalog(state.products);
+  fetchProductsFromFirebase();
   syncCartBadge();
 });
 /* ==========================================================================
@@ -540,3 +599,47 @@ function executeFiltering() {
   }
   renderCatalog(result);
 }
+/* ==========================================================================
+   نظام الدخول السري للوحة تحكم المدير (Admin Secret Access)
+   ========================================================================== */
+
+// كلمة المرور السرية الخاصة بك للدخول (يمكنك تغييرها لاحقاً)
+const ADMIN_SECRET_PASS = "abasco2026";
+
+function requestAdminAccess() {
+  const pass = prompt("🔐 منطقة إدارة محل عباسكو\nيرجى إدخال كلمة المرور:");
+  if (pass === ADMIN_SECRET_PASS) {
+    alert("مرحباً بك يا قدوة! جاري التوجيه للوحة التحكم...");
+    window.location.href = "admin.html";
+  } else if (pass !== null) {
+    alert("❌ كلمة المرور غير صحيحة!");
+  }
+}
+
+// 1. الدخول عبر اختصار لوحة المفاتيح: Ctrl + Shift + A
+document.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a' || e.key === 'ش')) {
+    e.preventDefault();
+    requestAdminAccess();
+  }
+});
+
+// 2. الدخول بالنقر 5 مرات متتالية على اللوجو
+let logoClickCount = 0;
+let logoTimer = null;
+
+document.querySelector('.main-store-logo')?.addEventListener('click', (e) => {
+  logoClickCount++;
+  clearTimeout(logoTimer);
+
+  // إعادة تصفير العداد بعد ثانيتين ونصف إذا لم تكتمل النقرات
+  logoTimer = setTimeout(() => {
+    logoClickCount = 0;
+  }, 2500);
+
+  if (logoClickCount >= 5) {
+    e.preventDefault();
+    logoClickCount = 0;
+    requestAdminAccess();
+  }
+});
