@@ -306,137 +306,46 @@ window.changePage = function(targetPage) {
 };
 
 // ==========================================================================
-// محرك الفلترة الشامل والموحد بدون أي تعارض (Master Filter Engine)
-// ==========================================================================
-// ==========================================================================
-// تتبع وفلترة الـ 9 أقسام بالكامل بدون استثناء
+// محرك الفلترة الحقيقي الكامل للـ 9 أقسام وتحديث الأعداد الحية
 // ==========================================================================
 const activeFilters = {
-  brand: [],
-  screen: [],
-  mic: [],
-  type: [],
-  conn: [],
-  power: [],
-  battery: [],
-  color: []
+  brand: [], screen: [], mic: [], type: [], conn: [], power: [], battery: [], color: []
 };
 
-// دالة بناء وتوليد الـ 9 فلاتر وحساب أعدادها الحقيقية من المنتجات
-function buildDynamicFilters() {
-  const containers = {
-    brand: document.getElementById('dynamic-brands-list'),
-    screen: document.getElementById('dynamic-screen-list'),
-    mic: document.getElementById('dynamic-mic-list'),
-    type: document.getElementById('dynamic-types-list'),
-    conn: document.getElementById('dynamic-conn-list'),
-    power: document.getElementById('dynamic-power-list'),
-    battery: document.getElementById('dynamic-battery-list'),
-    color: document.getElementById('dynamic-color-list')
-  };
-
-  if (!containers.brand) return;
-
-  // قواميس لحساب الأعداد تلقائياً
-  const counts = {
-    brand: {},
-    screen: { 'حماية شاشة 9D': 0, 'اسكرينة خصوصية': 0, '1.75 inches': 0 },
-    mic: { 'Supported': 0, '2 Mics': 0, 'عزل ضوضاء ENC': 0 },
-    type: {},
-    conn: { 'Type-C': 0, 'Type-C To Type-C': 0, 'Lightning': 0, 'USB-A': 0, 'Bluetooth 5.3': 0 },
-    power: {},
-    battery: { '10,000 mAh': 0, '20,000 mAh': 0, 'Up to 10 Days': 0 },
-    color: { 'Black': 0, 'White': 0, 'Blue': 0, 'Gray': 0, 'Pink': 0, 'Gold': 0 }
-  };
-
-  abascoInventory.forEach(prod => {
-    const fullText = ((prod.title || '') + ' ' + (prod.specs || '') + ' ' + (prod.brand || '')).toUpperCase();
-
-    // 1. الماركة
-    if (prod.brand) {
-      const b = prod.brand.trim();
-      counts.brand[b] = (counts.brand[b] || 0) + 1;
-    }
-
-    // 2. النوع
-    const t = prod.category === 'chargers' ? 'شواحن ووصلات' :
-              prod.category === 'powerbanks' ? 'بنوك طاقة' :
-              prod.category === 'cases' ? 'كفرات وجرابات' :
-              prod.category === 'audio' ? 'سماعات وصوتيات' : 'إكسسوارات عامة';
-    counts.type[t] = (counts.type[t] || 0) + 1;
-
-    // 3. القدرة (Power)
-    const wattMatch = fullText.match(/(\d+\s?)(واط|WATT|W)/);
-    if (wattMatch) {
-      const watt = parseInt(wattMatch[1]) + 'W';
-      counts.power[watt] = (counts.power[watt] || 0) + 1;
-    }
-
-    // 4. الألوان
-    if (fullText.includes('BLACK') || fullText.includes('أسود')) counts.color['Black']++;
-    if (fullText.includes('WHITE') || fullText.includes('أبيض')) counts.color['White']++;
-    if (fullText.includes('BLUE') || fullText.includes('أزرق')) counts.color['Blue']++;
-    if (fullText.includes('GRAY') || fullText.includes('رمادي')) counts.color['Gray']++;
-    if (fullText.includes('PINK') || fullText.includes('وردي')) counts.color['Pink']++;
-    if (fullText.includes('GOLD') || fullText.includes('ذهبي')) counts.color['Gold']++;
-
-    // 5. البطارية (Battery)
-    if (fullText.includes('10000') || fullText.includes('10,000')) counts.battery['10,000 mAh']++;
-    if (fullText.includes('20000') || fullText.includes('20,000')) counts.battery['20,000 mAh']++;
-
-    // 6. التوصيل
-    if (fullText.includes('TYPE-C TO TYPE-C')) counts.conn['Type-C To Type-C']++;
-    else if (fullText.includes('TYPE-C') || fullText.includes('تايب سي')) counts.conn['Type-C']++;
-    if (fullText.includes('LIGHTNING') || fullText.includes('لايتنينج')) counts.conn['Lightning']++;
-    if (fullText.includes('USB')) counts.conn['USB-A']++;
-    if (fullText.includes('بلوتوث') || fullText.includes('BLUETOOTH')) counts.conn['Bluetooth 5.3']++;
-
-    // 7. الشاشة والميكروفون
-    if (fullText.includes('اسكرين') || fullText.includes('9D') || fullText.includes('شاشة')) counts.screen['حماية شاشة 9D']++;
-    if (fullText.includes('MIC') || fullText.includes('ميكروفون') || fullText.includes('عزل')) counts.mic['Supported']++;
+// دالة حساب الأعداد الحقيقية ووضعها بين القوسين جنب كل خيار
+function updateFilterCounts() {
+  document.querySelectorAll('.count-tag').forEach(tag => {
+    const val = tag.getAttribute('data-val').toUpperCase();
+    const count = abascoInventory.filter(item => {
+      const fullText = ((item.title || '') + ' ' + (item.specs || '') + ' ' + (item.brand || '')).toUpperCase();
+      if (val === 'BLACK' || val === 'أسود') return fullText.includes('BLACK') || fullText.includes('أسود');
+      if (val === 'WHITE' || val === 'أبيض') return fullText.includes('WHITE') || fullText.includes('أبيض');
+      return fullText.includes(val);
+    }).length;
+    tag.textContent = `(${count})`;
   });
+}
 
-  // رسم خيارات كل قسم مع الحفاظ على ما هو محدد مسبقاً
-  for (const [key, container] of Object.entries(containers)) {
-    if (!container) continue;
-    const categoryCounts = counts[key];
-    const availableKeys = Object.keys(categoryCounts).filter(item => categoryCounts[item] > 0);
+// تشغيل الفلترة التفاعلية عند الضغط على أي Checkbox
+document.querySelectorAll('.filter-checkbox').forEach(chk => {
+  chk.addEventListener('change', () => {
+    state.currentPage = 1;
+    const type = chk.getAttribute('data-type');
+    const val = chk.value;
 
-    if (availableKeys.length > 0) {
-      container.innerHTML = availableKeys.map(val => `
-        <label class="custom-chk">
-          <span>${val} (${categoryCounts[val]})</span>
-          <input type="checkbox" class="filter-checkbox" data-type="${key}" value="${val}" ${activeFilters[key].includes(val) ? 'checked' : ''}>
-        </label>
-      `).join('');
+    if (chk.checked) {
+      if (!activeFilters[type].includes(val)) activeFilters[type].push(val);
     } else {
-      container.innerHTML = `<p style="font-size:0.78rem; color:#9ca3af; padding:4px 0;">لا توجد خيارات مضافة</p>`;
+      activeFilters[type] = activeFilters[type].filter(v => v !== val);
     }
-  }
 
-  attachFilterEvents();
-}
-
-// دالة تفعيل مربعات الاختيار في جميع الأقسام
-function attachFilterEvents() {
-  document.querySelectorAll('.filter-checkbox').forEach(chk => {
-    chk.addEventListener('change', () => {
-      state.currentPage = 1;
-      const type = chk.getAttribute('data-type');
-      const val = chk.value;
-      if (chk.checked) {
-        if (!activeFilters[type].includes(val)) activeFilters[type].push(val);
-      } else {
-        activeFilters[type] = activeFilters[type].filter(v => v !== val);
-      }
-      const countEl = document.getElementById(`count-${type}`);
-      if (countEl) countEl.textContent = `تم تحديد ${activeFilters[type].length} عناصر`;
-      executeFiltering();
-    });
+    const countEl = document.getElementById(`count-${type}`);
+    if (countEl) countEl.textContent = `تم تحديد ${activeFilters[type].length} عناصر`;
+    executeFiltering();
   });
-}
+});
 
-// زر إعادة التعيين لأي قسم من الـ 9 أقسام
+// زر إعادة التعيين لأي قسم
 window.resetFilterGroup = function(type) {
   state.currentPage = 1;
   if (type === 'price') {
@@ -454,19 +363,19 @@ window.resetFilterGroup = function(type) {
   executeFiltering();
 };
 
-// محرك الفلترة الفوري الذي يراعي الـ 9 شروط معاً
+// تنفيذ الفلترة الفعلية على المنتجات
 function executeFiltering() {
   let result = [...abascoInventory];
 
-  // فلتر المخزون
+  // 1. فلتر المخزون
   if (document.getElementById('stock-filter')?.checked) {
     result = result.filter(item => item.inStock === true || (Number(item.stock) > 0));
   }
 
-  // فلتر السعر
+  // 2. فلتر السعر
   result = result.filter(item => Number(item.price) <= state.maxPrice);
 
-  // فلتر البحث
+  // 3. فلتر البحث
   if (state.searchQuery.trim() !== '') {
     const q = state.searchQuery.toLowerCase().trim();
     result = result.filter(item =>
@@ -476,31 +385,35 @@ function executeFiltering() {
     );
   }
 
-  // فلتر تصنيف الهيدر
+  // 4. فلتر تصنيف الهيدر
   if (state.selectedCategory !== 'all') {
     result = result.filter(item => item.category === state.selectedCategory);
   }
 
-  // تطبيق فلاتر الـ Checkboxes النشطة (الماركة، اللون، القدرة، البطارية...)
+  // 5. تطبيق خيارات الفلترة المختارة في كل الأقسام
   for (const [key, selectedVals] of Object.entries(activeFilters)) {
     if (selectedVals.length > 0) {
       result = result.filter(item => {
         const itemText = ((item.title || '') + ' ' + (item.specs || '') + ' ' + (item.brand || '')).toUpperCase();
         return selectedVals.some(val => {
-          if (key === 'brand') return item.brand === val;
+          if (key === 'brand') return item.brand && item.brand.toUpperCase() === val.toUpperCase();
+          if (val === 'Black') return itemText.includes('BLACK') || itemText.includes('أسود');
+          if (val === 'White') return itemText.includes('WHITE') || itemText.includes('أبيض');
           return itemText.includes(val.toUpperCase());
         });
       });
     }
   }
 
-  // الترتيب
+  // 6. الترتيب
   if (state.currentSort === 'price-asc') {
     result.sort((a, b) => Number(a.price) - Number(b.price));
   } else if (state.currentSort === 'price-desc') {
     result.sort((a, b) => Number(b.price) - Number(a.price));
   }
 
+  // تحديث عدادات الأرقام في الفلاتر بناء على أحدث بيانات
+  updateFilterCounts();
   renderCatalog(result);
 }
 
