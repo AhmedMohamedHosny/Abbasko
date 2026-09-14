@@ -121,27 +121,23 @@
         <section class="products-showcase-column">
           
           <!-- شريط التحكم العلوي المطابق للصورة 3 و4 -->
-          <div class="catalog-top-bar">
+<div class="catalog-top-bar">
             
-            <!-- أزرار التبديل بين العرض الشبكي وعرض القائمة -->
-            <div class="view-modes">
-              <button class="view-btn active" id="btn-view-grid" title="عرض شبكي (4 أعمدة)">
-                <i class="fa-solid fa-table-cells-large"></i>
+            <!-- 1. أقصى اليمين: زر تصفية + عدد المنتجات -->
+            <div class="items-count-display">
+              <button class="desktop-filter-btn" id="filter-toggle-btn" type="button">
+                <i class="fa-solid fa-sliders"></i> تصفية
               </button>
-              <button class="view-btn" id="btn-view-list" title="عرض القائمة (كروت تفصيلية)">
-                <i class="fa-solid fa-list"></i>
-              </button>
+              <span class="count-text" id="products-counter-badge">8 من 8 منتجات</span>
             </div>
 
-            <!-- قائمة الترتيب المنسدلة المطابقة للصورة 3 -->
+            <!-- 2. المنتصف: قائمة الترتيب المنسدلة -->
             <div class="custom-sort-container">
               <span class="sort-title-label">ترتيب حسب:</span>
               <div class="custom-dropdown-box" id="sort-dropdown-trigger">
                 <span id="selected-sort-label">مميز</span>
                 <i class="fa-solid fa-chevron-down dropdown-arrow-icon"></i>
               </div>
-
-              <!-- القائمة المنسدلة الكاملة -->
               <ul class="custom-sort-menu" id="sort-options-menu">
                 <li data-sort="featured" class="active">مميز</li>
                 <li data-sort="relevant">الأكثر صلة</li>
@@ -155,13 +151,14 @@
               </ul>
             </div>
 
-            <!-- عداد المنتجات وزر التصفية السريع -->
-            <div class="items-count-display">
-              <span id="products-counter-badge">8 من 8 منتجات</span>
-<button class="desktop-filter-trigger" id="filter-toggle-btn" style="background: var(--bg-surface); border: 1.5px solid var(--border-color); padding: 6px 14px; border-radius: var(--radius-xs); font-weight: 800; font-size: 0.85rem; color: var(--text-main); display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
-  <i class="fa-solid fa-sliders"></i> تصفية
-</button>
-              
+            <!-- 3. أقصى اليسار: أزرار التبديل الشبكي والقائمة -->
+            <div class="view-modes">
+              <button class="view-btn" id="btn-view-grid" title="عرض شبكي" type="button">
+                <i class="fa-solid fa-table-cells-large"></i>
+              </button>
+              <button class="view-btn active" id="btn-view-list" title="عرض القائمة (كروت تفصيلية)" type="button">
+                <i class="fa-solid fa-list"></i>
+              </button>
             </div>
 
           </div>
