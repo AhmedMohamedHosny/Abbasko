@@ -153,7 +153,7 @@ function renderCatalog(items) {
         </div>
 
         <div class="card-bottom-actions-full">
-          <button class="btn-quick-view-olive" onclick="openQuickModal('${product.id}')">نظرة سريعة</button>
+<button class="btn-quick-view-olive" onclick="window.location.href='product.html?id=${product.id}'">نظرة سريعة</button>          
           <button class="btn-choose-option-green" onclick="addToCartDirect('${product.id}')" ${!isAvailable ? 'disabled style="opacity:0.6; cursor:not-allowed;"' : ''}>
             ${isAvailable ? 'Choose option' : 'غير متوفر'}
           </button>
