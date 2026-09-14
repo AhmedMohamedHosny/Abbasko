@@ -184,14 +184,22 @@ function renderCatalog(items) {
       <article class="dream-product-card" data-id="${product.id}">
         <span class="discount-ribbon-tag">وفر ${product.discount} جنيه</span>
         
-        <div class="card-media-box">
-          <a href="product.html?id=${product.id}">
-            <img src="${product.image}" alt="${product.title}" loading="lazy">
-          </a>
-          <button class="quick-view-eye-btn" onclick="openQuickModal(${product.id})" title="معاينة سريعة">
-            <i class="fa-solid fa-eye"></i>
-          </button>
-        </div>
+<div class="card-media-box">
+  <a href="product.html?id=${product.id}">
+    <img src="${product.image}" alt="${product.title}" loading="lazy">
+  </a>
+  <button class="quick-view-eye-btn" onclick="openQuickModal(${product.id})" title="معاينة سريعة">
+    <i class="fa-solid fa-eye"></i>
+  </button>
+</div>
+
+<!-- شريط المؤشرات الأربعة أسفل صورة المنتج -->
+<div class="image-dash-indicators">
+  <span class="active"></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
 
         <div class="card-meta-box">
           <span class="brand-label-text">${product.brand}</span>
@@ -463,4 +471,8 @@ setInterval(() => {
 document.addEventListener('DOMContentLoaded', () => {
   renderCatalog(state.products);
   syncCartBadge();
+});
+// فتح وإغلاق قائمة التصفية باليمين عند الضغط
+document.getElementById('filter-toggle-btn')?.addEventListener('click', () => {
+  document.body.classList.toggle('filters-opened');
 });
