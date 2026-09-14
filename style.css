@@ -262,42 +262,47 @@ img { max-width: 100%; display: block; }
 .subnav-links-list a.active, .subnav-links-list a:hover { background-color: var(--dream-green); color: #fff; }
 .text-red-tag { color: var(--discount-red) !important; }
 
-/* 3. تخطيط الكتالوج الرئيسي */
-.dream-catalog-canvas { padding: 24px 0 60px; }
-.catalog-heading-title h1 { font-size: 1.85rem; font-weight: 900; margin-bottom: 20px; }
-/* المنتجات تملأ الشاشة بالكامل افتراضياً */
+/* --------------------------------------------------------------------------
+   3. تخطيط الكتالوج والشريط العلوي بنمط Dream 2000 الأصلي
+   -------------------------------------------------------------------------- */
+.dream-catalog-canvas {
+  padding: 20px 0 60px;
+}
+
+.catalog-heading-title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.catalog-heading-title h1 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-main);
+}
+
+/* التخطيط الرئيسي: الفلاتر على اليمين (270px) والمنتجات على اليسار (1fr) */
 .dream-main-layout {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
+  grid-template-columns: 270px 1fr;
+  gap: 20px;
   align-items: flex-start;
 }
 
-/* شريط التصفية مخفي تماماً عند فتح الموقع */
 .dream-filters-sidebar {
-  display: none;
-  order: 1; /* يثبت مكانه في أقصى اليمين */
+  order: 1; /* على اليمين في نظام RTL */
 }
 
 .products-showcase-column {
-  order: 2; /* عمود المنتجات يكون على اليسار */
+  order: 2; /* على اليسار في نظام RTL */
+  min-width: 0;
 }
 
-/* عند النقر على زر تصفية: يفتح الفلتر على اليمين والمنتجات على اليسار */
-body.filters-opened .dream-main-layout {
-  grid-template-columns: 280px 1fr;
-}
-
-body.filters-opened .dream-filters-sidebar {
-  display: block;
-}
-
-/* شريط التحكم العلوي وأزرار العرض */
+/* شريط التحكم العلوي: تصفية يميناً، ترتيب بالمنتصف، وعرض شبكي يساراً */
 .catalog-top-bar {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  padding: 10px 16px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -305,7 +310,102 @@ body.filters-opened .dream-filters-sidebar {
   box-shadow: var(--shadow-sm);
 }
 
-.view-modes { display: flex; gap: 6px; }
+/* زر تصفية وعدد المنتجات في أقصى اليمين */
+.items-count-display {
+  order: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.desktop-filter-btn {
+  background: var(--bg-elevated);
+  border: 1.5px solid var(--border-color);
+  padding: 6px 14px;
+  border-radius: var(--radius-xs);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.desktop-filter-btn i {
+  color: var(--dream-green);
+}
+
+.count-text {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+/* ترتيب حسب في المنتصف */
+.custom-sort-container {
+  order: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.sort-title-label {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.custom-dropdown-box {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  padding: 5px 12px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.custom-sort-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  width: 200px;
+  z-index: 100;
+  display: none;
+  margin-top: 4px;
+}
+
+.custom-sort-menu.open {
+  display: block;
+}
+
+.custom-sort-menu li {
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.custom-sort-menu li:hover {
+  background-color: var(--bg-elevated);
+  color: var(--dream-green);
+}
+
+/* أيقونات التبديل في أقصى اليسار */
+.view-modes {
+  order: 3;
+  display: flex;
+  gap: 6px;
+}
+
 .view-btn {
   width: 32px;
   height: 32px;
@@ -316,438 +416,439 @@ body.filters-opened .dream-filters-sidebar {
   align-items: center;
   justify-content: center;
 }
-.view-btn.active { background-color: var(--dream-green); color: #fff; border-color: var(--dream-green); }
 
-/* قائمة الترتيب المنسدلة المخصصة (Custom Sort Dropdown مثل صورة 3) */
-.custom-sort-container { position: relative; display: flex; align-items: center; gap: 8px; }
-.sort-title-label { font-size: 0.86rem; font-weight: 700; color: var(--text-muted); }
-.custom-dropdown-box {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xs);
-  padding: 6px 14px;
-  font-size: 0.85rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-}
-.custom-sort-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-xs);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-  width: 210px;
-  z-index: 100;
-  display: none;
-  margin-top: 4px;
-}
-.custom-sort-menu.open { display: block; }
-.custom-sort-menu li {
-  padding: 8px 14px;
-  font-size: 0.84rem;
-  font-weight: 700;
-  color: var(--text-main);
-  cursor: pointer;
-}
-.custom-sort-menu li:hover, .custom-sort-menu li.active {
-  background-color: var(--bg-elevated);
-  color: var(--dream-green);
+.view-btn.active {
+  background-color: var(--dream-green);
+  color: #fff;
+  border-color: var(--dream-green);
 }
 
-.items-count-display { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: var(--text-muted); }
-.mobile-filter-trigger {
-  display: none; background: var(--dream-green); color: #fff; padding: 4px 10px; border-radius: 4px; font-weight: 700;
-}
-
-/* شرائح الفلاتر النشطة (Active Filter Chips) */
-.active-filters-chips-bar {
-  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
-}
-.filter-chip {
-  background: var(--bg-elevated); border: 1px solid var(--border-color);
-  padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 700;
-  display: flex; align-items: center; gap: 6px;
-}
-.clear-all-filters-btn { color: var(--discount-red); font-size: 0.8rem; font-weight: 800; }
-
-/* 4. كروت المنتجات - العرض الشبكي الافتراضي (Grid View 4 Columns) */
+/* --------------------------------------------------------------------------
+   4. كروت المنتجات المطابقة لدريم 2000 (كروت أفقية بعمودين)
+   -------------------------------------------------------------------------- */
 .dream-products-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr); /* عمودين أفقيين مطابق للصورة 1 */
   gap: 16px;
   margin-bottom: 30px;
 }
 
-
+.dream-product-card {
+  background-color: #ffffff !important;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-normal);
+}
 
 .dream-product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
   border-color: var(--dream-green);
+  box-shadow: var(--shadow-hover);
 }
 
-.discount-ribbon-tag {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: var(--discount-red);
-  color: #ffffff;
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 2px 8px;
-  border-radius: var(--radius-xs);
-  z-index: 2;
-}
-
-.card-media-box {
-  width: 100%;
-  height: 180px;
+/* الجزء العلوي للكارت: تفاصيل يميناً وصورة يساراً */
+.card-top-horizontal-split {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-bottom: 12px;
-  background-color: #ffffff !important;
-  border-radius: var(--radius-sm);
-  padding: 10px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.card-media-box img {
-  max-width: 85%;
-  max-height: 85%;
-  object-fit: contain;
-  transition: transform 0.35s ease;
-}
-
-.dream-product-card:hover .card-media-box img { transform: scale(1.08); }
-
-.quick-view-eye-btn {
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: var(--dream-green);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.card-meta-box { display: flex; flex-direction: column; text-align: center; }
-.brand-label-text { font-size: 0.74rem; color: var(--text-subtle); font-weight: 700; margin-bottom: 2px; }
-.product-item-title {
-  font-size: 0.86rem; font-weight: 700; color: var(--text-main); line-height: 1.4;
-  height: 38px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin-bottom: 4px;
-}
-.card-stars-row { display: flex; align-items: center; justify-content: center; gap: 3px; font-size: 0.72rem; color: var(--star-gold); margin-bottom: 6px; }
-.card-stars-row span { color: var(--text-subtle); font-size: 0.7rem; }
-
-.price-block-dream { display: flex; align-items: baseline; justify-content: center; gap: 8px; margin-bottom: 6px; }
-.price-val-red { font-size: 1.15rem; font-weight: 900; color: var(--discount-red); }
-.price-struck-gray { font-size: 0.78rem; color: var(--text-subtle); text-decoration: line-through; }
-
-.stock-dot-indicator { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.76rem; color: var(--text-muted); margin-bottom: 10px; }
-.blue-dot { width: 7px; height: 7px; border-radius: 50%; background-color: var(--stock-blue); }
-
-.card-bottom-action-row { display: flex; align-items: center; gap: 6px; }
-.btn-dream-choose {
-  flex: 1; background-color: var(--dream-green); color: #ffffff; padding: 8px 10px;
-  border-radius: var(--radius-xs); font-size: 0.8rem; font-weight: 800; text-align: center;
-}
-.btn-dream-choose:hover { background-color: var(--dream-green-hover); }
-
-.btn-dream-quick-list { display: none; } /* يظهر في وضع القائمة فقط */
-
-.item-mini-stepper {
-  display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: var(--radius-xs); background-color: var(--bg-elevated);
-}
-.mini-step-btn { width: 24px; height: 30px; font-size: 0.85rem; font-weight: 800; color: var(--text-muted); display: flex; align-items: center; justify-content: center; }
-.mini-step-val { width: 24px; text-align: center; font-size: 0.8rem; font-weight: 800; color: var(--text-main); }
-.specs-summary-list-view { display: none; } /* يظهر في وضع القائمة */
-
-/* --------------------------------------------------------------------------
-   5. تحويل الكروت إلى وضع القائمة بالكامل (List View Styling مثل صورة 2 و5)
-   -------------------------------------------------------------------------- */
-body.view-list-active .dream-products-grid {
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 16px;
-}
-
-body.view-list-active .dream-product-card {
-  flex-direction: column;
-  padding: 16px;
-}
-
-body.view-list-active .card-media-box {
-  height: 160px;
-  margin-bottom: 8px;
-}
-
-body.view-list-active .card-meta-box {
+/* بيانات المنتج على اليمين */
+.card-details-pane {
+  flex: 1;
   text-align: right;
 }
 
-body.view-list-active .price-block-dream,
-body.view-list-active .card-stars-row,
-body.view-list-active .stock-dot-indicator {
-  justify-content: flex-start;
+.brand-label-text {
+  font-size: 0.74rem;
+  color: var(--text-subtle);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 3px;
 }
 
-body.view-list-active .specs-summary-list-view {
-  display: block;
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-  margin-bottom: 12px;
+.product-item-title {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.4;
   height: 38px;
   overflow: hidden;
+  margin-bottom: 4px;
 }
 
-body.view-list-active .btn-dream-quick-list {
-  display: block;
+.product-item-title a:hover {
+  color: var(--dream-green);
+}
+
+.card-stars-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--star-gold);
+  margin-bottom: 6px;
+}
+
+.card-stars-row span {
+  color: var(--text-subtle);
+  font-size: 0.72rem;
+}
+
+.price-block-dream {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.price-val-red {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--discount-red);
+}
+
+.price-struck-gray {
+  font-size: 0.78rem;
+  color: var(--text-subtle);
+  text-decoration: line-through;
+}
+
+.specs-summary-text {
+  font-size: 0.72rem;
+  color: #6b7280;
+  line-height: 1.5;
+  height: 34px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.stock-dot-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: #4b5563;
+  margin-bottom: 12px;
+}
+
+.blue-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--stock-blue);
+}
+
+/* جانب الصورة على اليسار */
+.card-image-pane {
+  width: 140px;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.discount-ribbon-tag {
+  background-color: var(--discount-red);
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+
+.media-square-box {
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+}
+
+.media-square-box img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+/* صف الأزرار الثلاثة بالأسفل ممتد بعرض الكارت */
+.card-bottom-actions-full {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-light);
+}
+
+.btn-quick-view-olive {
   background-color: var(--quick-view-olive);
   color: #ffffff;
-  padding: 8px 12px;
+  padding: 7px 14px;
   border-radius: var(--radius-xs);
   font-size: 0.8rem;
   font-weight: 800;
+  white-space: nowrap;
 }
 
-body.view-list-active .quick-view-eye-btn {
-  display: none;
+.btn-quick-view-olive:hover {
+  background-color: #7ba333;
 }
 
-/* 6. الشريط الجانبي للفلاتر (Sidebar) */
+.btn-choose-option-green {
+  flex: 1;
+  background-color: var(--dream-green);
+  color: #ffffff;
+  padding: 7px 12px;
+  border-radius: var(--radius-xs);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.btn-choose-option-green:hover {
+  background-color: var(--dream-green-hover);
+}
+
+.item-mini-stepper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  background: var(--bg-elevated);
+}
+
+.mini-step-btn {
+  width: 26px;
+  height: 30px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mini-step-val {
+  width: 24px;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+/* --------------------------------------------------------------------------
+   5. الشريط الجانبي للفلاتر (Sidebar)
+   -------------------------------------------------------------------------- */
 .dream-filters-sidebar {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   padding: 16px;
   box-shadow: var(--shadow-card);
 }
 
-.filters-sidebar-header { padding-bottom: 10px; border-bottom: 1px solid var(--border-color); margin-bottom: 12px; }
-.filters-sidebar-header h3 { font-size: 1rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
-
-.in-stock-group { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-light); font-size: 0.86rem; font-weight: 700; }
-.switch-ui.mini { width: 40px; height: 20px; }
-.switch-ui.mini .slider-switch::before { height: 14px; width: 14px; }
-.switch-ui.mini input:checked + .slider-switch::before { transform: translateX(-20px); }
-
-.accordion-filter-block { border-bottom: 1px solid var(--border-light); padding: 10px 0; }
-.accordion-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; font-size: 0.86rem; font-weight: 800; }
-.accordion-header i { font-size: 0.72rem; color: var(--text-muted); }
-.accordion-body { display: block; padding-top: 8px; }
-.accordion-filter-block:not(.open) .accordion-body { display: none; }
-.accordion-filter-block:not(.open) .accordion-header i { transform: rotate(180deg); }
-
-.brand-items-scrollable { max-height: 240px; overflow-y: auto; padding-left: 4px; }
-.custom-chk { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; cursor: pointer; }
-.custom-chk input { accent-color: var(--dream-green); width: 15px; height: 15px; }
-
-.price-slider-box input[type="range"] { width: 100%; accent-color: var(--dream-green); }
-.price-limits { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); font-weight: 700; }
-
-/* 7. أرقام الصفحات والتذييل */
-.dream-pagination-bar { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 30px; }
-.page-num, .page-arrow {
-  min-width: 34px; height: 34px; padding: 0 8px; border-radius: var(--radius-xs); border: 1px solid var(--border-color);
-  background-color: var(--bg-surface); color: var(--text-main); font-size: 0.86rem; font-weight: 700; display: flex; align-items: center; justify-content: center;
+.filters-sidebar-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 12px;
 }
-.page-num.active, .page-arrow:hover:not(:disabled) { background-color: var(--dream-green); color: #fff; border-color: var(--dream-green); }
-.page-arrow:disabled { opacity: 0.4; }
 
+.filters-sidebar-header h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.in-stock-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.accordion-filter-block {
+  border-bottom: 1px solid var(--border-light);
+  padding: 10px 0;
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 800;
+}
+
+.accordion-header i {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.accordion-body {
+  padding-top: 8px;
+}
+
+.brand-items-scrollable {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.custom-chk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.custom-chk input {
+  accent-color: var(--dream-green);
+  width: 15px;
+  height: 15px;
+}
+
+/* --------------------------------------------------------------------------
+   6. تذييل المتجر المنحني مع الإضاءة الخضراء
+   -------------------------------------------------------------------------- */
 .dream-footer {
-  /* تدرج هادئ يصنع هالة إضاءة خضراء في المنتصف السفلي */
   background: radial-gradient(circle at 50% 85%, rgba(124, 179, 66, 0.35) 0%, rgba(26, 26, 26, 0) 65%), #171717;
   color: #d1d5db;
   padding: 60px 0 25px;
   margin-top: 60px;
-  /* القوس المنحني الضخم أعلى التذييل */
   border-radius: 80px 80px 0 0;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  position: relative;
-  overflow: hidden;
 }
-.footer-content-row { display: grid; grid-template-columns: 2fr 1fr 1.5fr; gap: 35px; margin-bottom: 25px; }
-.footer-brand-title { font-size: 1.2rem; font-weight: 900; color: #fff; margin-bottom: 8px; }
-.footer-shop-about p { font-size: 0.84rem; color: #9ca3af; line-height: 1.6; }
-.store-hours { color: var(--dream-green) !important; font-weight: 700; margin-top: 8px; }
-.footer-links-group h4, .footer-contact-box h4 { font-size: 1rem; font-weight: 800; color: #fff; margin-bottom: 12px; }
-.footer-links-group ul li a { color: #9ca3af; font-size: 0.84rem; }
-.footer-links-group ul li a:hover { color: var(--dream-green); }
-.hotline-pill {
-  display: inline-flex; align-items: center; gap: 8px; background-color: var(--whatsapp-color); color: #fff;
-  font-size: 1rem; font-weight: 900; padding: 8px 18px; border-radius: var(--radius-pill);
-}
-.footer-bottom-copyright { border-top: 1px solid #2d2d2d; padding-top: 16px; font-size: 0.78rem; color: #6b7280; }
-.copyright-flex { display: flex; justify-content: space-between; align-items: center; }
 
-/* 8. زر المحادثة العائم المتناوب */
-.alternating-chat-widget { position: fixed; bottom: 30px; left: 25px; z-index: 9999; }
-.chat-circle-link {
-  width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  font-size: 1.6rem; color: #fff; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25); transition: all 0.3s ease;
+.footer-content-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: 35px;
+  margin-bottom: 25px;
 }
-.chat-circle-link.whatsapp-mode { background-color: var(--whatsapp-color); }
-.chat-circle-link.messenger-mode { background-color: var(--messenger-color); }
-.chat-icon.rotate-anim { animation: iconFlip 0.5s ease-in-out; }
+
+.footer-brand-title {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.footer-shop-about p {
+  font-size: 0.84rem;
+  color: #9ca3af;
+  line-height: 1.6;
+}
+
+.store-hours {
+  color: var(--dream-green) !important;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.footer-links-group h4, .footer-contact-box h4 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.footer-links-group ul li a {
+  color: #9ca3af;
+  font-size: 0.84rem;
+}
+
+.footer-links-group ul li a:hover {
+  color: var(--dream-green);
+}
+
+.hotline-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--whatsapp-color);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 900;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+}
+
+.footer-bottom-copyright {
+  border-top: 1px solid #2d2d2d;
+  padding-top: 16px;
+  font-size: 0.78rem;
+  color: #6b7280;
+}
+
+.copyright-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* زر الشات المتناوب */
+.alternating-chat-widget {
+  position: fixed;
+  bottom: 30px;
+  left: 25px;
+  z-index: 9999;
+}
+
+.chat-circle-link {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+}
+
+.chat-circle-link.whatsapp-mode {
+  background-color: var(--whatsapp-color);
+}
+
+.chat-circle-link.messenger-mode {
+  background-color: var(--messenger-color);
+}
+
+.chat-icon.rotate-anim {
+  animation: iconFlip 0.5s ease-in-out;
+}
+
 @keyframes iconFlip {
   0% { transform: scale(0.6) rotate(0deg); opacity: 0; }
   100% { transform: scale(1) rotate(360deg); opacity: 1; }
 }
 
-/* 9. شريط التنقل السفلي للهواتف */
-.mobile-bottom-nav {
-  display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-surface);
-  border-top: 1px solid var(--border-color); padding: 8px 0; z-index: 9000;
-}
-.mob-nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); flex: 1; }
-.mob-nav-item.active { color: var(--dream-green); }
-.mob-cart-badge-wrap { position: relative; }
-.mob-badge { position: absolute; top: -6px; right: -8px; background: var(--dream-green); color: #fff; font-size: 0.65rem; padding: 1px 5px; border-radius: 50px; }
-
-/* 10. نافذة نظرة سريعة */
-.quick-modal-backdrop {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 10000;
-  display: flex; align-items: center; justify-content: center; padding: 20px;
-  opacity: 0; visibility: hidden; transition: var(--transition-normal);
-}
-.quick-modal-backdrop.active { opacity: 1; visibility: visible; }
-.quick-modal-card { background: var(--bg-surface); border-radius: var(--radius-md); max-width: 600px; width: 100%; padding: 24px; position: relative; }
-.close-modal-btn { position: absolute; top: 12px; left: 12px; font-size: 1.2rem; color: var(--text-muted); }
-
-@media (max-width: 1024px) {
-  .dream-products-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-@media (max-width: 768px) {
-  .dream-main-layout { grid-template-columns: 1fr; }
-  .dream-filters-sidebar { display: none; }
-  .mobile-filter-trigger { display: block; }
-  .dream-products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
-  .header-inner { flex-wrap: wrap; }
-  .dream-search-bar { order: 3; max-width: 100%; }
-  .search-cat-picker { display: none; }
-  .mobile-bottom-nav { display: flex; }
-  .alternating-chat-widget { bottom: 75px; left: 16px; }
-  body { padding-bottom: 60px; }
-}
-/* الـ 4 شرط أسفل صور المنتجات */
-.image-dash-indicators {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  margin: 8px auto 4px;
-  width: 80%;
-}
-
-.image-dash-indicators span {
-  height: 3px;
-  flex: 1;
-  background-color: #d1d5db;
-  border-radius: 2px;
-  transition: background-color 0.25s ease;
-}
-
-.image-dash-indicators span.active,
-.image-dash-indicators span:hover {
-  background-color: #111827; /* الشرطة النشطة باللون الأسود الداكن */
-}
-
-/* تثبيت حدود كارت المنتج ومنع أي عنصر من الخروج */
-.dream-product-card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  overflow: hidden; /* يمنع أي صورة من التمدد خارج حدود المربع */
-  box-shadow: var(--shadow-card);
-  transition: var(--transition-normal);
-}
-
-/* حاوية صورة المنتج بأبعاد ثابتة ومحاذاة مركزية */
-.card-media-box {
-  width: 100% !important;
-  height: 180px !important;
-  background-color: #ffffff !important; /* خلفية بيضاء نقية لعزل الإكسسوار */
-  border-radius: var(--radius-sm);
-  position: relative !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin: 0 0 10px 0 !important;
-  padding: 10px;
-  overflow: hidden;
-}
-
-/* رابط الصورة داخل الحاوية */
-.card-media-box a {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ضبط حجم الصورة لتظل دائماً داخل المربع دون أي تشويه */
-.card-media-box img {
-  max-width: 85% !important;
-  max-height: 85% !important;
-  width: auto !important;
-  height: auto !important;
-  object-fit: contain !important;
-  margin: auto;
-  transition: transform 0.35s ease;
-}
-
-.dream-product-card:hover .card-media-box img {
-  transform: scale(1.06);
-}
-
-/* تثبيت مكان شارة التوفير الحمراء أعلى يمين الكارت */
-.discount-ribbon-tag {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: var(--discount-red);
-  color: #ffffff;
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 3px 8px;
-  border-radius: var(--radius-xs);
-  z-index: 5;
-}
-
-/* تثبيت زر العين الخضراء السريع داخل مربع الصورة بالأسفل يساراً */
-.quick-view-eye-btn {
-  position: absolute;
-  bottom: 8px;
-  left: 8px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: var(--dream-green);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  z-index: 4;
-  cursor: pointer;
-  box-shadow: 0 2px 6px var(--dream-green-glow);
+/* التجاوب مع شاشات الموبايل */
+@media (max-width: 992px) {
+  .dream-main-layout {
+    grid-template-columns: 1fr;
+  }
+  .dream-filters-sidebar {
+    display: none;
+  }
+  .dream-products-grid {
+    grid-template-columns: 1fr;
+  }
 }
