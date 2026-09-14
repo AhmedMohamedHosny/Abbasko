@@ -791,39 +791,106 @@ body.view-grid-active .item-mini-stepper {
   position: relative;
 }
 
-/* ==========================================================================
-   تعديل 1: الشارة الحمرا بقت راكبة على ركن الصورة بدل ما تاخد سطر لوحدها
-   ========================================================================== */
-.discount-ribbon-tag {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  background-color: var(--discount-red);
-  color: #ffffff;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 4px;
-  z-index: 2;
+body.view-grid-active .card-image-pane {
+  width: 100% !important;
+  position: relative !important;
+  margin-bottom: 6px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
 }
 
+/* زر العين الخضراء السريع بأعلى الكارت */
+.quick-hover-eye {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 32px;
+  height: 32px;
+  background-color: #7cb342;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(124, 179, 66, 0.4);
+}
+
+.dream-product-card:hover .quick-hover-eye {
+  opacity: 1;
+}
+
+.quick-hover-eye:hover {
+  transform: scale(1.1);
+}
+
+/* حاوية الصورة الأساسية */
 .media-square-box {
-  width: 130px;
-  height: 130px;
+  width: 100%;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #ffffff;
+  position: relative !important; /* ضروري لضبط الشرائح الأربعة فوق الصورة */
   overflow: hidden;
-  position: relative;
 }
 
 .media-square-box img {
-  width: 100%;
-  height: 100%;
+  max-width: 90%;
+  max-height: 90%;
   object-fit: contain;
-  padding: 8px;
-  box-sizing: border-box;
+  transition: opacity 0.15s ease;
+  pointer-events: none; /* عشان الماوس يتفاعل مباشرة مع الشرائح */
+}
+
+/* طبقة الشرائح الأربعة الشفافة فوق الصورة بالكامل */
+.hover-slices-overlay {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  z-index: 10 !important; /* فوق الصورة */
+}
+
+/* كل ربع من الأربعة يأخذ 25% من عرض الصورة */
+.hover-slice-item {
+  flex: 1 !important;
+  height: 100% !important;
+  cursor: pointer !important;
+}
+
+/* خط المؤشر الأسود الدقيق أسفل الصورة (4 قطع) */
+.image-dash-indicators {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  width: 80% !important;
+  height: 2.5px !important;
+  margin: 6px auto 10px !important;
+}
+
+.image-dash-indicators span {
+  flex: 1 !important;
+  height: 100% !important;
+  background-color: #e5e7eb !important;
+  border-radius: 2px !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.image-dash-indicators span.active {
+  background-color: #111827 !important; /* الخط الأسود الصريح للشريحة النشطة */
 }
 
 .card-bottom-actions-full {
