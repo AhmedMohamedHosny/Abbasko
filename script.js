@@ -437,3 +437,97 @@ document.querySelectorAll('.filter-card-header').forEach(header => {
     header.parentElement.classList.toggle('open');
   });
 });
+/* ==========================================================================
+   محرك الفلترة الحقيقية لجميع الخيارات والأعداد (Interactive Multi-Filtering)
+   ========================================================================== */
+
+// 1. فتح وغلق الصناديق عند الضغط
+document.querySelectorAll('.filter-card-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+
+// 2. تتبع الفلاتر المختارة
+const activeFilters = {
+  brand: [],
+  screen: [],
+  mic: [],
+  type: [],
+  conn: [],
+  power: [],
+  battery: [],
+  color: []
+};
+
+// الاستماع لجميع checkboxes الفلترة
+document.querySelectorAll('.filter-checkbox').forEach(chk => {
+  chk.addEventListener('change', () => {
+    const type = chk.getAttribute('data-type');
+    const val = chk.value;
+
+    if (chk.checked) {
+      if (!activeFilters[type].includes(val)) activeFilters[type].push(val);
+    } else {
+      activeFilters[type] = activeFilters[type].filter(v => v !== val);
+    }
+
+    // تحديث عداد "تم تحديد X عناصر"
+    const countEl = document.getElementById(`count-${type}`);
+    if (countEl) countEl.textContent = `تم تحديد ${activeFilters[type].length} عناصر`;
+
+    executeFiltering();
+  });
+});
+
+// زر إعادة التعيين لمجموعة محددة
+window.resetFilterGroup = function(type) {
+  if (type === 'price') {
+    const priceEl = document.getElementById('price-range');
+    if (priceEl) priceEl.value = 4000;
+    state.maxPrice = 4000;
+    const disp = document.getElementById('max-price-display');
+    if (disp) disp.textContent = 'حتى: 4,000 ج.م';
+  } else {
+    activeFilters[type] = [];
+    document.querySelectorAll(`.filter-checkbox[data-type="${type}"]`).forEach(c => c.checked = false);
+    const countEl = document.getElementById(`count-${type}`);
+    if (countEl) countEl.textContent = 'تم تحديد 0 عناصر';
+  }
+  executeFiltering();
+};
+
+// تنفيذ الفلترة الفورية على الكتالوج
+function executeFiltering() {
+  let result = [...abascoInventory];
+
+  // فلتر متوفر بالمخزون
+  const stockOnly = document.getElementById('stock-filter')?.checked;
+  if (stockOnly) {
+    result = result.filter(item => item.inStock === true);
+  }
+
+  // فلتر السعر الأقصى
+  result = result.filter(item => item.price <= state.maxPrice);
+
+  // فلتر الماركات المختارة
+  if (activeFilters.brand.length > 0) {
+    result = result.filter(item => activeFilters.brand.includes(item.brand));
+  }
+
+  // فلتر قدرة الشحن بالواط (Power)
+  if (activeFilters.power.length > 0) {
+    result = result.filter(item => {
+      return activeFilters.power.some(pw => item.specs.includes(pw) || item.title.includes(pw));
+    });
+  }
+
+  // فلتر النوع (Type)
+  if (activeFilters.type.length > 0) {
+    result = result.filter(item => {
+      return activeFilters.type.some(tp => item.specs.toLowerCase().includes(tp.toLowerCase()) || item.title.toLowerCase().includes(tp.toLowerCase()));
+    });
+  }
+
+  renderCatalog(result);
+}
