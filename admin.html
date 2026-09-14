@@ -462,6 +462,9 @@
       }
     }
   </style>
+  <!-- استدعاء Firebase لمزامنة المنتجات حياً -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -699,50 +702,78 @@
     </main>
   </div>
 
-  <!-- التفاعل البرمجي الداخلي للوحة الإدارة -->
-  <script>
-    // قائمة تجريبية متناسقة مع متجر عباسكو الأساسي
-    let inventory = [
-      { id: 1, title: 'جراب MagSafe شفاف ومقاوم للصدمات لآيفون 15', category: 'جرابات', price: 349, stock: 45, icon: 'fa-shield-halved' },
-      { id: 2, title: 'شاحن جداري GaN فائق السرعة 65W', category: 'شواحن', price: 680, stock: 8, icon: 'fa-bolt' },
-      { id: 3, title: 'اسكرينة زجاجية يابانية 9D مع شبلونة', category: 'اسكرينات', price: 185, stock: 95, icon: 'fa-mobile-screen' },
-      { id: 4, title: 'سماعة بلوتوث لاسلكية عازلة للضوضاء ANC', category: 'صوتيات', price: 899, stock: 14, icon: 'fa-headphones' },
-      { id: 5, title: 'باور بانك 20,000 مللي أمبير شاشة رقمية', category: 'باور بانك', price: 799, stock: 0, icon: 'fa-battery-three-quarters' }
-    ];
+'use strict';
 
+    // 1. تهيئة نفس مشروع الفايربيز
+    const firebaseConfig = {
+      apiKey: "AIzaSyBhOo-nzA3TztOFQlxPQaOTrLtPDjKb_xU",
+      authDomain: "abbasko-store.firebaseapp.com",
+      projectId: "abbasko-store",
+      storageBucket: "abbasko-store.firebasestorage.app",
+      messagingSenderId: "475025963892",
+      appId: "1:475025963892:web:8790442f8bc83539368a21",
+      measurementId: "G-B1866569VZ"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let inventory = [];
     const tbody = document.getElementById('inventory-table-body');
     const addForm = document.getElementById('add-product-form');
     const filterInput = document.getElementById('filter-inventory');
 
-    // رسم عناصر الجدول وحساب الحالات
-    function renderInventory(items) {
-      tbody.innerHTML = items.map(item => {
-        let badgeClass = 'badge-in-stock';
-        let statusText = 'متوفر';
+    // 2. جلب المنتجات الحقيقية من Firestore
+    async function loadAdminInventory() {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px;"><i class="fa-solid fa-spinner fa-spin"></i> جاري مزامنة المنتجات من قاعدة البيانات...</td></tr>`;
+      try {
+        const snapshot = await db.collection('products').get();
+        inventory = [];
+        snapshot.forEach(doc => {
+          inventory.push({ id: doc.id, ...doc.data() });
+        });
+        renderInventory(inventory);
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">خطأ أثناء الاتصال بقاعدة البيانات: ${err.message}</td></tr>`;
+      }
+    }
 
-        if (item.stock === 0) {
+    // 3. رسم عناصر الجدول وحساب الإحصائيات
+    function renderInventory(items) {
+      if (items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px;">لا توجد منتجات مضافة حتى الآن.</td></tr>`;
+        document.getElementById('stat-products').textContent = '0 منتجات';
+        document.getElementById('stat-low-stock').textContent = '0 منتج';
+        return;
+      }
+
+      tbody.innerHTML = items.map(item => {
+        const stockQty = Number(item.stock) || (item.inStock ? 20 : 0);
+        let badgeClass = 'badge-in-stock';
+        let statusText = 'متوفر بالمخزن';
+
+        if (stockQty === 0 || item.inStock === false) {
           badgeClass = 'badge-out-stock';
           statusText = 'نفذ المخزون';
-        } else if (item.stock < 10) {
+        } else if (stockQty < 5) {
           badgeClass = 'badge-low-stock';
-          statusText = `منخفض (${item.stock})`;
+          statusText = `منخفض (${stockQty})`;
         }
 
         return `
           <tr>
             <td>
               <div class="product-cell">
-                <div class="product-icon-box"><i class="fa-solid ${item.icon}"></i></div>
+                <img src="${item.image || 'logo.png'}" style="width:36px; height:36px; object-fit:contain; border-radius:4px; border:1px solid #ddd; background:#fff;">
                 <strong>${item.title}</strong>
               </div>
             </td>
-            <td>${item.category}</td>
-            <td><strong>${item.price.toLocaleString('ar-EG')} ج.م</strong></td>
-            <td>${item.stock} قطعة</td>
+            <td>${item.brand || 'عام'}</td>
+            <td><strong>${Number(item.price).toFixed(2)} ج.م</strong></td>
+            <td>${stockQty} قطعة</td>
             <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
             <td>
               <div class="action-btns">
-                <button class="tbl-btn tbl-btn-delete" onclick="deleteItem(${item.id})" title="حذف الملحق">
+                <button class="tbl-btn tbl-btn-delete" onclick="deleteProductFromFirebase('${item.id}')" title="حذف المنتج نهائياً">
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </div>
@@ -751,50 +782,73 @@
         `;
       }).join('');
 
-      document.getElementById('stat-products').textContent = `${inventory.length} منتجات`;
-      const lowCount = inventory.filter(i => i.stock < 10).length;
+      document.getElementById('stat-products').textContent = `${items.length} منتجات`;
+      const lowCount = items.filter(i => (Number(i.stock) || 0) < 5 || i.inStock === false).length;
       document.getElementById('stat-low-stock').textContent = `${lowCount} منتج`;
     }
 
-    // إضافة ملحق جديد من خلال النموذج
-    addForm.addEventListener('submit', (e) => {
+    // 4. إضافة منتج حقيقي إلى الفايربيز
+    addForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+      const submitBtn = addForm.querySelector('.submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري النشر بالمتجر...`;
+
+      const price = parseFloat(document.getElementById('prod-price').value);
+      const oldPrice = parseFloat(document.getElementById('prod-old-price').value) || (price + 80);
+      const stock = parseInt(document.getElementById('prod-stock').value) || 1;
+
       const newProduct = {
-        id: Date.now(),
-        title: document.getElementById('prod-name').value,
-        category: document.getElementById('prod-category').selectedOptions[0].text,
-        price: parseFloat(document.getElementById('prod-price').value),
-        stock: parseInt(document.getElementById('prod-stock').value),
-        icon: document.getElementById('prod-icon').value
+        title: document.getElementById('prod-name').value.trim(),
+        category: document.getElementById('prod-category').value,
+        brand: document.getElementById('prod-category').selectedOptions[0].text,
+        price: price,
+        oldPrice: oldPrice,
+        discount: (oldPrice - price).toFixed(2),
+        stock: stock,
+        inStock: stock > 0,
+        rating: 5,
+        ratingCount: 1,
+        specs: `ملحق أصلي معتمد | الكمية بالمخزن: ${stock} قطعة`,
+        image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80'
       };
 
-      inventory.unshift(newProduct);
-      renderInventory(inventory);
-      addForm.reset();
-      alert('تم نشر الملحق بنجاح في متجر عباسكو!');
+      try {
+        await db.collection('products').add(newProduct);
+        alert('تم نشر المنتج بنجاح في متجر عباسكو وقاعدة البيانات!');
+        addForm.reset();
+        loadAdminInventory();
+      } catch (err) {
+        alert('حدث خطأ أثناء الإضافة: ' + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<i class="fa-solid fa-plus"></i> نشر الملحق في المتجر فوراً`;
+      }
     });
 
-    // حذف عنصر
-    window.deleteItem = function(id) {
-      if (confirm('هل أنت متأكد من رغبتك في إزالة هذا المنتج من المخزون؟')) {
-        inventory = inventory.filter(item => item.id !== id);
-        renderInventory(inventory);
+    // 5. حذف منتج حقيقي من الفايربيز
+    window.deleteProductFromFirebase = async function(docId) {
+      if (confirm('هل أنت متأكد من حذف هذا المنتج نهائياً من المتجر وقاعدة البيانات؟')) {
+        try {
+          await db.collection('products').doc(docId).delete();
+          alert('تم حذف المنتج بنجاح!');
+          loadAdminInventory();
+        } catch (err) {
+          alert('تعذر الحذف: ' + err.message);
+        }
       }
     };
 
-    // فلترة الجدول بالبحث السريع
+    // 6. بحث سريع بالجدول
     filterInput.addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase();
       const filtered = inventory.filter(i => 
-        i.title.toLowerCase().includes(q) || 
-        i.category.toLowerCase().includes(q)
+        (i.title && i.title.toLowerCase().includes(q)) || 
+        (i.brand && i.brand.toLowerCase().includes(q))
       );
       renderInventory(filtered);
     });
 
-    // التشغيل المبدئي
-    renderInventory(inventory);
-  </script>
+    document.addEventListener('DOMContentLoaded', loadAdminInventory);
 </body>
 </html>
