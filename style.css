@@ -1124,3 +1124,19 @@ img { max-width: 100%; display: block; }
   color: #7cb342 !important;
   box-shadow: 0 2px 6px rgba(124, 179, 66, 0.2);
 }
+/* ==========================================================================
+   تفعيل فتح وإظهار محتوى صناديق التصفية عند النقر
+   ========================================================================== */
+.filter-card-accordion .filter-card-body {
+  display: none;
+}
+
+/* عندما ينقر المستخدم على الصندوق ويأخذ كلاس open يتم إظهار المحتوى فوراً */
+.filter-card-accordion.open .filter-card-body {
+  display: block !important;
+}
+
+/* تدوير السهم لأعلى عند فتح الصندوق */
+.filter-card-accordion.open .filter-card-header i {
+  transform: rotate(180deg);
+}
