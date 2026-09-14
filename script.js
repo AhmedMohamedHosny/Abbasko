@@ -599,39 +599,36 @@ setInterval(() => {
   }, 250);
 }, 5000);
 
-// جلب المنتجات الحقيقية من Firestore
-async function fetchProductsFromFirebase() {
-  const container = document.getElementById('catalog-products-container');
-  if (container) {
-    container.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-        <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: var(--dream-green); margin-bottom: 12px;"></i>
-        <h3 style="font-weight: 800;">جاري تحميل المنتجات من قاعدة البيانات...</h3>
-      </div>
-    `;
-  }
-
-  try {
-    const snapshot = await db.collection('products').get();
-    if (snapshot.empty) {
-      await seedInitialProducts();
-      return;
-    }
-
-abascoInventory = [];
-    snapshot.forEach(doc => {
-      abascoInventory.push({ id: doc.id, ...doc.data() });
-    });
-    localStorage.setItem('abasco_store_inventory', JSON.stringify(abascoInventory));
-
+// ==========================================================================
+// جلب وعرض المنتجات فوراً (0 ثانية وبدون أي شاشة تحميل نهائياً)
+// ==========================================================================
+function fetchProductsFromFirebase() {
+  // 1. عرض المنتجات في الصفحة فوراً في جزء من الثانية من الكاش دون أي انتظار
+  if (abascoInventory && abascoInventory.length > 0) {
     state.products = [...abascoInventory];
     executeFiltering();
-  } catch (error) {
-    console.error("خطأ أثناء جلب المنتجات:", error);
-    if (container) {
-      container.innerHTML = `<h3 style="grid-column: 1 / -1; text-align: center; color: red;">فشل الاتصال بقاعدة البيانات. تأكد من إعدادات الـ Rules.</h3>`;
-    }
   }
+
+  // 2. تحديث لحظي من الفايربيز في الخلفية بدون لودينج ولا رسائل توقف الصفحة
+  db.collection('products').onSnapshot((snapshot) => {
+    if (!snapshot.empty) {
+      abascoInventory = [];
+      snapshot.forEach(doc => {
+        abascoInventory.push({ id: doc.id, ...doc.data() });
+      });
+
+      // تحديث الذاكرة والواجهة بسلاسة تامة
+      localStorage.setItem('abasco_store_inventory', JSON.stringify(abascoInventory));
+      state.products = [...abascoInventory];
+      executeFiltering();
+    } else if (!abascoInventory || abascoInventory.length === 0) {
+      if (typeof seedInitialProducts === 'function') {
+        seedInitialProducts();
+      }
+    }
+  }, (error) => {
+    console.warn("تنبيه اتصال: يتم عرض المنتجات من النسخة المحفوظة محلياً.");
+  });
 }
 
 // رفع المنتجات المبدئية لمرة واحدة إن كانت قاعدة البيانات فارغة
