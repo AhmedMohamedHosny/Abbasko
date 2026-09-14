@@ -478,13 +478,77 @@ img { max-width: 100%; display: block; }
 }
 
 /* --------------------------------------------------------------------------
-   4. كروت المنتجات المطابقة لدريم 2000 (كروت أفقية بعمودين)
+   4. كروت المنتجات: تبديل حقيقي بين العرض الشبكي (4 أعمدة) والقائمة (عمودين)
    -------------------------------------------------------------------------- */
 .dream-products-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 20px !important; /* المسافة الواسعة الواضحة بين المربعين */
+  gap: 16px;
   margin-bottom: 35px;
+  transition: all 0.3s ease;
+}
+
+/* 1. وضع القائمة (List View - عمودين أفقيين) */
+body.view-list-active .dream-products-grid {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+
+body.view-list-active .card-top-horizontal-split {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+body.view-list-active .card-details-pane {
+  text-align: right;
+  flex: 1;
+}
+
+body.view-list-active .specs-summary-text {
+  display: block;
+}
+
+/* 2. الوضع الشبكي (Grid View - 4 أعمدة طولية كلاسيكية مثل الصورة المرجعية الأولى) */
+body.view-grid-active .dream-products-grid {
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+
+body.view-grid-active .dream-product-card {
+  padding: 14px;
+}
+
+body.view-grid-active .card-top-horizontal-split {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+body.view-grid-active .card-image-pane {
+  width: 100% !important;
+  margin-bottom: 8px;
+}
+
+body.view-grid-active .card-details-pane {
+  text-align: center;
+  width: 100%;
+}
+
+body.view-grid-active .price-block-dream,
+body.view-grid-active .card-stars-row,
+body.view-grid-active .stock-dot-indicator {
+  justify-content: center;
+}
+
+body.view-grid-active .specs-summary-text {
+  display: none; /* إخفاء المواصفات في العرض الشبكي الرأسي لتناسق الارتفاع */
+}
+
+body.view-grid-active .card-bottom-actions-full {
+  flex-direction: column;
+}
+
+body.view-grid-active .btn-choose-option-green {
+  width: 100%;
 }
 
 .dream-product-card {
