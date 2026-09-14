@@ -505,12 +505,22 @@
         </div>
       </section>
 
-      <!-- جدول المواصفات الفنية للملحق -->
+<!-- جدول المواصفات الفنية للملحق -->
       <section class="product-specs-section">
         <div class="specs-header-tab">المواصفات الفنية للملحق</div>
         
         <div class="specs-table-grid" id="specs-table-body">
           <!-- يتم ملؤها ديناميكياً حسب المنتج المختار -->
+        </div>
+      </section>
+
+      <!-- قسم منتجات ذات صلة (المعروضة في نفس التبويب/الفئة) -->
+      <section class="related-products-section" style="margin-top: 40px; margin-bottom: 50px;">
+        <h2 style="font-size: 1.35rem; font-weight: 900; color: var(--text-main); margin-bottom: 20px; border-right: 4px solid var(--dream-green); padding-right: 12px;">
+          منتجات ذات صلة
+        </h2>
+        <div class="dream-products-grid" id="related-products-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px;">
+          <!-- يتم ملؤها تلقائياً بالمنتجات التابعة لنفس القسم -->
         </div>
       </section>
 
@@ -719,10 +729,46 @@
       }
     ];
 
-    // استخراج معرّف الملحق من الرابط (?id=...)
+// استخراج معرّف الملحق من الرابط بدقة
     const urlParams = new URLSearchParams(window.location.search);
-    const prodId = parseInt(urlParams.get('id')) || 1;
-    const currentProduct = catalog.find(p => p.id === prodId) || catalog[0];
+    const prodId = urlParams.get('id') || '1';
+    const currentProduct = catalog.find(p => String(p.id) === String(prodId)) || catalog[0];
+
+    // دالة عرض المنتجات ذات الصلة من نفس التبويب / الفئة
+    function renderRelatedItems(activeItem) {
+      const container = document.getElementById('related-products-container');
+      if (!container) return;
+
+      // تصفية المنتجات التي تحمل نفس الفئة واستثناء المنتج المعروض حالياً
+      const related = catalog.filter(p => 
+        String(p.id) !== String(activeItem.id) && 
+        (p.category === activeItem.category || p.brand === activeItem.brand)
+      );
+
+      if (related.length === 0) {
+        container.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem; grid-column: 1 / -1;">لا توجد ملحقات أخرى في هذا القسم حالياً.</p>`;
+        return;
+      }
+
+      container.innerHTML = related.slice(0, 4).map(item => `
+        <article class="dream-product-card" onclick="window.location.href='product.html?id=${item.id}'" style="cursor: pointer; padding: 14px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px;">
+          <div class="card-image-pane" style="width: 100%; display: flex; justify-content: center; margin-bottom: 10px;">
+            <img src="${item.image}" alt="${item.title}" style="height: 140px; object-fit: contain;">
+          </div>
+          <div class="card-details-pane" style="text-align: center;">
+            <span class="brand-label-text" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">${item.brand}</span>
+            <h4 style="font-size: 0.85rem; font-weight: 800; color: var(--text-main); height: 36px; overflow: hidden; line-height: 1.3; margin: 4px 0 8px;">${item.title}</h4>
+            <div class="price-block-dream" style="justify-content: center; margin-bottom: 10px;">
+              <span class="price-val-red" style="font-size: 1.1rem; font-weight: 900; color: var(--discount-red);">LE ${Number(item.price).toFixed(2)}</span>
+            </div>
+            <button class="btn-choose-option-green" style="width: 100%; height: 34px; font-size: 0.82rem; font-weight: 800;">عرض الملحق</button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // استدعاء عرض المنتجات ذات الصلة فور تحميل الصفحة
+    renderRelatedItems(currentProduct);
 
     // ملء بيانات الواجهة
     document.getElementById('crumb-cat-name').textContent = currentProduct.category;
