@@ -72,8 +72,20 @@ a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 button { font-family: inherit; border: none; background: none; cursor: pointer; }
 img { max-width: 100%; display: block; }
-.container { width: 95%; max-width: 1440px; margin: 0 auto; }
+.container {
+  width: 98% !important;
+  max-width: 1720px !important;
+  margin: 0 auto;
+  padding: 0 12px;
+}
 
+/* ضبط حجم اللوجو الجديد */
+.main-store-logo {
+  height: 46px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
 /* 1. شريط الإعلانات الترويجي */
 .dream-top-ticker {
   background-color: #1a1a1a;
@@ -289,21 +301,45 @@ img { max-width: 100%; display: block; }
   color: var(--text-main);
 }
 
-/* التخطيط الرئيسي: الفلاتر على اليمين (270px) والمنتجات على اليسار (1fr) */
+/* التخطيط: عند فتح الموقع تملأ المنتجات الشاشة بنسبة 100% */
 .dream-main-layout {
   display: grid;
-  grid-template-columns: 270px 1fr;
+  grid-template-columns: 1fr;
   gap: 20px;
   align-items: flex-start;
+  transition: all 0.3s ease;
 }
 
+/* شريط الفلاتر على اليمين ومخفي افتراضياً */
 .dream-filters-sidebar {
-  order: 1; /* على اليمين في نظام RTL */
+  order: 1;
+  display: none; /* مخفي تلقائياً */
+  width: 270px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
 }
 
 .products-showcase-column {
-  order: 2; /* على اليسار في نظام RTL */
+  order: 2;
   min-width: 0;
+}
+
+/* عندما يضغط المستخدم على زر تصفية: تفتح الفلاتر على اليمين والمنتجات على اليسار */
+.dream-main-layout.sidebar-active {
+  grid-template-columns: 280px 1fr !important;
+}
+
+.dream-main-layout.sidebar-active .dream-filters-sidebar {
+  display: block !important;
+  animation: fadeInSidebar 0.25s ease-in-out;
+}
+
+@keyframes fadeInSidebar {
+  from { opacity: 0; transform: translateX(15px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 /* شريط التحكم العلوي: تصفية يميناً، ترتيب بالمنتصف، وعرض شبكي يساراً */
@@ -437,26 +473,25 @@ img { max-width: 100%; display: block; }
    -------------------------------------------------------------------------- */
 .dream-products-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* عمودين أفقيين مطابق للصورة 1 */
-  gap: 16px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 20px !important; /* المسافة الواسعة الواضحة بين المربعين */
+  margin-bottom: 35px;
 }
 
 .dream-product-card {
   background-color: #ffffff !important;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  padding: 16px;
+  border: 1px solid #eaeded !important;
+  border-radius: 10px !important;
+  padding: 18px 20px !important;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: var(--shadow-card);
-  transition: var(--transition-normal);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
 }
 
 .dream-product-card:hover {
-  border-color: var(--dream-green);
-  box-shadow: var(--shadow-hover);
+  border-color: #7cb342 !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07) !important;
 }
 
 /* الجزء العلوي للكارت: تفاصيل يميناً وصورة يساراً */
@@ -682,10 +717,56 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 0;
+  padding: 12px 0;
   border-bottom: 1px solid var(--border-light);
-  font-size: 0.86rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+/* زر التبديل الأخضر المطابق للصورة 3 */
+.in-stock-switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.in-stock-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.in-stock-slider {
+  position: absolute;
+  inset: 0;
+  background-color: #d1d5db; /* رمادي عند الإغلاق */
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.in-stock-slider::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  right: 3px;
+  bottom: 3px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* عندما يكون مفعل يتحول لأخضر دريم 2000 */
+.in-stock-switch input:checked + .in-stock-slider {
+  background-color: #7cb342 !important;
+}
+
+.in-stock-switch input:checked + .in-stock-slider::before {
+  transform: translateX(-22px);
 }
 
 .accordion-filter-block {
@@ -942,4 +1023,28 @@ img { max-width: 100%; display: block; }
   color: #f59e0b !important;
   transform: scale(1.08);
   text-shadow: 0 0 16px rgba(245, 158, 11, 0.85);
+}
+.view-modes {
+  display: flex;
+  gap: 8px;
+}
+
+.view-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background-color: #f9fafb;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.view-btn.active {
+  background-color: #ffffff !important;
+  border-color: #7cb342 !important;
+  color: #7cb342 !important;
+  box-shadow: 0 2px 6px rgba(124, 179, 66, 0.2);
 }
