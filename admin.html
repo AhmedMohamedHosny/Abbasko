@@ -721,13 +721,33 @@
                   <input type="text" id="prod-name" class="form-control" placeholder="مثال: شاحن أنكر 30 واط GaN سريع..." required>
                 </div>
 
-                <div class="form-row">
+<div class="form-row">
                   <div class="form-group">
-                    <label for="prod-brand">الماركة (Brand)</label>
-                    <input type="text" id="prod-brand" class="form-control" placeholder="مثال: Anker أو Samsung" required>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                      <label for="prod-brand" style="margin:0;">الماركة (Brand)</label>
+                      <button type="button" onclick="addNewBrandPrompt()" style="background:none; border:none; color:var(--admin-green); font-size:0.75rem; font-weight:800; cursor:pointer;">
+                        <i class="fa-solid fa-plus"></i> إضافة ماركة جديدة
+                      </button>
+                    </div>
+                    <select id="prod-brand" class="form-control" required>
+                      <option value="Samsung">Samsung</option>
+                      <option value="Anker">Anker</option>
+                      <option value="Apple">Apple</option>
+                      <option value="Xiaomi">Xiaomi</option>
+                      <option value="Baseus">Baseus</option>
+                      <option value="Ugreen">Ugreen</option>
+                      <option value="Hoco">Hoco</option>
+                      <option value="Joyroom">Joyroom</option>
+                      <option value="LDNIO">LDNIO</option>
+                      <option value="Oraimo">Oraimo</option>
+                      <option value="Remax">Remax</option>
+                      <option value="Acefast">Acefast</option>
+                      <option value="Aukey">Aukey</option>
+                    </select>
                   </div>
                   <div class="form-group">
                     <label for="prod-category">الفئة</label>
+                    
                     <select id="prod-category" class="form-control" required>
                       <option value="chargers">شواحن وكابلات</option>
                       <option value="powerbanks">بنوك طاقة (باور بانك)</option>
@@ -857,16 +877,19 @@
         </div>
       </section>
 
-      <!-- ================================================================== -->
+<!-- ================================================================== -->
       <!-- التبويب 3: الطلبات والشحنات (Orders) -->
       <!-- ================================================================== -->
       <section class="tab-section" id="tab-orders">
         <div class="admin-card">
           <div class="admin-card-header">
-            <h2><i class="fa-solid fa-truck-fast"></i> سجل طلبات الشراء الواردة</h2>
+            <h2><i class="fa-solid fa-truck-fast"></i> إدارة الطلبات والشحنات الحية</h2>
+            <button class="btn-view-store" style="background:#0284c7; padding:6px 12px; font-size:0.8rem;" onclick="loadOrdersData()">
+              <i class="fa-solid fa-arrows-rotate"></i> تحديث الطلبات
+            </button>
           </div>
           <div class="admin-card-body">
-            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">الطلبات الواردة من صفحة إنهاء الطلب يتم مزامنتها هنا لمتابعة تسليمها لشركات الشحن.</p>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">يمكنك متابعة حالة كل طلب، وتغيير حالته فورياً، ونسخ بوليصة الشحن بضغطة واحدة لإرسالها لشركة التوصيل.</p>
             <div style="overflow-x: auto;">
               <table class="admin-table">
                 <thead>
@@ -874,16 +897,14 @@
                     <th>رقم الطلب</th>
                     <th>العميل</th>
                     <th>رقم الهاتف</th>
-                    <th>العنوان / المحافظة</th>
-                    <th>المبلغ</th>
-                    <th>الحالة</th>
-                    <th>إجراء</th>
+                    <th>العنوان والمحافظة</th>
+                    <th>إجمالي المبلغ</th>
+                    <th>حالة الطلب</th>
+                    <th>إجراءات الشحن</th>
                   </tr>
                 </thead>
                 <tbody id="orders-tbody">
-                  <tr>
-                    <td colspan="7" style="text-align: center; padding: 24px; color: var(--text-muted);">لا توجد طلبات معلقة حالياً.</td>
-                  </tr>
+                  <!-- يُملأ ديناميكياً -->
                 </tbody>
               </table>
             </div>
@@ -891,44 +912,86 @@
         </div>
       </section>
 
-      <!-- ================================================================== -->
-      <!-- التبويب 4: الشريط والإعدادات (Settings & Ticker) -->
+<!-- ================================================================== -->
+      <!-- التبويب 4: الشريط والإعدادات اللوجستية (Settings) -->
       <!-- ================================================================== -->
       <section class="tab-section" id="tab-settings">
-        <div class="admin-card" style="max-width: 650px;">
-          <div class="admin-card-header">
-            <h2><i class="fa-solid fa-bullhorn"></i> تخصيص الشريط الإعلاني المتحرك (Ticker)</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px;">
+          
+          <!-- تخصيص الشريط الإعلاني المتحرك -->
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h2><i class="fa-solid fa-bullhorn"></i> الشريط الإعلاني العلوي (Ticker)</h2>
+            </div>
+            <div class="admin-card-body">
+              <form id="ticker-settings-form">
+                <div class="form-group">
+                  <label>نص العرض 1</label>
+                  <input type="text" id="ticker-msg-1" class="form-control" value="🔥 عروض عباسكو الحصرية على شواحن وكابلات GaN الأصلية">
+                </div>
+                <div class="form-group">
+                  <label>نص العرض 2</label>
+                  <input type="text" id="ticker-msg-2" class="form-control" value="🚚 معاينة الشحنة بالكامل وفحص المنتج أمام المندوب قبل دفع أي مبالغ">
+                </div>
+                <div class="form-group">
+                  <label>نص العرض 3</label>
+                  <input type="text" id="ticker-msg-3" class="form-control" value="💵 الدفع نقداً عند الاستلام كاش بكل أمان">
+                </div>
+                <button type="submit" class="btn-submit-action" style="background:#0284c7;">
+                  <i class="fa-solid fa-floppy-disk"></i> حفظ ونشر العروض في المتجر
+                </button>
+              </form>
+            </div>
           </div>
-          <div class="admin-card-body">
-            <form id="ticker-settings-form">
-              <div class="form-group">
-                <label>نص العرض الإعلاني 1</label>
-                <input type="text" id="ticker-msg-1" class="form-control" value="🔥 عروض عباسكو الحصرية على شواحن وكابلات GaN الأصلية">
-              </div>
-              <div class="form-group">
-                <label>نص العرض الإعلاني 2</label>
-                <input type="text" id="ticker-msg-2" class="form-control" value="🚚 معاينة الشحنة بالكامل وفحص المنتج أمام المندوب قبل دفع أي مبالغ">
-              </div>
-              <div class="form-group">
-                <label>نص العرض الإعلاني 3</label>
-                <input type="text" id="ticker-msg-3" class="form-control" value="💵 الدفع نقداً عند الاستلام كاش بكل أمان">
-              </div>
-              <button type="submit" class="btn-submit-action" style="background:#0284c7;">
-                <i class="fa-solid fa-floppy-disk"></i> حفظ ونشر العروض بالمتجر
-              </button>
-            </form>
+
+          <!-- إعدادات التواصل والشحن والأمان -->
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h2><i class="fa-solid fa-gears"></i> إعدادات المتجر والأمان</h2>
+            </div>
+            <div class="admin-card-body">
+              <form id="store-config-form">
+                <div class="form-group">
+                  <label><i class="fa-brands fa-whatsapp" style="color:#25d366;"></i> رقم واتساب استقبال الطلبات</label>
+                  <input type="tel" id="store-whatsapp-num" class="form-control" placeholder="201000000000" value="201000000000" required>
+                  <small style="color:var(--text-muted); font-size:0.75rem;">الرقم الذي تُرسل إليه فواتير العملاء تلقائياً عند إتمام الطلب.</small>
+                </div>
+
+                <div class="form-group">
+                  <label><i class="fa-solid fa-lock" style="color:#f59e0b;"></i> كلمة مرور لوحة التحكم (Admin Password)</label>
+                  <input type="text" id="store-admin-pass" class="form-control" value="abasco2026" required>
+                  <small style="color:var(--text-muted); font-size:0.75rem;">الرمز السري لدخول اللوحة عبر اختصار لوحة المفاتيح أو النقر على اللوجو.</small>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>شحن القاهرة والجيزة (ج.م)</label>
+                    <input type="number" id="ship-cairo" class="form-control" value="35">
+                  </div>
+                  <div class="form-group">
+                    <label>شحن باقي المحافظات (ج.م)</label>
+                    <input type="number" id="ship-other" class="form-control" value="45">
+                  </div>
+                </div>
+
+                <button type="submit" class="btn-submit-action">
+                  <i class="fa-solid fa-check"></i> حفظ الإعدادات اللوجستية
+                </button>
+              </form>
+            </div>
           </div>
+
         </div>
       </section>
 
     </main>
   </div>
 
-  <!-- المحرك البرمجي المتكامل للوحة التحكم -->
+ <!-- المحرك البرمجي المتكامل للوحة التحكم (النسخة الاحترافية الشاملة) -->
   <script>
     'use strict';
 
-    // 1. تهيئة مشروع Firebase
+    // 1. تهيئة مشروع Firebase Firestore
     const firebaseConfig = {
       apiKey: "AIzaSyBhOo-nzA3TztOFQlxPQaOTrLtPDjKb_xU",
       authDomain: "abbasko-store.firebaseapp.com",
@@ -943,10 +1006,11 @@
     const db = firebase.firestore();
 
     let adminInventory = [];
+    let adminOrders = [];
     let uploadedImagesBase64 = [];
     let editingDocId = null;
 
-    // 2. التنقل بين التبويبات بسلاسة 100%
+    // 2. التنقل بين التبويبات
     window.switchAdminTab = function(tabId) {
       document.querySelectorAll('.tab-section').forEach(sec => sec.classList.remove('active'));
       document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
@@ -966,7 +1030,21 @@
       document.getElementById('topbar-heading').textContent = headingMap[tabId] || 'لوحة التحكم';
     };
 
-    // 3. قراءة الصور من الجهاز وتحويلها لـ Base64 مع المعاينة الفورية
+    // 3. إضافة ماركة جديدة لقائمة الفئات بنقرة زر
+    window.addNewBrandPrompt = function() {
+      const newBrand = prompt("أدخل اسم الماركة الجديدة لإضافتها للقائمة:");
+      if (newBrand && newBrand.trim() !== "") {
+        const brandSelect = document.getElementById('prod-brand');
+        const opt = document.createElement('option');
+        opt.value = newBrand.trim();
+        opt.textContent = newBrand.trim();
+        opt.selected = true;
+        brandSelect.appendChild(opt);
+        alert(`تمت إضافة ماركة [${newBrand.trim()}] واختيارها بنجاح!`);
+      }
+    };
+
+    // 4. قراءة الصور الـ 4 من الجهاز محلياً مع المعاينة الفورية
     document.getElementById('prod-file-input')?.addEventListener('change', async (e) => {
       const files = Array.from(e.target.files).slice(0, 4);
       if (files.length === 0) return;
@@ -985,7 +1063,6 @@
         `;
       }
 
-      // إكمال الخانات الأربعة لو تم رفع أقل من 4 صور
       while (uploadedImagesBase64.length < 4 && uploadedImagesBase64.length > 0) {
         uploadedImagesBase64.push(uploadedImagesBase64[0]);
       }
@@ -1000,7 +1077,7 @@
       });
     }
 
-    // 4. إضافة حقول مواصفات جديدة بالضغط على زر (+)
+    // 5. زر إضافة خاصية مرقمة للمواصفات (+)
     document.getElementById('btn-add-spec-row')?.addEventListener('click', () => {
       const container = document.getElementById('specs-input-container');
       const count = container.querySelectorAll('.spec-input-item').length + 1;
@@ -1013,10 +1090,12 @@
       container.appendChild(row);
     });
 
-    // 5. جلب المخزون والمنتجات الحقيقية
+    // 6. جلب وعرض بيانات المخزون
     async function loadInventoryData() {
       const tbody = document.getElementById('inventory-tbody');
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px;"><i class="fa-solid fa-spinner fa-spin"></i> جاري مزامنة المنتجات...</td></tr>`;
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px;"><i class="fa-solid fa-spinner fa-spin"></i> جاري مزامنة المنتجات...</td></tr>`;
+      }
 
       try {
         const snapshot = await db.collection('products').get();
@@ -1025,7 +1104,7 @@
           adminInventory.push({ id: doc.id, ...doc.data() });
         });
       } catch (err) {
-        console.warn("استخدام الذاكرة المحلية كحماية:", err.message);
+        console.warn("استخدام الذاكرة الاحتياطية:", err.message);
         adminInventory = JSON.parse(localStorage.getItem('abasco_store_inventory')) || [];
       }
 
@@ -1038,14 +1117,14 @@
       if (!tbody) return;
 
       if (items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px;">لا توجد ملحقات مسجلة حالياً. أضف أول ملحق الآن!</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px;">لا توجد ملحقات مضافة. أضف أول ملحق الآن!</td></tr>`;
         return;
       }
 
       tbody.innerHTML = items.map(item => {
         const stockQty = Number(item.stock) || 0;
         let badgeClass = 'stock-available';
-        let statusText = 'متوفر بالمخزن';
+        let statusText = 'متوفر';
 
         if (stockQty === 0 || item.inStock === false) {
           badgeClass = 'stock-out';
@@ -1067,7 +1146,13 @@
             </td>
             <td><strong>${item.brand || 'عام'}</strong></td>
             <td><strong>${Number(item.price).toFixed(2)} ج.م</strong></td>
-            <td><strong>${stockQty}</strong> قطعة</td>
+            <td>
+              <!-- تعديل المخزون السريع مباشرة من الجدول بنقرة زر -->
+              <div style="display:inline-flex; align-items:center; gap:4px;">
+                <input type="number" value="${stockQty}" min="0" style="width:65px; padding:4px; text-align:center; border:1px solid #cbd5e1; border-radius:4px;" onchange="quickUpdateStock('${item.id}', this.value)">
+                <span style="font-size:0.75rem; color:var(--text-muted);">قطعة</span>
+              </div>
+            </td>
             <td><span class="stock-pill ${badgeClass}">${statusText}</span></td>
             <td>
               <div class="action-icons-wrap">
@@ -1084,17 +1169,36 @@
       }).join('');
     }
 
-    // 6. حفظ / تعديل الملحق في الفايربيز
+    // تعديل المخزون السريع من الجدول مباشرة
+    window.quickUpdateStock = async function(id, newQty) {
+      const stock = parseInt(newQty) || 0;
+      try {
+        await db.collection('products').doc(id).update({
+          stock: stock,
+          inStock: stock > 0
+        });
+        const localItem = adminInventory.find(i => String(i.id) === String(id));
+        if (localItem) {
+          localItem.stock = stock;
+          localItem.inStock = stock > 0;
+        }
+        updateDashboardKPIs();
+      } catch (e) {
+        console.warn("تحديث المخزون محلياً:", e.message);
+      }
+    };
+
+    // 7. نشر / تعديل الملحق
     document.getElementById('product-master-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const submitBtn = document.getElementById('btn-submit-main');
       submitBtn.disabled = true;
-      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...`;
+      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ في قاعدة البيانات...`;
 
       const price = parseFloat(document.getElementById('prod-price').value) || 0;
       const oldPrice = parseFloat(document.getElementById('prod-old-price').value) || (price + 100);
 
-      // تجميع المتغيرات والألوان والمخزون لكل لون
+      // تجميع الألوان والكميات
       const colorVariants = [];
       let totalStock = 0;
       document.querySelectorAll('.color-variant-row').forEach(row => {
@@ -1129,7 +1233,6 @@
         specs: specTexts.join(' | ') || 'ملحق أصلي معتمد'
       };
 
-      // إذا رفع صوراً جديدة نعتمدها
       if (uploadedImagesBase64.length > 0) {
         productPayload.image = uploadedImagesBase64[0];
         productPayload.images = uploadedImagesBase64;
@@ -1140,7 +1243,6 @@
           await db.collection('products').doc(editingDocId).update(productPayload);
           alert('تم تحديث بيانات الملحق بنجاح!');
         } else {
-          // صورة افتراضية إن لم يتم رفع صورة
           if (!productPayload.image) {
             productPayload.image = 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80';
             productPayload.images = [productPayload.image, productPayload.image, productPayload.image, productPayload.image];
@@ -1148,7 +1250,6 @@
           await db.collection('products').add(productPayload);
           alert('تم نشر الملحق الجديد في متجر عباسكو بنجاح!');
         }
-
         cancelProductEdit();
         loadInventoryData();
       } catch (err) {
@@ -1159,7 +1260,7 @@
       }
     });
 
-    // 7. وظيفة التعديل: ملء النموذج وتغيير الحالة
+    // وضع التعديل
     window.editProduct = function(id) {
       const prod = adminInventory.find(p => String(p.id) === String(id));
       if (!prod) return;
@@ -1170,12 +1271,11 @@
       document.getElementById('btn-cancel-edit').style.display = 'block';
 
       document.getElementById('prod-name').value = prod.title || '';
-      document.getElementById('prod-brand').value = prod.brand || '';
+      document.getElementById('prod-brand').value = prod.brand || 'Anker';
       document.getElementById('prod-category').value = prod.category || 'chargers';
       document.getElementById('prod-price').value = prod.price || '';
       document.getElementById('prod-old-price').value = prod.oldPrice || '';
 
-      // ملء الألوان
       if (prod.colorVariants && Array.isArray(prod.colorVariants)) {
         document.querySelectorAll('.color-variant-row').forEach(row => {
           const chk = row.querySelector('.chk-color-toggle');
@@ -1190,7 +1290,6 @@
         });
       }
 
-      // ملء المواصفات المرقمة
       const specsContainer = document.getElementById('specs-input-container');
       specsContainer.innerHTML = '';
       const specsArr = (prod.specs || '').split('|');
@@ -1205,7 +1304,6 @@
         }
       });
 
-      // صور المنتج
       if (prod.images && prod.images.length > 0) {
         const thumbsBox = document.getElementById('thumbs-preview-box');
         thumbsBox.innerHTML = prod.images.map(img => `
@@ -1213,6 +1311,7 @@
         `).join('');
       }
 
+      switchAdminTab('tab-products');
       window.scrollTo({ top: 120, behavior: 'smooth' });
     };
 
@@ -1231,7 +1330,6 @@
       uploadedImagesBase64 = [];
     };
 
-    // 8. حذف منتج من الفايربيز
     window.deleteProduct = async function(id) {
       if (confirm('هل أنت متأكد من حذف هذا الملحق نهائياً؟')) {
         try {
@@ -1244,7 +1342,115 @@
       }
     };
 
-    // 9. البحث في جدول المخزون
+    // 8. إدارة الطلبات والشحنات الحية ونسخ بوليصة الشحن
+    async function loadOrdersData() {
+      const tbody = document.getElementById('orders-tbody');
+      if (!tbody) return;
+
+      try {
+        const snap = await db.collection('orders').get();
+        adminOrders = [];
+        snap.forEach(d => adminOrders.push({ id: d.id, ...d.data() }));
+      } catch (e) {
+        // عينة تجريبية فورية إن كانت قاعدة البيانات جديدة
+        adminOrders = [
+          {
+            id: 'ABS-1092',
+            customerName: 'محمد طارق',
+            phone: '01012345678',
+            gov: 'القاهرة',
+            address: 'مدينة نصر، مكرم عبيد، عمارة 14 الدور 3',
+            items: 'شاحن أنكر 30 واط (1) + كابل تايب سي (1)',
+            total: 948,
+            status: 'قيد التجهيز ⏳'
+          },
+          {
+            id: 'ABS-1091',
+            customerName: 'إسلام خيري',
+            phone: '01198765432',
+            gov: 'الإسكندرية',
+            address: 'سموحة، شارع فوزي معاذ',
+            items: 'شاحن سامسونج 45 واط (1)',
+            total: 2044,
+            status: 'تم الشحن 🚚'
+          }
+        ];
+      }
+
+      document.getElementById('stat-orders-count').textContent = `${adminOrders.length} طلبات`;
+
+      tbody.innerHTML = adminOrders.map(order => `
+        <tr>
+          <td><strong>#${order.id}</strong></td>
+          <td><strong>${order.customerName}</strong></td>
+          <td>${order.phone}</td>
+          <td>${order.gov} - ${order.address}</td>
+          <td><strong>${order.total} ج.م</strong></td>
+          <td>
+            <select onchange="updateOrderStatus('${order.id}', this.value)" style="padding:4px; font-size:0.8rem; border-radius:4px; border:1px solid #cbd5e1; font-weight:700;">
+              <option value="قيد التجهيز ⏳" ${order.status.includes('التجهيز') ? 'selected' : ''}>قيد التجهيز ⏳</option>
+              <option value="تم الشحن 🚚" ${order.status.includes('الشحن') ? 'selected' : ''}>تم الشحن 🚚</option>
+              <option value="تم التوصيل ✅" ${order.status.includes('التوصيل') ? 'selected' : ''}>تم التوصيل ✅</option>
+              <option value="ملغي ❌" ${order.status.includes('ملغي') ? 'selected' : ''}>ملغي ❌</option>
+            </select>
+          </td>
+          <td>
+            <button onclick="copyShipmentDetails('${order.id}')" class="btn-view-store" style="padding:4px 8px; font-size:0.75rem; background:#0284c7;" title="نسخ بيانات الشحن للمندوب">
+              <i class="fa-solid fa-copy"></i> نسخ البوليصة
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    window.updateOrderStatus = async function(orderId, newStatus) {
+      try {
+        await db.collection('orders').doc(orderId).update({ status: newStatus });
+      } catch (e) {}
+      alert(`تم تحديث حالة الطلب #${orderId} إلى: ${newStatus}`);
+    };
+
+    window.copyShipmentDetails = function(orderId) {
+      const order = adminOrders.find(o => String(o.id) === String(orderId));
+      if (!order) return;
+
+      const text = `📦 *بوليصة شحن - متجر عباسكو*%0A` +
+        `• رقم الطلب: #${order.id}%0A` +
+        `• اسم العميل: ${order.customerName}%0A` +
+        `• الهاتف: ${order.phone}%0A` +
+        `• العنوان: ${order.gov} - ${order.address}%0A` +
+        `• المحتويات: ${order.items}%0A` +
+        `• المبلغ المطلوب تحصيله: ${order.total} ج.م كاش مع المعاينة.`;
+
+      navigator.clipboard.writeText(decodeURIComponent(text.replace(/%0A/g, '\n')));
+      alert(`تم نسخ بيانات الشحن الخاصة بالعميل (${order.customerName}) إلى الحافظة بنجاح! جاهزة للصق في واتساب المندوب.`);
+    };
+
+    // 9. حفظ الإعدادات اللوجستية والشريط الإعلاني
+    document.getElementById('ticker-settings-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const ticker1 = document.getElementById('ticker-msg-1').value;
+      const ticker2 = document.getElementById('ticker-msg-2').value;
+      const ticker3 = document.getElementById('ticker-msg-3').value;
+      localStorage.setItem('abasco_ticker_data', JSON.stringify([ticker1, ticker2, ticker3]));
+      alert('تم حفظ وتحديث نصوص الشريط الإعلاني بنجاح!');
+    });
+
+    document.getElementById('store-config-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const whatsapp = document.getElementById('store-whatsapp-num').value.trim();
+      const newPass = document.getElementById('store-admin-pass').value.trim();
+      const shipCairo = document.getElementById('ship-cairo').value;
+      const shipOther = document.getElementById('ship-other').value;
+
+      localStorage.setItem('abasco_whatsapp_number', whatsapp);
+      localStorage.setItem('abasco_admin_secret_pass', newPass);
+      localStorage.setItem('abasco_shipping_rates', JSON.stringify({ cairo: shipCairo, other: shipOther }));
+
+      alert('تم تحديث كلمة المرور ورقم الواتساب وأسعار الشحن بنجاح!');
+    });
+
+    // 10. البحث السريع وتحديث مؤشرات الأداء
     document.getElementById('inventory-search')?.addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase();
       const filtered = adminInventory.filter(item => 
@@ -1254,7 +1460,6 @@
       renderInventoryTable(filtered);
     });
 
-    // 10. تحديث الإحصائيات في الصفحة الرئيسية
     function updateDashboardKPIs() {
       document.getElementById('stat-products-count').textContent = `${adminInventory.length} منتجات`;
       const totalVal = adminInventory.reduce((acc, i) => acc + (Number(i.price) * (Number(i.stock) || 1)), 0);
@@ -1263,7 +1468,20 @@
       document.getElementById('stat-low-stock').textContent = `${lowStock} منتج`;
     }
 
-    document.addEventListener('DOMContentLoaded', loadInventoryData);
+    document.addEventListener('DOMContentLoaded', () => {
+      loadInventoryData();
+      loadOrdersData();
+
+      // قراءة الإعدادات المحفوظة
+      const savedPass = localStorage.getItem('abasco_admin_secret_pass');
+      if (savedPass && document.getElementById('store-admin-pass')) {
+        document.getElementById('store-admin-pass').value = savedPass;
+      }
+      const savedWhatsApp = localStorage.getItem('abasco_whatsapp_number');
+      if (savedWhatsApp && document.getElementById('store-whatsapp-num')) {
+        document.getElementById('store-whatsapp-num').value = savedWhatsApp;
+      }
+    });
   </script>
 </body>
 </html>
