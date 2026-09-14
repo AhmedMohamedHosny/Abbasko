@@ -617,7 +617,6 @@
   <!-- مكتبات Firebase الحية -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 </head>
 <body>
 
@@ -1045,100 +1044,64 @@
       }
     };
 
-// تهيئة خدمة التخزين السحابي Firebase Storage
-    const storage = firebase.storage();
-    let processedImages = [];
+// ==========================================================================
+    // إعدادات Cloudinary لرفع الصور مجاناً وبأعلى سرعة
+    // ==========================================================================
+    const CLOUDINARY_CLOUD_NAME = "mzm1gkdl";
+    const CLOUDINARY_UPLOAD_PRESET = "abbasko";
 
-    // دالة ضغط وتصغير أبعاد الصورة بالمتصفح (Canvas Compression)
-    function compressImage(file, maxWidth = 800, quality = 0.75) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-          const img = new Image();
-          img.src = event.target.result;
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            let width = img.width;
-            let height = img.height;
+    let uploadedCloudinaryUrls = [];
 
-            if (width > maxWidth) {
-              height = Math.round((height * maxWidth) / width);
-              width = maxWidth;
-            }
+    // دالة الرفع المباشر لسيرفر Cloudinary
+    async function uploadFileToCloudinary(file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-
-            // استخراج النسخة المضغوطة كـ Blob و Base64 معاً
-            const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-            canvas.toBlob((blob) => {
-              resolve({ blob, base64: compressedBase64 });
-            }, 'image/jpeg', quality);
-          };
-          img.onerror = (err) => reject(err);
-        };
-        reader.onerror = (err) => reject(err);
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: "POST",
+        body: formData
       });
+
+      if (!res.ok) throw new Error("فشل الرفع إلى Cloudinary");
+      const data = await res.json();
+      return data.secure_url; // الرابط السحابي السريع
     }
 
-    // قراءة الصور وضغطها فور اختيارها من الجهاز
+    // رفع الـ 4 صور فور اختيارهم من جهازك مع المعاينة الحية
     document.getElementById('prod-file-input')?.addEventListener('change', async (e) => {
       const files = Array.from(e.target.files).slice(0, 4);
       if (files.length === 0) return;
 
-      processedImages = [];
+      uploadedCloudinaryUrls = [];
       const thumbsBox = document.getElementById('thumbs-preview-box');
-      thumbsBox.innerHTML = '<div style="grid-column: 1/-1; text-align:center; font-size:0.8rem; color:var(--admin-green);"><i class="fa-solid fa-spinner fa-spin"></i> جاري تحسين وضغط الصور فورياً...</div>';
+      thumbsBox.innerHTML = '<div style="grid-column: 1/-1; text-align:center; font-size:0.85rem; color:var(--admin-green); font-weight:800;"><i class="fa-solid fa-spinner fa-spin"></i> جاري رفع الصور لسيرفر Cloudinary...</div>';
 
       for (let i = 0; i < files.length; i++) {
         try {
-          const { blob, base64 } = await compressImage(files[i]);
-          processedImages.push({ blob, base64 });
+          const cloudUrl = await uploadFileToCloudinary(files[i]);
+          uploadedCloudinaryUrls.push(cloudUrl);
         } catch (err) {
-          console.error("فشل ضغط الصورة:", err);
+          console.error("خطأ أثناء رفع الصورة:", err);
+          alert(`فشل رفع الصورة رقم ${i + 1}!`);
         }
       }
 
-      // رسم المعاينة بالصور المضغوطة
+      // رسم المعاينة بالصور المرفوعة سحابياً
       thumbsBox.innerHTML = '';
-      processedImages.forEach((imgObj, idx) => {
+      uploadedCloudinaryUrls.forEach((url, idx) => {
         thumbsBox.innerHTML += `
           <div class="thumb-slot">
-            <img src="${imgObj.base64}" alt="صورة ${idx + 1}">
+            <img src="${url}" alt="صورة ${idx + 1}">
           </div>
         `;
       });
 
-      // إكمال الخانات الأربعة بالصورة الأولى لو اختار العميل أقل من 4
-      while (processedImages.length < 4 && processedImages.length > 0) {
-        processedImages.push(processedImages[0]);
+      // إكمال الخانات الأربعة بالصورة الأولى لو اختار المستخدم أقل من 4 لتفعيل الـ Hover
+      while (uploadedCloudinaryUrls.length < 4 && uploadedCloudinaryUrls.length > 0) {
+        uploadedCloudinaryUrls.push(uploadedCloudinaryUrls[0]);
       }
     });
-
-    // رفع الصور المضغوطة إلى Firebase Storage مع Fallback للـ Base64
-    async function uploadImagesHybrid() {
-      if (processedImages.length === 0) return [];
-      const finalUrls = [];
-
-      for (let i = 0; i < processedImages.length; i++) {
-        const item = processedImages[i];
-        try {
-          // المحاولة الأولى: الرفع المباشر لـ Firebase Storage
-          const storageRef = storage.ref(`products/${Date.now()}_img_${i}.jpg`);
-          await storageRef.put(item.blob);
-          const downloadUrl = await storageRef.getDownloadURL();
-          finalUrls.push(downloadUrl);
-        } catch (storageError) {
-          console.warn("تعذر الرفع إلى Storage، جاري استخدام النسخة المضغوطة الآمنة:", storageError.message);
-          // المحاولة البديلة: استخدام Base64 بعد ضغطه وتصغيره (حجمه ~60KB ولا يكسر الحد)
-          finalUrls.push(item.base64);
-        }
-      }
-      return finalUrls;
-    }
 
     // 5. زر إضافة خاصية مرقمة للمواصفات (+)
     document.getElementById('btn-add-spec-row')?.addEventListener('click', () => {
@@ -1296,12 +1259,10 @@
         specs: specTexts.join(' | ') || 'ملحق أصلي معتمد'
       };
 
-// رفع وحفظ الصور بالحل المزدوج
-      if (processedImages.length > 0) {
-        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري رفع وضغط الصور السحابية...`;
-        const uploadedUrls = await uploadImagesHybrid();
-        productPayload.image = uploadedUrls[0];
-        productPayload.images = uploadedUrls;
+// حفظ روابط الصور السحابية القادمة من Cloudinary
+      if (uploadedCloudinaryUrls.length > 0) {
+        productPayload.image = uploadedCloudinaryUrls[0];
+        productPayload.images = uploadedCloudinaryUrls;
       }
 
       try {
@@ -1393,7 +1354,7 @@
         <div class="thumb-slot">صورة 3</div>
         <div class="thumb-slot">صورة 4</div>
       `;
-      uploadedImagesBase64 = [];
+uploadedCloudinaryUrls = [];
     };
 
     window.deleteProduct = async function(id) {
