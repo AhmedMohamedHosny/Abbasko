@@ -1140,3 +1140,140 @@ img { max-width: 100%; display: block; }
 .filter-card-accordion.open .filter-card-header i {
   transform: rotate(180deg);
 }
+/* ==========================================================================
+   إصلاح جذري لتنسيقات الموبايل والتذييل (Mobile & Footer Final Fix)
+   ========================================================================== */
+
+/* 1. منع ظهور شريط الموبايل السفلي على الكمبيوتر نهائياً */
+.mobile-bottom-nav {
+  display: none !important;
+}
+
+/* 2. ضبط التذييل والشاشات الصغيرة للموبايل */
+@media (max-width: 768px) {
+  /* إظهار شريط الموبايل السفلي في الهواتف فقط */
+  .mobile-bottom-nav {
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-color);
+    padding: 8px 0;
+    z-index: 9000;
+  }
+
+  /* جعل كروت المنتجات عمودية في الموبايل لكي لا تتطابق وتتداخل */
+  .dream-products-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .dream-product-card {
+    padding: 14px !important;
+  }
+
+  .card-top-horizontal-split {
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+  }
+
+  .card-details-pane {
+    text-align: center !important;
+    width: 100%;
+  }
+
+  .price-block-dream,
+  .card-stars-row,
+  .stock-dot-indicator {
+    justify-content: center !important;
+  }
+
+  .card-image-pane {
+    width: 100% !important;
+    align-items: center !important;
+    margin-bottom: 10px;
+  }
+
+  /* ترتيب تذييل الموقع في الموبايل فوق بعضه بشكل مرتب */
+  .footer-content-row {
+    grid-template-columns: 1fr !important;
+    text-align: center;
+    gap: 30px;
+  }
+
+  .copyright-flex {
+    flex-direction: column !important;
+    text-align: center;
+    gap: 14px !important;
+  }
+
+  .footer-social-mid {
+    justify-content: center;
+  }
+
+  /* مسافة أمان لكي لا يغطي شريط الموبايل السفلي محتوى الصفحة */
+  body {
+    padding-bottom: 70px !important;
+  }
+}
+
+/* 3. تنسيق شريط الحقوق والتسجيل السفلي للكمبيوتر والموبايل */
+.copyright-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.footer-social-mid {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-social-mid a {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: all 0.25s ease;
+}
+
+.footer-social-mid a:hover {
+  background-color: var(--dream-green);
+  border-color: var(--dream-green);
+  transform: translateY(-3px);
+}
+
+.dev-credit-text {
+  font-size: 0.84rem;
+  color: #9ca3af;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.dev-gold-link {
+  color: #fbbf24 !important; /* ذهبي نقي متوهج */
+  font-weight: 900;
+  margin-right: 4px;
+  text-decoration: none;
+  display: inline-block;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+  transition: all 0.25s ease;
+}
+
+.dev-gold-link:hover {
+  color: #f59e0b !important;
+  transform: scale(1.08);
+  text-shadow: 0 0 16px rgba(245, 158, 11, 0.85);
+}
