@@ -153,7 +153,7 @@ function renderCatalog(items) {
               <span>(${product.ratingCount})</span>
             </div>
 
-            <div class="price-block-dream" onclick="window.location.href='product.html?id=${product.id}'" style="cursor: pointer;">
+<div class="price-block-dream" onclick="window.location.href='product.html?id=${product.id}'" style="cursor: pointer;">
               <span class="price-val-red">LE ${product.price.toFixed(2)}</span>
               <span class="price-struck-gray">LE ${product.oldPrice.toFixed(2)}</span>
             </div>
