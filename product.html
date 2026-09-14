@@ -592,14 +592,18 @@
     </a>
   </div>
 
-  <!-- المحرك البرمجي الخاص بصفحة المنتج -->
+<!-- مكتبات Firebase الاحتياطية -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- المحرك البرمجي الفوري لصفحة المنتج -->
   <script>
     'use strict';
 
-    // نفس قاعدة المنتجات المعتمدة في script.js لضمان التطابق التام
-    const catalog = [
+    // 1. مصفوفة الطوارئ في حال فتح الصفحة برابط خارجي مباشر
+    const fallbackCatalog = [
       {
-        id: 1,
+        id: '1',
         title: 'أنكر زولو شاحن 30 واط، A2698L11 - أسود فائق السرعة',
         brand: 'Anker',
         category: 'شواحن ووصلات',
@@ -607,222 +611,196 @@
         oldPrice: 859.00,
         discount: '130.00',
         rating: 5,
-        ratingCount: 14,
-        image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=600&q=80',
-        specs: [
-          { label: 'القدرة الكهربائية', value: '30 واط مع تقنية PowerIQ 3.0' },
-          { label: 'منفذ الشحن', value: 'منفذ Type-C ذكي للحماية من الحرارة' },
-          { label: 'التوافق', value: 'يدعم هواتف iPhone 15/16 وسلسلة Samsung Galaxy' },
-          { label: 'الضمان', value: 'ضمان استبدال فوري 14 يوماً من عباسكو' }
-        ]
+        ratingCount: 19,
+        specs: 'النوع: شاحن طاقة | شحن سريع بقوة 30 واط | منفذ USB-C | التوافق: آيفون وسامسونج',
+        image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=600&q=80'
       },
       {
-        id: 2,
+        id: '2',
         title: 'سامسونج EP-T2510 شاحن محول طاقة 25 واط يو اس بي-C',
         brand: 'Samsung',
         category: 'شواحن ووصلات',
         price: 749.00,
         oldPrice: 879.00,
         discount: '130.00',
-        rating: 5,
-        ratingCount: 22,
-        image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=600&q=80',
-        specs: [
-          { label: 'القدرة', value: '25 واط شحن فائق السرعة (Super Fast Charging)' },
-          { label: 'المنفذ', value: 'USB Type-C أصلي' },
-          { label: 'التوافق', value: 'جميع أجهزة سامسونج الحديثة والآيفون' }
-        ]
+        rating: 4,
+        ratingCount: 6,
+        specs: 'الطاقة: 25 واط | منفذ يو اس بي-C | اللون: أسود | شحن فائق السرعة',
+        image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=600&q=80'
       },
       {
-        id: 3,
-        title: 'سامسونج شاحن منزلي بقوة 45 واط مع كابل من Type-C إلى Type-C بطول 1.8 متر',
+        id: '3',
+        title: 'سامسونج شاحن منزلي بقوة 45 واط مع كابل من Type-C إلي Type-C بطول 1.8 متر',
         brand: 'Samsung',
         category: 'شواحن ووصلات',
         price: 1999.00,
         oldPrice: 2360.00,
         discount: '361.00',
         rating: 5,
-        ratingCount: 35,
-        image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=600&q=80',
-        specs: [
-          { label: 'القدرة القصوى', value: '45 واط لشحن الهواتف والأجهزة اللوحية' },
-          { label: 'طول الكابل', value: '1.8 متر كابل 5A فائق التحمل' }
-        ]
+        ratingCount: 12,
+        specs: 'الماركة: سامسونج | شحن فائق السرعة 2.0 كحد أقصى 45 واط | كابل تايب سي 1.8 متر',
+        image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=600&q=80'
       },
       {
-        id: 4,
-        title: 'سامسونج 25 واط شاحن PD Type-C أصلي سريع',
+        id: '4',
+        title: 'سامسونج 25 واط شاحن PD Type-C',
         brand: 'Samsung',
         category: 'شواحن ووصلات',
         price: 449.00,
         oldPrice: 529.00,
         discount: '80.00',
-        rating: 5,
-        ratingCount: 9,
-        image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=600&q=80',
-        specs: [
-          { label: 'النوع', value: 'رأس شاحن PD مدمج ومقاوم لارتفاع التيار' },
-          { label: 'القدرة', value: '25 واط' }
-        ]
-      },
-      {
-        id: 5,
-        title: 'سامسونج EP-P3400 باور بانك 10000 مللي أمبير 25 واط شحن سريع',
-        brand: 'Samsung',
-        category: 'بنوك طاقة',
-        price: 1899.00,
-        oldPrice: 2299.00,
-        discount: '400.00',
-        rating: 5,
-        ratingCount: 18,
-        image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=600&q=80',
-        specs: [
-          { label: 'السعة', value: '10,000 مللي أمبير في الساعة' },
-          { label: 'سرعة الشحن', value: '25W Super Fast Charge' }
-        ]
-      },
-      {
-        id: 6,
-        title: 'أنكر كابل A8752H11 من Type-C إلى Type-C طول 3.3 قدم، وشحن سريع 60 واط',
-        brand: 'Anker',
-        category: 'شواحن ووصلات',
-        price: 219.00,
-        oldPrice: 259.00,
-        discount: '40.00',
-        rating: 5,
-        ratingCount: 40,
-        image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80',
-        specs: [
-          { label: 'الخامة', value: 'نايلون مضفر فائق المتانة' },
-          { label: 'القدرة', value: 'يدعم سرعة شحن حتى 60 واط' }
-        ]
-      },
-      {
-        id: 7,
-        title: 'شاومي باور بانك 10000 مللي أمبير، 22.5 واط لايت رمادي فاتح',
-        brand: 'Xiaomi',
-        category: 'بنوك طاقة',
-        price: 799.00,
-        oldPrice: 889.00,
-        discount: '90.00',
         rating: 4,
-        ratingCount: 15,
-        image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=600&q=80',
-        specs: [
-          { label: 'السعة', value: '10,000 مللي أمبير' },
-          { label: 'المنافذ', value: 'منفذين USB-A ومنفذ Type-C' }
-        ]
-      },
-      {
-        id: 8,
-        title: 'يوجرين HP203 HiTune Max5c سماعات أذن لاسلكية مع خاصية إلغاء الضوضاء',
-        brand: 'Ugreen',
-        category: 'سماعات وصوتيات',
-        price: 3860.00,
-        oldPrice: 4550.00,
-        discount: '690.00',
-        rating: 5,
         ratingCount: 8,
-        image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=600&q=80',
-        specs: [
-          { label: 'عزل الضوضاء', value: 'عزل نشط متقدم ANC يصل إلى -43dB' },
-          { label: 'البطارية', value: 'حتى 75 ساعة تشغيل متواصل' }
-        ]
+        specs: 'النوع: Adapter | الطاقة: 25 Watt | شحن فائق السرعة للبقاء على قيد الحياة',
+        image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=600&q=80'
       }
     ];
 
-// استخراج معرّف الملحق من الرابط بدقة
-    const urlParams = new URLSearchParams(window.location.search);
-// 1. تهيئة الفايربيز في صفحة المنتج
-    const firebaseConfig = {
-      apiKey: "AIzaSyBhOo-nzA3TztOFQlxPQaOTrLtPDjKb_xU",
-      authDomain: "abbasko-store.firebaseapp.com",
-      projectId: "abbasko-store",
-      storageBucket: "abbasko-store.firebasestorage.app",
-      messagingSenderId: "475025963892",
-      appId: "1:475025963892:web:8790442f8bc83539368a21",
-      measurementId: "G-B1866569VZ"
-    };
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    // 2. قراءة المنتجات من الذاكرة المشتركة الحية فوراً (0 ثانية تحميل)
+    const storedInventory = JSON.parse(localStorage.getItem('abasco_store_inventory')) || [];
+    const allProducts = storedInventory.length > 0 ? storedInventory : fallbackCatalog;
 
+    // 3. استخراج معرّف الملحق من الرابط بدقة
     const urlParams = new URLSearchParams(window.location.search);
     const prodId = urlParams.get('id') || '1';
-    let currentProduct = null;
 
-    // دالة تعبئة بيانات الصفحة بالمنتج المختار
-    function populateProductUI(product) {
-      currentProduct = product;
-      document.getElementById('crumb-cat-name').textContent = product.category || 'إكسسوارات الموبايل';
-      document.getElementById('crumb-prod-title').textContent = product.title;
-      document.getElementById('detail-title').textContent = product.title;
-      document.getElementById('detail-brand').textContent = product.brand || 'عام';
-      document.getElementById('detail-img').src = product.image || (product.images && product.images[0]) || 'logo.png';
-      document.getElementById('detail-price').textContent = `LE ${Number(product.price).toFixed(2)}`;
-      document.getElementById('detail-old-price').textContent = product.oldPrice ? `LE ${Number(product.oldPrice).toFixed(2)}` : '';
-      document.getElementById('detail-discount-tag').textContent = product.discount ? `وفر ${product.discount} جنيه` : 'عرض خاص';
+    let currentProduct = allProducts.find(p => String(p.id) === String(prodId)) || allProducts[0];
+
+    // 4. ملء بيانات واجهة المنتج فوراً
+    function renderCurrentProduct(prod) {
+      currentProduct = prod;
+      document.title = `${prod.title} | عباسكو - Abasco Store`;
+      
+      const crumbCat = document.getElementById('crumb-cat-name');
+      if (crumbCat) crumbCat.textContent = prod.category || 'إكسسوارات الموبايل';
+
+      const crumbTitle = document.getElementById('crumb-prod-title');
+      if (crumbTitle) crumbTitle.textContent = prod.title;
+
+      const detailTitle = document.getElementById('detail-title');
+      if (detailTitle) detailTitle.textContent = prod.title;
+
+      const detailBrand = document.getElementById('detail-brand');
+      if (detailBrand) detailBrand.textContent = prod.brand || 'عام';
+
+      const detailImg = document.getElementById('detail-img');
+      if (detailImg) {
+        detailImg.src = (prod.images && prod.images[0]) || prod.image || 'logo.png';
+        detailImg.alt = prod.title;
+      }
+
+      const priceVal = Number(prod.price) || 0;
+      const oldPriceVal = Number(prod.oldPrice) || 0;
+
+      const priceEl = document.getElementById('detail-price');
+      if (priceEl) priceEl.textContent = `LE ${priceVal.toFixed(2)}`;
+
+      const oldPriceEl = document.getElementById('detail-old-price');
+      if (oldPriceEl) {
+        if (oldPriceVal > 0) {
+          oldPriceEl.textContent = `LE ${oldPriceVal.toFixed(2)}`;
+          oldPriceEl.style.display = 'inline';
+        } else {
+          oldPriceEl.style.display = 'none';
+        }
+      }
+
+      const discountTag = document.getElementById('detail-discount-tag');
+      if (discountTag) {
+        if (prod.discount) {
+          discountTag.textContent = `وفر ${prod.discount} جنيه`;
+          discountTag.style.display = 'block';
+        } else if (oldPriceVal > priceVal) {
+          discountTag.textContent = `وفر ${(oldPriceVal - priceVal).toFixed(2)} جنيه`;
+          discountTag.style.display = 'block';
+        } else {
+          discountTag.style.display = 'none';
+        }
+      }
 
       // رسم النجوم
-      let starsHtml = '';
-      const rate = Math.round(Number(product.rating) || 5);
-      for (let i = 1; i <= 5; i++) {
-        starsHtml += (i <= rate) 
-          ? '<i class="fa-solid fa-star"></i>' 
-          : '<i class="fa-regular fa-star" style="color:#d1d5db;"></i>';
-      }
-      document.getElementById('detail-stars-box').innerHTML = starsHtml;
-      document.getElementById('detail-reviews-num').textContent = `(${product.ratingCount || 0} تقييم مشتري)`;
-
-      renderRelatedItems(product);
-    }
-
-    // جلب المنتج الحقيقي من Firestore، وإن لم يُعثر عليه يبحث في الكتالوج المحلي
-    async function loadCurrentProduct() {
-      try {
-        const doc = await db.collection('products').doc(prodId).get();
-        if (doc.exists) {
-          populateProductUI({ id: doc.id, ...doc.data() });
-          return;
+      const starsBox = document.getElementById('detail-stars-box');
+      if (starsBox) {
+        let starsHtml = '';
+        const rate = Math.round(Number(prod.rating) || 5);
+        for (let i = 1; i <= 5; i++) {
+          starsHtml += (i <= rate)
+            ? '<i class="fa-solid fa-star"></i>'
+            : '<i class="fa-regular fa-star" style="color:#d1d5db;"></i>';
         }
-      } catch (e) {
-        console.warn("جاري استخدام البيانات المحلية:", e.message);
+        starsBox.innerHTML = starsHtml;
       }
 
-      const localProd = catalog.find(p => String(p.id) === String(prodId)) || catalog[0];
-      populateProductUI(localProd);
+      const reviewsEl = document.getElementById('detail-reviews-num');
+      if (reviewsEl) reviewsEl.textContent = `(${prod.ratingCount || 0} تقييم مشتري)`;
+
+      // معالجة جدول المواصفات بذكاء سواء كانت نص أو مصفوفة لمنع أي انهيار
+      renderSpecsTable(prod.specs);
+
+      // رسم المنتجات ذات الصلة التابعة لنفس القسم
+      renderRelatedItems(prod);
     }
 
-    // استدعاء جلب المنتج فوراً
-    loadCurrentProduct();
+    // دالة بناء جدول المواصفات الآمنة
+    function renderSpecsTable(specs) {
+      const specsContainer = document.getElementById('specs-table-body');
+      if (!specsContainer) return;
 
-    // دالة عرض المنتجات ذات الصلة الحقيقية
-    async function renderRelatedItems(activeItem) {
+      if (Array.isArray(specs) && specs.length > 0) {
+        specsContainer.innerHTML = specs.map(s => `
+          <div class="spec-table-row">
+            <span class="spec-table-label">${s.label || 'المواصفة'}</span>
+            <span class="spec-table-value">${s.value || ''}</span>
+          </div>
+        `).join('');
+      } else if (typeof specs === 'string' && specs.trim() !== '') {
+        const parts = specs.split('|');
+        specsContainer.innerHTML = parts.map(part => {
+          const colonIdx = part.indexOf(':');
+          let label = 'الميزة';
+          let val = part.trim();
+          if (colonIdx !== -1) {
+            label = part.slice(0, colonIdx).trim();
+            val = part.slice(colonIdx + 1).trim();
+          }
+          return `
+            <div class="spec-table-row">
+              <span class="spec-table-label">${label}</span>
+              <span class="spec-table-value">${val}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        specsContainer.innerHTML = `
+          <div class="spec-table-row">
+            <span class="spec-table-label">الضمان والمصدر</span>
+            <span class="spec-table-value">إكسسوار أصلي معتمد مع حق المعاينة بالكامل قبل الدفع</span>
+          </div>
+        `;
+      }
+    }
+
+    // دالة عرض المنتجات ذات الصلة
+    function renderRelatedItems(activeItem) {
       const container = document.getElementById('related-products-container');
       if (!container) return;
 
-      let allItems = [...catalog];
-      try {
-        const snap = await db.collection('products').get();
-        if (!snap.empty) {
-          allItems = [];
-          snap.forEach(d => allItems.push({ id: d.id, ...d.data() }));
-        }
-      } catch(e) {}
-
-      const related = allItems.filter(p => 
-        String(p.id) !== String(activeItem.id) && 
+      const related = allProducts.filter(p =>
+        String(p.id) !== String(activeItem.id) &&
         (p.category === activeItem.category || p.brand === activeItem.brand)
       );
 
-      if (related.length === 0) {
-        container.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem; grid-column: 1 / -1;">لا توجد ملحقات أخرى في هذا القسم حالياً.</p>`;
+      const displayList = related.length > 0 ? related : allProducts.filter(p => String(p.id) !== String(activeItem.id));
+
+      if (displayList.length === 0) {
+        container.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem; grid-column: 1 / -1;">لا توجد ملحقات أخرى حالياً.</p>`;
         return;
       }
 
-      container.innerHTML = related.slice(0, 4).map(item => `
+      container.innerHTML = displayList.slice(0, 4).map(item => `
         <article class="dream-product-card" onclick="window.location.href='product.html?id=${item.id}'" style="cursor: pointer; padding: 14px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px;">
           <div class="card-image-pane" style="width: 100%; display: flex; justify-content: center; margin-bottom: 10px;">
-            <img src="${item.image || (item.images && item.images[0]) || 'logo.png'}" alt="${item.title}" style="height: 140px; object-fit: contain;">
+            <img src="${(item.images && item.images[0]) || item.image || 'logo.png'}" alt="${item.title}" style="height: 140px; object-fit: contain;">
           </div>
           <div class="card-details-pane" style="text-align: center;">
             <span class="brand-label-text" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">${item.brand || ''}</span>
@@ -835,98 +813,85 @@
         </article>
       `).join('');
     }
-    document.getElementById('detail-reviews-num').textContent = `(${currentProduct.ratingCount} تقييم مشتري)`;
-
-    // ملء جدول المواصفات
-    const specsContainer = document.getElementById('specs-table-body');
-    if (currentProduct.specs && currentProduct.specs.length > 0) {
-      specsContainer.innerHTML = currentProduct.specs.map(s => `
-        <div class="spec-table-row">
-          <span class="spec-table-label">${s.label}</span>
-          <span class="spec-table-value">${s.value}</span>
-        </div>
-      `).join('');
-    } else {
-      specsContainer.innerHTML = `
-        <div class="spec-table-row">
-          <span class="spec-table-label">النوع</span>
-          <span class="spec-table-value">إكسسوار موبايل أصلي معتمد</span>
-        </div>
-      `;
-    }
 
     // إدارة عداد الكمية
     let currentQty = 1;
     const qtyInput = document.getElementById('detail-qty-val');
-    document.getElementById('btn-qty-plus').addEventListener('click', () => {
+    document.getElementById('btn-qty-plus')?.addEventListener('click', () => {
       currentQty++;
-      qtyInput.value = currentQty;
+      if (qtyInput) qtyInput.value = currentQty;
     });
-    document.getElementById('btn-qty-minus').addEventListener('click', () => {
+    document.getElementById('btn-qty-minus')?.addEventListener('click', () => {
       if (currentQty > 1) {
         currentQty--;
-        qtyInput.value = currentQty;
+        if (qtyInput) qtyInput.value = currentQty;
       }
     });
 
-    // مزامنة عربة التسوق
+    // مزامنة عربة التسوق المشتركة
     function syncCartCounter() {
-      const cart = JSON.parse(localStorage.getItem('abassco_raya_cart')) || [];
-      const count = cart.reduce((acc, i) => acc + i.quantity, 0);
-      document.getElementById('cart-counter').textContent = count;
-      document.getElementById('mob-cart-counter').textContent = count;
+      const cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || 
+                   JSON.parse(localStorage.getItem('abassco_raya_cart')) || [];
+      const count = cart.reduce((acc, i) => acc + (Number(i.quantity) || 1), 0);
+      const cartEl = document.getElementById('cart-counter');
+      const mobCartEl = document.getElementById('mob-cart-counter');
+      if (cartEl) cartEl.textContent = count;
+      if (mobCartEl) mobCartEl.textContent = count;
     }
 
     function addProductToCart(quantity) {
-      let cart = JSON.parse(localStorage.getItem('abassco_raya_cart')) || [];
-      const existing = cart.find(i => i.id === currentProduct.id);
+      let cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || 
+                 JSON.parse(localStorage.getItem('abassco_raya_cart')) || [];
+      const existing = cart.find(i => String(i.id) === String(currentProduct.id));
       if (existing) {
-        existing.quantity += quantity;
+        existing.quantity = (Number(existing.quantity) || 1) + quantity;
       } else {
         cart.push({
           id: currentProduct.id,
           name: currentProduct.title,
-          price: currentProduct.price,
-          image: currentProduct.image,
+          price: Number(currentProduct.price),
+          image: (currentProduct.images && currentProduct.images[0]) || currentProduct.image || 'logo.png',
           quantity: quantity
         });
       }
+      localStorage.setItem('abasco_raya_cart', JSON.stringify(cart));
       localStorage.setItem('abassco_raya_cart', JSON.stringify(cart));
       syncCartCounter();
     }
 
-    document.getElementById('btn-add-to-cart').addEventListener('click', () => {
+    document.getElementById('btn-add-to-cart')?.addEventListener('click', () => {
       addProductToCart(currentQty);
       alert(`تمت إضافة (${currentQty}) قطعة من "${currentProduct.title}" إلى عربة التسوق بنجاح!`);
     });
 
-    document.getElementById('btn-buy-now-direct').addEventListener('click', () => {
+    document.getElementById('btn-buy-now-direct')?.addEventListener('click', () => {
       addProductToCart(currentQty);
       window.location.href = 'checkout.html';
     });
 
-    // تفعيل الوضع الليلي
+    // دارك مود
     const darkCheckbox = document.getElementById('dark-mode-checkbox');
-    if (localStorage.getItem('abassco_dark_mode') === 'enabled') {
+    if (localStorage.getItem('abasco_dark_mode') === 'enabled') {
       document.body.classList.add('dark-mode');
       if (darkCheckbox) darkCheckbox.checked = true;
     }
     darkCheckbox?.addEventListener('change', (e) => {
       if (e.target.checked) {
         document.body.classList.add('dark-mode');
-        localStorage.setItem('abassco_dark_mode', 'enabled');
+        localStorage.setItem('abasco_dark_mode', 'enabled');
       } else {
         document.body.classList.remove('dark-mode');
-        localStorage.setItem('abassco_dark_mode', 'disabled');
+        localStorage.setItem('abasco_dark_mode', 'disabled');
       }
     });
 
-    // تشغيل الزر المتناوب بين واتساب وماسنجر كل 5 ثوانٍ
+    // زر الشات المتناوب
     const chatLink = document.getElementById('chat-link');
     const chatIcon = document.getElementById('chat-icon');
     let isWhatsApp = true;
     setInterval(() => {
       isWhatsApp = !isWhatsApp;
+      if (!chatIcon || !chatLink) return;
       chatIcon.classList.add('rotate-anim');
       setTimeout(() => {
         if (isWhatsApp) {
@@ -935,14 +900,16 @@
           chatIcon.className = 'fa-brands fa-whatsapp chat-icon';
         } else {
           chatLink.className = 'chat-circle-link messenger-mode';
-          chatLink.href = 'https://m.me/abasscostore';
+          chatLink.href = 'https://m.me/abascostore';
           chatIcon.className = 'fa-brands fa-facebook-messenger chat-icon';
         }
         chatIcon.classList.remove('rotate-anim');
       }, 250);
     }, 5000);
 
-    document.addEventListener('DOMContentLoaded', syncCartCounter);
+    // تشغيل العرض الفوري والمزامنة
+    renderCurrentProduct(currentProduct);
+    syncCartCounter();
   </script>
 </body>
 </html>
