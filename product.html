@@ -796,13 +796,12 @@
       });
     }
 
-    // 4. محرك استخراج وعرض كل الألوان المختارة في الأدمن
+// 4. محرك استخراج وعرض الألوان المتوفرة فقط (إخفاء أي لون رصيده 0 نهائياً)
     function setupColorSelection(prod) {
       const colorsBox = document.getElementById('color-options-container');
       const labelEl = document.getElementById('selected-color-name');
       if (!colorsBox) return;
 
-      // مكتبة درجات الألوان لتلوين الدوائر بدقة
       const hexMap = {
         'أسود': '#111827',
         'أبيض': '#ffffff',
@@ -817,41 +816,45 @@
         'بنفسجي': '#8b5cf6'
       };
 
-      // استخراج الألوان ورصيد كل لون كما حدده المشرف
-      let availableVariants = [];
+      let rawVariants = [];
 
+      // قراءة الألوان ومخزونها كما حددها المشرف
       if (prod.colorVariants && Array.isArray(prod.colorVariants) && prod.colorVariants.length > 0) {
-        availableVariants = prod.colorVariants;
+        rawVariants = prod.colorVariants;
       } else if (prod.colors && Array.isArray(prod.colors) && prod.colors.length > 0) {
-        availableVariants = prod.colors.map(c => ({
+        rawVariants = prod.colors.map(c => ({
           color: c,
-          stock: Number(prod.stock) || 10
+          stock: Number(prod.stock) || 0
         }));
-      } else {
-        // لو الملحق مسجل من قبل بدون ألوان محددة
-        availableVariants = [
-          { color: 'أسود', stock: Number(prod.stock) || 10 },
-          { color: 'أبيض', stock: Number(prod.stock) || 5 },
-          { color: 'أزرق', stock: Number(prod.stock) || 5 }
-        ];
       }
 
-      // اختيار أول لون متاح
-      chosenColor = availableVariants[0].color;
-      chosenColorStock = Number(availableVariants[0].stock) || 0;
+      // 🔥 الفلتر السحري: استبعاد أي لون رصيده 0 أو سالب تماماً
+      const availableVariants = rawVariants.filter(v => Number(v.stock) > 0);
 
-      // توليد بادجات الألوان في الصفحة
+      // لو كل الألوان رصيدها 0 أو مفيش ألوان متوفرة
+      if (availableVariants.length === 0) {
+        chosenColor = "غير متوفر";
+        chosenColorStock = 0;
+        if (labelEl) labelEl.innerHTML = `<span style="color:var(--discount-red); font-weight:800;">(نفذت جميع الألوان بالمخزن ❌)</span>`;
+        colorsBox.innerHTML = `<p style="font-size:0.85rem; color:var(--discount-red); font-weight:700;">لا توجد ألوان متوفرة حالياً لهذا المنتج.</p>`;
+        updateColorStatusUI(chosenColor, 0);
+        return;
+      }
+
+      // اختيار أول لون متوفر تلقائياً
+      chosenColor = availableVariants[0].color;
+      chosenColorStock = Number(availableVariants[0].stock);
+
+      // عرض الألوان المتاحة فقط التي تملك رصيداً حقيقياً
       colorsBox.innerHTML = availableVariants.map((v, i) => {
         const hex = hexMap[v.color] || '#7cb342';
-        const isDepleted = Number(v.stock) <= 0;
         return `
           <div class="color-swatch-badge ${i === 0 ? 'active' : ''}" 
-               onclick="selectProductColor('${v.color}', ${v.stock}, this)"
-               style="${isDepleted ? 'opacity: 0.5; text-decoration: line-through;' : ''}">
+               onclick="selectProductColor('${v.color}', ${v.stock}, this)">
             <span class="color-circle-preview" style="background-color: ${hex};"></span>
             <span>${v.color}</span>
-            <small style="font-size:0.75rem; font-weight:800; color:${isDepleted ? 'var(--discount-red)' : 'var(--dream-green)'};">
-              (${isDepleted ? 'نفذ' : v.stock + ' قطع'})
+            <small style="font-size:0.75rem; font-weight:800; color:var(--dream-green);">
+              (${v.stock} قطع)
             </small>
           </div>
         `;
