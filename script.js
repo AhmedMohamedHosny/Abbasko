@@ -70,7 +70,8 @@ const state = {
   maxPrice: 4000,
   currentSort: 'featured',
   quantities: {},
-  viewMode: 'grid' // 'grid' أو 'list'
+  viewMode: 'grid',
+  currentPage: 1 // <-- أضف هذا السطر هنا
 };
 
 const DOM = {
@@ -104,7 +105,20 @@ const DOM = {
 function renderCatalog(items) {
   if (!DOM.productsContainer) return;
 
-  if (items.length === 0) {
+  const itemsPerPage = 16; // عرض 16 منتجاً في الصفحة الواحدة
+  const totalPages = Math.ceil(items.length / itemsPerPage) || 1;
+
+  // التأكد من أن الصفحة الحالية لا تتجاوز الإجمالي
+  if (state.currentPage > totalPages) {
+    state.currentPage = 1;
+  }
+
+  // قص المنتجات الخاصة بالصفحة الحالية فقط
+  const startIndex = (state.currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItemsPage = items.slice(startIndex, endIndex);
+
+  if (currentItemsPage.length === 0) {
     DOM.productsContainer.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: var(--bg-surface); border-radius: 12px; border: 1px dashed var(--border-color);">
         <i class="fa-solid fa-box-open" style="font-size: 3rem; color: var(--dream-green); margin-bottom: 12px;"></i>
@@ -112,19 +126,18 @@ function renderCatalog(items) {
       </div>
     `;
     DOM.productsCounterBadge.textContent = '0 منتجات';
+    document.getElementById('pagination-container').innerHTML = '';
     return;
   }
 
   DOM.productsCounterBadge.textContent = `${items.length} من ${abascoInventory.length} منتجات`;
 
-DOM.productsContainer.innerHTML = items.map(product => {
+  // توليد الكروت
+  DOM.productsContainer.innerHTML = currentItemsPage.map(product => {
     const qty = state.quantities[product.id] || 1;
     return `
       <article class="dream-product-card" data-id="${product.id}">
-        
-        <!-- الجزء العلوي: تفاصيل يميناً وصورة يساراً -->
         <div class="card-top-horizontal-split">
-          
           <div class="card-details-pane">
             <span class="brand-label-text">${product.brand}</span>
             <h3 class="product-item-title">
@@ -140,7 +153,7 @@ DOM.productsContainer.innerHTML = items.map(product => {
               <span>(${product.ratingCount})</span>
             </div>
 
-<div class="price-block-dream" onclick="window.location.href='product.html?id=${product.id}'" style="cursor: pointer;">
+            <div class="price-block-dream" onclick="window.location.href='product.html?id=${product.id}'" style="cursor: pointer;">
               <span class="price-val-red">LE ${product.price.toFixed(2)}</span>
               <span class="price-struck-gray">LE ${product.oldPrice.toFixed(2)}</span>
             </div>
@@ -161,10 +174,8 @@ DOM.productsContainer.innerHTML = items.map(product => {
               </a>
             </div>
           </div>
-
         </div>
 
-        <!-- الجزء السفلي: الأزرار الثلاثة بعرض الكارت -->
         <div class="card-bottom-actions-full">
           <button class="btn-quick-view-olive" onclick="openQuickModal(${product.id})">نظرة سريعة</button>
           <button class="btn-choose-option-green" onclick="addToCartDirect(${product.id})">Choose option</button>
@@ -174,11 +185,51 @@ DOM.productsContainer.innerHTML = items.map(product => {
             <button class="mini-step-btn" onclick="modifyCardQty(${product.id}, -1)">-</button>
           </div>
         </div>
-
       </article>
     `;
   }).join('');
+
+  // رسم أزرار التبديل بين الصفحات ديناميكياً
+  renderPaginationControls(totalPages, items);
 }
+
+// دالة توليد أزرار الـ Pagination في الأسفل
+function renderPaginationControls(totalPages, allFilteredItems) {
+  const paginationContainer = document.getElementById('pagination-container');
+  if (!paginationContainer) return;
+
+  if (totalPages <= 1) {
+    paginationContainer.innerHTML = ''; // إخفاء الشريط إذا كانت الصفحة واحدة
+    return;
+  }
+
+  let html = `
+    <button class="page-arrow" ${state.currentPage === 1 ? 'disabled' : ''} onclick="changePage(${state.currentPage - 1})">
+      <i class="fa-solid fa-chevron-right"></i> السابق
+    </button>
+  `;
+
+  for (let i = 1; i <= totalPages; i++) {
+    html += `
+      <span class="page-num ${i === state.currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</span>
+    `;
+  }
+
+  html += `
+    <button class="page-arrow" ${state.currentPage === totalPages ? 'disabled' : ''} onclick="changePage(${state.currentPage + 1})">
+      التالي <i class="fa-solid fa-chevron-left"></i>
+    </button>
+  `;
+
+  paginationContainer.innerHTML = html;
+}
+
+// دالة الانتقال لصفحة جديدة عند الضغط على الأرقام
+window.changePage = function(targetPage) {
+  state.currentPage = targetPage;
+  applyFilters(); // إعادة تطبيق الفلترة وعرض منتجات الصفحة الجديدة
+  window.scrollTo({ top: 300, behavior: 'smooth' }); // صعود سلس لأعلى المنتجات
+};
 
 // تبديل طرق العرض (Grid vs List)
 DOM.btnViewGrid?.addEventListener('click', () => {
@@ -472,6 +523,7 @@ window.resetFilterGroup = function(type) {
 
 // 6. تنفيذ الفلترة على المنتجات
 function executeFiltering() {
+  state.currentPage = 1; // العودة للصفحة الأولى عند كل تصفية جديدة
   let result = [...abascoInventory];
   if (document.getElementById('stock-filter')?.checked) {
     result = result.filter(item => item.inStock === true);
