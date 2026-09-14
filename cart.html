@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="عربة التسوق - متجر عباسكو لإكسسوارات الهواتف المحمولة الأصلية">
-  <title>عربة التسوق | عباسكو - Abasco</title>
+  <meta name="description" content="عربة التسوق - محل عباسكو لإكسسوارات الموبايل الأصلية">
+  <title>عربة التسوق | عباسكو - Abassco Store</title>
 
-  <!-- الخطوط الرسمية والأيقونات -->
+  <!-- الخط الرسمي والأيقونات -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -14,53 +14,47 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    /* ==========================================================================
-       تنسيقات صفحة عربة التسوق المستقلة المطابقة لراية شوب بالمليمتر
-       ========================================================================== */
-    .cart-main-canvas {
-      padding: 30px 0 70px;
+    .cart-page-canvas {
+      padding: 24px 0 70px;
       min-height: 75vh;
-      background-color: #f8f9fa;
     }
 
-    .cart-headline-area {
+    .cart-header-title {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
     }
 
-    .cart-headline-area h1 {
-      font-size: 2.2rem;
+    .cart-header-title h1 {
+      font-size: 2rem;
       font-weight: 900;
-      color: #0b1a30;
-      margin-bottom: 6px;
+      color: var(--text-main);
+      margin-bottom: 4px;
     }
 
-    .cart-headline-area p {
-      color: #64748b;
-      font-size: 0.95rem;
+    .cart-header-title p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
       font-weight: 600;
     }
 
-    /* --------------------------------------------------------------------------
-       الحالة الأولى: السلة الفارغة (Empty Cart State - مطابق تماماً لصورة راية)
-       -------------------------------------------------------------------------- */
-    .empty-cart-container {
+    /* شاشة السلة الفارغة */
+    .empty-cart-panel {
       display: none;
-      background: #ffffff;
-      border: 1px solid #eaeded;
-      border-radius: 16px;
-      padding: 70px 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 60px 20px;
       text-align: center;
-      max-width: 820px;
+      max-width: 760px;
       margin: 0 auto;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+      box-shadow: var(--shadow-card);
     }
 
-    .empty-cart-graphic {
-      width: 150px;
-      height: 150px;
-      margin: 0 auto 25px;
-      border: 2px dashed #cbd5e1;
+    .empty-cart-icon-wrap {
+      width: 130px;
+      height: 130px;
+      margin: 0 auto 20px;
+      border: 2px dashed var(--border-color);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -68,83 +62,92 @@
       position: relative;
     }
 
-    .empty-cart-graphic i.fa-cart-shopping {
-      font-size: 4rem;
-      color: #94a3b8;
+    .empty-cart-icon-wrap i.fa-cart-shopping {
+      font-size: 3.5rem;
+      color: var(--text-subtle);
     }
 
-    .empty-cart-graphic .cross-badge {
+    .empty-cart-icon-wrap .status-cross {
       position: absolute;
-      top: 14px;
-      right: 14px;
-      width: 32px;
-      height: 32px;
-      background-color: #fee2e2;
-      color: #d90429;
+      top: 10px;
+      right: 10px;
+      width: 28px;
+      height: 28px;
+      background-color: var(--discount-red);
+      color: #ffffff;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1rem;
-      border: 2px solid #fff;
+      font-size: 0.9rem;
     }
 
-    .empty-cart-graphic .dot-accent {
-      position: absolute;
-      bottom: 24px;
-      left: 18px;
-      width: 14px;
-      height: 14px;
-      background-color: #ffb800;
-      border-radius: 50%;
+    .empty-cart-panel p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto 25px;
     }
 
-    .empty-cart-container p {
-      color: #475569;
-      font-size: 1.05rem;
-      line-height: 1.8;
-      max-width: 580px;
-      margin: 0 auto 30px;
-      font-weight: 500;
+    .btn-return-shop {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background-color: var(--dream-green);
+      color: #ffffff;
+      padding: 12px 28px;
+      border-radius: var(--radius-pill);
+      font-size: 0.95rem;
+      font-weight: 800;
+      box-shadow: 0 4px 12px var(--dream-green-glow);
     }
 
-    /* --------------------------------------------------------------------------
-       الحالة الثانية: السلة الممتلئة (Filled Cart Layout - تقسيم العمودين)
-       -------------------------------------------------------------------------- */
-    .cart-populated-grid {
+    .btn-return-shop:hover {
+      background-color: var(--dream-green-hover);
+      transform: translateY(-2px);
+    }
+
+    /* تقسيم السلة الممتلئة */
+    .cart-grid-view {
       display: none;
-      grid-template-columns: 1fr 380px;
+      grid-template-columns: 1fr 370px;
       gap: 25px;
       align-items: flex-start;
     }
 
-    /* قائمة المنتجات في اليمين */
-    .cart-items-wrapper {
+    /* كروت المنتجات داخل السلة */
+    .cart-products-list {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
     }
 
-    .cart-product-row {
-      background: #ffffff;
-      border: 1px solid #eaeded;
-      border-radius: 14px;
-      padding: 20px 24px;
+    .cart-item-row-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-      position: relative;
+      gap: 18px;
+      box-shadow: var(--shadow-card);
     }
 
-    /* قسم الصورة اليميني */
-    .cart-item-visual {
-      width: 95px;
-      height: 95px;
+    .cart-item-left-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .cart-thumb-box {
+      width: 80px;
+      height: 80px;
       background: #ffffff;
-      border: 1px solid #f1f5f9;
-      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -152,447 +155,316 @@
       flex-shrink: 0;
     }
 
-    .cart-item-visual img {
+    .cart-thumb-box img {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
     }
 
-    /* البيانات النصية للمنتج */
-    .cart-item-specs {
-      flex: 1;
-    }
-
-    .cart-item-specs h3 {
-      font-size: 1rem;
+    .cart-meta-info h3 {
+      font-size: 0.95rem;
       font-weight: 800;
-      color: #0b1a30;
+      color: var(--text-main);
       line-height: 1.4;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
-    .cart-stepper-control {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .stepper-label {
-      font-size: 0.84rem;
-      color: #64748b;
-      font-weight: 600;
-    }
-
-    .stepper-pill-box {
+    .cart-item-stepper {
       display: inline-flex;
       align-items: center;
-      border: 1.5px solid #d5d9d9;
-      border-radius: 50px;
-      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xs);
+      background: var(--bg-elevated);
       overflow: hidden;
     }
 
-    .step-btn {
-      width: 32px;
-      height: 32px;
-      background: #f8fafc;
-      border: none;
-      font-size: 1.1rem;
+    .stepper-action-btn {
+      width: 28px;
+      height: 28px;
+      font-size: 0.95rem;
       font-weight: 800;
-      color: #334155;
+      color: var(--text-muted);
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s;
     }
 
-    .step-btn:hover {
-      background: #e2e8f0;
+    .stepper-action-btn:hover {
+      background: var(--border-color);
+      color: var(--text-main);
     }
 
-    .step-current-number {
-      width: 36px;
+    .stepper-count-val {
+      width: 32px;
       text-align: center;
-      font-size: 0.95rem;
+      font-size: 0.88rem;
       font-weight: 800;
-      color: #0b1a30;
+      color: var(--text-main);
     }
 
-    /* الأسعار والأزرار على اليسار */
-    .cart-item-pricing-actions {
+    .cart-item-right-pricing {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 14px;
-    }
-
-    .cart-action-buttons {
-      display: flex;
-      align-items: center;
       gap: 10px;
     }
 
-    .row-btn {
-      background: none;
-      border: none;
-      font-size: 1.15rem;
-      color: #94a3b8;
-      cursor: pointer;
+    .btn-trash-item {
+      color: var(--text-subtle);
+      font-size: 1.05rem;
       transition: color 0.2s;
     }
 
-    .row-btn-delete:hover { color: #d90429; }
-    .row-btn-wish:hover { color: #0056b3; }
-
-    .pricing-stack {
-      text-align: left;
+    .btn-trash-item:hover {
+      color: var(--discount-red);
     }
 
-    .price-final-bold {
-      font-size: 1.35rem;
+    .item-price-sum {
+      font-size: 1.25rem;
       font-weight: 900;
-      color: #004b93;
-      display: block;
+      color: var(--discount-red);
     }
 
-    .price-original-struck {
-      font-size: 0.85rem;
-      color: #94a3b8;
-      text-decoration: line-through;
-    }
-
-    .continue-shopping-strip {
-      margin-top: 10px;
-    }
-
-    .continue-shopping-strip a {
-      color: #0056b3;
-      font-size: 0.95rem;
-      font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .continue-shopping-strip a:hover {
-      text-decoration: underline;
-    }
-
-    /* --------------------------------------------------------------------------
-       صندوق تفاصيل الدفع الجانبي (Payment Summary Box - مطابق تماماً لصورة راية)
-       -------------------------------------------------------------------------- */
-    .payment-summary-card {
-      background: #ffffff;
-      border: 1px solid #eaeded;
-      border-radius: 16px;
-      padding: 26px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    /* بطاقة ملخص الحساب الجانبية */
+    .cart-invoice-sidebar {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
       position: sticky;
-      top: 90px;
+      top: 85px;
     }
 
-    .payment-summary-card h2 {
-      font-size: 1.35rem;
+    .cart-invoice-sidebar h2 {
+      font-size: 1.2rem;
       font-weight: 900;
-      color: #0b1a30;
-      margin-bottom: 22px;
-    }
-
-    .financial-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      font-size: 0.92rem;
-      color: #475569;
-    }
-
-    .financial-line strong {
-      color: #0b1a30;
-      font-weight: 800;
-      font-size: 1rem;
-    }
-
-    .highlight-muted {
-      color: #64748b;
-      font-size: 0.85rem;
-    }
-
-    .summary-separator {
-      border: none;
-      border-top: 1px dashed #cbd5e1;
-      margin: 18px 0;
-    }
-
-    .total-due-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      color: var(--text-main);
       margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
     }
 
-    .total-due-line span {
-      font-size: 1.05rem;
+    .invoice-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .invoice-line strong {
+      color: var(--text-main);
       font-weight: 800;
-      color: #0b1a30;
     }
 
-    .total-due-line strong {
-      font-size: 1.6rem;
+    .invoice-divider {
+      border: none;
+      border-top: 1px dashed var(--border-color);
+      margin: 16px 0;
+    }
+
+    .invoice-total-highlight {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .invoice-total-highlight span {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .invoice-total-highlight strong {
+      font-size: 1.55rem;
       font-weight: 900;
-      color: #004b93;
+      color: var(--discount-red);
     }
 
-    .installment-warning-box {
-      background-color: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 20px;
+    .cash-delivery-notice {
+      background: var(--dream-green-light);
+      border: 1px solid rgba(124, 179, 66, 0.3);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      margin-bottom: 18px;
       font-size: 0.82rem;
-      color: #475569;
-      line-height: 1.6;
+      color: #33691e;
+      line-height: 1.5;
     }
 
-    .installment-warning-box strong {
+    body.dark-mode .cash-delivery-notice {
+      background: rgba(124, 179, 66, 0.1);
+      border-color: rgba(124, 179, 66, 0.2);
+      color: #aed581;
+    }
+
+    .cash-delivery-notice strong {
       display: block;
-      color: #0b1a30;
-      font-size: 0.88rem;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
+      font-size: 0.86rem;
     }
 
-    /* زر الشراء مباشرة الدائري الأزرق */
-    .btn-raya-direct-checkout {
+    .btn-proceed-checkout {
       width: 100%;
-      background-color: #0056b3;
+      background-color: var(--dream-green);
       color: #ffffff;
-      padding: 14px 20px;
-      border-radius: 50px;
-      font-size: 1.05rem;
+      padding: 14px;
+      border-radius: var(--radius-pill);
+      font-size: 1rem;
       font-weight: 900;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      box-shadow: 0 4px 14px rgba(0, 86, 179, 0.3);
+      gap: 10px;
+      box-shadow: 0 4px 12px var(--dream-green-glow);
       cursor: pointer;
-      transition: all 0.25s;
+      transition: var(--transition-normal);
     }
 
-    .btn-raya-direct-checkout:hover {
-      background-color: #004085;
+    .btn-proceed-checkout:hover {
+      background-color: var(--dream-green-hover);
       transform: translateY(-2px);
     }
 
-    .divider-text-or {
+    .back-store-link {
+      display: block;
       text-align: center;
-      position: relative;
-      margin: 16px 0;
+      margin-top: 14px;
       font-size: 0.85rem;
-      color: #94a3b8;
+      font-weight: 700;
+      color: var(--text-muted);
     }
 
-    .divider-text-or::before, .divider-text-or::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 42%;
-      height: 1px;
-      background: #e2e8f0;
-    }
-    .divider-text-or::before { right: 0; }
-    .divider-text-or::after { left: 0; }
-
-    .btn-installment-secondary {
-      width: 100%;
-      background: #ffffff;
-      border: 1.5px solid #0056b3;
-      color: #0056b3;
-      padding: 12px 18px;
-      border-radius: 50px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s;
+    .back-store-link:hover {
+      color: var(--dream-green);
     }
 
-    .btn-installment-secondary:hover {
-      background-color: #f0f7ff;
-    }
-
-    .payment-icons-list {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 16px;
-      margin-top: 22px;
-      font-size: 1.8rem;
-      color: #475569;
-    }
-
-    /* التجاوب مع شاشات الهواتف */
     @media (max-width: 992px) {
-      .cart-populated-grid {
+      .cart-grid-view {
         grid-template-columns: 1fr;
       }
-      .payment-summary-card {
+      .cart-invoice-sidebar {
         position: static;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .cart-product-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .cart-item-pricing-actions {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. الشريط الأزرق العلوي -->
-  <nav class="raya-top-nav-bar">
-    <div class="container nav-top-flex">
-      <ul class="top-categories-list">
-        <li><a href="index.html#offers" class="active-badge"><i class="fa-solid fa-gift"></i> عروض عباسكو الحصرية</a></li>
-        <li><a href="index.html#cases">كفرات iPhone وسامسونج</a></li>
-        <li><a href="index.html#chargers">شواحن GaN السريعة</a></li>
-        <li><a href="index.html#screen-protectors">اسكرينات 9D وعدسات</a></li>
-        <li><a href="index.html#powerbanks">بنوك طاقة (باور بانك)</a></li>
-        <li><a href="index.html#audio">سماعات بلوتوث</a></li>
-      </ul>
+  <!-- 1. شريط الإعلانات المتحرك العلوي -->
+  <div class="dream-top-ticker">
+    <div class="ticker-track">
+      <span>🔥 عروض عباسكو الحصرية على جميع إكسسوارات الموبايل</span>
+      <span>•</span>
+      <span>🚚 معاينة الشحنة بالكامل والتأكد من سلامتها أمام المندوب قبل الدفع</span>
+      <span>•</span>
+      <span>⚡ شواحن GaN معتمدة وكفرات MagSafe أصلية بضمان استبدال فوري</span>
+      <span>•</span>
+      <span>💵 الدفع نقداً عند الاستلام كاش بكل أمان</span>
     </div>
-  </nav>
+  </div>
 
   <!-- 2. رأس المتجر الموحد -->
-  <header class="raya-main-header">
-    <div class="container raya-header-flex">
-      <a href="index.html" class="raya-brand-logo">
-        <div class="logo-symbol"><i class="fa-solid fa-bolt-lightning"></i></div>
-        <div class="logo-text-group">
-          <span class="arabic-logo">عباسكو</span>
-          <span class="english-logo">ABASCO</span>
+  <header class="dream-header">
+    <div class="container header-inner">
+      <a href="index.html" class="dream-brand">
+        <div class="brand-badge-icon">
+          <i class="fa-solid fa-bolt-lightning"></i>
+        </div>
+        <div class="brand-titles">
+          <span class="brand-ar">عباسكو</span>
+          <span class="brand-en">Abassco <small>Store</small></span>
         </div>
       </a>
 
-      <div class="raya-search-box">
-        <input type="text" placeholder="ابحث عن جراب، شاحن، اسكرينة..." readonly>
-        <button class="search-action-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-      </div>
+      <div class="dream-header-tools">
+        <!-- مفتاح الوضع الليلي -->
+        <div class="dark-mode-toggle-wrap" title="تبديل الوضع الليلي / الفاتح">
+          <label class="switch-ui" for="dark-mode-checkbox">
+            <input type="checkbox" id="dark-mode-checkbox">
+            <span class="slider-switch round">
+              <i class="fa-solid fa-sun icon-sun"></i>
+              <i class="fa-solid fa-moon icon-moon"></i>
+            </span>
+          </label>
+        </div>
 
-      <div class="raya-header-actions">
-        <a href="index.html" class="lang-switch-btn"><i class="fa-solid fa-house"></i> الرئيسية</a>
-        <div class="header-divider"></div>
-        <a href="cart.html" class="cart-quick-btn">
-          <div class="cart-icon-wrap">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <span class="cart-badge-count" id="header-cart-pill">0</span>
-          </div>
-          <span class="cart-label">السلة</span>
+        <div class="header-v-divider"></div>
+
+        <a href="index.html" class="dream-brand" style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted);">
+          <i class="fa-solid fa-house"></i> الرئيسية
         </a>
       </div>
     </div>
   </header>
 
-  <!-- 3. منطقة عربة التسوق التفاعلية -->
-  <main class="cart-main-canvas">
+  <!-- 3. مساحة عربة التسوق -->
+  <main class="cart-page-canvas">
     <div class="container">
       
-      <div class="cart-headline-area">
+      <div class="cart-header-title">
         <h1>عربة التسوق</h1>
-        <p id="cart-item-count-subtitle">جاري فحص محتويات السلة...</p>
+        <p id="cart-counter-subtitle">جاري فحص مشترياتك...</p>
       </div>
 
-      <!-- المشهد الأول: السلة الفارغة (Empty State) -->
-      <section class="empty-cart-container" id="empty-state-view">
-        <div class="empty-cart-graphic">
+      <!-- الحالة 1: السلة فارغة -->
+      <section class="empty-cart-panel" id="empty-cart-box">
+        <div class="empty-cart-icon-wrap">
           <i class="fa-solid fa-cart-shopping"></i>
-          <div class="cross-badge"><i class="fa-solid fa-xmark"></i></div>
-          <div class="dot-accent"></div>
+          <div class="status-cross"><i class="fa-solid fa-xmark"></i></div>
         </div>
-        <p>
-          لا توجد منتجات في عربة التسوق حالياً، تسوق الآن وأضف ملحقات هاتفك المفضلة إلى عربة التسوق وأكمل عملية الشراء بخطوات بسيطة.
-        </p>
-        <a href="index.html" class="btn-explore-blue-pill">
-          <span>استعراض المنتجات</span>
-          <div class="pill-arrow-icon"><i class="fa-solid fa-arrow-up-left"></i></div>
+        <p>لا توجد أي ملحقات في عربة التسوق حالياً، تصفح منتجات المحل وأضف كفرات وشواحن هاتفك بخطوات سريعة.</p>
+        <a href="index.html" class="btn-return-shop">
+          <i class="fa-solid fa-arrow-right"></i> استعراض إكسسوارات المحل
         </a>
       </section>
 
-      <!-- المشهد الثاني: السلة الممتلئة بالمنتجات (Populated Grid) -->
-      <section class="cart-populated-grid" id="filled-state-view">
+      <!-- الحالة 2: السلة تحتوي على منتجات -->
+      <section class="cart-grid-view" id="filled-cart-box">
         
-        <!-- قائمة المنتجات المحفوظة -->
-        <div class="cart-items-wrapper">
-          <div id="items-list-container">
-            <!-- يتم حقن كروت المنتجات هنا تلقائياً -->
-          </div>
-
-          <div class="continue-shopping-strip">
-            <a href="index.html">
-              <i class="fa-solid fa-chevron-right"></i> متابعة التسوق وإضافة ملحقات أخرى
-            </a>
-          </div>
+        <!-- قائمة المنتجات المضافة -->
+        <div class="cart-products-list" id="cart-items-container">
+          <!-- يتم ملؤها بالجافاسكريبت -->
         </div>
 
-        <!-- صندوق تفاصيل الدفع الجانبي المثبت -->
-        <aside class="payment-summary-card">
-          <h2>تفاصيل الدفع</h2>
+        <!-- ملخص الفاتورة بدون أي تقسيط -->
+        <aside class="cart-invoice-sidebar">
+          <h2>ملخص الفاتورة</h2>
 
-          <div class="financial-line">
-            <span>الإجمالي الفرعي</span>
-            <strong id="summary-subtotal-val">0 ج.م</strong>
+          <div class="invoice-line">
+            <span>إجمالي الملحقات:</span>
+            <strong id="subtotal-display">0.00 ج.م</strong>
           </div>
 
-          <div class="financial-line">
-            <span>الخصومات</span>
-            <span class="highlight-muted">يتم احتسابها لاحقاً</span>
+          <div class="invoice-line">
+            <span>مصاريف الشحن:</span>
+            <strong style="color: var(--dream-green);">تُحدد في الخطوة القادمة</strong>
           </div>
 
-          <div class="financial-line">
-            <span>تكاليف التوصيل</span>
-            <span class="highlight-muted">يتم احتسابها لاحقاً</span>
+          <hr class="invoice-divider">
+
+          <div class="invoice-total-highlight">
+            <span>المجموع المستحق:</span>
+            <strong id="final-total-display">0.00 ج.م</strong>
           </div>
 
-          <hr class="summary-separator">
-
-          <div class="total-due-line">
-            <span>الإجمالي <small style="font-size: 0.75rem; color: #64748b;">(شامل الضريبة)</small></span>
-            <strong id="summary-final-val">0 ج.م</strong>
+          <div class="cash-delivery-notice">
+            <strong>الدفع نقداً عند الاستلام كاش</strong>
+            جميع الطلبات يتم تسليمها مع حق المعاينة وفتح الشحنة أمام المندوب قبل دفع أي مبالغ.
           </div>
 
-          <div class="installment-warning-box">
-            <strong>تقسيط عباسكو متاح</strong>
-            يمكنك الدفع نقدياً عند الاستلام ومعاينة الشحنة بالكامل قبل السداد، أو اختيار التقسيط بدون فوائد عبر فاليو والمحافظ.
-          </div>
-
-          <!-- زر الشراء مباشرة الذي ينقل لصفحة إدخال البيانات -->
-          <button class="btn-raya-direct-checkout" onclick="window.location.href='checkout.html'">
-            <span>الشراء مباشرة</span>
-            <i class="fa-solid fa-arrow-up-left"></i>
+          <!-- الانتقال لصفحة كتابة العنوان وتأكيد الشحن -->
+          <button class="btn-proceed-checkout" onclick="window.location.href='checkout.html'">
+            <span>متابعة إتمام الطلب</span>
+            <i class="fa-solid fa-arrow-left"></i>
           </button>
 
-          <div class="divider-text-or">أو</div>
-
-          <button class="btn-installment-secondary" onclick="window.location.href='checkout.html'">
-            دفع باستخدام تقسيطي
-          </button>
-
-          <div class="payment-icons-list">
-            <i class="fa-brands fa-cc-visa" title="Visa"></i>
-            <i class="fa-brands fa-cc-mastercard" title="MasterCard"></i>
-            <i class="fa-solid fa-money-bill-wave" title="الدفع عند الاستلام"></i>
-          </div>
+          <a href="index.html" class="back-store-link">
+            <i class="fa-solid fa-plus"></i> إضافة ملحقات أخرى للطلب
+          </a>
         </aside>
 
       </section>
@@ -600,152 +472,169 @@
     </div>
   </main>
 
-  <!-- 4. تذييل الموقع الأزرق الكامل -->
-  <footer class="raya-blue-footer">
-    <div class="container">
-      <div class="footer-four-columns">
-        <div class="footer-col">
-          <h4>عن عباسكو</h4>
-          <ul>
-            <li><a href="index.html#about">من نحن</a></li>
-            <li><a href="index.html#branches">الفروع ومواعيد العمل</a></li>
-            <li><a href="index.html#wholesale">مبيعات الجملة</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>خدمة العملاء</h4>
-          <ul>
-            <li><a href="index.html#hotline">الخط الساخن: 01000000000</a></li>
-            <li><a href="index.html#returns">سياسة الاستبدال (14 يوماً)</a></li>
-            <li><a href="index.html#warranty">الضمان والمعاينة قبل الاستلام</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>المزيد</h4>
-          <ul>
-            <li><a href="index.html#terms">الشروط والأحكام</a></li>
-            <li><a href="index.html#privacy">سياسة الخصوصية</a></li>
-            <li><a href="admin.html">بوابة البائعين والإدارة</a></li>
-          </ul>
-        </div>
-        <div class="footer-col newsletter-col">
-          <h4>نشرة عروض عباسكو</h4>
-          <p>اشترك معنا لتصلك أقوى كوبونات الخصم الأسبوعية.</p>
-          <div class="footer-social-icons">
-            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
-          </div>
-        </div>
+  <!-- 4. تذييل المتجر الموحد -->
+  <footer class="dream-footer">
+    <div class="container footer-content-row">
+      <div class="footer-shop-about">
+        <div class="footer-brand-title">محل عباسكو لإكسسوارات الموبايل</div>
+        <p>محلك المفضل لتوريد أحدث ملحقات الهواتف المحمولة الأصلية. متاح المعاينة بالكامل قبل الدفع نقداً عند الاستلام كاش.</p>
+        <p class="store-hours"><i class="fa-regular fa-clock"></i> مواعيد العمل: يومياً من 10 صباحاً حتى 11 مساءً</p>
       </div>
-      <hr class="footer-separator">
-      <div class="footer-bottom-row" style="justify-content: center;">
-        <p>&copy; 2026 جميع الحقوق محفوظة لمتجر <strong>عباسكو (Abasco)</strong></p>
+
+      <div class="footer-links-group">
+        <h4>روابط تهمك</h4>
+        <ul>
+          <li><a href="index.html">الصفحة الرئيسية</a></li>
+          <li><a href="checkout.html">تأكيد الشحن والعنوان</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact-box">
+        <h4>راسلنا فوراً</h4>
+        <a href="https://wa.me/201125408111" class="hotline-pill">
+          <i class="fa-brands fa-whatsapp"></i> 01125408111
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom-copyright">
+      <div class="container copyright-flex">
+        <span>© 2026 محل عباسكو (Abassco Store) - جميع الحقوق محفوظة.</span>
+        <div class="payment-method-text">
+          <i class="fa-solid fa-hand-holding-dollar"></i> الدفع عند الاستلام كاش
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- 5. المحرك البرمجي لإدارة عناصر السلة لحظياً -->
+  <!-- 5. زر المحادثة العائم المتناوب (واتساب / ماسنجر كل 5 ثوانٍ) -->
+  <div class="alternating-chat-widget" id="alternating-chat-btn" title="تواصل معنا">
+    <a href="https://wa.me/201000000000" target="_blank" class="chat-circle-link whatsapp-mode" id="chat-link">
+      <i class="fa-brands fa-whatsapp chat-icon" id="chat-icon"></i>
+    </a>
+  </div>
+
+  <!-- المحرك البرمجي للسلة -->
   <script>
     'use strict';
 
-    function fetchCartData() {
-      return JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];
+    function getCart() {
+      return JSON.parse(localStorage.getItem('abassco_raya_cart')) || [];
     }
 
-    function commitCartData(cart) {
-      localStorage.setItem('abasco_raya_cart', JSON.stringify(cart));
-      renderCartUI();
+    function saveCart(cart) {
+      localStorage.setItem('abassco_raya_cart', JSON.stringify(cart));
+      renderCart();
     }
 
-    function renderCartUI() {
-      const cart = fetchCartData();
-      const emptyView = document.getElementById('empty-state-view');
-      const filledView = document.getElementById('filled-state-view');
-      const itemsContainer = document.getElementById('items-list-container');
-      const subtitle = document.getElementById('cart-item-count-subtitle');
-      const headerPill = document.getElementById('header-cart-pill');
-      const subtotalEl = document.getElementById('summary-subtotal-val');
-      const finalValEl = document.getElementById('summary-final-val');
+    function renderCart() {
+      const cart = getCart();
+      const emptyBox = document.getElementById('empty-cart-box');
+      const filledBox = document.getElementById('filled-cart-box');
+      const itemsContainer = document.getElementById('cart-items-container');
+      const subtitle = document.getElementById('cart-counter-subtitle');
+      const subtotalEl = document.getElementById('subtotal-display');
+      const finalTotalEl = document.getElementById('final-total-display');
 
-      const totalItemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-      const totalCost = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      const totalItems = cart.reduce((acc, i) => acc + i.quantity, 0);
+      const totalPrice = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
 
-      headerPill.textContent = totalItemsCount;
-
-      // التبديل التلقائي بين المشهدين
       if (cart.length === 0) {
-        emptyView.style.display = 'block';
-        filledView.style.display = 'none';
-        subtitle.textContent = 'لا توجد منتجات في عربة التسوق';
+        emptyBox.style.display = 'block';
+        filledBox.style.display = 'none';
+        subtitle.textContent = 'سلة المشتريات فارغة';
         return;
       }
 
-      emptyView.style.display = 'none';
-      filledView.style.display = 'grid';
-      subtitle.textContent = `لديك ${totalItemsCount} منتجات في عربة التسوق`;
+      emptyBox.style.display = 'none';
+      filledBox.style.display = 'grid';
+      subtitle.textContent = `لديك (${totalItems}) ملحقات في عربة التسوق`;
 
       itemsContainer.innerHTML = cart.map(item => `
-        <article class="cart-product-row" data-id="${item.id}">
-          <div style="display: flex; align-items: center; gap: 18px; flex: 1;">
-            <div class="cart-item-visual">
+        <div class="cart-item-row-card">
+          <div class="cart-item-left-info">
+            <div class="cart-thumb-box">
               <img src="${item.image}" alt="${item.name}">
             </div>
-            
-            <div class="cart-item-specs">
+            <div class="cart-meta-info">
               <h3>${item.name}</h3>
-              <div class="cart-stepper-control">
-                <span class="stepper-label">اختر الكمية</span>
-                <div class="stepper-pill-box">
-                  <button class="step-btn" onclick="alterQuantity(${item.id}, 1)" title="زيادة">+</button>
-                  <span class="step-current-number">${item.quantity}</span>
-                  <button class="step-btn" onclick="alterQuantity(${item.id}, -1)" title="تقليل">-</button>
-                </div>
+              <div class="cart-item-stepper">
+                <button class="stepper-action-btn" onclick="updateItemQuantity(${item.id}, 1)">+</button>
+                <span class="stepper-count-val">${item.quantity}</span>
+                <button class="stepper-action-btn" onclick="updateItemQuantity(${item.id}, -1)">-</button>
               </div>
             </div>
           </div>
 
-          <div class="cart-item-pricing-actions">
-            <div class="cart-action-buttons">
-              <button class="row-btn row-btn-delete" onclick="removeItem(${item.id})" title="حذف من السلة">
-                <i class="fa-regular fa-trash-can"></i>
-              </button>
-              <button class="row-btn row-btn-wish" title="نقل إلى المفضلة">
-                <i class="fa-regular fa-heart"></i>
-              </button>
-            </div>
-
-            <div class="pricing-stack">
-              <span class="price-final-bold">${(item.price * item.quantity).toLocaleString('ar-EG')} ج.م</span>
-              <span class="price-original-struck">${((item.price + 120) * item.quantity).toLocaleString('ar-EG')} ج.م</span>
-            </div>
+          <div class="cart-item-right-pricing">
+            <button class="btn-trash-item" onclick="deleteCartItem(${item.id})" title="حذف الملحق">
+              <i class="fa-regular fa-trash-can"></i>
+            </button>
+            <span class="item-price-sum">LE ${(item.price * item.quantity).toFixed(2)}</span>
           </div>
-        </article>
+        </div>
       `).join('');
 
-      subtotalEl.textContent = `${totalCost.toLocaleString('ar-EG')} ج.م`;
-      finalValEl.textContent = `${totalCost.toLocaleString('ar-EG')} ج.م`;
+      subtotalEl.textContent = `LE ${totalPrice.toFixed(2)}`;
+      finalTotalEl.textContent = `LE ${totalPrice.toFixed(2)}`;
     }
 
-    window.alterQuantity = function(id, delta) {
-      let cart = fetchCartData();
-      const product = cart.find(p => p.id === id);
-      if (!product) return;
+    window.updateItemQuantity = function(id, delta) {
+      let cart = getCart();
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
 
-      product.quantity += delta;
-      if (product.quantity <= 0) {
-        cart = cart.filter(p => p.id !== id);
+      item.quantity += delta;
+      if (item.quantity <= 0) {
+        cart = cart.filter(i => i.id !== id);
       }
-      commitCartData(cart);
+      saveCart(cart);
     };
 
-    window.removeItem = function(id) {
-      let cart = fetchCartData();
-      cart = cart.filter(p => p.id !== id);
-      commitCartData(cart);
+    window.deleteCartItem = function(id) {
+      let cart = getCart();
+      cart = cart.filter(i => i.id !== id);
+      saveCart(cart);
     };
 
-    document.addEventListener('DOMContentLoaded', renderCartUI);
+    // مزامنة الدارك مود
+    const darkCheckbox = document.getElementById('dark-mode-checkbox');
+    if (localStorage.getItem('abassco_dark_mode') === 'enabled') {
+      document.body.classList.add('dark-mode');
+      if (darkCheckbox) darkCheckbox.checked = true;
+    }
+    darkCheckbox?.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('abassco_dark_mode', 'enabled');
+      } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('abassco_dark_mode', 'disabled');
+      }
+    });
+
+    // تشغيل الزر المتناوب (واتساب / ماسنجر كل 5 ثوانٍ)
+    const chatLink = document.getElementById('chat-link');
+    const chatIcon = document.getElementById('chat-icon');
+    let isWhatsApp = true;
+    setInterval(() => {
+      isWhatsApp = !isWhatsApp;
+      chatIcon.classList.add('rotate-anim');
+      setTimeout(() => {
+        if (isWhatsApp) {
+          chatLink.className = 'chat-circle-link whatsapp-mode';
+          chatLink.href = 'https://wa.me/201125408111';
+          chatIcon.className = 'fa-brands fa-whatsapp chat-icon';
+        } else {
+          chatLink.className = 'chat-circle-link messenger-mode';
+          chatLink.href = 'https://m.me/absascostore';
+          chatIcon.className = 'fa-brands fa-facebook-messenger chat-icon';
+        }
+        chatIcon.classList.remove('rotate-anim');
+      }, 250);
+    }, 5000);
+
+    document.addEventListener('DOMContentLoaded', renderCart);
   </script>
 </body>
 </html>
