@@ -6,118 +6,57 @@
  */
 
 'use strict';
-
 const abascoInventory = [
   {
     id: 1,
+    title: 'سامسونج شاحن منزلي بقوة 45 واط مع كابل من Type-C إلي Type-C بطول 1.8 متر',
+    brand: 'Samsung',
+    category: 'chargers',
+    price: 1999.00,
+    oldPrice: 2360.00,
+    discount: '361.00',
+    ratingCount: 0,
+    specs: 'الماركة: سامسونج | المميزات: شحن فائق السرعة 2.0 كحد أقصى 45 واط | يتضمن كابل USB من النوع C بطول 1.8 متر.',
+    image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+    inStock: true
+  },
+  {
+    id: 2,
+    title: 'سامسونج 25 واط شاحن PD Type-C',
+    brand: 'Samsung',
+    category: 'chargers',
+    price: 449.00,
+    oldPrice: 529.00,
+    discount: '80.00',
+    ratingCount: 1,
+    specs: 'النوع: Adapter | الطاقة: 25 Watt | المدخل: 100-240 V | المخرج: 5 V | شحن فائق السرعة للبقاء على قيد الحياة.',
+    image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+    inStock: true
+  },
+  {
+    id: 3,
     title: 'أنكر زولو شاحن 30 واط، A2698L11 - أسود فائق السرعة',
     brand: 'Anker',
     category: 'chargers',
     price: 729.00,
     oldPrice: 859.00,
     discount: '130.00',
-    rating: 0,
     ratingCount: 0,
-    specs: 'النوع: شاحن حائط | الطاقة: 30 واط | المدخل: 100-240V | المخرج: Type-C شحن فائق السرعة آمن حرارياً.',
+    specs: 'النوع: شاحن طاقة | شحن سريع بقوة 30 واط | المدخل: تيار متردد 100-240V | الإخراج: منفذ USB-C أقصى طاقة 30 واط.',
     image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
     inStock: true
   },
   {
-    id: 2,
+    id: 4,
     title: 'سامسونج EP-T2510 شاحن محول طاقة 25 واط يو اس بي-C',
     brand: 'Samsung',
     category: 'chargers',
     price: 749.00,
     oldPrice: 879.00,
     discount: '130.00',
-    rating: 0,
     ratingCount: 0,
-    specs: 'الطاقة: 25 واط | منفذ يو اس بي-C | المدخل: 100-240V | اللون: أسود مع كابل مجدول.',
+    specs: 'الطاقة: 25 واط | المنافذ: منفذ يو اس بي-C | المدخل: 100-240V | المخرج: 3A, 5V | اللون: أسود.',
     image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
-    inStock: true
-  },
-  {
-    id: 3,
-    title: 'سامسونج شاحن منزلي بقوة 45 واط مع كابل من Type-C إلى Type-C بطول 1.8 متر',
-    brand: 'Samsung',
-    category: 'chargers',
-    price: 1999.00,
-    oldPrice: 2360.00,
-    discount: '361.00',
-    rating: 0,
-    ratingCount: 0,
-    specs: 'الماركة: سامسونج | شحن فائق السرعة 2.0 كحد أقصى 45 واط | يتضمن كابل تايب سي أصلي 1.8 متر.',
-    image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
-    inStock: true
-  },
-  {
-    id: 4,
-    title: 'سامسونج 25 واط شاحن PD Type-C أصلي سريع',
-    brand: 'Samsung',
-    category: 'chargers',
-    price: 449.00,
-    oldPrice: 529.00,
-    discount: '80.00',
-    rating: 5,
-    ratingCount: 1,
-    specs: 'النوع: Adapter | الطاقة: 25 Watt | المدخل: 100-240 V | مخرج Type-C فائق السرعة للبقاء على قيد الحياة.',
-    image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
-    inStock: true
-  },
-  {
-    id: 5,
-    title: 'سامسونج EP-P3400 باور بانك 10000 مللي أمبير 25 واط شحن سريع',
-    brand: 'Samsung',
-    category: 'powerbanks',
-    price: 1899.00,
-    oldPrice: 2299.00,
-    discount: '400.00',
-    rating: 0,
-    ratingCount: 0,
-    specs: 'السعة: 10,000 مللي أمبير | شحن سلكي سريع 25 واط | منفذين تايب سي يدعمان الشحن المزدوج.',
-    image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=400&q=80',
-    inStock: true
-  },
-  {
-    id: 6,
-    title: 'أنكر كابل A8752H11 من Type-C إلى Type-C طول 3.3 قدم، وشحن سريع 60 واط',
-    brand: 'Anker',
-    category: 'chargers',
-    price: 219.00,
-    oldPrice: 259.00,
-    discount: '40.00',
-    rating: 0,
-    ratingCount: 0,
-    specs: 'الماركة: أنكر | الموديل: A8752H11 | شحن سريع 60 واط | نايلون مضفر فائق المتانة مجرب لأكثر من 15 ألف التواء.',
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80',
-    inStock: true
-  },
-  {
-    id: 7,
-    title: 'شاومي باور بانك 10000 مللي أمبير، 22.5 واط لايت رمادي فاتح',
-    brand: 'Xiaomi',
-    category: 'powerbanks',
-    price: 799.00,
-    oldPrice: 889.00,
-    discount: '90.00',
-    rating: 0,
-    ratingCount: 0,
-    specs: 'السعة: 10000 مللي أمبير | 3 منافذ شحن سريعة 22.5W | متوافق مع كافة أجهزة الأندرويد والآيفون.',
-    image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=400&q=80',
-    inStock: true
-  },
-  {
-    id: 8,
-    title: 'يوجرين HP203 HiTune Max5c سماعات أذن لاسلكية مع خاصية إلغاء الضوضاء',
-    brand: 'Ugreen',
-    category: 'audio',
-    price: 3860.00,
-    oldPrice: 4550.00,
-    discount: '690.00',
-    rating: 0,
-    ratingCount: 0,
-    specs: 'الاتصال: بلوتوث 5.4 | عزل ضوضاء هجين ANC | بطارية تصل إلى 75 ساعة متواصلة مع شحن فائق السرعة.',
-    image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=400&q=80',
     inStock: true
   }
 ];
@@ -472,4 +411,24 @@ document.addEventListener('DOMContentLoaded', () => {
 // فتح وإغلاق قائمة التصفية باليمين عند الضغط
 document.getElementById('filter-toggle-btn')?.addEventListener('click', () => {
   document.body.classList.toggle('filters-opened');
+});
+// 1. زر تصفية: فتح وإغلاق القائمة في اليمين عند النقر
+const filterBtn = document.getElementById('filter-toggle-btn');
+const mainLayout = document.querySelector('.dream-main-layout');
+
+filterBtn?.addEventListener('click', () => {
+  mainLayout?.classList.toggle('sidebar-active');
+});
+
+// 2. زر متوفر بالمخزون: فلترة المنتجات لحظياً
+const stockCheckbox = document.getElementById('stock-filter');
+stockCheckbox?.addEventListener('change', (e) => {
+  if (e.target.checked) {
+    // إظهار المنتجات المتوفرة فقط بالمخزون
+    const inStockItems = abascoInventory.filter(item => item.inStock === true);
+    renderCatalog(inStockItems);
+  } else {
+    // إظهار كل المنتجات
+    renderCatalog(abascoInventory);
+  }
 });
