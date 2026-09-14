@@ -1642,3 +1642,76 @@ body.view-grid-active .card-image-pane {
   .dream-product-card { padding: 8px !important; }
   .product-item-title { font-size: 0.74rem; }
 }
+/* ==========================================================================
+   تكبير أيقونات السوشيال ميديا مع تأثير الضوء المتوهج المتحرك من أسفل لأعلى
+   ========================================================================== */
+.footer-social-mid {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px; /* مسافة مريحة بين الأيقونات */
+  padding: 8px 16px;
+}
+
+/* الضوء المتحرك السحري وراء الأيقونات (يطلع من تحت لفوق وينزل تاني) */
+.footer-social-mid::before {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 170px;
+  height: 48px;
+  background: radial-gradient(ellipse at center, rgba(124, 179, 66, 0.75) 0%, rgba(124, 179, 66, 0.2) 50%, rgba(0, 0, 0, 0) 75%);
+  filter: blur(14px);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: lightPulseUpDown 3.2s ease-in-out infinite alternate;
+}
+
+/* حركة صعود ونزول الضوء مع نبض الإضاءة */
+@keyframes lightPulseUpDown {
+  0% {
+    transform: translate(-50%, 8px) scale(0.8);
+    opacity: 0.35;
+    filter: blur(16px);
+  }
+  50% {
+    opacity: 0.95;
+    filter: blur(12px);
+  }
+  100% {
+    transform: translate(-50%, -24px) scale(1.25);
+    opacity: 0.75;
+    filter: blur(18px);
+  }
+}
+
+/* الأيقونات نفسها بحجم كبير طبيعي ومريح للعين */
+.footer-social-mid a {
+  position: relative;
+  z-index: 1; /* عشان تفضل فوق الضوء */
+  width: 44px !important;
+  height: 44px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #ffffff !important;
+  font-size: 1.3rem !important; /* حجم الرمز بالداخل كبير وواضح */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* تأثير التفاعل عند لمس الماوس */
+.footer-social-mid a:hover {
+  background-color: var(--dream-green) !important;
+  border-color: #a2d95b !important;
+  color: #ffffff !important;
+  transform: translateY(-4px) scale(1.12);
+  box-shadow: 0 6px 20px var(--dream-green-glow), 0 0 15px rgba(124, 179, 66, 0.6) !important;
+}
