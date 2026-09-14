@@ -432,3 +432,8 @@ stockCheckbox?.addEventListener('change', (e) => {
     renderCatalog(abascoInventory);
   }
 });
+document.querySelectorAll('.filter-card-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
