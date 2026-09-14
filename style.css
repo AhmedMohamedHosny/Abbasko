@@ -383,18 +383,7 @@ body.filters-opened .dream-filters-sidebar {
   margin-bottom: 30px;
 }
 
-.dream-product-card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  box-shadow: var(--shadow-card);
-  transition: var(--transition-normal);
-}
+
 
 .dream-product-card:hover {
   transform: translateY(-4px);
@@ -676,8 +665,89 @@ body.view-list-active .quick-view-eye-btn {
   background-color: #111827; /* الشرطة النشطة باللون الأسود الداكن */
 }
 
-/* تنظيف خلفية الصورة لتكون بيضاء نقية بدون فواصل */
+/* تثبيت حدود كارت المنتج ومنع أي عنصر من الخروج */
+.dream-product-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden; /* يمنع أي صورة من التمدد خارج حدود المربع */
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-normal);
+}
+
+/* حاوية صورة المنتج بأبعاد ثابتة ومحاذاة مركزية */
 .card-media-box {
-  background-color: #ffffff !important;
-  border: none !important;
+  width: 100% !important;
+  height: 180px !important;
+  background-color: #ffffff !important; /* خلفية بيضاء نقية لعزل الإكسسوار */
+  border-radius: var(--radius-sm);
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 0 10px 0 !important;
+  padding: 10px;
+  overflow: hidden;
+}
+
+/* رابط الصورة داخل الحاوية */
+.card-media-box a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ضبط حجم الصورة لتظل دائماً داخل المربع دون أي تشويه */
+.card-media-box img {
+  max-width: 85% !important;
+  max-height: 85% !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+  margin: auto;
+  transition: transform 0.35s ease;
+}
+
+.dream-product-card:hover .card-media-box img {
+  transform: scale(1.06);
+}
+
+/* تثبيت مكان شارة التوفير الحمراء أعلى يمين الكارت */
+.discount-ribbon-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--discount-red);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  z-index: 5;
+}
+
+/* تثبيت زر العين الخضراء السريع داخل مربع الصورة بالأسفل يساراً */
+.quick-view-eye-btn {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--dream-green);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  z-index: 4;
+  cursor: pointer;
+  box-shadow: 0 2px 6px var(--dream-green-glow);
 }
