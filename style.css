@@ -251,16 +251,25 @@ img { max-width: 100%; display: block; }
   justify-content: center;
 }
 
-/* شريط الأقسام المباشر */
-.dream-subnav { background-color: var(--bg-elevated); border-bottom: 1px solid var(--border-color); padding: 6px 0; }
-.subnav-links-list { display: flex; align-items: center; gap: 8px; overflow-x: auto; white-space: nowrap; }
-.subnav-links-list::-webkit-scrollbar { display: none; }
-.subnav-links-list a {
-  display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
-  border-radius: var(--radius-pill); font-size: 0.84rem; font-weight: 700; color: var(--text-muted);
+/* شريط إكسسوارات الموبايل الموحد في المنتصف */
+.dream-subnav { 
+  background-color: var(--bg-elevated); 
+  border-bottom: 1px solid var(--border-color); 
+  padding: 10px 0; 
 }
-.subnav-links-list a.active, .subnav-links-list a:hover { background-color: var(--dream-green); color: #fff; }
-.text-red-tag { color: var(--discount-red) !important; }
+
+.single-center-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--dream-green);
+  color: #ffffff;
+  padding: 8px 26px;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 800;
+  box-shadow: 0 2px 8px var(--dream-green-glow);
+}
 
 /* --------------------------------------------------------------------------
    3. تخطيط الكتالوج والشريط العلوي بنمط Dream 2000 الأصلي
@@ -851,4 +860,86 @@ img { max-width: 100%; display: block; }
   .dream-products-grid {
     grid-template-columns: 1fr;
   }
+}
+/* ==========================================================================
+   إخفاء شريط الموبايل السفلي عن الكمبيوتر + تنسيق السوشيال والاسم الذهبي
+   ========================================================================== */
+
+/* 1. إخفاء شريط الموبايل نهائياً عن الكمبيوتر واللابتوب */
+.mobile-bottom-nav {
+  display: none !important;
+}
+
+/* يظهر فقط عند فتح الموقع من الهاتف */
+@media (max-width: 768px) {
+  .mobile-bottom-nav {
+    display: flex !important;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-color);
+    padding: 8px 0;
+    z-index: 9000;
+  }
+}
+
+/* 2. ضبط محاذاة عناصر الشريط السفلي (يمين - وسط - يسار) */
+.copyright-flex {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* 3. تنسيق منصات السوشيال ميديا الثلاث (تيك توك - فيسبوك - انستجرام) */
+.footer-social-mid {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-social-mid a {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1rem;
+  transition: all 0.25s ease;
+}
+
+.footer-social-mid a:hover {
+  background-color: var(--dream-green);
+  border-color: var(--dream-green);
+  transform: translateY(-3px);
+}
+
+/* 4. تنسيق توقيع أحمد محمد الذهبي المتوهج مع رابط الواتساب */
+.dev-credit-text {
+  font-size: 0.84rem;
+  color: #9ca3af;
+  font-weight: 700;
+}
+
+.dev-gold-link {
+  color: #fbbf24 !important; /* لون ذهبي لامع */
+  font-weight: 900;
+  margin-right: 4px;
+  text-decoration: none;
+  display: inline-block;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); /* تأثير الإضاءة الذهبية */
+  transition: all 0.25s ease;
+}
+
+.dev-gold-link:hover {
+  color: #f59e0b !important;
+  transform: scale(1.08);
+  text-shadow: 0 0 16px rgba(245, 158, 11, 0.85);
 }
