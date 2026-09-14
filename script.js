@@ -110,6 +110,8 @@ let abascoInventory = [
     inStock: true
   }
 ];
+// حفظ المنتجات في الذاكرة لتفتح صفحة المنتج فورياً في 0 ثانية
+localStorage.setItem('abasco_store_inventory', JSON.stringify(abascoInventory));
 const state = {
   products: [...abascoInventory],
   cart: JSON.parse(localStorage.getItem('abasco_raya_cart')) || [],
@@ -620,10 +622,11 @@ async function fetchProductsFromFirebase() {
       return;
     }
 
-    abascoInventory = [];
+abascoInventory = [];
     snapshot.forEach(doc => {
       abascoInventory.push({ id: doc.id, ...doc.data() });
     });
+    localStorage.setItem('abasco_store_inventory', JSON.stringify(abascoInventory));
 
     state.products = [...abascoInventory];
     executeFiltering();
