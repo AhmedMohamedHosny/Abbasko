@@ -81,8 +81,8 @@ img { max-width: 100%; display: block; }
 
 /* ضبط حجم وتكبير صورة اللوجو */
 .main-store-logo {
-  height: 65px !important;       /* تكبير الارتفاع ليكون بارز وواضح */
-  max-height: 70px !important;
+  height: 70px !important;       /* تكبير الارتفاع ليكون بارز وواضح */
+  max-height: 80px !important;
   width: auto !important;
   object-fit: contain;
   display: block;
@@ -90,7 +90,7 @@ img { max-width: 100%; display: block; }
 }
 
 .main-store-logo:hover {
-  transform: scale(1.05);        /* حركة تكبير خفيفة وأنيقة عند ملامسة الماوس */
+  transform: scale(1.2);        /* حركة تكبير خفيفة وأنيقة عند ملامسة الماوس */
 }
 /* 1. شريط الإعلانات الترويجي */
 .dream-top-ticker {
