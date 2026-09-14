@@ -13,7 +13,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <link rel="stylesheet" href="style.css">
-
+<!-- مكتبات Firebase لقراءة بيانات المنتج الحقيقي -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <style>
     /* --------------------------------------------------------------------------
        تنسيقات صفحة المنتج بنمط Dream 2000 الدقيق
@@ -731,16 +733,83 @@
 
 // استخراج معرّف الملحق من الرابط بدقة
     const urlParams = new URLSearchParams(window.location.search);
-    const prodId = urlParams.get('id') || '1';
-    const currentProduct = catalog.find(p => String(p.id) === String(prodId)) || catalog[0];
+// 1. تهيئة الفايربيز في صفحة المنتج
+    const firebaseConfig = {
+      apiKey: "AIzaSyBhOo-nzA3TztOFQlxPQaOTrLtPDjKb_xU",
+      authDomain: "abbasko-store.firebaseapp.com",
+      projectId: "abbasko-store",
+      storageBucket: "abbasko-store.firebasestorage.app",
+      messagingSenderId: "475025963892",
+      appId: "1:475025963892:web:8790442f8bc83539368a21",
+      measurementId: "G-B1866569VZ"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    // دالة عرض المنتجات ذات الصلة من نفس التبويب / الفئة
-    function renderRelatedItems(activeItem) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const prodId = urlParams.get('id') || '1';
+    let currentProduct = null;
+
+    // دالة تعبئة بيانات الصفحة بالمنتج المختار
+    function populateProductUI(product) {
+      currentProduct = product;
+      document.getElementById('crumb-cat-name').textContent = product.category || 'إكسسوارات الموبايل';
+      document.getElementById('crumb-prod-title').textContent = product.title;
+      document.getElementById('detail-title').textContent = product.title;
+      document.getElementById('detail-brand').textContent = product.brand || 'عام';
+      document.getElementById('detail-img').src = product.image || (product.images && product.images[0]) || 'logo.png';
+      document.getElementById('detail-price').textContent = `LE ${Number(product.price).toFixed(2)}`;
+      document.getElementById('detail-old-price').textContent = product.oldPrice ? `LE ${Number(product.oldPrice).toFixed(2)}` : '';
+      document.getElementById('detail-discount-tag').textContent = product.discount ? `وفر ${product.discount} جنيه` : 'عرض خاص';
+
+      // رسم النجوم
+      let starsHtml = '';
+      const rate = Math.round(Number(product.rating) || 5);
+      for (let i = 1; i <= 5; i++) {
+        starsHtml += (i <= rate) 
+          ? '<i class="fa-solid fa-star"></i>' 
+          : '<i class="fa-regular fa-star" style="color:#d1d5db;"></i>';
+      }
+      document.getElementById('detail-stars-box').innerHTML = starsHtml;
+      document.getElementById('detail-reviews-num').textContent = `(${product.ratingCount || 0} تقييم مشتري)`;
+
+      renderRelatedItems(product);
+    }
+
+    // جلب المنتج الحقيقي من Firestore، وإن لم يُعثر عليه يبحث في الكتالوج المحلي
+    async function loadCurrentProduct() {
+      try {
+        const doc = await db.collection('products').doc(prodId).get();
+        if (doc.exists) {
+          populateProductUI({ id: doc.id, ...doc.data() });
+          return;
+        }
+      } catch (e) {
+        console.warn("جاري استخدام البيانات المحلية:", e.message);
+      }
+
+      const localProd = catalog.find(p => String(p.id) === String(prodId)) || catalog[0];
+      populateProductUI(localProd);
+    }
+
+    // استدعاء جلب المنتج فوراً
+    loadCurrentProduct();
+
+    // دالة عرض المنتجات ذات الصلة الحقيقية
+    async function renderRelatedItems(activeItem) {
       const container = document.getElementById('related-products-container');
       if (!container) return;
 
-      // تصفية المنتجات التي تحمل نفس الفئة واستثناء المنتج المعروض حالياً
-      const related = catalog.filter(p => 
+      let allItems = [...catalog];
+      try {
+        const snap = await db.collection('products').get();
+        if (!snap.empty) {
+          allItems = [];
+          snap.forEach(d => allItems.push({ id: d.id, ...d.data() }));
+        }
+      } catch(e) {}
+
+      const related = allItems.filter(p => 
         String(p.id) !== String(activeItem.id) && 
         (p.category === activeItem.category || p.brand === activeItem.brand)
       );
@@ -753,10 +822,10 @@
       container.innerHTML = related.slice(0, 4).map(item => `
         <article class="dream-product-card" onclick="window.location.href='product.html?id=${item.id}'" style="cursor: pointer; padding: 14px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px;">
           <div class="card-image-pane" style="width: 100%; display: flex; justify-content: center; margin-bottom: 10px;">
-            <img src="${item.image}" alt="${item.title}" style="height: 140px; object-fit: contain;">
+            <img src="${item.image || (item.images && item.images[0]) || 'logo.png'}" alt="${item.title}" style="height: 140px; object-fit: contain;">
           </div>
           <div class="card-details-pane" style="text-align: center;">
-            <span class="brand-label-text" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">${item.brand}</span>
+            <span class="brand-label-text" style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">${item.brand || ''}</span>
             <h4 style="font-size: 0.85rem; font-weight: 800; color: var(--text-main); height: 36px; overflow: hidden; line-height: 1.3; margin: 4px 0 8px;">${item.title}</h4>
             <div class="price-block-dream" style="justify-content: center; margin-bottom: 10px;">
               <span class="price-val-red" style="font-size: 1.1rem; font-weight: 900; color: var(--discount-red);">LE ${Number(item.price).toFixed(2)}</span>
@@ -766,28 +835,6 @@
         </article>
       `).join('');
     }
-
-    // استدعاء عرض المنتجات ذات الصلة فور تحميل الصفحة
-    renderRelatedItems(currentProduct);
-
-    // ملء بيانات الواجهة
-    document.getElementById('crumb-cat-name').textContent = currentProduct.category;
-    document.getElementById('crumb-prod-title').textContent = currentProduct.title;
-    document.getElementById('detail-title').textContent = currentProduct.title;
-    document.getElementById('detail-brand').textContent = currentProduct.brand;
-    document.getElementById('detail-img').src = currentProduct.image;
-    document.getElementById('detail-price').textContent = `LE ${currentProduct.price.toFixed(2)}`;
-    document.getElementById('detail-old-price').textContent = `LE ${currentProduct.oldPrice.toFixed(2)}`;
-    document.getElementById('detail-discount-tag').textContent = `وفر ${currentProduct.discount} جنيه`;
-
-    // رسم النجوم
-    let starsHtml = '';
-    for (let i = 1; i <= 5; i++) {
-      starsHtml += (i <= currentProduct.rating) 
-        ? '<i class="fa-solid fa-star"></i>' 
-        : '<i class="fa-regular fa-star" style="color:#d1d5db;"></i>';
-    }
-    document.getElementById('detail-stars-box').innerHTML = starsHtml;
     document.getElementById('detail-reviews-num').textContent = `(${currentProduct.ratingCount} تقييم مشتري)`;
 
     // ملء جدول المواصفات
