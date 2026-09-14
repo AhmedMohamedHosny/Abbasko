@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="محل عباسكو (Abassco) - وجهتك الموثوقة لجميع إكسسوارات الهواتف الأصلية: كفرات، شواحن، اسكرينات، وبنوك طاقة بأفضل سعر في مصر.">
-  <title>عباسكو | Abbasco - إكسسوارات الموبايل</title>
+  <meta name="description" content="محل عباسكو (Abasco) - إكسسوارات الموبايل الأصلية: شواحن سريعة، كفرات، اسكرينات، وبنوك طاقة بأفضل سعر ومعاينة كاملة قبل الدفع.">
+  <title>إكسسوارات الموبايل | عباسكو - Abasco Store</title>
 
-  <!-- الخط الرسمي كايرو وأيقونات Font Awesome -->
+  <!-- خط كايرو والأيقونات الرسمية -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -14,49 +14,48 @@
   
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="view-grid-active">
 
-  <!-- 1. شريط الإعلانات المتحرك العلوي (مثل شريط دريم 2000 الداكن) -->
+  <!-- 1. شريط الإعلانات الترويجي الداكن (Dream Ticker) -->
   <div class="dream-top-ticker">
     <div class="ticker-track">
-      <span>🔥 عروض عباسكو الحصرية على جميع إكسسوارات الموبايل</span>
+      <span>🔥 عروض عباسكو الحصرية على شواحن وكابلات GaN الأصلية</span>
       <span>•</span>
-      <span>🚚 معاينة الشحنة بالكامل والتأكد من سلامتها أمام المندوب قبل الدفع</span>
+      <span>🚚 معاينة الشحنة بالكامل وفحص المنتج أمام المندوب قبل دفع أي مبالغ</span>
       <span>•</span>
-      <span>⚡ شواحن GaN معتمدة وكفرات MagSafe أصلية بضمان استبدال فوري</span>
+      <span>⚡ شواحن أنكر وسامسونج ويوجرين الأصلية بضمان استبدال فوري</span>
       <span>•</span>
       <span>💵 الدفع نقداً عند الاستلام كاش بكل أمان</span>
     </div>
   </div>
 
-  <!-- 2. رأس المتجر الرئيسي (Header) -->
+  <!-- 2. رأس المتجر المتطابق مع دريم 2000 (Header) -->
   <header class="dream-header">
     <div class="container header-inner">
       
-      <!-- شعار محل عباسكو المستوحى من هوية دريم 2000 الخضراء -->
+      <!-- شعار محل عباسكو -->
       <a href="index.html" class="dream-brand">
         <div class="brand-badge-icon">
           <i class="fa-solid fa-bolt-lightning"></i>
         </div>
         <div class="brand-titles">
           <span class="brand-ar">عباسكو</span>
-          <span class="brand-en">Abassco <small>Store</small></span>
+          <span class="brand-en">Abasco <small>Store</small></span>
         </div>
       </a>
 
-      <!-- محرك البحث المركزي مع تحديد القسم المنسدل -->
+      <!-- محرك البحث المركزي مع قائمة الأقسام المنسدلة -->
       <form class="dream-search-bar" id="search-form">
         <div class="search-cat-picker">
           <select id="search-category" aria-label="اختر القسم">
             <option value="all">جميع الفئات</option>
-            <option value="chargers">شواحن ووصلات</option>
-            <option value="cases">كفرات وجرابات</option>
-            <option value="screen">اسكرينات وحماية</option>
+            <option value="chargers">شواحن وكابلات</option>
             <option value="powerbanks">بنوك طاقة</option>
-            <option value="audio">سماعات وبلوتوث</option>
+            <option value="cases">كفرات وحماية</option>
+            <option value="audio">سماعات وصوتيات</option>
           </select>
         </div>
-        <input type="text" id="search-input" placeholder="عن ماذا تبحث؟ (مثال: شاحن أنكر، جراب آيفون...)" autocomplete="off">
+        <input type="text" id="search-input" placeholder="عن ماذا تبحث؟ (مثال: شاحن أنكر 30 واط، كابل تايب سي...)" autocomplete="off">
         <button type="submit" class="search-submit-btn" aria-label="بحث">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
@@ -65,7 +64,7 @@
       <!-- أدوات التحكم: الدارك مود وعربة التسوق -->
       <div class="dream-header-tools">
         
-        <!-- مفتاح الوضع الليلي (Dark Mode Toggle) -->
+        <!-- مفتاح الوضع الليلي (Dark Mode) -->
         <div class="dark-mode-toggle-wrap" title="تبديل الوضع الليلي / الفاتح">
           <label class="switch-ui" for="dark-mode-checkbox">
             <input type="checkbox" id="dark-mode-checkbox">
@@ -78,8 +77,8 @@
 
         <div class="header-v-divider"></div>
 
-        <!-- زر عربة التسوق الذي ينقل مباشرة لصفحة السلة المستقلة -->
-        <a href="cart.html" class="dream-cart-btn" title="عرض سلة المشتريات">
+        <!-- زر عربة التسوق الذي ينقل مباشرة لـ cart.html -->
+        <a href="cart.html" class="dream-cart-btn" title="عرض السلة">
           <div class="cart-icon-bubble">
             <i class="fa-solid fa-cart-shopping"></i>
             <span class="cart-qty-pill" id="cart-counter">0</span>
@@ -89,15 +88,15 @@
       </div>
     </div>
 
-    <!-- شريط الأقسام المباشر أسفل الهيدر -->
+    <!-- شريط الأقسام المباشر -->
     <nav class="dream-subnav">
       <div class="container subnav-flex">
         <ul class="subnav-links-list">
           <li><a href="#all" class="active"><i class="fa-solid fa-mobile-screen"></i> إكسسوارات الموبايل</a></li>
           <li><a href="#chargers"><i class="fa-solid fa-bolt"></i> شواحن ووصلات</a></li>
+          <li><a href="#powerbanks"><i class="fa-solid fa-battery-three-quarters"></i> بنوك طاقة</a></li>
           <li><a href="#cases"><i class="fa-solid fa-shield-halved"></i> كفرات وجرابات</a></li>
           <li><a href="#screen"><i class="fa-solid fa-mobile"></i> اسكرينات 9D</a></li>
-          <li><a href="#powerbanks"><i class="fa-solid fa-battery-three-quarters"></i> بنوك طاقة</a></li>
           <li><a href="#audio"><i class="fa-solid fa-headphones"></i> سماعات وصوتيات</a></li>
           <li><a href="#holders"><i class="fa-solid fa-car"></i> حوامل وماسك سيارة</a></li>
           <li><a href="#offers" class="text-red-tag"><i class="fa-solid fa-fire"></i> عروضنا الخاصة</a></li>
@@ -106,47 +105,81 @@
     </nav>
   </header>
 
-  <!-- 3. منطقة المحتوى والكتالوج (مطابقة لتخطيط دريم 2000 في شاشتك) -->
+  <!-- 3. منطقة الكتالوج والمنتجات الرئيسية -->
   <main class="dream-catalog-canvas">
     <div class="container">
       
-      <!-- عنوان الصفحة الرئيسي -->
+      <!-- عنوان الصفحة -->
       <div class="catalog-heading-title">
         <h1>إكسسوارات الموبايل</h1>
       </div>
 
-      <!-- تخطيط الصفحة: المنتجات على اليمين وشريط التصفية على اليسار (RTL) -->
+      <!-- تخطيط الصفحة: المنتجات يساراً والفلاتر يميناً (وفق نظام RTL لدريم 2000) -->
       <div class="dream-main-layout">
         
-        <!-- شبكة عرض المنتجات -->
+        <!-- عمود عرض المنتجات الرئيسي -->
         <section class="products-showcase-column">
           
-          <!-- شريط التحكم أعلى المنتجات (ترتيب + طريقة العرض) -->
+          <!-- شريط التحكم العلوي المطابق للصورة 3 و4 -->
           <div class="catalog-top-bar">
+            
+            <!-- أزرار التبديل بين العرض الشبكي وعرض القائمة -->
             <div class="view-modes">
-              <button class="view-btn active" title="عرض شبكي"><i class="fa-solid fa-table-cells-large"></i></button>
-              <button class="view-btn" title="عرض أفقي"><i class="fa-solid fa-list"></i></button>
+              <button class="view-btn active" id="btn-view-grid" title="عرض شبكي (4 أعمدة)">
+                <i class="fa-solid fa-table-cells-large"></i>
+              </button>
+              <button class="view-btn" id="btn-view-list" title="عرض القائمة (كروت تفصيلية)">
+                <i class="fa-solid fa-list"></i>
+              </button>
             </div>
-            <div class="sort-wrapper">
-              <label for="sort-select">ترتيب حسب:</label>
-              <select id="sort-select">
-                <option value="featured">مميز</option>
-                <option value="low-price">السعر: من الأقل للأعلى</option>
-                <option value="high-price">السعر: من الأعلى للأقل</option>
-                <option value="rating">الأعلى تقييماً</option>
-              </select>
+
+            <!-- قائمة الترتيب المنسدلة المطابقة للصورة 3 -->
+            <div class="custom-sort-container">
+              <span class="sort-title-label">ترتيب حسب:</span>
+              <div class="custom-dropdown-box" id="sort-dropdown-trigger">
+                <span id="selected-sort-label">مميز</span>
+                <i class="fa-solid fa-chevron-down dropdown-arrow-icon"></i>
+              </div>
+
+              <!-- القائمة المنسدلة الكاملة -->
+              <ul class="custom-sort-menu" id="sort-options-menu">
+                <li data-sort="featured" class="active">مميز</li>
+                <li data-sort="relevant">الأكثر صلة</li>
+                <li data-sort="bestseller">الأكثر مبيعاً</li>
+                <li data-sort="alpha-az">أبجدياً، أ-ي</li>
+                <li data-sort="alpha-za">أبجدياً، من ي-أ</li>
+                <li data-sort="price-asc">السعر، من الأقل للأعلى</li>
+                <li data-sort="price-desc">السعر، من الأعلى للأقل</li>
+                <li data-sort="date-old">التاريخ، من الأقدم إلى الأحدث</li>
+                <li data-sort="date-new">التاريخ، من الأحدث إلى الأقدم</li>
+              </ul>
             </div>
+
+            <!-- عداد المنتجات وزر التصفية السريع -->
             <div class="items-count-display">
-              عرض <strong id="products-count-num">8</strong> منتجات متوفرة في المحل
+              <span id="products-counter-badge">8 من 8 منتجات</span>
+              <button class="mobile-filter-trigger" id="mobile-filter-btn">
+                <i class="fa-solid fa-sliders"></i> تصفية
+              </button>
             </div>
+
           </div>
 
-          <!-- شبكة كروت المنتجات بتصميم دريم 2000 الأصلي -->
+          <!-- شريط التصفية النشطة مع زر مسح الكل -->
+          <div class="active-filters-chips-bar" id="active-filters-bar" style="display: none;">
+            <div class="filter-chip" id="current-brand-chip">
+              <span id="chip-brand-text">Anker</span>
+              <i class="fa-solid fa-xmark" id="remove-brand-chip"></i>
+            </div>
+            <button class="clear-all-filters-btn" id="clear-all-filters-btn">مسح الكل</button>
+          </div>
+
+          <!-- شبكة عرض المنتجات (تتغير ديناميكياً بين Grid و List) -->
           <div class="dream-products-grid" id="catalog-products-container">
-            <!-- يتم تعبئة الكروت ديناميكياً عبر الجافاسكريبت بنفس شكل الصور -->
+            <!-- يتم حقن المنتجات تلقائياً عبر script.js -->
           </div>
 
-          <!-- أرقام الصفحات (Pagination مثل الصورة) -->
+          <!-- أرقام الصفحات (Pagination) -->
           <div class="dream-pagination-bar">
             <button class="page-arrow" disabled><i class="fa-solid fa-chevron-right"></i> السابق</button>
             <span class="page-num active">1</span>
@@ -156,28 +189,51 @@
             <span class="page-num">25</span>
             <button class="page-arrow">التالي <i class="fa-solid fa-chevron-left"></i></button>
           </div>
+
         </section>
 
-        <!-- الشريط الجانبي للتصفية (Sidebar Filters مثل صورة دريم) -->
+        <!-- الشريط الجانبي للتصفية (Sidebar Filters - مطابق للصورة 6 و7 و8) -->
         <aside class="dream-filters-sidebar">
           <div class="filters-sidebar-header">
             <h3><i class="fa-solid fa-sliders"></i> تصفية</h3>
           </div>
 
-          <!-- مفتاح متوفر بالمخزون السريع -->
+          <!-- مفتاح متوفر بالمخزون -->
           <div class="filter-group in-stock-group">
-            <span>متوفر بالمخزون فقط</span>
+            <span>متوفر بالمخزون</span>
             <label class="switch-ui mini">
               <input type="checkbox" id="stock-filter" checked>
               <span class="slider-switch round"></span>
             </label>
           </div>
 
-          <!-- فلتر السعر بالأكورديون -->
+          <!-- فلتر الماركة (مع أعداد المنتجات مثل الصورة 6) -->
           <div class="accordion-filter-block open">
             <div class="accordion-header">
-              <span>السعر (ج.م)</span>
-              <i class="fa-solid fa-chevron-down"></i>
+              <span>الماركة</span>
+              <i class="fa-solid fa-chevron-up"></i>
+            </div>
+            <div class="accordion-body">
+              <div class="brand-items-scrollable">
+                <label class="custom-chk"><input type="radio" name="brand_filter" value="all" checked> الكل</label>
+                <label class="custom-chk"><input type="radio" name="brand_filter" value="Anker"> Anker (38)</label>
+                <label class="custom-chk"><input type="radio" name="brand_filter" value="Samsung"> Samsung (12)</label>
+                <label class="custom-chk"><input type="radio" name="brand_filter" value="Apple"> Apple (10)</label>
+                <label class="custom-chk"><input type="radio" name="brand_filter" value="Ugreen"> Ugreen (71)</label>
+                <label class="custom-chk"><input type="radio" name="brand_filter" value="Xiaomi"> Xiaomi (8)</label>
+                <label class="custom-chk"><input type="radio" name="brand_filter" value="Baseus"> Baseus (48)</label>
+                <label class="custom-chk"><input type="radio" name="brand_filter" value="Hoco"> Hoco (26)</label>
+                <label class="custom-chk"><input type="radio" name="brand_filter" value="LDNIO"> LDNIO (2)</label>
+                <label class="custom-chk"><input type="radio" name="brand_filter" value="Joyroom"> Joyroom (15)</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- فلتر السعر (الأكورديون) -->
+          <div class="accordion-filter-block open">
+            <div class="accordion-header">
+              <span>السعر</span>
+              <i class="fa-solid fa-chevron-up"></i>
             </div>
             <div class="accordion-body">
               <div class="price-slider-box">
@@ -190,69 +246,74 @@
             </div>
           </div>
 
-          <!-- فلتر الماركة -->
+          <!-- فلتر نوع الملحق والتوصيل (الصورة 8) -->
           <div class="accordion-filter-block open">
             <div class="accordion-header">
-              <span>الماركة</span>
-              <i class="fa-solid fa-chevron-down"></i>
+              <span>النوع</span>
+              <i class="fa-solid fa-chevron-up"></i>
             </div>
             <div class="accordion-body">
-              <label class="custom-chk"><input type="checkbox" checked value="all"> الكل</label>
-              <label class="custom-chk"><input type="checkbox" value="anker"> Anker (أنكر)</label>
-              <label class="custom-chk"><input type="checkbox" value="samsung"> Samsung (سامسونج)</label>
-              <label class="custom-chk"><input type="checkbox" value="apple"> Apple (آبل)</label>
-              <label class="custom-chk"><input type="checkbox" value="ugreen"> Ugreen (يوجرين)</label>
-              <label class="custom-chk"><input type="checkbox" value="xiaomi"> Xiaomi (شاومي)</label>
-            </div>
-          </div>
-
-          <!-- فلتر نوع الملحق -->
-          <div class="accordion-filter-block open">
-            <div class="accordion-header">
-              <span>نوع الملحق</span>
-              <i class="fa-solid fa-chevron-down"></i>
-            </div>
-            <div class="accordion-body">
+              <label class="custom-chk"><input type="checkbox" checked> Type-C (11)</label>
+              <label class="custom-chk"><input type="checkbox" checked> Type-C To Type-C (25)</label>
+              <label class="custom-chk"><input type="checkbox" checked> Type-C To Lightning (18)</label>
+              <label class="custom-chk"><input type="checkbox" checked> USB To Type-C (23)</label>
               <label class="custom-chk"><input type="checkbox" checked> شواحن جدارية سريعة</label>
-              <label class="custom-chk"><input type="checkbox"> كابلات ووصلات Type-C</label>
-              <label class="custom-chk"><input type="checkbox"> بنوك طاقة (باور بانك)</label>
-              <label class="custom-chk"><input type="checkbox"> كفرات MagSafe وحماية</label>
-              <label class="custom-chk"><input type="checkbox"> سماعات رأس وبلوتوث</label>
+              <label class="custom-chk"><input type="checkbox" checked> بنوك طاقة متنقلة</label>
             </div>
           </div>
 
-          <!-- فلتر الشحن والتوصيل -->
+          <!-- فلتر قدرة الشحن بالواط (Power - الصورة 8) -->
+          <div class="accordion-filter-block open">
+            <div class="accordion-header">
+              <span>Power (القدرة)</span>
+              <i class="fa-solid fa-chevron-up"></i>
+            </div>
+            <div class="accordion-body">
+              <label class="custom-chk"><input type="checkbox"> 20W (38)</label>
+              <label class="custom-chk"><input type="checkbox"> 25W (19)</label>
+              <label class="custom-chk"><input type="checkbox"> 30W (19)</label>
+              <label class="custom-chk"><input type="checkbox"> 45W (13)</label>
+              <label class="custom-chk"><input type="checkbox"> 65W (21)</label>
+              <label class="custom-chk"><input type="checkbox"> 100W (15)</label>
+              <label class="custom-chk"><input type="checkbox"> 140W (3)</label>
+            </div>
+          </div>
+
+          <!-- فلتر اللون (Color - الصورة 8) -->
           <div class="accordion-filter-block">
             <div class="accordion-header">
-              <span>التوصيل والمعاينة</span>
+              <span>اللون</span>
               <i class="fa-solid fa-chevron-down"></i>
             </div>
             <div class="accordion-body">
-              <label class="custom-chk"><input type="checkbox" checked> شحن سريع مع حق المعاينة</label>
-              <label class="custom-chk"><input type="checkbox"> الدفع عند الاستلام كاش</label>
+              <label class="custom-chk"><input type="checkbox"> Black (202)</label>
+              <label class="custom-chk"><input type="checkbox"> White (177)</label>
+              <label class="custom-chk"><input type="checkbox"> Gray (9)</label>
+              <label class="custom-chk"><input type="checkbox"> Blue (11)</label>
             </div>
           </div>
+
         </aside>
 
       </div>
     </div>
   </main>
 
-  <!-- 4. تذييل محل عباسكو البسيط (بدون شركات أو فروع أو تطبيقات) -->
+  <!-- 4. تذييل محل عباسكو البسيط (بدون شركات أو فروع) -->
   <footer class="dream-footer">
     <div class="container footer-content-row">
       <div class="footer-shop-about">
         <div class="footer-brand-title">محل عباسكو لإكسسوارات الموبايل</div>
-        <p>محلك المفضل لتوريد أحدث ملحقات الهواتف المحمولة الأصلية. جميع المنتجات معتمدة ومجربة ومتاح معاينتها بالكامل قبل الدفع.</p>
+        <p>محلك الموثوق لجميع إكسسوارات الهواتف الأصلية المعتمدة. متاح فتح الشحنة ومعاينتها بالكامل أمام المندوب قبل دفع أي مبالغ نقدية.</p>
         <p class="store-hours"><i class="fa-regular fa-clock"></i> مواعيد العمل: يومياً من 10 صباحاً حتى 11 مساءً</p>
       </div>
 
       <div class="footer-links-group">
         <h4>خدمات المشتري</h4>
         <ul>
-          <li><a href="#about">من نحن</a></li>
-          <li><a href="#policy">سياسة الاستبدال والمعاينة قبل الدفع</a></li>
-          <li><a href="#contact">تواصل مع المحل مباشرة</a></li>
+          <li><a href="index.html">الصفحة الرئيسية للمحل</a></li>
+          <li><a href="cart.html">عربة التسوق ومتابعة الطلب</a></li>
+          <li><a href="checkout.html">تأكيد الشحن والعنوان</a></li>
         </ul>
       </div>
 
@@ -267,23 +328,23 @@
 
     <div class="footer-bottom-copyright">
       <div class="container copyright-flex">
-        <span>© 2026 محل عباسكو (Abassco Store) - جميع الحقوق محفوظة.</span>
+        <span>© 2026 محل عباسكو (Abasco Store) - جميع الحقوق محفوظة.</span>
         <div class="payment-method-text">
-          <i class="fa-solid fa-hand-holding-dollar"></i> الدفع نقداً عند الاستلام كاش
+          <i class="fa-solid fa-hand-holding-dollar"></i> الدفع نقداً عند الاستلام كاش مع المعاينة
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- 5. شريط التنقل السفلي للموبايل (Mobile Bottom Navigation Bar) -->
+  <!-- 5. شريط التنقل السفلي للهواتف الذكية -->
   <div class="mobile-bottom-nav">
     <a href="index.html" class="mob-nav-item active">
       <i class="fa-solid fa-house"></i>
       <span>الرئيسية</span>
     </a>
-    <a href="#subnav" class="mob-nav-item">
-      <i class="fa-solid fa-layer-group"></i>
-      <span>الأقسام</span>
+    <a href="#search-form" class="mob-nav-item">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>البحث</span>
     </a>
     <a href="cart.html" class="mob-nav-item mob-cart-link">
       <div class="mob-cart-badge-wrap">
@@ -292,26 +353,24 @@
       </div>
       <span>السلة</span>
     </a>
-    <a href="https://wa.me/201000000000" target="_blank" class="mob-nav-item text-green">
+    <a href="https://wa.me/201000000000" target="_blank" class="mob-nav-item" style="color: #25d366;">
       <i class="fa-brands fa-whatsapp"></i>
       <span>راسلنا</span>
     </a>
   </div>
 
-  <!-- 6. زر المحادثة العائم المتناوب (يتغير كل 5 ثوانٍ بين واتساب وماسنجر) -->
+  <!-- 6. زر المحادثة العائم المتناوب (واتساب / ماسنجر كل 5 ثوانٍ) -->
   <div class="alternating-chat-widget" id="alternating-chat-btn" title="تواصل معنا">
     <a href="https://wa.me/201000000000" target="_blank" class="chat-circle-link whatsapp-mode" id="chat-link">
       <i class="fa-brands fa-whatsapp chat-icon" id="chat-icon"></i>
     </a>
   </div>
 
-  <!-- نافذة المعاينة السريعة للمنتج (Quick View Modal المماثلة لعين دريم 2000 الخضراء) -->
+  <!-- 7. نافذة "نظرة سريعة" المنبثقة (Quick View Modal) -->
   <div class="quick-modal-backdrop" id="quick-modal-overlay">
     <div class="quick-modal-card">
       <button class="close-modal-btn" id="close-quick-modal"><i class="fa-solid fa-xmark"></i></button>
-      <div class="quick-modal-body" id="quick-modal-content">
-        <!-- يتم ملؤها عند الضغط على أيقونة العين الخضراء -->
-      </div>
+      <div class="quick-modal-body" id="quick-modal-content"></div>
     </div>
   </div>
 
