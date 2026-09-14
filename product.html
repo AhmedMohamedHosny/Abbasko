@@ -728,7 +728,7 @@
     </a>
   </div>
 
-<!-- تهيئة Firebase وتشغيل المزامنة الحية لصفحة المنتج -->
+<!-- المحرك البرمجي الفوري لصفحة المنتج (مربوط حياً بـ Firebase لجلب كافة الألوان الحقيقية) -->
   <script>
     'use strict';
 
@@ -746,9 +746,9 @@
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 2. قراءة معرّف المنتج من الرابط
+    // 2. استخراج معرّف الملحق من الرابط
     const urlParams = new URLSearchParams(window.location.search);
-    const prodId = urlParams.get('id');
+    let prodId = urlParams.get('id');
 
     let currentProduct = null;
     let chosenColor = "أسود";
@@ -758,27 +758,159 @@
     let currentImgIndex = 0;
     let sliderInterval = null;
 
-    // 3. الاستماع اللحظي للمنتج من قاعدة البيانات (أي تعديل في الأدمن يسمع هنا فوراً)
-    function listenToProductRealtime() {
+    // 3. جلب بيانات الملحق الحقيقي لحظياً من Firestore
+    function fetchLiveProductDetails() {
+      // لو العميل فتح الصفحة بدون معرّف id، نجلب أول منتج متاح بالمتجر
       if (!prodId) {
-        document.getElementById('detail-title').textContent = "برجاء اختيار ملحق من الصفحة الرئيسية.";
+        db.collection('products').limit(1).get().then(snapshot => {
+          if (!snapshot.empty) {
+            const doc = snapshot.docs[0];
+            prodId = doc.id;
+            listenToProduct(prodId);
+          }
+        });
         return;
       }
 
-      db.collection('products').doc(prodId).onSnapshot((doc) => {
+      listenToProduct(prodId);
+    }
+
+    function listenToProduct(id) {
+      db.collection('products').doc(id).onSnapshot((doc) => {
         if (doc.exists) {
           currentProduct = { id: doc.id, ...doc.data() };
-          renderProductDetails(currentProduct);
+          renderCurrentProduct(currentProduct);
         } else {
-          document.getElementById('detail-title').textContent = "هذا الملحق غير متوفر أو تم حذفه من قبل المشرف.";
+          // فحص الذاكرة المحلية كحماية بديلة
+          const localItems = JSON.parse(localStorage.getItem('abasco_store_inventory')) || [];
+          const found = localItems.find(p => String(p.id) === String(id));
+          if (found) {
+            currentProduct = found;
+            renderCurrentProduct(currentProduct);
+          } else {
+            document.getElementById('detail-title').textContent = "الملحق غير متاح أو تم حذفه من قبل المشرف.";
+          }
         }
       }, (err) => {
-        console.error("خطأ قراءة المنتج:", err);
+        console.error("خطأ قراءة بيانات المنتج:", err);
       });
     }
 
-    // 4. تعبئة تفاصيل الملحق بالبيانات الحقيقية
-    function renderProductDetails(prod) {
+    // 4. محرك استخراج وعرض كل الألوان المختارة في الأدمن
+    function setupColorSelection(prod) {
+      const colorsBox = document.getElementById('color-options-container');
+      const labelEl = document.getElementById('selected-color-name');
+      if (!colorsBox) return;
+
+      // مكتبة درجات الألوان لتلوين الدوائر بدقة
+      const hexMap = {
+        'أسود': '#111827',
+        'أبيض': '#ffffff',
+        'أزرق': '#1d4ed8',
+        'رمادي': '#64748b',
+        'ذهبي': '#d97706',
+        'فضي': '#94a3b8',
+        'أحمر': '#dc2626',
+        'أخضر': '#16a34a',
+        'كحلي': '#0f172a',
+        'وردي': '#ec4899',
+        'بنفسجي': '#8b5cf6'
+      };
+
+      // استخراج الألوان ورصيد كل لون كما حدده المشرف
+      let availableVariants = [];
+
+      if (prod.colorVariants && Array.isArray(prod.colorVariants) && prod.colorVariants.length > 0) {
+        availableVariants = prod.colorVariants;
+      } else if (prod.colors && Array.isArray(prod.colors) && prod.colors.length > 0) {
+        availableVariants = prod.colors.map(c => ({
+          color: c,
+          stock: Number(prod.stock) || 10
+        }));
+      } else {
+        // لو الملحق مسجل من قبل بدون ألوان محددة
+        availableVariants = [
+          { color: 'أسود', stock: Number(prod.stock) || 10 },
+          { color: 'أبيض', stock: Number(prod.stock) || 5 },
+          { color: 'أزرق', stock: Number(prod.stock) || 5 }
+        ];
+      }
+
+      // اختيار أول لون متاح
+      chosenColor = availableVariants[0].color;
+      chosenColorStock = Number(availableVariants[0].stock) || 0;
+
+      // توليد بادجات الألوان في الصفحة
+      colorsBox.innerHTML = availableVariants.map((v, i) => {
+        const hex = hexMap[v.color] || '#7cb342';
+        const isDepleted = Number(v.stock) <= 0;
+        return `
+          <div class="color-swatch-badge ${i === 0 ? 'active' : ''}" 
+               onclick="selectProductColor('${v.color}', ${v.stock}, this)"
+               style="${isDepleted ? 'opacity: 0.5; text-decoration: line-through;' : ''}">
+            <span class="color-circle-preview" style="background-color: ${hex};"></span>
+            <span>${v.color}</span>
+            <small style="font-size:0.75rem; font-weight:800; color:${isDepleted ? 'var(--discount-red)' : 'var(--dream-green)'};">
+              (${isDepleted ? 'نفذ' : v.stock + ' قطع'})
+            </small>
+          </div>
+        `;
+      }).join('');
+
+      updateColorStatusUI(chosenColor, chosenColorStock);
+    }
+
+    window.selectProductColor = function(colorName, stock, el) {
+      chosenColor = colorName;
+      chosenColorStock = Number(stock);
+      document.querySelectorAll('.color-swatch-badge').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      updateColorStatusUI(colorName, chosenColorStock);
+    };
+
+    function updateColorStatusUI(colorName, stock) {
+      const labelEl = document.getElementById('selected-color-name');
+      const stockPill = document.querySelector('.overview-stock-pill');
+      const addBtn = document.getElementById('btn-add-to-cart');
+      const buyBtn = document.getElementById('btn-buy-now-direct');
+
+      if (stock > 0 && currentProduct.inStock !== false) {
+        if (labelEl) labelEl.innerHTML = `${colorName} <span style="color:var(--dream-green); font-size:0.85rem; font-weight:800;">(متوفر منه ${stock} قطع بالمخزن)</span>`;
+        if (stockPill) {
+          stockPill.innerHTML = `<span class="dot" style="background:var(--stock-blue, #1976d2);"></span><span>متوفر بالمخزن وجاهز للشحن الفوري (${stock} قطعة)</span>`;
+        }
+        if (addBtn) {
+          addBtn.disabled = false;
+          addBtn.style.opacity = '1';
+          addBtn.style.cursor = 'pointer';
+          addBtn.innerHTML = `<i class="fa-solid fa-cart-plus"></i> أضف إلى السلة`;
+        }
+        if (buyBtn) {
+          buyBtn.disabled = false;
+          buyBtn.style.opacity = '1';
+          buyBtn.style.cursor = 'pointer';
+        }
+      } else {
+        if (labelEl) labelEl.innerHTML = `${colorName} <span style="color:var(--discount-red); font-size:0.85rem; font-weight:800;">(نفذت الكمية من هذا اللون ❌)</span>`;
+        if (stockPill) {
+          stockPill.innerHTML = `<span class="dot" style="background:var(--discount-red);"></span><span style="color:var(--discount-red); font-weight:800;">نفذ المخزون من هذا اللون</span>`;
+        }
+        if (addBtn) {
+          addBtn.disabled = true;
+          addBtn.style.opacity = '0.5';
+          addBtn.style.cursor = 'not-allowed';
+          addBtn.innerHTML = `<i class="fa-solid fa-ban"></i> غير متوفر حالياً`;
+        }
+        if (buyBtn) {
+          buyBtn.disabled = true;
+          buyBtn.style.opacity = '0.5';
+          buyBtn.style.cursor = 'not-allowed';
+        }
+      }
+    }
+
+    // 5. بناء واجهة المنتج وعرض التفاصيل
+    function renderCurrentProduct(prod) {
       document.title = `${prod.title} | عباسكو`;
 
       const crumbCat = document.getElementById('crumb-cat-name');
@@ -787,13 +919,17 @@
       const crumbTitle = document.getElementById('crumb-prod-title');
       if (crumbTitle) crumbTitle.textContent = prod.title;
 
-      document.getElementById('detail-title').textContent = prod.title;
-      document.getElementById('detail-brand').textContent = prod.brand || 'عام';
+      const detailTitle = document.getElementById('detail-title');
+      if (detailTitle) detailTitle.textContent = prod.title;
 
-      // السعر والخصومات
+      const detailBrand = document.getElementById('detail-brand');
+      if (detailBrand) detailBrand.textContent = prod.brand || 'عام';
+
       const priceVal = Number(prod.price) || 0;
       const oldPriceVal = Number(prod.oldPrice) || 0;
-      document.getElementById('detail-price').textContent = `LE ${priceVal.toFixed(2)}`;
+
+      const priceEl = document.getElementById('detail-price');
+      if (priceEl) priceEl.textContent = `LE ${priceVal.toFixed(2)}`;
 
       const oldPriceEl = document.getElementById('detail-old-price');
       if (oldPriceEl) {
@@ -818,118 +954,29 @@
         }
       }
 
-      // رسم النجوم
       const starsBox = document.getElementById('detail-stars-box');
       if (starsBox) {
         let starsHtml = '';
         const rate = Math.round(Number(prod.rating) || 5);
         for (let i = 1; i <= 5; i++) {
-          starsHtml += (i <= rate) ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star" style="color:#d1d5db;"></i>';
+          starsHtml += (i <= rate)
+            ? '<i class="fa-solid fa-star"></i>'
+            : '<i class="fa-regular fa-star" style="color:#d1d5db;"></i>';
         }
         starsBox.innerHTML = starsHtml;
       }
-      document.getElementById('detail-reviews-num').textContent = `(${prod.ratingCount || 0} تقييم مشتري)`;
 
-      setupImageGallery(prod);
-      setupColorVariants(prod);
-      renderSpecsList(prod.specs);
-      loadRelatedProducts(prod);
+      const reviewsEl = document.getElementById('detail-reviews-num');
+      if (reviewsEl) reviewsEl.textContent = `(${prod.ratingCount || 0} تقييم مشتري)`;
+
+      renderSpecsTable(prod.specs);
+      renderRelatedItems(prod);
+      setupImageSlider(prod);
+      setupColorSelection(prod);
     }
 
-    // 5. محرك الألوان وعرض مخزون كل لون مع قفل الشراء التلقائي
-    function setupColorVariants(prod) {
-      const colorsBox = document.getElementById('color-options-container');
-      if (!colorsBox) return;
-
-      const hexMap = {
-        'أسود': '#111827', 'أبيض': '#ffffff', 'أزرق': '#1d4ed8',
-        'رمادي': '#64748b', 'ذهبي': '#d97706', 'فضي': '#94a3b8'
-      };
-
-      // قراءة الألوان ومخزون كل لون من قاعدة البيانات
-      let variants = [];
-      if (prod.colorVariants && Array.isArray(prod.colorVariants) && prod.colorVariants.length > 0) {
-        variants = prod.colorVariants;
-      } else if (prod.colors && Array.isArray(prod.colors) && prod.colors.length > 0) {
-        variants = prod.colors.map(c => ({ color: c, stock: Number(prod.stock) || 10 }));
-      } else {
-        variants = [{ color: 'أسود', stock: Number(prod.stock) || 10 }];
-      }
-
-      chosenColor = variants[0].color;
-
-      colorsBox.innerHTML = variants.map((v, i) => {
-        const hex = hexMap[v.color] || '#7cb342';
-        const isDepleted = Number(v.stock) <= 0;
-        return `
-          <div class="color-swatch-badge ${i === 0 ? 'active' : ''}" 
-               onclick="selectColorVariant('${v.color}', ${v.stock}, this)" 
-               style="${isDepleted ? 'opacity: 0.5; text-decoration: line-through;' : ''}">
-            <span class="color-circle-preview" style="background-color: ${hex};"></span>
-            <span>${v.color}</span>
-            <small style="font-size:0.75rem; font-weight:800; color:${isDepleted ? 'var(--danger, #ef4444)' : 'var(--dream-green)'};">
-              (${isDepleted ? 'نفذ' : v.stock + ' قطع'})
-            </small>
-          </div>
-        `;
-      }).join('');
-
-      applyColorStockLogic(variants[0].color, variants[0].stock);
-    }
-
-    window.selectColorVariant = function(colorName, stock, el) {
-      chosenColor = colorName;
-      document.querySelectorAll('.color-swatch-badge').forEach(b => b.classList.remove('active'));
-      el.classList.add('active');
-      applyColorStockLogic(colorName, stock);
-    };
-
-    function applyColorStockLogic(colorName, stock) {
-      chosenColorStock = Number(stock);
-      const labelEl = document.getElementById('selected-color-name');
-      const stockPill = document.querySelector('.overview-stock-pill');
-      const addBtn = document.getElementById('btn-add-to-cart');
-      const buyBtn = document.getElementById('btn-buy-now-direct');
-
-      // لو اللون متوفر والمنتج متاح
-      if (chosenColorStock > 0 && currentProduct.inStock !== false) {
-        if (labelEl) labelEl.innerHTML = `${colorName} <span style="color:var(--dream-green); font-size:0.85rem;">(متوفر منه ${chosenColorStock} قطعة بالمخزن)</span>`;
-        if (stockPill) {
-          stockPill.innerHTML = `<span class="dot" style="background:var(--stock-blue, #1976d2);"></span><span>متوفر بالمخزن وجاهز للشحن الفوري (${chosenColorStock} قطعة)</span>`;
-        }
-        if (addBtn) {
-          addBtn.disabled = false;
-          addBtn.style.opacity = '1';
-          addBtn.style.cursor = 'pointer';
-          addBtn.innerHTML = `<i class="fa-solid fa-cart-plus"></i> أضف إلى السلة`;
-        }
-        if (buyBtn) {
-          buyBtn.disabled = false;
-          buyBtn.style.opacity = '1';
-          buyBtn.style.cursor = 'pointer';
-        }
-      } else {
-        // لو كمية اللون 0
-        if (labelEl) labelEl.innerHTML = `${colorName} <span style="color:var(--discount-red); font-size:0.85rem;">(نفذت الكمية تماماً ❌)</span>`;
-        if (stockPill) {
-          stockPill.innerHTML = `<span class="dot" style="background:var(--discount-red);"></span><span style="color:var(--discount-red); font-weight:800;">نفذ المخزون من هذا اللون</span>`;
-        }
-        if (addBtn) {
-          addBtn.disabled = true;
-          addBtn.style.opacity = '0.5';
-          addBtn.style.cursor = 'not-allowed';
-          addBtn.innerHTML = `<i class="fa-solid fa-ban"></i> غير متوفر حالياً`;
-        }
-        if (buyBtn) {
-          buyBtn.disabled = true;
-          buyBtn.style.opacity = '0.5';
-          buyBtn.style.cursor = 'not-allowed';
-        }
-      }
-    }
-
-    // 6. معرض الصور الأربعة والتبديل التلقائي كل ثانيتين
-    function setupImageGallery(prod) {
+    // 6. معرض الصور والتبديل كل ثانيتين
+    function setupImageSlider(prod) {
       if (prod.images && Array.isArray(prod.images) && prod.images.length > 0) {
         activeImages = prod.images;
       } else if (prod.image) {
@@ -939,7 +986,7 @@
       }
 
       currentImgIndex = 0;
-      updateSliderView();
+      updateSliderUI();
 
       const dotsBox = document.getElementById('gallery-dots-box');
       if (dotsBox) {
@@ -948,17 +995,17 @@
         `).join('');
       }
 
-      startAutoSlider();
+      startAutoSlide();
 
       const wrapper = document.getElementById('product-slider-wrapper');
-      wrapper?.addEventListener('mouseenter', stopAutoSlider);
-      wrapper?.addEventListener('mouseleave', startAutoSlider);
+      wrapper?.addEventListener('mouseenter', stopAutoSlide);
+      wrapper?.addEventListener('mouseleave', startAutoSlide);
     }
 
-    function updateSliderView() {
+    function updateSliderUI() {
       const imgEl = document.getElementById('detail-img');
       if (imgEl && activeImages[currentImgIndex]) {
-        imgEl.style.opacity = '0.3';
+        imgEl.style.opacity = '0.35';
         setTimeout(() => {
           imgEl.src = activeImages[currentImgIndex];
           imgEl.style.opacity = '1';
@@ -971,83 +1018,85 @@
 
     function nextSlide() {
       currentImgIndex = (currentImgIndex + 1) % activeImages.length;
-      updateSliderView();
+      updateSliderUI();
     }
 
     function prevSlide() {
       currentImgIndex = (currentImgIndex - 1 + activeImages.length) % activeImages.length;
-      updateSliderView();
+      updateSliderUI();
     }
 
     window.goToSlide = function(index) {
       currentImgIndex = index;
-      updateSliderView();
-      stopAutoSlider();
-      startAutoSlider();
+      updateSliderUI();
+      restartAutoSlide();
     };
 
-    function startAutoSlider() {
-      stopAutoSlider();
+    function startAutoSlide() {
+      stopAutoSlide();
       sliderInterval = setInterval(nextSlide, 2000);
     }
 
-    function stopAutoSlider() {
+    function stopAutoSlide() {
       if (sliderInterval) clearInterval(sliderInterval);
+    }
+
+    function restartAutoSlide() {
+      stopAutoSlide();
+      startAutoSlide();
     }
 
     document.getElementById('slider-next-btn')?.addEventListener('click', () => {
       nextSlide();
-      stopAutoSlider();
-      startAutoSlider();
+      restartAutoSlide();
     });
 
     document.getElementById('slider-prev-btn')?.addEventListener('click', () => {
       prevSlide();
-      stopAutoSlider();
-      startAutoSlider();
+      restartAutoSlide();
     });
 
     // 7. المواصفات الفنية المرقمة
-    function renderSpecsList(specs) {
-      const container = document.getElementById('specs-table-body');
-      if (!container) return;
+    function renderSpecsTable(specs) {
+      const specsContainer = document.getElementById('specs-table-body');
+      if (!specsContainer) return;
 
       if (typeof specs === 'string' && specs.trim()) {
-        const items = specs.split('|');
-        container.innerHTML = items.map((item, idx) => `
+        const parts = specs.split('|');
+        specsContainer.innerHTML = parts.map((part, idx) => `
           <div class="spec-table-row">
             <span class="spec-table-label">خاصية ${idx + 1}</span>
-            <span class="spec-table-value">${item.trim()}</span>
+            <span class="spec-table-value">${part.trim()}</span>
           </div>
         `).join('');
       } else {
-        container.innerHTML = `
+        specsContainer.innerHTML = `
           <div class="spec-table-row">
             <span class="spec-table-label">الضمان والمصدر</span>
-            <span class="spec-table-value">إكسسوار أصلي معتمد مع حق المعاينة بالكامل قبل الدفع نقداً عند الاستلام.</span>
+            <span class="spec-table-value">إكسسوار أصلي معتمد مع حق المعاينة بالكامل قبل الدفع.</span>
           </div>
         `;
       }
     }
 
-    // 8. منتجات ذات صلة من الفايربيز
-    async function loadRelatedProducts(prod) {
+    // 8. منتجات ذات صلة من نفس القسم من Firestore
+    async function renderRelatedItems(activeItem) {
       const container = document.getElementById('related-products-container');
       if (!container) return;
 
       try {
-        const snap = await db.collection('products').where('category', '==', prod.category || 'chargers').limit(5).get();
-        const list = [];
+        const snap = await db.collection('products').where('category', '==', activeItem.category || 'chargers').limit(5).get();
+        const related = [];
         snap.forEach(d => {
-          if (d.id !== prod.id) list.push({ id: d.id, ...d.data() });
+          if (d.id !== activeItem.id) related.push({ id: d.id, ...d.data() });
         });
 
-        if (list.length === 0) {
-          container.innerHTML = `<p style="grid-column:1/-1; color:var(--text-muted); font-size:0.85rem;">لا توجد ملحقات أخرى في هذا القسم حالياً.</p>`;
+        if (related.length === 0) {
+          container.innerHTML = `<p style="color:var(--text-muted); font-size:0.88rem; grid-column: 1 / -1;">لا توجد ملحقات أخرى في هذا القسم حالياً.</p>`;
           return;
         }
 
-        container.innerHTML = list.slice(0, 4).map(item => `
+        container.innerHTML = related.slice(0, 4).map(item => `
           <article class="dream-product-card" onclick="window.location.href='product.html?id=${item.id}'" style="cursor: pointer; padding: 14px; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 8px;">
             <div class="card-image-pane" style="width: 100%; display: flex; justify-content: center; margin-bottom: 10px;">
               <img src="${(item.images && item.images[0]) || item.image || 'logo.png'}" alt="${item.title}" style="height: 140px; object-fit: contain;">
@@ -1062,17 +1111,17 @@
             </div>
           </article>
         `).join('');
-      } catch(e) {}
+      } catch (e) {}
     }
 
-    // 9. إدارة عداد الكمية وإضافة المنتج للسلة باللون المختار
+    // 9. عداد الكمية والإضافة للسلة
     const qtyInput = document.getElementById('detail-qty-val');
     document.getElementById('btn-qty-plus')?.addEventListener('click', () => {
       if (currentQty < chosenColorStock) {
         currentQty++;
         if (qtyInput) qtyInput.value = currentQty;
       } else {
-        alert(`أقصى كمية متوفرة من هذا اللون هي (${chosenColorStock}) قطع فقط!`);
+        alert(`أقصى كمية متوفرة من لون [${chosenColor}] هي (${chosenColorStock}) قطع فقط!`);
       }
     });
 
@@ -1083,49 +1132,6 @@
       }
     });
 
-    function addToCart() {
-      if (chosenColorStock <= 0 || currentProduct.inStock === false) {
-        alert("عذراً، هذا الملحق نفذت كميته تماماً!");
-        return;
-      }
-
-      let cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];
-      const itemKey = `${currentProduct.id}_${chosenColor}`;
-      const existing = cart.find(i => (i.cartKey || i.id) === itemKey);
-
-      if (existing) {
-        existing.quantity += currentQty;
-      } else {
-        cart.push({
-          id: currentProduct.id,
-          cartKey: itemKey,
-          name: `${currentProduct.title} - لون (${chosenColor})`,
-          price: Number(currentProduct.price),
-          image: (currentProduct.images && currentProduct.images[0]) || currentProduct.image || 'logo.png',
-          color: chosenColor,
-          quantity: currentQty
-        });
-      }
-
-      localStorage.setItem('abasco_raya_cart', JSON.stringify(cart));
-      localStorage.setItem('abassco_raya_cart', JSON.stringify(cart));
-      
-      const count = cart.reduce((acc, i) => acc + i.quantity, 0);
-      const cEl = document.getElementById('cart-counter');
-      if (cEl) cEl.textContent = count;
-      const mEl = document.getElementById('mob-cart-counter');
-      if (mEl) mEl.textContent = count;
-
-      alert(`✅ تمت إضافة (${currentQty}) قطعة بلون [${chosenColor}] إلى عربة التسوق بنجاح!`);
-    }
-
-    document.getElementById('btn-add-to-cart')?.addEventListener('click', addToCart);
-    document.getElementById('btn-buy-now-direct')?.addEventListener('click', () => {
-      addToCart();
-      window.location.href = 'checkout.html';
-    });
-
-    // مزامنة عداد السلة عند فتح الصفحة
     function syncCartCounter() {
       const cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];
       const count = cart.reduce((acc, i) => acc + (Number(i.quantity) || 1), 0);
@@ -1135,7 +1141,46 @@
       if (mobCartEl) mobCartEl.textContent = count;
     }
 
-    // دارك مود
+    function addProductToCart(quantity) {
+      if (chosenColorStock <= 0 || currentProduct.inStock === false) {
+        alert("عذراً، هذا الملحق نفذت كميته تماماً!");
+        return;
+      }
+
+      let cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];
+      const cartItemId = `${currentProduct.id}-${chosenColor}`;
+      const existing = cart.find(i => String(i.cartId || i.id) === String(cartItemId));
+
+      if (existing) {
+        existing.quantity = (Number(existing.quantity) || 1) + quantity;
+      } else {
+        cart.push({
+          id: currentProduct.id,
+          cartId: cartItemId,
+          name: `${currentProduct.title} - لون (${chosenColor})`,
+          price: Number(currentProduct.price),
+          image: (currentProduct.images && currentProduct.images[0]) || currentProduct.image || 'logo.png',
+          color: chosenColor,
+          quantity: quantity
+        });
+      }
+
+      localStorage.setItem('abasco_raya_cart', JSON.stringify(cart));
+      localStorage.setItem('abassco_raya_cart', JSON.stringify(cart));
+      syncCartCounter();
+      alert(`✅ تمت إضافة (${quantity}) قطعة بلون [${chosenColor}] إلى السلة بنجاح!`);
+    }
+
+    document.getElementById('btn-add-to-cart')?.addEventListener('click', () => {
+      addProductToCart(currentQty);
+    });
+
+    document.getElementById('btn-buy-now-direct')?.addEventListener('click', () => {
+      addProductToCart(currentQty);
+      window.location.href = 'checkout.html';
+    });
+
+    // دارك مود وزر المحادثة
     const darkCheckbox = document.getElementById('dark-mode-checkbox');
     if (localStorage.getItem('abasco_dark_mode') === 'enabled') {
       document.body.classList.add('dark-mode');
@@ -1151,7 +1196,6 @@
       }
     });
 
-    // زر الشات المتناوب
     const chatLink = document.getElementById('chat-link');
     const chatIcon = document.getElementById('chat-icon');
     let isWhatsApp = true;
@@ -1173,9 +1217,9 @@
       }, 250);
     }, 5000);
 
-    // تشغيل الجلب اللحظي
+    // بدء الاتصال اللحظي ومزامنة السلة
     document.addEventListener('DOMContentLoaded', () => {
-      listenToProductRealtime();
+      fetchLiveProductDetails();
       syncCartCounter();
     });
   </script>
