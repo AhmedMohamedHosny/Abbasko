@@ -23,8 +23,93 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 // مصفوفة المنتجات (ستُملأ تلقائياً من الفايربيز)
-let abascoInventory = [];
-
+// مصفوفة المنتجات مجهزة بـ 4 صور زوايا لكل ملحق
+let abascoInventory = [
+  {
+    id: '1',
+    title: 'أنكر زولو شاحن 30 واط، A2698L11 - أسود فائق السرعة',
+    brand: 'Anker',
+    category: 'chargers',
+    price: 729.00,
+    oldPrice: 859.00,
+    discount: '130.00',
+    rating: 5,
+    ratingCount: 19,
+    specs: 'النوع: شاحن طاقة | شحن سريع بقوة 30 واط | منفذ USB-C.',
+    image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80'
+    ],
+    stock: 15,
+    inStock: true
+  },
+  {
+    id: '2',
+    title: 'سامسونج EP-T2510 شاحن محول طاقة 25 واط يو اس بي-C',
+    brand: 'Samsung',
+    category: 'chargers',
+    price: 749.00,
+    oldPrice: 879.00,
+    discount: '130.00',
+    rating: 4,
+    ratingCount: 6,
+    specs: 'الطاقة: 25 واط | منفذ يو اس بي-C | اللون: أسود.',
+    image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80'
+    ],
+    stock: 10,
+    inStock: true
+  },
+  {
+    id: '3',
+    title: 'سامسونج شاحن منزلي بقوة 45 واط مع كابل من Type-C إلي Type-C بطول 1.8 متر',
+    brand: 'Samsung',
+    category: 'chargers',
+    price: 1999.00,
+    oldPrice: 2360.00,
+    discount: '361.00',
+    rating: 5,
+    ratingCount: 12,
+    specs: 'الماركة: سامسونج | شحن فائق السرعة 2.0 كحد أقصى 45 واط | كابل تايب سي 1.8 متر.',
+    image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80'
+    ],
+    stock: 20,
+    inStock: true
+  },
+  {
+    id: '4',
+    title: 'سامسونج 25 واط شاحن PD Type-C',
+    brand: 'Samsung',
+    category: 'chargers',
+    price: 449.00,
+    oldPrice: 529.00,
+    discount: '80.00',
+    rating: 4,
+    ratingCount: 8,
+    specs: 'النوع: Adapter | الطاقة: 25 Watt | شحن فائق السرعة للبقاء على قيد الحياة.',
+    image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+      'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80'
+    ],
+    stock: 8,
+    inStock: true
+  }
+];
 const state = {
   products: [...abascoInventory],
   cart: JSON.parse(localStorage.getItem('abasco_raya_cart')) || [],
@@ -142,12 +227,34 @@ function renderCatalog(items) {
             </div>
           </div>
 
-          <div class="card-image-pane">
+<div class="card-image-pane" onmouseleave="resetCardSlice('${product.id}')">
             ${product.discount ? `<span class="discount-ribbon-tag">وفر ${product.discount} جنيه</span>` : ''}
+            
+            <!-- زر العين الخضراء السريع بأعلى الكارت -->
+            <button class="quick-hover-eye" onclick="window.location.href='product.html?id=${product.id}'" title="معاينة المنتج">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+
             <div class="media-square-box">
               <a href="product.html?id=${product.id}">
-                <img src="${product.image || 'logo.png'}" alt="${product.title}" loading="lazy">
+                <img id="prod-img-${product.id}" src="${(product.images && product.images[0]) || product.image || 'logo.png'}" alt="${product.title}" loading="lazy">
               </a>
+              
+              <!-- 4 شرائح أفقية شفافة تتحسس حركة الماوس -->
+              <div class="hover-slices-overlay">
+                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 0)"></div>
+                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 1)"></div>
+                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 2)"></div>
+                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 3)"></div>
+              </div>
+            </div>
+
+            <!-- خط المؤشرات الأربعة أسفل الصورة -->
+            <div class="image-dash-indicators" id="dashes-${product.id}">
+              <span class="active"></span>
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
           </div>
         </div>
@@ -201,83 +308,135 @@ window.changePage = function(targetPage) {
 // ==========================================================================
 // محرك الفلترة الشامل والموحد بدون أي تعارض (Master Filter Engine)
 // ==========================================================================
+// ==========================================================================
+// تتبع وفلترة الـ 9 أقسام بالكامل بدون استثناء
+// ==========================================================================
 const activeFilters = {
-  brand: [], screen: [], mic: [], type: [], conn: [], power: [], battery: [], color: []
+  brand: [],
+  screen: [],
+  mic: [],
+  type: [],
+  conn: [],
+  power: [],
+  battery: [],
+  color: []
 };
 
-function executeFiltering() {
-  let result = [...abascoInventory];
+// دالة بناء وتوليد الـ 9 فلاتر وحساب أعدادها الحقيقية من المنتجات
+function buildDynamicFilters() {
+  const containers = {
+    brand: document.getElementById('dynamic-brands-list'),
+    screen: document.getElementById('dynamic-screen-list'),
+    mic: document.getElementById('dynamic-mic-list'),
+    type: document.getElementById('dynamic-types-list'),
+    conn: document.getElementById('dynamic-conn-list'),
+    power: document.getElementById('dynamic-power-list'),
+    battery: document.getElementById('dynamic-battery-list'),
+    color: document.getElementById('dynamic-color-list')
+  };
 
-  // 1. فلتر المخزون
-  const stockOnly = document.getElementById('stock-filter')?.checked;
-  if (stockOnly) {
-    result = result.filter(item => item.inStock === true || (Number(item.stock) > 0));
+  if (!containers.brand) return;
+
+  // قواميس لحساب الأعداد تلقائياً
+  const counts = {
+    brand: {},
+    screen: { 'حماية شاشة 9D': 0, 'اسكرينة خصوصية': 0, '1.75 inches': 0 },
+    mic: { 'Supported': 0, '2 Mics': 0, 'عزل ضوضاء ENC': 0 },
+    type: {},
+    conn: { 'Type-C': 0, 'Type-C To Type-C': 0, 'Lightning': 0, 'USB-A': 0, 'Bluetooth 5.3': 0 },
+    power: {},
+    battery: { '10,000 mAh': 0, '20,000 mAh': 0, 'Up to 10 Days': 0 },
+    color: { 'Black': 0, 'White': 0, 'Blue': 0, 'Gray': 0, 'Pink': 0, 'Gold': 0 }
+  };
+
+  abascoInventory.forEach(prod => {
+    const fullText = ((prod.title || '') + ' ' + (prod.specs || '') + ' ' + (prod.brand || '')).toUpperCase();
+
+    // 1. الماركة
+    if (prod.brand) {
+      const b = prod.brand.trim();
+      counts.brand[b] = (counts.brand[b] || 0) + 1;
+    }
+
+    // 2. النوع
+    const t = prod.category === 'chargers' ? 'شواحن ووصلات' :
+              prod.category === 'powerbanks' ? 'بنوك طاقة' :
+              prod.category === 'cases' ? 'كفرات وجرابات' :
+              prod.category === 'audio' ? 'سماعات وصوتيات' : 'إكسسوارات عامة';
+    counts.type[t] = (counts.type[t] || 0) + 1;
+
+    // 3. القدرة (Power)
+    const wattMatch = fullText.match(/(\d+\s?)(واط|WATT|W)/);
+    if (wattMatch) {
+      const watt = parseInt(wattMatch[1]) + 'W';
+      counts.power[watt] = (counts.power[watt] || 0) + 1;
+    }
+
+    // 4. الألوان
+    if (fullText.includes('BLACK') || fullText.includes('أسود')) counts.color['Black']++;
+    if (fullText.includes('WHITE') || fullText.includes('أبيض')) counts.color['White']++;
+    if (fullText.includes('BLUE') || fullText.includes('أزرق')) counts.color['Blue']++;
+    if (fullText.includes('GRAY') || fullText.includes('رمادي')) counts.color['Gray']++;
+    if (fullText.includes('PINK') || fullText.includes('وردي')) counts.color['Pink']++;
+    if (fullText.includes('GOLD') || fullText.includes('ذهبي')) counts.color['Gold']++;
+
+    // 5. البطارية (Battery)
+    if (fullText.includes('10000') || fullText.includes('10,000')) counts.battery['10,000 mAh']++;
+    if (fullText.includes('20000') || fullText.includes('20,000')) counts.battery['20,000 mAh']++;
+
+    // 6. التوصيل
+    if (fullText.includes('TYPE-C TO TYPE-C')) counts.conn['Type-C To Type-C']++;
+    else if (fullText.includes('TYPE-C') || fullText.includes('تايب سي')) counts.conn['Type-C']++;
+    if (fullText.includes('LIGHTNING') || fullText.includes('لايتنينج')) counts.conn['Lightning']++;
+    if (fullText.includes('USB')) counts.conn['USB-A']++;
+    if (fullText.includes('بلوتوث') || fullText.includes('BLUETOOTH')) counts.conn['Bluetooth 5.3']++;
+
+    // 7. الشاشة والميكروفون
+    if (fullText.includes('اسكرين') || fullText.includes('9D') || fullText.includes('شاشة')) counts.screen['حماية شاشة 9D']++;
+    if (fullText.includes('MIC') || fullText.includes('ميكروفون') || fullText.includes('عزل')) counts.mic['Supported']++;
+  });
+
+  // رسم خيارات كل قسم مع الحفاظ على ما هو محدد مسبقاً
+  for (const [key, container] of Object.entries(containers)) {
+    if (!container) continue;
+    const categoryCounts = counts[key];
+    const availableKeys = Object.keys(categoryCounts).filter(item => categoryCounts[item] > 0);
+
+    if (availableKeys.length > 0) {
+      container.innerHTML = availableKeys.map(val => `
+        <label class="custom-chk">
+          <span>${val} (${categoryCounts[val]})</span>
+          <input type="checkbox" class="filter-checkbox" data-type="${key}" value="${val}" ${activeFilters[key].includes(val) ? 'checked' : ''}>
+        </label>
+      `).join('');
+    } else {
+      container.innerHTML = `<p style="font-size:0.78rem; color:#9ca3af; padding:4px 0;">لا توجد خيارات مضافة</p>`;
+    }
   }
 
-  // 2. فلتر السعر الأقصى
-  result = result.filter(item => Number(item.price) <= state.maxPrice);
-
-  // 3. فلتر البحث
-  if (state.searchQuery.trim() !== '') {
-    const q = state.searchQuery.toLowerCase().trim();
-    result = result.filter(item =>
-      (item.title && item.title.toLowerCase().includes(q)) ||
-      (item.brand && item.brand.toLowerCase().includes(q)) ||
-      (item.specs && item.specs.toLowerCase().includes(q))
-    );
-  }
-
-  // 4. فلتر قسم الهيدر
-  if (state.selectedCategory !== 'all') {
-    result = result.filter(item => item.category === state.selectedCategory);
-  }
-
-  // 5. فلتر الماركات المختارة
-  if (activeFilters.brand.length > 0) {
-    result = result.filter(item => activeFilters.brand.includes(item.brand));
-  }
-
-  // 6. فلتر القدرة (Power)
-  if (activeFilters.power.length > 0) {
-    result = result.filter(item =>
-      activeFilters.power.some(pw => (item.specs && item.specs.includes(pw)) || (item.title && item.title.includes(pw)))
-    );
-  }
-
-  // 7. فلتر النوع (Type)
-  if (activeFilters.type.length > 0) {
-    result = result.filter(item =>
-      activeFilters.type.some(tp => (item.specs && item.specs.toLowerCase().includes(tp.toLowerCase())) || (item.title && item.title.toLowerCase().includes(tp.toLowerCase())))
-    );
-  }
-
-  // 8. الترتيب
-  if (state.currentSort === 'price-asc') {
-    result.sort((a, b) => Number(a.price) - Number(b.price));
-  } else if (state.currentSort === 'price-desc') {
-    result.sort((a, b) => Number(b.price) - Number(a.price));
-  }
-
-  renderCatalog(result);
+  attachFilterEvents();
 }
 
-// مستمعي أحداث الفلاتر
-document.querySelectorAll('.filter-checkbox').forEach(chk => {
-  chk.addEventListener('change', () => {
-    state.currentPage = 1;
-    const type = chk.getAttribute('data-type');
-    const val = chk.value;
-    if (chk.checked) {
-      if (!activeFilters[type].includes(val)) activeFilters[type].push(val);
-    } else {
-      activeFilters[type] = activeFilters[type].filter(v => v !== val);
-    }
-    const countEl = document.getElementById(`count-${type}`);
-    if (countEl) countEl.textContent = `تم تحديد ${activeFilters[type].length} عناصر`;
-    executeFiltering();
+// دالة تفعيل مربعات الاختيار في جميع الأقسام
+function attachFilterEvents() {
+  document.querySelectorAll('.filter-checkbox').forEach(chk => {
+    chk.addEventListener('change', () => {
+      state.currentPage = 1;
+      const type = chk.getAttribute('data-type');
+      const val = chk.value;
+      if (chk.checked) {
+        if (!activeFilters[type].includes(val)) activeFilters[type].push(val);
+      } else {
+        activeFilters[type] = activeFilters[type].filter(v => v !== val);
+      }
+      const countEl = document.getElementById(`count-${type}`);
+      if (countEl) countEl.textContent = `تم تحديد ${activeFilters[type].length} عناصر`;
+      executeFiltering();
+    });
   });
-});
+}
 
+// زر إعادة التعيين لأي قسم من الـ 9 أقسام
 window.resetFilterGroup = function(type) {
   state.currentPage = 1;
   if (type === 'price') {
@@ -294,6 +453,56 @@ window.resetFilterGroup = function(type) {
   }
   executeFiltering();
 };
+
+// محرك الفلترة الفوري الذي يراعي الـ 9 شروط معاً
+function executeFiltering() {
+  let result = [...abascoInventory];
+
+  // فلتر المخزون
+  if (document.getElementById('stock-filter')?.checked) {
+    result = result.filter(item => item.inStock === true || (Number(item.stock) > 0));
+  }
+
+  // فلتر السعر
+  result = result.filter(item => Number(item.price) <= state.maxPrice);
+
+  // فلتر البحث
+  if (state.searchQuery.trim() !== '') {
+    const q = state.searchQuery.toLowerCase().trim();
+    result = result.filter(item =>
+      (item.title && item.title.toLowerCase().includes(q)) ||
+      (item.brand && item.brand.toLowerCase().includes(q)) ||
+      (item.specs && item.specs.toLowerCase().includes(q))
+    );
+  }
+
+  // فلتر تصنيف الهيدر
+  if (state.selectedCategory !== 'all') {
+    result = result.filter(item => item.category === state.selectedCategory);
+  }
+
+  // تطبيق فلاتر الـ Checkboxes النشطة (الماركة، اللون، القدرة، البطارية...)
+  for (const [key, selectedVals] of Object.entries(activeFilters)) {
+    if (selectedVals.length > 0) {
+      result = result.filter(item => {
+        const itemText = ((item.title || '') + ' ' + (item.specs || '') + ' ' + (item.brand || '')).toUpperCase();
+        return selectedVals.some(val => {
+          if (key === 'brand') return item.brand === val;
+          return itemText.includes(val.toUpperCase());
+        });
+      });
+    }
+  }
+
+  // الترتيب
+  if (state.currentSort === 'price-asc') {
+    result.sort((a, b) => Number(a.price) - Number(b.price));
+  } else if (state.currentSort === 'price-desc') {
+    result.sort((a, b) => Number(b.price) - Number(a.price));
+  }
+
+  renderCatalog(result);
+}
 
 // فتح وغلق صناديق التصفية
 document.querySelectorAll('.filter-card-header').forEach(header => {
@@ -628,3 +837,35 @@ document.querySelector('.main-store-logo')?.addEventListener('click', (e) => {
     requestAdminAccess();
   }
 });
+// ==========================================================================
+// محرك تبديل الصور الأربعة بالماوس (Scrub on Hover)
+// ==========================================================================
+window.setCardSlice = function(productId, sliceIndex) {
+  const prod = abascoInventory.find(p => String(p.id) === String(productId));
+  if (!prod) return;
+
+  const imgEl = document.getElementById(`prod-img-${productId}`);
+  const dashesBox = document.getElementById(`dashes-${productId}`);
+
+  // تغيير مسار الصورة للربع المستهدف
+  if (imgEl && prod.images && prod.images[sliceIndex]) {
+    imgEl.src = prod.images[sliceIndex];
+  }
+
+  // تحريك الخط الأسود للربع النشط
+  if (dashesBox) {
+    const dashes = dashesBox.querySelectorAll('span');
+    dashes.forEach((d, idx) => {
+      if (idx === sliceIndex) {
+        d.classList.add('active');
+      } else {
+        d.classList.remove('active');
+      }
+    });
+  }
+};
+
+// إعادة الصورة للوضع الأصلي عند خروج الماوس من الكارت
+window.resetCardSlice = function(productId) {
+  window.setCardSlice(productId, 0);
+};
