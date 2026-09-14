@@ -1,56 +1,74 @@
 /* ==========================================================================
-   متجر عباسكو (Abasco) - النمط المطابق لموقع راية شوب (Raya Shop Exact Clone)
+   متجر عباسكو (Abasco) - النمط المطابق لموقع Dream 2000
    الملف: style.css
-   التصميم: واجهة بيضاء نقية، أزرق راية الملكي، أشرطة متحركة، وبطاقات مفرغة دقيقة
+   التصميم: هوية دريم الخضراء، بطاقات المنتجات المزدوجة، الدارك مود، والزر المتناوب
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. متغيرات الألوان والأنيميشن (Design System Tokens)
+   1. متغيرات الألوان والتصميم (Design System Tokens - Light & Dark)
    -------------------------------------------------------------------------- */
 :root {
-  /* درجات أزرق راية شوب الرسمية */
-  --raya-blue-top: #004b93;         /* أزرق الشريط العلوي العميق */
-  --raya-blue-primary: #0056b3;     /* أزرق الأزرار وعربات التسوق */
-  --raya-blue-hover: #003d80;
-  --raya-blue-light: #e8f0fe;       /* خلفية شارات التوثيق (منتج من عباسكو) */
-  --raya-footer-blue: #004494;      /* الأزرق الغني لتذييل الموقع */
+  /* درجات الأخضر الليموني الخاص بدريم 2000 */
+  --dream-green: #7cb342;
+  --dream-green-hover: #689f38;
+  --dream-green-light: #f1f8e9;
+  --dream-green-glow: rgba(124, 179, 66, 0.25);
 
-  /* ألوان التمييز والعروض */
-  --valu-orange-start: #ff7700;     /* برتقالي شريط فاليو وعروض التقسيط */
-  --valu-orange-end: #ff4800;
-  --discount-red: #d90429;          /* أحمر شارات الخصم */
-  --discount-bg: #fee2e2;
-  --badge-navy: #0b1a30;            /* كحلي شارات "الأكثر مبيعاً" */
-  --star-gold: #ffb800;             /* نجوم التقييم */
-  --lucky-green: #00875a;           /* زر "جرب حظك" الأخضر العائم */
-
-  /* الخلفيات والحدود البيضاء */
-  --bg-main: #ffffff;
-  --bg-canvas: #f8f9fa;             /* رمادي فاتح جداً يبرز الكروت البيضاء */
-  --border-card: #eaeded;
-  --border-subtle: #e2e8f0;
+  /* ألوان التمييز والإشارات */
+  --discount-red: #d32f2f;
+  --discount-bg: #ffebee;
+  --stock-blue: #1976d2;
+  --star-gold: #ffb300;
   
-  /* النصوص */
-  --text-dark: #0f1111;
-  --text-body: #334155;
-  --text-muted: #64748b;
-  --text-price-navy: #0b1a30;
+  /* ألوان أزرار المحادثة العائمة */
+  --whatsapp-color: #25d366;
+  --messenger-color: #0084ff;
 
-  /* الظلال */
+  /* النمط الفاتح (Light Mode Defaults) */
+  --bg-body: #f5f6f8;
+  --bg-surface: #ffffff;
+  --bg-elevated: #fafafa;
+  --border-color: #e5e7eb;
+  --border-light: #f0f2f5;
+
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --text-subtle: #9ca3af;
+  --text-inverse: #ffffff;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-card-hover: 0 12px 24px rgba(0, 75, 147, 0.09);
-  --shadow-btn: 0 4px 12px rgba(0, 86, 179, 0.35);
+  --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.08);
 
-  /* الأبعاد والزوايا */
   --radius-xs: 4px;
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 18px;
+  --radius-lg: 20px;
   --radius-pill: 50px;
+  
+  --transition-normal: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* نمط الوضع الليلي (Dark Mode Overrides) */
+body.dark-mode {
+  --bg-body: #121212;
+  --bg-surface: #1e1e1e;
+  --bg-elevated: #252525;
+  --border-color: #2e2e2e;
+  --border-light: #383838;
+
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --text-subtle: #6b7280;
+  --text-inverse: #121212;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 /* --------------------------------------------------------------------------
-   2. إعادة الضبط والخطوط (Reset & Typography)
+   2. إعادة الضبط والخطوط العامة (Reset & Typography)
    -------------------------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -64,17 +82,18 @@ html {
 
 body {
   font-family: 'Cairo', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-canvas);
-  color: var(--text-dark);
+  background-color: var(--bg-body);
+  color: var(--text-main);
   direction: rtl;
   line-height: 1.5;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a {
   text-decoration: none;
   color: inherit;
-  transition: all 0.25s ease;
+  transition: var(--transition-normal);
 }
 
 ul {
@@ -86,7 +105,7 @@ button {
   border: none;
   background: none;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: var(--transition-normal);
 }
 
 img {
@@ -96,646 +115,454 @@ img {
 
 .container {
   width: 94%;
-  max-width: 1440px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
 /* --------------------------------------------------------------------------
-   3. الشريط الأزرق العلوي المتحرك (Raya Top Blue Bar)
+   3. شريط الإعلانات المتحرك العلوي (Ticker Marquee)
    -------------------------------------------------------------------------- */
-.raya-top-nav-bar {
-  background-color: var(--raya-blue-top);
-  padding: 8px 0;
-  font-size: 0.85rem;
-
-}
-
-.raya-top-nav-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.top-categories-list {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-}
-
-.top-categories-list a {
-  color: #ffffff;
-  opacity: 0.92;
+.dream-top-ticker {
+  background-color: #1a1a1a;
+  color: #d1d5db;
+  font-size: 0.82rem;
   font-weight: 600;
-  padding: 3px 6px;
-  border-radius: var(--radius-xs);
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  padding: 8px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.top-categories-list a:hover {
-  opacity: 1;
-  background: rgba(255, 255, 255, 0.12);
+.ticker-track {
+  display: inline-flex;
+  gap: 20px;
+  animation: marqueeScroll 28s linear infinite;
 }
 
-.top-categories-list a.active-badge {
-  background-color: rgba(255, 255, 255, 0.2);
-  opacity: 1;
-  font-weight: 800;
+.ticker-track span {
+  display: inline-block;
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0%); }
 }
 
 /* --------------------------------------------------------------------------
-   4. رأس المتجر الرئيسي وشريط البحث التفاعلي (Main Header & Live Search)
+   4. رأس المتجر الرئيسي (Header & Search)
    -------------------------------------------------------------------------- */
-.raya-main-header {
-  background-color: var(--bg-main);
-  border-bottom: 1px solid var(--border-card);
+.dream-header {
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--shadow-sm);
+  transition: background-color 0.3s ease;
 }
 
-.raya-header-flex {
+.header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 12px 0;
+  padding: 14px 0;
 }
 
-/* شعار عباسكو بتصميم هوية راية */
-.raya-brand-logo {
+/* شعار محل عباسكو */
+.dream-brand {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.logo-symbol {
+.brand-badge-icon {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, var(--raya-blue-primary), var(--raya-blue-top));
+  background: linear-gradient(135deg, var(--dream-green), #558b2f);
   color: #fff;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
-  box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3);
-  animation: logoPulse 3s infinite ease-in-out;
+  font-size: 1.3rem;
+  box-shadow: 0 4px 12px var(--dream-green-glow);
 }
 
-.logo-text-group {
+.brand-titles {
   display: flex;
   flex-direction: column;
 }
 
-.arabic-logo {
-  font-size: 1.75rem;
+.brand-ar {
+  font-size: 1.6rem;
   font-weight: 900;
-  color: var(--raya-blue-top);
+  color: var(--text-main);
   line-height: 1;
-  letter-spacing: -0.5px;
 }
 
-.english-logo {
+.brand-en {
   font-size: 0.72rem;
   font-weight: 800;
-  color: var(--text-muted);
-  letter-spacing: 3px;
+  color: var(--dream-green);
+  letter-spacing: 2px;
 }
 
-/* محرك البحث المركزي الممتد ذو التأثير الضوئي اللحظي (Search Ticker Glow) */
-.raya-search-box {
+.brand-en small {
+  color: var(--text-muted);
+}
+
+/* محرك البحث المركزي بنمط دريم 2000 */
+.dream-search-bar {
   flex: 1;
   max-width: 680px;
   height: 44px;
-  border: 1.5px solid #d5d9d9;
+  border: 1.5px solid var(--border-color);
   border-radius: var(--radius-pill);
   display: flex;
   align-items: center;
-  padding: 2px 6px 2px 18px;
-  background-color: #fff;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+  background-color: var(--bg-surface);
   overflow: hidden;
+  transition: var(--transition-normal);
 }
 
-/* تأثير التوهج عند تفعيل البحث */
-.raya-search-box:focus-within {
-  border-color: var(--raya-blue-primary);
-  box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.12);
+.dream-search-bar:focus-within {
+  border-color: var(--dream-green);
+  box-shadow: 0 0 0 3px var(--dream-green-glow);
 }
 
-.raya-search-box input {
+.search-cat-picker {
+  background-color: var(--bg-elevated);
+  border-left: 1px solid var(--border-color);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.search-cat-picker select {
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-main);
+  outline: none;
+  cursor: pointer;
+}
+
+.dream-search-bar input {
   flex: 1;
   border: none;
-  outline: none;
-  font-size: 0.92rem;
+  padding: 0 16px;
   font-family: inherit;
-  color: var(--text-dark);
+  font-size: 0.9rem;
+  background: transparent;
+  color: var(--text-main);
+  outline: none;
 }
 
-.search-action-btn {
-  width: 36px;
-  height: 36px;
-  background-color: var(--star-gold);
-  color: #111;
-  border-radius: 50%;
+.search-submit-btn {
+  width: 42px;
+  height: 100%;
+  background-color: var(--dream-green);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.95rem;
-  box-shadow: 0 2px 6px rgba(255, 184, 0, 0.4);
+  font-size: 1rem;
 }
 
-.search-action-btn:hover {
-  background-color: #f3a847;
-  transform: scale(1.08);
+.search-submit-btn:hover {
+  background-color: var(--dream-green-hover);
 }
 
-/* الأزرار العلوية للحساب واللغة والسلة */
-.raya-header-actions {
+/* أدوات الهيدر (دارك مود وسلة) */
+.dream-header-tools {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
 }
 
-.lang-switch-btn, .user-account-btn {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--text-body);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-}
-
-.lang-switch-btn:hover, .user-account-btn:hover {
-  color: var(--raya-blue-primary);
-  background: var(--bg-canvas);
-}
-
-.header-divider {
+.header-v-divider {
   width: 1px;
-  height: 20px;
-  background-color: #cbd5e1;
+  height: 24px;
+  background-color: var(--border-color);
 }
 
-.cart-quick-btn {
+/* مفتاح الوضع الليلي (Dark Mode Switch) */
+.switch-ui {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+}
+
+.switch-ui input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider-switch {
+  position: absolute;
+  inset: 0;
+  background-color: #e5e7eb;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+}
+
+.slider-switch::before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  right: 3px;
+  bottom: 3px;
+  background-color: #ffffff;
+  transition: var(--transition-normal);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.switch-ui input:checked + .slider-switch {
+  background-color: var(--dream-green);
+}
+
+.switch-ui input:checked + .slider-switch::before {
+  transform: translateX(-24px);
+}
+
+.icon-sun {
+  color: #f59e0b;
+  font-size: 0.75rem;
+}
+
+.icon-moon {
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+/* زر السلة في الهيدر */
+.dream-cart-btn {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 12px;
-  border-radius: var(--radius-pill);
-  background-color: var(--raya-blue-light);
-  color: var(--raya-blue-primary);
-  font-weight: 800;
 }
 
-.cart-quick-btn:hover {
-  background-color: #dbeafe;
-  transform: translateY(-1px);
-}
-
-.cart-icon-wrap {
-  position: relative;
-  font-size: 1.25rem;
-}
-
-.cart-badge-count {
-  position: absolute;
-  top: -8px;
-  left: -10px;
-  background-color: var(--discount-red);
-  color: #fff;
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 1px 6px;
-  border-radius: var(--radius-pill);
-  animation: badgePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* --------------------------------------------------------------------------
-   5. شريط الخدمات الثلاثي الأنيق (Services Bar - صيانة، استلام، تقسيط)
-   -------------------------------------------------------------------------- */
-.quick-services-bar {
-  padding: 16px 0 10px;
-}
-
-.services-three-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.service-pill-card {
-  background-color: var(--bg-main);
-  border: 1px solid var(--border-card);
-  border-radius: var(--radius-pill);
-  padding: 12px 20px;
+.cart-icon-bubble {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: var(--text-price-navy);
-  box-shadow: var(--shadow-card);
-  transition: all 0.3s ease;
-}
-
-.service-pill-card i {
+  position: relative;
+  color: var(--text-main);
   font-size: 1.15rem;
-  color: var(--raya-blue-primary);
-  transition: transform 0.3s ease;
+  transition: var(--transition-normal);
 }
 
-.service-pill-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--raya-blue-primary);
-  box-shadow: var(--shadow-card-hover);
+.dream-cart-btn:hover .cart-icon-bubble {
+  border-color: var(--dream-green);
+  color: var(--dream-green);
+  transform: scale(1.05);
 }
 
-.service-pill-card:hover i {
-  transform: rotate(12deg) scale(1.15);
-}
-
-.highlighted-service {
-  border-color: #bbf7d0;
-  background: #f0fdf4;
-  color: #166534;
-}
-
-.highlighted-service i {
-  color: #16a34a;
-}
-
-/* --------------------------------------------------------------------------
-   6. شريط الفوائد والتقسيط البرتقالي المتحرك (Moving Valu Strip Ticker)
-   -------------------------------------------------------------------------- */
-.orange-valu-strip {
-  margin: 10px 0 20px;
-}
-
-.valu-strip-content {
-  background: linear-gradient(90deg, var(--valu-orange-start), var(--valu-orange-end), #ff8800, var(--valu-orange-start));
-  background-size: 300% 100%;
-  animation: valuGradientShift 8s infinite linear;
-  border-radius: var(--radius-md);
-  padding: 12px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.cart-qty-pill {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background-color: var(--dream-green);
   color: #ffffff;
-  box-shadow: 0 4px 15px rgba(255, 106, 0, 0.25);
-  position: relative;
-  overflow: hidden;
-}
-
-.valu-strip-content::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  animation: lightSweep 4s infinite ease-in-out;
-}
-
-.valu-brand {
-  display: flex;
-  align-items: baseline;
-  font-size: 2rem;
+  font-size: 0.7rem;
   font-weight: 900;
-  line-height: 1;
-}
-
-.valu-brand span {
-  font-size: 1.6rem;
-  color: #fff;
-}
-
-.promo-points-list {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.promo-box {
-  background: rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 4px 14px;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.promo-box strong {
-  font-size: 1.15rem;
-  font-weight: 900;
-}
-
-.promo-box span {
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.highlight-box {
-  background: #ffffff;
-  color: var(--valu-orange-end);
-  border-color: #fff;
-}
-
-.cash-guarantee-text {
-  font-size: 0.92rem;
-  font-weight: 800;
-}
-
-/* --------------------------------------------------------------------------
-   7. سلايدر البانر الترويجي الكبير (Hero Slider Banner)
-   -------------------------------------------------------------------------- */
-.main-slider-section {
-  margin-bottom: 24px;
-}
-
-.slider-container-relative {
-  position: relative;
-}
-
-.hero-banner-card {
-  background: #ffffff;
-  border: 1px solid var(--border-card);
-  border-radius: var(--radius-lg);
-  padding: 40px 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  box-shadow: var(--shadow-card);
-  min-height: 360px;
-}
-
-.banner-info-pane {
-  max-width: 600px;
-}
-
-.campaign-tag {
-  display: inline-block;
-  background: #fef3c7;
-  color: #92400e;
-  font-size: 0.8rem;
-  font-weight: 800;
-  padding: 4px 12px;
-  border-radius: var(--radius-pill);
-  margin-bottom: 14px;
-}
-
-.banner-info-pane h1 {
-  font-size: 2.3rem;
-  font-weight: 900;
-  color: var(--text-price-navy);
-  line-height: 1.3;
-  margin-bottom: 12px;
-}
-
-.banner-info-pane p {
-  color: var(--text-muted);
-  font-size: 1rem;
-  margin-bottom: 24px;
-}
-
-.btn-raya-shop-now {
-  background-color: var(--raya-blue-primary);
-  color: #fff;
-  font-size: 0.98rem;
-  font-weight: 800;
-  padding: 12px 28px;
-  border-radius: var(--radius-pill);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: var(--shadow-btn);
-  transition: all 0.3s;
-}
-
-.btn-raya-shop-now:hover {
-  background-color: var(--raya-blue-hover);
-  transform: translateY(-3px) scale(1.02);
-}
-
-.banner-image-pane {
-  flex-shrink: 0;
-  width: 440px;
-  height: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.banner-image-pane img {
-  max-height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.12));
-  transition: transform 0.5s ease;
-}
-
-.hero-banner-card:hover .banner-image-pane img {
-  transform: scale(1.06) rotate(-2deg);
-}
-
-/* الأسهم الدائرية للسلايدر على الجانبين (Raya Carousel Arrows) */
-.slider-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
-  background-color: #ffffff;
-  border: 1px solid var(--border-card);
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-  color: var(--text-price-navy);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-  z-index: 10;
-  cursor: pointer;
-  transition: all 0.25s;
-}
-
-.arrow-prev { right: -20px; }
-.arrow-next { left: -20px; }
-
-.slider-arrow:hover {
-  background-color: var(--raya-blue-primary);
-  color: #fff;
-  border-color: var(--raya-blue-primary);
-  transform: translateY(-50%) scale(1.12);
+  border: 2px solid var(--bg-surface);
 }
 
 /* --------------------------------------------------------------------------
-   8. شريط الفئات الدائري (Circular Categories Strip)
+   5. شريط الأقسام السريع (Sub-Navigation)
    -------------------------------------------------------------------------- */
-.circle-categories-section {
-  margin-bottom: 35px;
+.dream-subnav {
+  background-color: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-color);
+  padding: 6px 0;
 }
 
-.circle-categories-flex {
+.subnav-links-list {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+  gap: 8px;
   overflow-x: auto;
-  padding: 10px 4px;
+  white-space: nowrap;
 }
 
-.circle-categories-flex::-webkit-scrollbar {
+.subnav-links-list::-webkit-scrollbar {
   display: none;
 }
 
-.circle-cat-item {
-  display: flex;
-  flex-direction: column;
+.subnav-links-list a {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  width: 95px;
-  text-align: center;
-}
-
-.circle-img-wrap {
-  width: 82px;
-  height: 82px;
-  background-color: #ffffff;
-  border: 1px solid var(--border-card);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.circle-img-wrap img {
-  width: 70%;
-  height: 70%;
-  object-fit: contain;
-  transition: transform 0.3s ease;
-}
-
-.circle-cat-item:hover .circle-img-wrap {
-  border-color: var(--raya-blue-primary);
-  transform: translateY(-6px);
-  box-shadow: 0 8px 18px rgba(0, 86, 179, 0.18);
-}
-
-.circle-cat-item:hover .circle-img-wrap img {
-  transform: scale(1.15);
-}
-
-.circle-cat-item span {
-  font-size: 0.8rem;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.84rem;
   font-weight: 700;
-  color: var(--text-dark);
+  color: var(--text-muted);
+}
+
+.subnav-links-list a:hover,
+.subnav-links-list a.active {
+  background-color: var(--dream-green);
+  color: #ffffff;
+}
+
+.text-red-tag {
+  color: var(--discount-red) !important;
 }
 
 /* --------------------------------------------------------------------------
-   9. بطاقات المنتجات المطابقة لراية شوب بالمليمتر (Raya Product Cards)
+   6. تخطيط الكتالوج الرئيسي (Catalog Layout)
    -------------------------------------------------------------------------- */
-.raya-products-section {
-  margin-bottom: 50px;
+.dream-catalog-canvas {
+  padding: 24px 0 60px;
 }
 
-.section-title-center {
-  text-align: center;
-  margin-bottom: 28px;
+.catalog-heading-title {
+  margin-bottom: 20px;
 }
 
-.section-title-center h2 {
+.catalog-heading-title h1 {
   font-size: 1.85rem;
   font-weight: 900;
-  color: var(--text-price-navy);
+  color: var(--text-main);
 }
 
-.raya-grid-cards {
+.dream-main-layout {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 18px;
+  grid-template-columns: 1fr 280px; /* المنتجات يميناً والفلاتر يساراً (RTL) */
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* شريط التحكم والترتيب أعلى المنتجات */
+.catalog-top-bar {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.view-modes {
+  display: flex;
+  gap: 6px;
+}
+
+.view-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-btn.active, .view-btn:hover {
+  background-color: var(--dream-green);
+  color: #fff;
+  border-color: var(--dream-green);
+}
+
+.sort-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.sort-wrapper select {
+  padding: 6px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  background: var(--bg-elevated);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.items-count-display {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   7. كروت المنتجات المطابقة لدريم 2000 (Dream Product Cards)
+   -------------------------------------------------------------------------- */
+.dream-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
   margin-bottom: 30px;
 }
 
-/* بطاقة المنتج البيضاء النقية */
-.raya-product-card {
-  background-color: #ffffff;
-  border: 1px solid var(--border-card);
+.dream-product-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 16px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-shadow: var(--shadow-card);
+  transition: var(--transition-normal);
 }
 
-.raya-product-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: #cbd5e1;
+.dream-product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--dream-green);
 }
 
-/* الزاوية العلوية: شارة الأكثر مبيعاً والأيقونات السريعة */
-.card-header-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  min-height: 28px;
-  margin-bottom: 8px;
-}
-
-.badge-bestseller {
-  background-color: var(--badge-navy);
+/* شارة التوفير الحمراء بالأعلى "وفر X جنيه" */
+.discount-ribbon-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: var(--discount-red);
   color: #ffffff;
   font-size: 0.72rem;
   font-weight: 800;
-  padding: 3px 10px;
+  padding: 2px 8px;
   border-radius: var(--radius-xs);
+  z-index: 2;
 }
 
-.quick-icons {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.action-icon-circle {
-  width: 30px;
-  height: 30px;
-  background-color: #f8f9fa;
-  border: 1px solid #edf2f7;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  color: #64748b;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.action-icon-circle:hover {
-  background-color: var(--discount-red);
-  color: #fff;
-  border-color: var(--discount-red);
-}
-
-/* صندوق الصورة المفرغة النقية مع زر السلة العائم */
-.product-image-container {
+/* صندوق الصورة المفرغة وزر المعاينة الأخضر الدائري */
+.card-media-box {
   width: 100%;
   height: 180px;
   display: flex;
@@ -743,1045 +570,660 @@ img {
   justify-content: center;
   position: relative;
   margin-bottom: 12px;
-  background-color: #ffffff;
-}
-
-.product-image-container img {
-  max-width: 86%;
-  max-height: 86%;
-  object-fit: contain;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.raya-product-card:hover .product-image-container img {
-  transform: scale(1.08);
-}
-
-/* زر السلة الأزرق الدائري المميز العائم أسفل يسار الصورة */
-.raya-blue-cart-btn {
-  position: absolute;
-  bottom: 4px;
-  left: 4px;
-  width: 38px;
-  height: 38px;
-  background-color: var(--raya-blue-primary);
-  color: #ffffff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
-  box-shadow: var(--shadow-btn);
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  cursor: pointer;
-}
-
-.raya-blue-cart-btn:hover {
-  background-color: var(--raya-blue-hover);
-  transform: scale(1.18) rotate(-6deg);
-}
-
-.raya-blue-cart-btn:active {
-  transform: scale(0.92);
-}
-
-/* بيانات المنتج والأسعار وشارات راية */
-.product-data {
-  display: flex;
-  flex-direction: column;
-}
-
-.rating-line {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.78rem;
-  margin-bottom: 6px;
-}
-
-.rating-line i {
-  color: var(--star-gold);
-}
-
-.rating-line span {
-  color: var(--text-muted);
-}
-
-.product-name {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--text-dark);
-  line-height: 1.4;
-  height: 40px;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  margin-bottom: 10px;
-}
-
-.product-name:hover {
-  color: var(--raya-blue-primary);
-}
-
-.price-discount-line {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.sale-price {
-  font-size: 1.25rem;
-  font-weight: 900;
-  color: var(--text-price-navy);
-}
-
-.discount-pill {
-  background-color: var(--discount-bg);
-  color: var(--discount-red);
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 2px 6px;
-  border-radius: var(--radius-xs);
-}
-
-.regular-price {
-  font-size: 0.8rem;
-  color: #94a3b8;
-  text-decoration: line-through;
-  display: block;
-  margin-bottom: 8px;
-}
-
-/* شارة التوثيق (منتج معتمد من عباسكو) مثل Fulfilled by Raya */
-.fulfilled-badge {
-  background-color: var(--raya-blue-light);
-  color: var(--raya-blue-primary);
-  font-size: 0.74rem;
-  font-weight: 800;
-  padding: 3px 8px;
-  border-radius: var(--radius-xs);
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 10px;
-  width: fit-content;
-}
-
-/* سطر حساب القسط الشهري */
-.installment-line {
-  border-top: 1px dashed var(--border-card);
-  padding-top: 8px;
-  font-size: 0.78rem;
-  color: var(--text-body);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.installment-line strong {
-  color: var(--text-price-navy);
-}
-
-/* زر الاستكشاف البيضاوي الأزرق الكبير (Raya Oval Pill Button) */
-.center-btn-wrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.btn-explore-blue-pill {
-  background-color: #ffffff;
-  border: 1.5px solid var(--raya-blue-primary);
-  color: var(--raya-blue-primary);
-  border-radius: var(--radius-pill);
-  padding: 10px 28px;
-  font-size: 0.95rem;
-  font-weight: 800;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: 0 4px 12px rgba(0, 86, 179, 0.08);
-  transition: all 0.3s ease;
-}
-
-.pill-arrow-icon {
-  width: 30px;
-  height: 30px;
-  background-color: var(--raya-blue-primary);
-  color: #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  transition: transform 0.3s ease;
-}
-
-.btn-explore-blue-pill:hover {
-  background-color: var(--raya-blue-primary);
-  color: #fff;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-btn);
-}
-
-.btn-explore-blue-pill:hover .pill-arrow-icon {
-  background-color: #fff;
-  color: var(--raya-blue-primary);
-  transform: rotate(-45deg);
-}
-
-/* --------------------------------------------------------------------------
-   10. شريط البنوك وشركاء التقسيط المتحرك (Infinite Moving Partners Bar)
-   -------------------------------------------------------------------------- */
-.financing-partners-banner {
-  margin-bottom: 50px;
-}
-
-.financing-flex-box {
-  background-color: #ffffff;
-  border: 1px solid var(--border-card);
-  border-radius: var(--radius-lg);
-  padding: 30px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
-}
-
-.partners-logos-list {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  animation: partnersFloat 6s ease-in-out infinite alternate;
-}
-
-.bank-pill {
-  background-color: var(--bg-canvas);
-  border: 1px solid var(--border-subtle);
-  padding: 8px 18px;
+  background-color: #ffffff; /* تظل بيضاء لعزل الملحق */
   border-radius: var(--radius-sm);
-  font-size: 0.92rem;
-  font-weight: 800;
-  color: var(--text-price-navy);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  padding: 10px;
 }
 
-.financing-text-cta h3 {
-  font-size: 1.45rem;
-  font-weight: 900;
-  color: var(--text-price-navy);
-  margin-bottom: 6px;
-}
-
-.financing-text-cta p {
-  color: var(--text-muted);
-  font-size: 0.88rem;
-  margin-bottom: 14px;
-}
-
-.btn-learn-more-blue {
-  background-color: var(--raya-blue-primary);
-  color: #fff;
-  padding: 8px 20px;
-  border-radius: var(--radius-pill);
-  font-size: 0.85rem;
-  font-weight: 800;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.btn-learn-more-blue:hover {
-  background-color: var(--raya-blue-hover);
-}
-
-/* --------------------------------------------------------------------------
-   11. البطاقات الملونة الست (Color Theme Story Cards)
-   -------------------------------------------------------------------------- */
-.color-theme-cards-section {
-  margin-bottom: 50px;
-}
-
-.theme-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 14px;
-}
-
-.theme-card {
-  height: 140px;
-  border-radius: var(--radius-md);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  color: #ffffff;
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  cursor: pointer;
-}
-
-.theme-card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15);
-}
-
-.theme-card h4 {
-  font-size: 0.92rem;
-  font-weight: 900;
-  line-height: 1.3;
-  z-index: 2;
-}
-
-.theme-card-icon {
-  font-size: 3rem;
-  position: absolute;
-  bottom: -6px;
-  left: -4px;
-  opacity: 0.25;
-  transition: transform 0.3s ease;
-}
-
-.theme-card:hover .theme-card-icon {
-  transform: scale(1.2) rotate(8deg);
-  opacity: 0.4;
-}
-
-.tc-1 { background: linear-gradient(135deg, #0284c7, #0369a1); }
-.tc-2 { background: linear-gradient(135deg, #e11d48, #be123c); }
-.tc-3 { background: linear-gradient(135deg, #059669, #047857); }
-.tc-4 { background: linear-gradient(135deg, #d97706, #b45309); }
-.tc-5 { background: linear-gradient(135deg, #ea580c, #c2410c); }
-.tc-6 { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
-
-/* --------------------------------------------------------------------------
-   12. البطاقات الزرقاء المقوسة "متاح الآن في عباسكو" (Curved Arched Cards)
-   -------------------------------------------------------------------------- */
-.available-now-section {
-  margin-bottom: 50px;
-}
-
-.curved-blue-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-}
-
-.curved-card {
-  background-color: #ffffff;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-card);
-  overflow: hidden;
-  box-shadow: var(--shadow-card);
-  transition: all 0.3s ease;
-}
-
-.curved-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: var(--raya-blue-primary);
-}
-
-.curved-top-label {
-  background-color: var(--raya-blue-primary);
-  color: #ffffff;
-  font-size: 0.85rem;
-  font-weight: 800;
-  text-align: center;
-  padding: 12px 10px;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-
-.curved-card-body {
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px;
-}
-
-.curved-card-body img {
+.card-media-box img {
   max-width: 85%;
   max-height: 85%;
   object-fit: contain;
   transition: transform 0.35s ease;
 }
 
-.curved-card:hover .curved-card-body img {
-  transform: scale(1.12);
+.dream-product-card:hover .card-media-box img {
+  transform: scale(1.08);
 }
 
-/* --------------------------------------------------------------------------
-   13. تبويبات أفضل العروض (Deals Filter Pills)
-   -------------------------------------------------------------------------- */
-.best-deals-tabs-section {
-  margin-bottom: 60px;
-}
-
-.deals-tabs-bar {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.deal-tab-btn {
-  background-color: #ffffff;
-  border: 1px solid var(--border-card);
-  padding: 8px 22px;
-  border-radius: var(--radius-pill);
-  font-size: 0.88rem;
-  font-weight: 800;
-  color: var(--text-body);
-  box-shadow: var(--shadow-card);
-  cursor: pointer;
-  transition: all 0.25s;
-}
-
-.deal-tab-btn.active, .deal-tab-btn:hover {
-  background-color: var(--raya-blue-primary);
+/* زر العين الخضراء السريع (Quick View Eye Button) */
+.quick-view-eye-btn {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: var(--dream-green);
   color: #ffffff;
-  border-color: var(--raya-blue-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 86, 179, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 6px var(--dream-green-glow);
+  cursor: pointer;
+  transition: var(--transition-normal);
 }
 
-/* --------------------------------------------------------------------------
-   14. درج سلة المشتريات الجانبي (Side Flyout Cart)
-   -------------------------------------------------------------------------- */
-.cart-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(2px);
-  z-index: 1500;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
+.quick-view-eye-btn:hover {
+  background-color: var(--dream-green-hover);
+  transform: scale(1.15);
 }
 
-.cart-backdrop.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.cart-side-drawer {
-  position: fixed;
-  top: 0;
-  left: -420px;
-  width: 100%;
-  max-width: 400px;
-  height: 100vh;
-  background-color: #ffffff;
-  z-index: 1600;
-  box-shadow: -8px 0 25px rgba(0, 0, 0, 0.15);
+/* بيانات المنتج والأسعار */
+.card-meta-box {
   display: flex;
   flex-direction: column;
-  transition: left 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cart-side-drawer.active {
-  left: 0;
+.brand-label-text {
+  font-size: 0.74rem;
+  color: var(--text-subtle);
+  font-weight: 700;
+  margin-bottom: 4px;
 }
 
-.drawer-header {
-  padding: 18px 22px;
-  background-color: var(--raya-blue-top);
-  color: #ffffff;
+.product-item-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.4;
+  height: 38px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-bottom: 6px;
+}
+
+.product-item-title:hover {
+  color: var(--dream-green);
+}
+
+.card-stars-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 3px;
+  font-size: 0.72rem;
+  color: var(--star-gold);
+  margin-bottom: 8px;
 }
 
-.drawer-header h3 {
-  font-size: 1.1rem;
+.card-stars-row span {
+  color: var(--text-subtle);
+  font-size: 0.7rem;
+  margin-right: 4px;
+}
+
+/* صياغة الأسعار بنمط دريم 2000 (LE 449.00) */
+.price-block-dream {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.price-val-red {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--discount-red);
+}
+
+.price-struck-gray {
+  font-size: 0.78rem;
+  color: var(--text-subtle);
+  text-decoration: line-through;
+}
+
+/* مؤشر "في المخزن" مع النقطة الزرقاء */
+.stock-dot-indicator {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.close-drawer-btn {
-  color: #ffffff;
-  font-size: 1.3rem;
-  cursor: pointer;
-}
-
-.drawer-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-.empty-cart-state {
-  text-align: center;
-  padding: 60px 10px;
+  gap: 6px;
+  font-size: 0.76rem;
   color: var(--text-muted);
-}
-
-.empty-cart-state i {
-  font-size: 3.5rem;
-  color: #cbd5e1;
   margin-bottom: 12px;
 }
 
-.drawer-footer {
-  padding: 20px;
-  background-color: #f8fafc;
-  border-top: 1px solid var(--border-card);
+.blue-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--stock-blue);
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
 }
 
-.footer-total-line {
+/* صف الشراء السفلي: زر Choose option الأخضر + العداد (+ 1 -) */
+.card-bottom-action-row {
   display: flex;
-  justify-content: space-between;
-  font-size: 1.15rem;
-  font-weight: 900;
-  margin-bottom: 14px;
+  align-items: center;
+  gap: 6px;
 }
 
-.btn-checkout-whatsapp {
-  width: 100%;
-  background-color: #25d366;
+.btn-dream-choose {
+  flex: 1;
+  background-color: var(--dream-green);
   color: #ffffff;
-  padding: 13px;
-  border-radius: var(--radius-pill);
-  font-size: 0.95rem;
+  padding: 8px 10px;
+  border-radius: var(--radius-xs);
+  font-size: 0.8rem;
   font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px var(--dream-green-glow);
+  transition: var(--transition-normal);
+}
+
+.btn-dream-choose:hover {
+  background-color: var(--dream-green-hover);
+}
+
+.item-mini-stepper {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xs);
+  background-color: var(--bg-elevated);
+}
+
+.mini-step-btn {
+  width: 24px;
+  height: 30px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.mini-step-btn:hover {
+  background-color: var(--border-color);
+  color: var(--text-main);
+}
+
+.mini-step-val {
+  width: 24px;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+/* --------------------------------------------------------------------------
+   8. الشريط الجانبي للفلاتر (Sidebar Accordion Filters)
+   -------------------------------------------------------------------------- */
+.dream-filters-sidebar {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.filters-sidebar-header {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 14px;
+}
+
+.filters-sidebar-header h3 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);
+}
+
+.in-stock-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.switch-ui.mini {
+  width: 42px;
+  height: 22px;
+}
+
+.switch-ui.mini .slider-switch::before {
+  height: 16px;
+  width: 16px;
+}
+
+.switch-ui.mini input:checked + .slider-switch::before {
+  transform: translateX(-20px);
+}
+
+/* كتل الأكورديون القابلة للفتح والطي */
+.accordion-filter-block {
+  border-bottom: 1px solid var(--border-light);
+  padding: 12px 0;
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.accordion-header i {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: transform 0.25s ease;
+}
+
+.accordion-filter-block.open .accordion-header i {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  display: none;
+  padding-top: 10px;
+}
+
+.accordion-filter-block.open .accordion-body {
+  display: block;
+}
+
+.custom-chk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
   cursor: pointer;
 }
 
-.btn-checkout-whatsapp:hover {
+.custom-chk input {
+  accent-color: var(--dream-green);
+  width: 16px;
+  height: 16px;
+}
+
+/* شريط السعر المنزلق */
+.price-slider-box input[type="range"] {
+  width: 100%;
+  accent-color: var(--dream-green);
+  margin-bottom: 8px;
+}
+
+.price-limits {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   9. أرقام الصفحات (Pagination)
+   -------------------------------------------------------------------------- */
+.dream-pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 30px;
+}
+
+.page-num, .page-arrow {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  font-size: 0.88rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-num.active, .page-num:hover, .page-arrow:hover:not(:disabled) {
+  background-color: var(--dream-green);
+  color: #ffffff;
+  border-color: var(--dream-green);
+}
+
+.page-arrow:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-dots {
+  color: var(--text-muted);
+  padding: 0 4px;
+}
+
+/* --------------------------------------------------------------------------
+   10. تذييل محل عباسكو البسيط (Footer)
+   -------------------------------------------------------------------------- */
+.dream-footer {
+  background-color: #1a1a1a;
+  color: #d1d5db;
+  padding: 45px 0 20px;
+  margin-top: 40px;
+  border-top: 3px solid var(--dream-green);
+}
+
+.footer-content-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: 35px;
+  margin-bottom: 30px;
+}
+
+.footer-brand-title {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.footer-shop-about p {
+  font-size: 0.86rem;
+  color: #9ca3af;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.store-hours {
+  color: var(--dream-green) !important;
+  font-weight: 700;
+}
+
+.footer-links-group h4, .footer-contact-box h4 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 14px;
+}
+
+.footer-links-group ul li {
+  margin-bottom: 8px;
+}
+
+.footer-links-group ul li a {
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+.footer-links-group ul li a:hover {
+  color: var(--dream-green);
+  padding-right: 4px;
+}
+
+.footer-contact-box p {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-bottom: 14px;
+}
+
+.hotline-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--whatsapp-color);
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 900;
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.hotline-pill:hover {
   background-color: #1ebc57;
   transform: translateY(-2px);
 }
 
-.btn-empty-cart {
-  width: 100%;
-  text-align: center;
+.footer-bottom-copyright {
+  border-top: 1px solid #2d2d2d;
+  padding-top: 20px;
   font-size: 0.8rem;
-  color: var(--discount-red);
-  margin-top: 10px;
-  cursor: pointer;
+  color: #6b7280;
+}
+
+.copyright-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payment-method-text {
+  color: #d1d5db;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* --------------------------------------------------------------------------
-   15. تذييل الموقع الأزرق الفاخر (Raya Official Blue Footer)
+   11. زر المحادثة العائم المتناوب (WhatsApp & Messenger Rotating Button)
    -------------------------------------------------------------------------- */
-.raya-blue-footer {
-  background-color: var(--raya-footer-blue);
-  color: #ffffff;
-  padding: 50px 0 25px;
+.alternating-chat-widget {
+  position: fixed;
+  bottom: 30px;
+  left: 25px;
+  z-index: 9999;
 }
 
-.footer-four-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1.6fr;
-  gap: 30px;
-}
-
-.footer-col h4 {
-  font-size: 1.05rem;
-  font-weight: 900;
-  margin-bottom: 18px;
-  color: #ffffff;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 8px;
-  display: inline-block;
-}
-
-.footer-col ul li {
-  margin-bottom: 10px;
-}
-
-.footer-col ul li a {
-  color: #e2e8f0;
-  font-size: 0.85rem;
-}
-
-.footer-col ul li a:hover {
-  color: var(--star-gold);
-  padding-right: 4px;
-}
-
-.newsletter-col p {
-  font-size: 0.85rem;
-  color: #cbd5e1;
-  margin-bottom: 14px;
-  line-height: 1.6;
-}
-
-.newsletter-form {
-  display: flex;
-  background-color: #ffffff;
-  border-radius: var(--radius-pill);
-  padding: 3px;
-  overflow: hidden;
-  margin-bottom: 18px;
-}
-
-.newsletter-form input {
-  flex: 1;
-  border: none;
-  padding: 8px 16px;
-  font-family: inherit;
-  font-size: 0.85rem;
-  outline: none;
-}
-
-.newsletter-form button {
-  background-color: var(--raya-blue-primary);
-  color: #ffffff;
-  width: 40px;
-  height: 36px;
-  border-radius: var(--radius-pill);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer-social-icons {
-  display: flex;
-  gap: 10px;
-}
-
-.footer-social-icons a {
-  width: 36px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.12);
+.chat-circle-link {
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  font-size: 0.95rem;
-}
-
-.footer-social-icons a:hover {
-  background-color: #ffffff;
-  color: var(--raya-blue-primary);
-  transform: translateY(-3px);
-}
-
-.footer-separator {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  margin: 35px 0 20px;
-}
-
-.footer-bottom-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.82rem;
-  color: #cbd5e1;
-}
-
-.payment-methods-strip {
-  display: flex;
-  gap: 14px;
-}
-
-.payment-methods-strip span {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 4px 10px;
-  border-radius: var(--radius-xs);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* --------------------------------------------------------------------------
-   16. الزر العائم "جرب حظك" (Floating Lucky Wheel Widget)
-   -------------------------------------------------------------------------- */
-.lucky-wheel-widget {
-  position: fixed;
-  bottom: 25px;
-  left: 25px;
-  background-color: var(--lucky-green);
+  font-size: 1.7rem;
   color: #ffffff;
-  padding: 10px 20px;
-  border-radius: var(--radius-pill);
-  font-size: 0.88rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 8px 22px rgba(0, 135, 90, 0.35);
-  z-index: 1200;
-  cursor: pointer;
-  animation: floatWidget 4s ease-in-out infinite;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.lucky-wheel-widget i {
+/* وضع الواتساب */
+.chat-circle-link.whatsapp-mode {
+  background-color: var(--whatsapp-color);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4);
+}
+
+/* وضع الماسنجر */
+.chat-circle-link.messenger-mode {
+  background-color: var(--messenger-color);
+  box-shadow: 0 6px 18px rgba(0, 132, 255, 0.4);
+}
+
+.chat-circle-link:hover {
+  transform: scale(1.12);
+}
+
+/* أنيميشن دوران الأيقونة عند التبديل */
+.chat-icon.rotate-anim {
+  animation: iconFlip 0.5s ease-in-out;
+}
+
+@keyframes iconFlip {
+  0% { transform: scale(0.6) rotate(0deg); opacity: 0; }
+  100% { transform: scale(1) rotate(360deg); opacity: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   12. شريط التنقل السفلي للهواتف الذكية (Mobile Bottom Nav Bar)
+   -------------------------------------------------------------------------- */
+.mobile-bottom-nav {
+  display: none; /* يظهر في شاشات الموبايل فقط */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-surface);
+  border-top: 1px solid var(--border-color);
+  padding: 8px 0 6px;
+  z-index: 9000;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.mob-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+.mob-nav-item i {
   font-size: 1.15rem;
-  animation: spinSlow 8s linear infinite;
 }
 
-/* --------------------------------------------------------------------------
-   17. الحركات والأنيميشن الاحترافي (Keyframe Animations)
-   -------------------------------------------------------------------------- */
-@keyframes valuGradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.mob-nav-item.active {
+  color: var(--dream-green);
 }
 
-@keyframes lightSweep {
-  0% { left: -100%; }
-  50%, 100% { left: 200%; }
-}
-
-@keyframes logoPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-@keyframes partnersFloat {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-4px); }
-}
-
-@keyframes floatWidget {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes spinSlow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes badgePop {
-  0% { transform: scale(0); }
-  80% { transform: scale(1.3); }
-  100% { transform: scale(1); }
-}
-
-/* --------------------------------------------------------------------------
-   18. التجاوب الكامل مع الهواتف الذكية (Responsive Media Queries)
-   -------------------------------------------------------------------------- */
-@media (max-width: 1200px) {
-  .theme-cards-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .curved-blue-cards-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 900px) {
-  .hero-banner-card {
-    flex-direction: column;
-    text-align: center;
-    padding: 30px 20px;
-  }
-  .banner-image-pane {
-    width: 100%;
-    height: 220px;
-  }
-  .services-three-grid {
-    grid-template-columns: 1fr;
-  }
-  .valu-strip-content {
-    flex-direction: column;
-    gap: 14px;
-    text-align: center;
-  }
-  .promo-points-list {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .financing-flex-box {
-    flex-direction: column;
-    text-align: center;
-  }
-  .footer-four-columns {
-    grid-template-columns: 1fr;
-  }
-  .footer-bottom-row {
-    flex-direction: column;
-    gap: 14px;
-  }
-}
-
-@media (max-width: 600px) {
-  .raya-header-flex {
-    flex-wrap: wrap;
-  }
-  .raya-search-box {
-    order: 3;
-    max-width: 100%;
-  }
-  .theme-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .curved-blue-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* ==========================================================================
-   تنسيق الميجا منيو المطابق لراية شوب (Raya Mega Menu Clone)
-   ========================================================================== */
-
-/* تثبيت الحاوية الأم للشريط العلوي */
-.nav-top-container-relative {
-  position: relative !important;
-}
-
-.top-categories-list {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+.mob-cart-badge-wrap {
   position: relative;
 }
 
-/* عنصر القائمة الرئيسي */
-.has-mega-menu {
-  position: static !important; /* يسمح للميجا منيو بالتمدد على كامل عرض الحاوية */
-}
-
-.nav-item-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  color: #ffffff;
-  font-size: 0.88rem;
-  font-weight: 700;
-  border-radius: 6px;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.nav-item-link:hover,
-.has-mega-menu:hover .nav-item-link {
-  background-color: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-}
-
-.nav-arrow-icon {
-  font-size: 0.65rem;
-  transition: transform 0.3s ease;
-}
-
-.has-mega-menu:hover .nav-arrow-icon {
-  transform: rotate(180deg);
-}
-
-/* --------------------------------------------------------------------------
-   صندوق القائمة المنسدلة العملاقة (Mega Dropdown Canvas)
-   -------------------------------------------------------------------------- */
-.mega-menu-dropdown {
+.mob-badge {
   position: absolute;
-  top: 100%;
-  right: 0;
-  left: 0;
-  width: 100%;
-  background-color: #ffffff;
-  border-radius: 0 0 24px 24px; /* انحناء دائري سفلي ناعم مطابق لراية */
-  box-shadow: 0 25px 50px rgba(0, 30, 80, 0.18);
-  border: 1px solid #eaeded;
-  border-top: none;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(12px);
-  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              visibility 0.25s;
-  z-index: 10000;
-}
-
-/* ظهور الميجا منيو عند وقوف الماوس على القسم */
-.has-mega-menu:hover .mega-menu-dropdown {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-/* محتوى الميجا الداخلي */
-.mega-menu-inner {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  padding: 28px 32px;
-  gap: 36px;
+  top: -6px;
+  right: -8px;
+  background-color: var(--dream-green);
+  color: #fff;
+  font-size: 0.65rem;
+  padding: 1px 5px;
+  border-radius: var(--radius-pill);
 }
 
 /* --------------------------------------------------------------------------
-   أقصى اليسار: كرت المنتج ثلاثي الأبعاد مع البادج الأزرق السفلي
+   13. نافذة المعاينة السريعة (Quick View Modal)
    -------------------------------------------------------------------------- */
-.mega-left-promo-card {
-  width: 250px;
-  min-width: 250px;
-  background: #f8fafc;
-  border-radius: 18px;
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-  order: 2; /* وضع الكرت في أقصى اليسار ضمن نظام الـ RTL */
-}
-
-.promo-image-holder {
-  flex: 1;
-  height: 190px;
+.quick-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(3px);
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  background: #ffffff;
-}
-
-.promo-image-holder img {
-  max-width: 90%;
-  max-height: 90%;
-  object-fit: contain;
-  transition: transform 0.4s ease;
-}
-
-.mega-left-promo-card:hover .promo-image-holder img {
-  transform: scale(1.08);
-}
-
-/* العنوان الأزرق الملتف أسفل الكرت (مطابق لراية تماماً) */
-.promo-bottom-title {
-  background: linear-gradient(135deg, #0056b3, #004b93);
-  color: #ffffff;
-  text-align: center;
-  padding: 12px 10px;
-  font-size: 0.95rem;
-  font-weight: 800;
-  letter-spacing: -0.3px;
-}
-
-/* --------------------------------------------------------------------------
-   اليمين والوسط: أعمدة التصنيفات والماركات
-   -------------------------------------------------------------------------- */
-.mega-right-content-grid {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  order: 1; /* المحتوى على اليمين */
-}
-
-.mega-category-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.column-title {
-  font-size: 0.98rem;
-  font-weight: 900;
-  color: #0b1a30;
-  margin-bottom: 14px;
-  padding-bottom: 6px;
-  border-bottom: 2px solid #0056b3;
-  display: inline-block;
-}
-
-.column-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.column-links li {
-  margin-bottom: 10px;
-}
-
-.column-links a {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #475569;
-  display: inline-block;
-  transition: all 0.2s ease;
-}
-
-.column-links a:hover {
-  color: #0056b3;
-  transform: translateX(-5px); /* حركة انزلاق ناعمة لليسار عند الـ hover */
-}
-
-/* شبكة الماركات المعتمدة */
-.mega-brands-logos-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.brand-text-badge {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 8px 6px;
-  text-align: center;
-  font-size: 0.82rem;
-  font-weight: 900;
-  color: #0b1a30;
-  transition: all 0.2s ease;
-}
-
-.brand-text-badge:hover {
-  background: #0056b3;
-  color: #ffffff;
-  border-color: #0056b3;
-}
-
-/* --------------------------------------------------------------------------
-   الشريط السفلي للرابط الكامل (تسوق جميع...)
-   -------------------------------------------------------------------------- */
-.mega-bottom-bar {
-  background-color: #fafbfc;
-  border-top: 1px solid #eaeded;
-  padding: 14px 32px;
-  border-radius: 0 0 24px 24px;
-  display: flex;
-  justify-content: flex-end; /* وضع الرابط جهة اليسار مثل راية شوب */
-}
-
-.view-all-category-link {
-  color: #0056b3;
-  font-size: 0.92rem;
-  font-weight: 800;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: gap 0.2s ease;
-}
-
-.view-all-category-link:hover {
-  gap: 12px;
-  text-decoration: underline;
-}
-
-/* --------------------------------------------------------------------------
-   تعتيم الصفحة بالكامل عند فتح الميجا منيو (Dimmed Screen Backdrop)
-   -------------------------------------------------------------------------- */
-.mega-menu-backdrop-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45); /* تعتيم رمادي داكن هادئ */
-  backdrop-filter: blur(2px);
-  z-index: 999;
+  padding: 20px;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0.25s;
-  pointer-events: none;
+  transition: var(--transition-normal);
 }
 
-/* تفعيل التعتيم التلقائي بالـ CSS النقي عند وقوف الماوس على أي ميجا منيو */
-body:has(.has-mega-menu:hover) .mega-menu-backdrop-overlay {
+.quick-modal-backdrop.active {
   opacity: 1;
   visibility: visible;
+}
+
+.quick-modal-card {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-md);
+  max-width: 650px;
+  width: 100%;
+  padding: 24px;
+  position: relative;
+  box-shadow: var(--shadow-hover);
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+
+.close-modal-btn:hover {
+  color: var(--discount-red);
+}
+
+/* --------------------------------------------------------------------------
+   14. التجاوب الكامل مع الهواتف الذكية (Mobile Responsive - Dream 2000 Style)
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+  .dream-main-layout {
+    grid-template-columns: 1fr;
+  }
+  .dream-filters-sidebar {
+    display: none; /* إخفاء فلتر الديسكتوب واستبداله بزر تصفية بالموبايل */
+  }
+  .footer-content-row {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-inner {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .dream-search-bar {
+    order: 3;
+    max-width: 100%;
+    width: 100%;
+  }
+  .search-cat-picker {
+    display: none; /* إخفاء اختيار القسم لتوفير المساحة */
+  }
+
+  /* مطابقة شبكة المنتجات ذات العمودين (2 Columns) مثل لقطة شاشة الهاتف */
+  .dream-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .dream-product-card {
+    padding: 10px;
+  }
+
+  .card-media-box {
+    height: 140px;
+  }
+
+  .price-val-red {
+    font-size: 0.98rem;
+  }
+
+  .btn-dream-choose {
+    font-size: 0.72rem;
+    padding: 6px 4px;
+  }
+
+  .item-mini-stepper {
+    display: none; /* إخفاء العداد في الموبايل ليتطابق مع صور دريم 2000 للهواتف */
+  }
+
+  /* إظهار شريط التنقل السفلي */
+  .mobile-bottom-nav {
+    display: flex;
+  }
+
+  /* إزاحة زر الشات العائم للأعلى لكي لا يغطي شريط الموبايل */
+  .alternating-chat-widget {
+    bottom: 75px;
+    left: 18px;
+  }
+
+  body {
+    padding-bottom: 60px; /* مسافة أمان لشريط الموبايل */
+  }
 }
