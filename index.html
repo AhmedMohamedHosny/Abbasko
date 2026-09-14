@@ -172,29 +172,46 @@
 
         </section>
 
-        <!-- الشريط الجانبي للتصفية (Sidebar Filters - مطابق للصورة 6 و7 و8) -->
+<!-- الشريط الجانبي للتصفية بنمط Dream 2000 المطابق للصورة 2 -->
         <aside class="dream-filters-sidebar">
-          <div class="filters-sidebar-header">
-            <h3><i class="fa-solid fa-sliders"></i> تصفية</h3>
-          </div>
+          
+          <!-- عنوان تصفية الصريح -->
+          <div class="sidebar-main-title">تصفية</div>
 
-          <!-- مفتاح متوفر بالمخزون -->
-          <div class="filter-group in-stock-group">
+          <!-- صف متوفر بالمخزون مع السويتش الرمادي -->
+          <div class="stock-toggle-row">
             <span>متوفر بالمخزون</span>
-            <label class="switch-ui mini">
-              <input type="checkbox" id="stock-filter" checked>
-              <span class="slider-switch round"></span>
+            <label class="clean-switch">
+              <input type="checkbox" id="stock-filter">
+              <span class="clean-slider"></span>
             </label>
           </div>
 
-          <!-- فلتر الماركة (مع أعداد المنتجات مثل الصورة 6) -->
-          <div class="accordion-filter-block open">
-            <div class="accordion-header">
-              <span>الماركة</span>
-              <i class="fa-solid fa-chevron-up"></i>
+          <!-- صناديق الفلاتر المستقلة (مغلقة افتراضياً) -->
+          <div class="filter-boxes-stack">
+            
+            <!-- 1. السعر -->
+            <div class="filter-card-accordion">
+              <div class="filter-card-header">
+                <i class="fa-solid fa-chevron-down"></i>
+                <span>السعر</span>
+              </div>
+              <div class="filter-card-body">
+                <input type="range" id="price-range" min="100" max="4000" step="50" value="4000">
+                <div class="price-limits-text">
+                  <span>من: 100 ج.م</span>
+                  <span id="max-price-display">حتى: 4,000 ج.م</span>
+                </div>
+              </div>
             </div>
-            <div class="accordion-body">
-              <div class="brand-items-scrollable">
+
+            <!-- 2. الماركة -->
+            <div class="filter-card-accordion">
+              <div class="filter-card-header">
+                <i class="fa-solid fa-chevron-down"></i>
+                <span>الماركة</span>
+              </div>
+              <div class="filter-card-body">
                 <label class="custom-chk"><input type="radio" name="brand_filter" value="all" checked> الكل</label>
                 <label class="custom-chk"><input type="radio" name="brand_filter" value="Anker"> Anker (38)</label>
                 <label class="custom-chk"><input type="radio" name="brand_filter" value="Samsung"> Samsung (12)</label>
@@ -203,74 +220,100 @@
                 <label class="custom-chk"><input type="radio" name="brand_filter" value="Xiaomi"> Xiaomi (8)</label>
                 <label class="custom-chk"><input type="radio" name="brand_filter" value="Baseus"> Baseus (48)</label>
                 <label class="custom-chk"><input type="radio" name="brand_filter" value="Hoco"> Hoco (26)</label>
-                <label class="custom-chk"><input type="radio" name="brand_filter" value="LDNIO"> LDNIO (2)</label>
-                <label class="custom-chk"><input type="radio" name="brand_filter" value="Joyroom"> Joyroom (15)</label>
               </div>
             </div>
-          </div>
 
-          <!-- فلتر السعر (الأكورديون) -->
-          <div class="accordion-filter-block open">
-            <div class="accordion-header">
-              <span>السعر</span>
-              <i class="fa-solid fa-chevron-up"></i>
-            </div>
-            <div class="accordion-body">
-              <div class="price-slider-box">
-                <input type="range" id="price-range" min="100" max="4000" step="50" value="4000">
-                <div class="price-limits">
-                  <span>من: 100 ج.م</span>
-                  <span id="max-price-display">حتى: 4,000 ج.م</span>
-                </div>
+            <!-- 3. الشاشة -->
+            <div class="filter-card-accordion">
+              <div class="filter-card-header">
+                <i class="fa-solid fa-chevron-down"></i>
+                <span>الشاشة</span>
+              </div>
+              <div class="filter-card-body">
+                <label class="custom-chk"><input type="checkbox"> حماية شاشة زجاجية</label>
+                <label class="custom-chk"><input type="checkbox"> اسكرينات خصوصية (لقافة)</label>
               </div>
             </div>
-          </div>
 
-          <!-- فلتر نوع الملحق والتوصيل (الصورة 8) -->
-          <div class="accordion-filter-block open">
-            <div class="accordion-header">
-              <span>النوع</span>
-              <i class="fa-solid fa-chevron-up"></i>
+            <!-- 4. الميكروفون -->
+            <div class="filter-card-accordion">
+              <div class="filter-card-header">
+                <i class="fa-solid fa-chevron-down"></i>
+                <span>الميكروفون</span>
+              </div>
+              <div class="filter-card-body">
+                <label class="custom-chk"><input type="checkbox"> ميكروفون مدمج لعزل الضوضاء</label>
+              </div>
             </div>
-            <div class="accordion-body">
-              <label class="custom-chk"><input type="checkbox" checked> Type-C (11)</label>
-              <label class="custom-chk"><input type="checkbox" checked> Type-C To Type-C (25)</label>
-              <label class="custom-chk"><input type="checkbox" checked> Type-C To Lightning (18)</label>
-              <label class="custom-chk"><input type="checkbox" checked> USB To Type-C (23)</label>
-              <label class="custom-chk"><input type="checkbox" checked> شواحن جدارية سريعة</label>
-              <label class="custom-chk"><input type="checkbox" checked> بنوك طاقة متنقلة</label>
-            </div>
-          </div>
 
-          <!-- فلتر قدرة الشحن بالواط (Power - الصورة 8) -->
-          <div class="accordion-filter-block open">
-            <div class="accordion-header">
-              <span>Power (القدرة)</span>
-              <i class="fa-solid fa-chevron-up"></i>
+            <!-- 5. النوع -->
+            <div class="filter-card-accordion">
+              <div class="filter-card-header">
+                <i class="fa-solid fa-chevron-down"></i>
+                <span>النوع</span>
+              </div>
+              <div class="filter-card-body">
+                <label class="custom-chk"><input type="checkbox"> شواحن جدارية</label>
+                <label class="custom-chk"><input type="checkbox"> كابلات ووصلات</label>
+                <label class="custom-chk"><input type="checkbox"> بنوك طاقة متنقلة</label>
+              </div>
             </div>
-            <div class="accordion-body">
-              <label class="custom-chk"><input type="checkbox"> 20W (38)</label>
-              <label class="custom-chk"><input type="checkbox"> 25W (19)</label>
-              <label class="custom-chk"><input type="checkbox"> 30W (19)</label>
-              <label class="custom-chk"><input type="checkbox"> 45W (13)</label>
-              <label class="custom-chk"><input type="checkbox"> 65W (21)</label>
-              <label class="custom-chk"><input type="checkbox"> 100W (15)</label>
-              <label class="custom-chk"><input type="checkbox"> 140W (3)</label>
-            </div>
-          </div>
 
-          <!-- فلتر اللون (Color - الصورة 8) -->
-          <div class="accordion-filter-block">
-            <div class="accordion-header">
-              <span>اللون</span>
-              <i class="fa-solid fa-chevron-down"></i>
+            <!-- 6. التوصيل -->
+            <div class="filter-card-accordion">
+              <div class="filter-card-header">
+                <i class="fa-solid fa-chevron-down"></i>
+                <span>التوصيل</span>
+              </div>
+              <div class="filter-card-body">
+                <label class="custom-chk"><input type="checkbox"> Type-C (11)</label>
+                <label class="custom-chk"><input type="checkbox"> Type-C To Type-C (25)</label>
+                <label class="custom-chk"><input type="checkbox"> Lightning (18)</label>
+                <label class="custom-chk"><input type="checkbox"> USB-A (23)</label>
+              </div>
             </div>
-            <div class="accordion-body">
-              <label class="custom-chk"><input type="checkbox"> Black (202)</label>
-              <label class="custom-chk"><input type="checkbox"> White (177)</label>
-              <label class="custom-chk"><input type="checkbox"> Gray (9)</label>
-              <label class="custom-chk"><input type="checkbox"> Blue (11)</label>
+
+            <!-- 7. Power -->
+            <div class="filter-card-accordion">
+              <div class="filter-card-header">
+                <i class="fa-solid fa-chevron-down"></i>
+                <span>Power</span>
+              </div>
+              <div class="filter-card-body">
+                <label class="custom-chk"><input type="checkbox"> 20W (38)</label>
+                <label class="custom-chk"><input type="checkbox"> 25W (19)</label>
+                <label class="custom-chk"><input type="checkbox"> 45W (13)</label>
+                <label class="custom-chk"><input type="checkbox"> 65W (21)</label>
+                <label class="custom-chk"><input type="checkbox"> 100W (15)</label>
+              </div>
             </div>
+
+            <!-- 8. Battery -->
+            <div class="filter-card-accordion">
+              <div class="filter-card-header">
+                <i class="fa-solid fa-chevron-down"></i>
+                <span>Battery</span>
+              </div>
+              <div class="filter-card-body">
+                <label class="custom-chk"><input type="checkbox"> 10,000 mAh</label>
+                <label class="custom-chk"><input type="checkbox"> 20,000 mAh</label>
+              </div>
+            </div>
+
+            <!-- 9. اللون -->
+            <div class="filter-card-accordion">
+              <div class="filter-card-header">
+                <i class="fa-solid fa-chevron-down"></i>
+                <span>اللون</span>
+              </div>
+              <div class="filter-card-body">
+                <label class="custom-chk"><input type="checkbox"> Black (202)</label>
+                <label class="custom-chk"><input type="checkbox"> White (177)</label>
+                <label class="custom-chk"><input type="checkbox"> Gray (9)</label>
+                <label class="custom-chk"><input type="checkbox"> Blue (11)</label>
+              </div>
+            </div>
+
           </div>
 
         </aside>
