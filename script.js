@@ -2,15 +2,11 @@
  * ==========================================================================
  * متجر عباسكو (Abasco) - إكسسوارات الهواتف المحمولة
  * الملف: script.js
- * الوظائف: إدارة الكتالوج، الوضع الليلي، الفلاتر، المعاينة، وزر الشات المتناوب
  * ==========================================================================
  */
 
 'use strict';
 
-/* ==========================================================================
-   1. قاعدة بيانات المنتجات المطابقة للصور (Dream 2000 Inventory)
-   ========================================================================== */
 const abascoInventory = [
   {
     id: 1,
@@ -22,6 +18,7 @@ const abascoInventory = [
     discount: '130.00',
     rating: 0,
     ratingCount: 0,
+    specs: 'النوع: شاحن حائط | الطاقة: 30 واط | المدخل: 100-240V | المخرج: Type-C شحن فائق السرعة آمن حرارياً.',
     image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
     inStock: true
   },
@@ -35,6 +32,7 @@ const abascoInventory = [
     discount: '130.00',
     rating: 0,
     ratingCount: 0,
+    specs: 'الطاقة: 25 واط | منفذ يو اس بي-C | المدخل: 100-240V | اللون: أسود مع كابل مجدول.',
     image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
     inStock: true
   },
@@ -48,6 +46,7 @@ const abascoInventory = [
     discount: '361.00',
     rating: 0,
     ratingCount: 0,
+    specs: 'الماركة: سامسونج | شحن فائق السرعة 2.0 كحد أقصى 45 واط | يتضمن كابل تايب سي أصلي 1.8 متر.',
     image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
     inStock: true
   },
@@ -61,6 +60,7 @@ const abascoInventory = [
     discount: '80.00',
     rating: 5,
     ratingCount: 1,
+    specs: 'النوع: Adapter | الطاقة: 25 Watt | المدخل: 100-240 V | مخرج Type-C فائق السرعة للبقاء على قيد الحياة.',
     image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
     inStock: true
   },
@@ -74,6 +74,7 @@ const abascoInventory = [
     discount: '400.00',
     rating: 0,
     ratingCount: 0,
+    specs: 'السعة: 10,000 مللي أمبير | شحن سلكي سريع 25 واط | منفذين تايب سي يدعمان الشحن المزدوج.',
     image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=400&q=80',
     inStock: true
   },
@@ -87,6 +88,7 @@ const abascoInventory = [
     discount: '40.00',
     rating: 0,
     ratingCount: 0,
+    specs: 'الماركة: أنكر | الموديل: A8752H11 | شحن سريع 60 واط | نايلون مضفر فائق المتانة مجرب لأكثر من 15 ألف التواء.',
     image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80',
     inStock: true
   },
@@ -100,6 +102,7 @@ const abascoInventory = [
     discount: '90.00',
     rating: 0,
     ratingCount: 0,
+    specs: 'السعة: 10000 مللي أمبير | 3 منافذ شحن سريعة 22.5W | متوافق مع كافة أجهزة الأندرويد والآيفون.',
     image: 'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=400&q=80',
     inStock: true
   },
@@ -113,14 +116,12 @@ const abascoInventory = [
     discount: '690.00',
     rating: 0,
     ratingCount: 0,
+    specs: 'الاتصال: بلوتوث 5.4 | عزل ضوضاء هجين ANC | بطارية تصل إلى 75 ساعة متواصلة مع شحن فائق السرعة.',
     image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=400&q=80',
     inStock: true
   }
 ];
 
-/* ==========================================================================
-   2. حالة التطبيق العامة (App State)
-   ========================================================================== */
 const state = {
   products: [...abascoInventory],
   cart: JSON.parse(localStorage.getItem('abasco_raya_cart')) || [],
@@ -128,71 +129,54 @@ const state = {
   searchQuery: '',
   selectedBrand: 'all',
   maxPrice: 4000,
-  inStockOnly: true,
   currentSort: 'featured',
-  quantities: {}
+  quantities: {},
+  viewMode: 'grid' // 'grid' أو 'list'
 };
 
-/* ==========================================================================
-   3. عناصر الواجهة (DOM Cache)
-   ========================================================================== */
 const DOM = {
   productsContainer: document.getElementById('catalog-products-container'),
-  productsCountNum: document.getElementById('products-count-num'),
+  productsCounterBadge: document.getElementById('products-counter-badge'),
   cartCounter: document.getElementById('cart-counter'),
   mobCartCounter: document.getElementById('mob-cart-counter'),
+  btnViewGrid: document.getElementById('btn-view-grid'),
+  btnViewList: document.getElementById('btn-view-list'),
+  sortTrigger: document.getElementById('sort-dropdown-trigger'),
+  sortMenu: document.getElementById('sort-options-menu'),
+  selectedSortLabel: document.getElementById('selected-sort-label'),
+  activeFiltersBar: document.getElementById('active-filters-bar'),
+  currentBrandChip: document.getElementById('current-brand-chip'),
+  chipBrandText: document.getElementById('chip-brand-text'),
+  removeBrandChip: document.getElementById('remove-brand-chip'),
+  clearAllFiltersBtn: document.getElementById('clear-all-filters-btn'),
   searchForm: document.getElementById('search-form'),
   searchInput: document.getElementById('search-input'),
   searchCategory: document.getElementById('search-category'),
-  sortSelect: document.getElementById('sort-select'),
-  darkModeCheckbox: document.getElementById('dark-mode-checkbox'),
   priceRange: document.getElementById('price-range'),
   maxPriceDisplay: document.getElementById('max-price-display'),
-  stockFilter: document.getElementById('stock-filter'),
-  subnavLinks: document.querySelectorAll('.subnav-links-list a'),
-  
-  // المعاينة السريعة
+  darkModeCheckbox: document.getElementById('dark-mode-checkbox'),
   quickModalOverlay: document.getElementById('quick-modal-overlay'),
   quickModalContent: document.getElementById('quick-modal-content'),
   closeQuickModal: document.getElementById('close-quick-modal'),
-  
-  // زر الشات المتناوب
-  chatBtn: document.getElementById('alternating-chat-btn'),
   chatLink: document.getElementById('chat-link'),
   chatIcon: document.getElementById('chat-icon')
 };
-
-/* ==========================================================================
-   4. عرض وتوليد كروت المنتجات (Render Products)
-   ========================================================================== */
-function renderStars(rating) {
-  let starsHtml = '';
-  for (let i = 1; i <= 5; i++) {
-    if (i <= rating) {
-      starsHtml += '<i class="fa-solid fa-star"></i>';
-    } else {
-      starsHtml += '<i class="fa-regular fa-star" style="color:#d1d5db;"></i>';
-    }
-  }
-  return starsHtml;
-}
 
 function renderCatalog(items) {
   if (!DOM.productsContainer) return;
 
   if (items.length === 0) {
     DOM.productsContainer.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: var(--bg-surface); border-radius: 12px; border: 1px dashed var(--border-color);">
+      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: var(--bg-surface); border-radius: 12px; border: 1px dashed var(--border-color);">
         <i class="fa-solid fa-box-open" style="font-size: 3rem; color: var(--dream-green); margin-bottom: 12px;"></i>
-        <h3 style="font-weight: 800;">لا توجد ملحقات مطابقة للتصفية حالياً</h3>
-        <p style="color: var(--text-muted); font-size: 0.88rem;">جرب ضبط نطاق السعر أو اختيار ماركة أخرى.</p>
+        <h3 style="font-weight: 800;">لا توجد ملحقات مطابقة للتصفية</h3>
       </div>
     `;
-    if (DOM.productsCountNum) DOM.productsCountNum.textContent = '0';
+    DOM.productsCounterBadge.textContent = '0 منتجات';
     return;
   }
 
-  if (DOM.productsCountNum) DOM.productsCountNum.textContent = items.length;
+  DOM.productsCounterBadge.textContent = `${items.length} من ${abascoInventory.length} منتجات`;
 
   DOM.productsContainer.innerHTML = items.map(product => {
     const qty = state.quantities[product.id] || 1;
@@ -213,11 +197,15 @@ function renderCatalog(items) {
           <span class="brand-label-text">${product.brand}</span>
           
           <h3 class="product-item-title">
-            <a href="product.html?id=${product.id}" title="${product.title}">${product.title}</a>
+            <a href="product.html?id=${product.id}">${product.title}</a>
           </h3>
 
           <div class="card-stars-row">
-            ${renderStars(product.rating)}
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
+            <i class="fa-regular fa-star"></i>
             <span>(${product.ratingCount})</span>
           </div>
 
@@ -226,12 +214,15 @@ function renderCatalog(items) {
             <span class="price-struck-gray">LE ${product.oldPrice.toFixed(2)}</span>
           </div>
 
+          <p class="specs-summary-list-view">${product.specs}</p>
+
           <div class="stock-dot-indicator">
             <span class="blue-dot"></span>
             <span>في المخزن</span>
           </div>
 
           <div class="card-bottom-action-row">
+            <button class="btn-dream-quick-list" onclick="openQuickModal(${product.id})">نظرة سريعة</button>
             <button class="btn-dream-choose" onclick="addToCartDirect(${product.id})">Choose option</button>
             <div class="item-mini-stepper">
               <button class="mini-step-btn" onclick="modifyCardQty(${product.id}, 1)">+</button>
@@ -245,28 +236,54 @@ function renderCatalog(items) {
   }).join('');
 }
 
-/* ==========================================================================
-   5. إدارة العداد السريع في كرت المنتج (Mini Stepper)
-   ========================================================================== */
+// تبديل طرق العرض (Grid vs List)
+DOM.btnViewGrid?.addEventListener('click', () => {
+  DOM.btnViewGrid.classList.add('active');
+  DOM.btnViewList.classList.remove('active');
+  document.body.classList.remove('view-list-active');
+  document.body.classList.add('view-grid-active');
+  state.viewMode = 'grid';
+});
+
+DOM.btnViewList?.addEventListener('click', () => {
+  DOM.btnViewList.classList.add('active');
+  DOM.btnViewGrid.classList.remove('active');
+  document.body.classList.remove('view-grid-active');
+  document.body.classList.add('view-list-active');
+  state.viewMode = 'list';
+});
+
+// قائمة الترتيب المنسدلة المخصصة
+DOM.sortTrigger?.addEventListener('click', (e) => {
+  e.stopPropagation();
+  DOM.sortMenu.classList.toggle('open');
+});
+
+document.addEventListener('click', () => {
+  DOM.sortMenu?.classList.remove('open');
+});
+
+DOM.sortMenu?.querySelectorAll('li').forEach(item => {
+  item.addEventListener('click', () => {
+    DOM.sortMenu.querySelectorAll('li').forEach(l => l.classList.remove('active'));
+    item.classList.add('active');
+    DOM.selectedSortLabel.textContent = item.textContent;
+    state.currentSort = item.getAttribute('data-sort');
+    applyFilters();
+  });
+});
+
+// عداد الكمية السريع
 window.modifyCardQty = function(id, delta) {
   let current = state.quantities[id] || 1;
   current += delta;
   if (current < 1) current = 1;
   state.quantities[id] = current;
-  
   const el = document.getElementById(`stepper-val-${id}`);
   if (el) el.textContent = current;
 };
 
-/* ==========================================================================
-   6. عربة التسوق والتحديث (Cart Functions)
-   ========================================================================== */
-function syncCartBadge() {
-  const totalCount = state.cart.reduce((sum, item) => sum + item.quantity, 0);
-  if (DOM.cartCounter) DOM.cartCounter.textContent = totalCount;
-  if (DOM.mobCartCounter) DOM.mobCartCounter.textContent = totalCount;
-}
-
+// إضافة للسلة
 window.addToCartDirect = function(productId) {
   const product = abascoInventory.find(p => p.id === productId);
   if (!product) return;
@@ -288,106 +305,82 @@ window.addToCartDirect = function(productId) {
 
   localStorage.setItem('abasco_raya_cart', JSON.stringify(state.cart));
   syncCartBadge();
-  
-  // إعادة تعيين العداد للرقم 1
-  state.quantities[productId] = 1;
-  const el = document.getElementById(`stepper-val-${productId}`);
-  if (el) el.textContent = 1;
-
-  alert(`تمت إضافة (${addedQty}) قطع من:\n"${product.title}"\nإلى سلة المشتريات بنجاح!`);
+  alert(`تمت إضافة (${addedQty}) قطعة من "${product.title}" إلى عربة التسوق بنجاح!`);
 };
 
-/* ==========================================================================
-   7. زر المحادثة العائم المتناوب (WhatsApp & Messenger Auto-Toggle 5s)
-   ========================================================================== */
-function setupAlternatingChat() {
-  if (!DOM.chatLink || !DOM.chatIcon) return;
-
-  let isWhatsAppMode = true;
-
-  setInterval(() => {
-    isWhatsAppMode = !isWhatsAppMode;
-
-    // تشغيل أنيميشن الالتفاف
-    DOM.chatIcon.classList.add('rotate-anim');
-
-    setTimeout(() => {
-      if (isWhatsAppMode) {
-        DOM.chatLink.className = 'chat-circle-link whatsapp-mode';
-        DOM.chatLink.href = 'https://wa.me/201000000000';
-        DOM.chatIcon.className = 'fa-brands fa-whatsapp chat-icon';
-      } else {
-        DOM.chatLink.className = 'chat-circle-link messenger-mode';
-        DOM.chatLink.href = 'https://m.me/abascostore';
-        DOM.chatIcon.className = 'fa-brands fa-facebook-messenger chat-icon';
-      }
-      DOM.chatIcon.classList.remove('rotate-anim');
-    }, 250);
-
-  }, 5000); // يتغير بدقة كل 5 ثوانٍ
+function syncCartBadge() {
+  const total = state.cart.reduce((sum, item) => sum + item.quantity, 0);
+  if (DOM.cartCounter) DOM.cartCounter.textContent = total;
+  if (DOM.mobCartCounter) DOM.mobCartCounter.textContent = total;
 }
 
-/* ==========================================================================
-   8. الوضع الليلي (Dark Mode Engine)
-   ========================================================================== */
-function setupDarkMode() {
-  const savedMode = localStorage.getItem('abasco_dark_mode');
-  
-  if (savedMode === 'enabled') {
-    document.body.classList.add('dark-mode');
-    if (DOM.darkModeCheckbox) DOM.darkModeCheckbox.checked = true;
-  }
-
-  DOM.darkModeCheckbox?.addEventListener('change', (e) => {
-    if (e.target.checked) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('abasco_dark_mode', 'enabled');
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('abasco_dark_mode', 'disabled');
-    }
-  });
-}
-
-/* ==========================================================================
-   9. الفلترة والتصفية والبحث (Filters & Search)
-   ========================================================================== */
+// محرك الفلترة المتكامل
 function applyFilters() {
   let result = [...abascoInventory];
 
-  // 1. فلتر القسم
   if (state.selectedCategory !== 'all') {
     result = result.filter(item => item.category === state.selectedCategory);
   }
 
-  // 2. فلتر نص البحث
-  if (state.searchQuery.trim() !== '') {
-    const q = state.searchQuery.toLowerCase().trim();
-    result = result.filter(item => 
-      item.title.toLowerCase().includes(q) || 
-      item.brand.toLowerCase().includes(q)
-    );
-  }
-
-  // 3. فلتر السعر الأقصى
-  result = result.filter(item => item.price <= state.maxPrice);
-
-  // 4. فلتر الماركة
   if (state.selectedBrand !== 'all') {
     result = result.filter(item => item.brand.toLowerCase() === state.selectedBrand.toLowerCase());
+    DOM.activeFiltersBar.style.display = 'flex';
+    DOM.chipBrandText.textContent = state.selectedBrand;
+  } else {
+    DOM.activeFiltersBar.style.display = 'none';
   }
 
-  // 5. الترتيب
-  if (state.currentSort === 'low-price') {
+  if (state.searchQuery.trim() !== '') {
+    const q = state.searchQuery.toLowerCase().trim();
+    result = result.filter(i => i.title.toLowerCase().includes(q) || i.brand.toLowerCase().includes(q));
+  }
+
+  result = result.filter(i => i.price <= state.maxPrice);
+
+  if (state.currentSort === 'price-asc') {
     result.sort((a, b) => a.price - b.price);
-  } else if (state.currentSort === 'high-price') {
+  } else if (state.currentSort === 'price-desc') {
     result.sort((a, b) => b.price - a.price);
-  } else if (state.currentSort === 'rating') {
-    result.sort((a, b) => b.rating - a.rating);
+  } else if (state.currentSort === 'alpha-az') {
+    result.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (state.currentSort === 'alpha-za') {
+    result.sort((a, b) => b.title.localeCompare(a.title));
   }
 
   renderCatalog(result);
 }
+
+// أحداث فلاتر الماركة
+document.querySelectorAll('input[name="brand_filter"]').forEach(radio => {
+  radio.addEventListener('change', (e) => {
+    state.selectedBrand = e.target.value;
+    applyFilters();
+  });
+});
+
+DOM.removeBrandChip?.addEventListener('click', () => {
+  state.selectedBrand = 'all';
+  const allRadio = document.querySelector('input[name="brand_filter"][value="all"]');
+  if (allRadio) allRadio.checked = true;
+  applyFilters();
+});
+
+DOM.clearAllFiltersBtn?.addEventListener('click', () => {
+  state.selectedBrand = 'all';
+  state.maxPrice = 4000;
+  if (DOM.priceRange) DOM.priceRange.value = 4000;
+  if (DOM.maxPriceDisplay) DOM.maxPriceDisplay.textContent = 'حتى: 4,000 ج.م';
+  const allRadio = document.querySelector('input[name="brand_filter"][value="all"]');
+  if (allRadio) allRadio.checked = true;
+  applyFilters();
+});
+
+// شريط السعر
+DOM.priceRange?.addEventListener('input', (e) => {
+  state.maxPrice = parseFloat(e.target.value);
+  if (DOM.maxPriceDisplay) DOM.maxPriceDisplay.textContent = `حتى: ${state.maxPrice.toLocaleString('ar-EG')} ج.م`;
+  applyFilters();
+});
 
 // أحداث البحث
 DOM.searchForm?.addEventListener('submit', (e) => {
@@ -402,99 +395,72 @@ DOM.searchInput?.addEventListener('input', (e) => {
   applyFilters();
 });
 
-// شريط الأقسام السريع
-DOM.subnavLinks.forEach(link => {
-  link.addEventListener('click', (e) => {
-    e.preventDefault();
-    DOM.subnavLinks.forEach(l => l.classList.remove('active'));
-    link.classList.add('active');
-
-    const href = link.getAttribute('href').replace('#', '');
-    state.selectedCategory = href === 'all' ? 'all' : href;
-    if (DOM.searchCategory) DOM.searchCategory.value = state.selectedCategory;
-    applyFilters();
-  });
-});
-
-// شريط السعر المنزلق
-DOM.priceRange?.addEventListener('input', (e) => {
-  state.maxPrice = parseFloat(e.target.value);
-  if (DOM.maxPriceDisplay) {
-    DOM.maxPriceDisplay.textContent = `حتى: ${state.maxPrice.toLocaleString('ar-EG')} ج.م`;
-  }
-  applyFilters();
-});
-
-// فلاتر الماركة
-document.querySelectorAll('.accordion-body .custom-chk input[type="checkbox"]').forEach(chk => {
-  chk.addEventListener('change', (e) => {
-    if (e.target.value) {
-      state.selectedBrand = e.target.value;
-      applyFilters();
-    }
-  });
-});
-
-// تغيير الترتيب
-DOM.sortSelect?.addEventListener('change', (e) => {
-  state.currentSort = e.target.value;
-  applyFilters();
-});
-
-// فتح وطي الأكورديون
-document.querySelectorAll('.accordion-header').forEach(header => {
-  header.addEventListener('click', () => {
-    header.parentElement.classList.toggle('open');
-  });
-});
-
-/* ==========================================================================
-   10. نافذة المعاينة السريعة (Quick View Modal)
-   ========================================================================== */
-window.openQuickModal = function(productId) {
-  const product = abascoInventory.find(p => p.id === productId);
-  if (!product || !DOM.quickModalOverlay || !DOM.quickModalContent) return;
+// نافذة نظرة سريعة
+window.openQuickModal = function(id) {
+  const product = abascoInventory.find(p => p.id === id);
+  if (!product || !DOM.quickModalOverlay) return;
 
   DOM.quickModalContent.innerHTML = `
     <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
-      <div style="width: 180px; height: 180px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); padding: 10px;">
+      <div style="width: 170px; height: 170px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 10px; border: 1px solid var(--border-color);">
         <img src="${product.image}" alt="${product.title}" style="max-height: 100%; object-fit: contain;">
       </div>
-      <div style="flex: 1; min-width: 240px;">
+      <div style="flex: 1; min-width: 220px;">
         <span style="font-size: 0.8rem; font-weight: 800; color: var(--dream-green);">${product.brand}</span>
-        <h2 style="font-size: 1.1rem; font-weight: 800; margin: 6px 0 10px;">${product.title}</h2>
-        <div style="font-size: 1.3rem; font-weight: 900; color: var(--discount-red); margin-bottom: 12px;">
+        <h3 style="font-size: 1.05rem; font-weight: 800; margin: 4px 0 8px;">${product.title}</h3>
+        <div style="font-size: 1.25rem; font-weight: 900; color: var(--discount-red); margin-bottom: 8px;">
           LE ${product.price.toFixed(2)}
-          <small style="font-size: 0.85rem; color: var(--text-subtle); text-decoration: line-through; margin-right: 8px;">LE ${product.oldPrice.toFixed(2)}</small>
+          <small style="font-size: 0.8rem; color: var(--text-subtle); text-decoration: line-through; margin-right: 6px;">LE ${product.oldPrice.toFixed(2)}</small>
         </div>
-        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px;">
-          منتج أصلي معتمد مع إمكانية فتح الشحنة ومعاينتها بالكامل أمام المندوب قبل سداد الثمن كاش عند الاستلام.
-        </p>
-        <button class="btn-dream-choose" style="padding: 10px 24px; font-size: 0.95rem;" onclick="addToCartDirect(${product.id}); closeQuickModalFunc();">
-          أضف إلى عربة التسوق فوراً
+        <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px;">${product.specs}</p>
+        <button class="btn-dream-choose" style="padding: 10px 20px;" onclick="addToCartDirect(${product.id}); DOM.quickModalOverlay.classList.remove('active');">
+          أضف إلى السلة فوراً
         </button>
       </div>
     </div>
   `;
-
   DOM.quickModalOverlay.classList.add('active');
 };
 
-function closeQuickModalFunc() {
-  DOM.quickModalOverlay?.classList.remove('active');
-}
+DOM.closeQuickModal?.addEventListener('click', () => DOM.quickModalOverlay.classList.remove('active'));
 
-DOM.closeQuickModal?.addEventListener('click', closeQuickModalFunc);
-DOM.quickModalOverlay?.addEventListener('click', (e) => {
-  if (e.target === DOM.quickModalOverlay) closeQuickModalFunc();
+// دارك مود
+const darkCheckbox = document.getElementById('dark-mode-checkbox');
+if (localStorage.getItem('abasco_dark_mode') === 'enabled') {
+  document.body.classList.add('dark-mode');
+  if (darkCheckbox) darkCheckbox.checked = true;
+}
+darkCheckbox?.addEventListener('change', (e) => {
+  if (e.target.checked) {
+    document.body.classList.add('dark-mode');
+    localStorage.setItem('abasco_dark_mode', 'enabled');
+  } else {
+    document.body.classList.remove('dark-mode');
+    localStorage.setItem('abasco_dark_mode', 'disabled');
+  }
 });
 
-/* ==========================================================================
-   11. التهيئة والتشغيل عند التحميل (Init)
-   ========================================================================== */
+// تناوب زر الشات كل 5 ثوانٍ
+let isWhatsApp = true;
+setInterval(() => {
+  isWhatsApp = !isWhatsApp;
+  if (!DOM.chatIcon || !DOM.chatLink) return;
+  DOM.chatIcon.classList.add('rotate-anim');
+  setTimeout(() => {
+    if (isWhatsApp) {
+      DOM.chatLink.className = 'chat-circle-link whatsapp-mode';
+      DOM.chatLink.href = 'https://wa.me/201000000000';
+      DOM.chatIcon.className = 'fa-brands fa-whatsapp chat-icon';
+    } else {
+      DOM.chatLink.className = 'chat-circle-link messenger-mode';
+      DOM.chatLink.href = 'https://m.me/abascostore';
+      DOM.chatIcon.className = 'fa-brands fa-facebook-messenger chat-icon';
+    }
+    DOM.chatIcon.classList.remove('rotate-anim');
+  }, 250);
+}, 5000);
+
 document.addEventListener('DOMContentLoaded', () => {
   renderCatalog(state.products);
   syncCartBadge();
-  setupDarkMode();
-  setupAlternatingChat();
 });
