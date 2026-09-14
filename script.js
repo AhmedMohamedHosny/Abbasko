@@ -701,7 +701,56 @@ async function seedInitialProducts() {
   fetchProductsFromFirebase();
 }
 
+// مزامنة الماركات وقائمة الأقسام الحية من الفايربيز مع الاندكس
+async function syncLiveTaxonomy() {
+  let liveBrands = JSON.parse(localStorage.getItem('abasco_store_brands')) || [];
+  let liveCategories = JSON.parse(localStorage.getItem('abasco_store_categories')) || [];
+
+  try {
+    const doc = await db.collection('settings').doc('taxonomy').get();
+    if (doc.exists) {
+      const data = doc.data();
+      if (data.brands) liveBrands = data.brands;
+      if (data.categories) liveCategories = data.categories;
+    }
+  } catch(e) {}
+
+  // 1. تحديث قائمة الماركات في الشريط الجانبي
+  const brandsContainer = document.getElementById('brand-checkboxes-container');
+  if (brandsContainer && liveBrands.length > 0) {
+    brandsContainer.innerHTML = liveBrands.map(b => `
+      <label class="custom-chk">
+        <span>${b} <b class="count-tag" data-val="${b}">(0)</b></span>
+        <input type="checkbox" class="filter-checkbox" data-type="brand" value="${b}">
+      </label>
+    `).join('');
+
+    // إعادة ربط أحداث الفلترة على الماركات الجديدة
+    brandsContainer.querySelectorAll('.filter-checkbox').forEach(chk => {
+      chk.addEventListener('change', () => {
+        state.currentPage = 1;
+        const val = chk.value;
+        if (chk.checked) {
+          if (!activeFilters.brand.includes(val)) activeFilters.brand.push(val);
+        } else {
+          activeFilters.brand = activeFilters.brand.filter(v => v !== val);
+        }
+        executeFiltering();
+      });
+    });
+  }
+
+  // 2. تحديث قائمة الأقسام المنسدلة في شريط البحث العلوي
+  const catSelect = document.getElementById('search-category');
+  if (catSelect && liveCategories.length > 0) {
+    catSelect.innerHTML = `<option value="all">جميع الفئات</option>` + liveCategories.map(c => `
+      <option value="${c.id}">${c.name}</option>
+    `).join('');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  syncLiveTaxonomy();
   fetchProductsFromFirebase();
   syncCartBadge();
 });
