@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="إتمام الطلب وتأكيد الشحن - متجر عباسكو لإكسسوارات الهواتف الأصلية">
-  <title>تأكيد الشحن وإتمام الطلب | عباسكو - Abasco</title>
+  <meta name="description" content="تأكيد الشحن والفاتورة - محل عباسكو لإكسسوارات الموبايل الأصلية">
+  <title>تأكيد الشحن وإتمام الطلب | عباسكو - Abassco Store</title>
 
-  <!-- الخطوط الرسمية والأيقونات -->
+  <!-- الخط الرسمي والأيقونات -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -14,353 +14,197 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    /* ==========================================================================
-       تنسيقات صفحة تأكيد الشحن بنمط راية شوب الأبيض النظيف
-       ========================================================================== */
-    .checkout-canvas {
-      padding: 30px 0 80px;
+    /* --------------------------------------------------------------------------
+       تنسيقات صفحة تأكيد الشحن بنمط Dream 2000 الأخضر النظيف
+       -------------------------------------------------------------------------- */
+    .checkout-main-canvas {
+      padding: 25px 0 80px;
       min-height: 80vh;
-      background-color: #f8f9fa;
     }
 
-    /* شريط خطوات إتمام الطلب (Breadcrumb Stepper) */
-    .checkout-stepper-bar {
+    /* شريط مؤشر الخطوات */
+    .checkout-flow-stepper {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
-      margin-bottom: 35px;
+      gap: 14px;
+      margin-bottom: 30px;
     }
 
-    .step-node {
+    .flow-step {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 700;
-      color: #94a3b8;
+      color: var(--text-muted);
     }
 
-    .step-node.completed {
-      color: #0056b3;
+    .flow-step.done {
+      color: var(--dream-green);
     }
 
-    .step-node.active {
-      color: #0b1a30;
+    .flow-step.active {
+      color: var(--text-main);
       font-weight: 900;
     }
 
-    .step-circle {
-      width: 32px;
-      height: 32px;
+    .flow-step-number {
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      background: #e2e8f0;
-      color: #64748b;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
 
-    .step-node.completed .step-circle {
-      background: #e8f0fe;
-      color: #0056b3;
+    .flow-step.done .flow-step-number {
+      background: var(--dream-green-light);
+      color: var(--dream-green);
+      border-color: var(--dream-green);
     }
 
-    .step-node.active .step-circle {
-      background: #0056b3;
+    .flow-step.active .flow-step-number {
+      background: var(--dream-green);
       color: #ffffff;
-      box-shadow: 0 4px 10px rgba(0, 86, 179, 0.3);
+      border-color: var(--dream-green);
+      box-shadow: 0 2px 8px var(--dream-green-glow);
     }
 
-    .step-line-divider {
-      width: 45px;
+    .flow-step-connector {
+      width: 40px;
       height: 2px;
-      background: #cbd5e1;
+      background: var(--border-color);
     }
 
-    /* تخطيط الصفحة: عمود النموذج اليميني وعمود الفاتورة اليساري */
-    .checkout-two-columns {
+    /* تقسيم الصفحة (عمود البيانات يميناً وعمود الملخص يساراً) */
+    .checkout-content-grid {
       display: grid;
-      grid-template-columns: 1fr 390px;
-      gap: 30px;
+      grid-template-columns: 1fr 380px;
+      gap: 25px;
       align-items: flex-start;
     }
 
     /* بطاقة النموذج الرئيسية */
-    .checkout-panel-card {
-      background: #ffffff;
-      border: 1px solid #eaeded;
-      border-radius: 16px;
-      padding: 30px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-      margin-bottom: 24px;
+    .checkout-card-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 26px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 20px;
     }
 
-    .panel-header-title {
-      font-size: 1.25rem;
+    .checkout-card-panel h2 {
+      font-size: 1.15rem;
       font-weight: 900;
-      color: #0b1a30;
+      color: var(--text-main);
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .panel-header-title i {
-      color: #0056b3;
-      font-size: 1.2rem;
-    }
-
-    /* تقسيم الحقول داخل النموذج */
-    .form-row-duo {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
+      gap: 10px;
       margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-light);
     }
 
-    .form-field-unit {
+    .checkout-card-panel h2 i {
+      color: var(--dream-green);
+      font-size: 1.1rem;
+    }
+
+    .input-field-block {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
-    .form-field-unit label {
-      font-size: 0.88rem;
+    .input-field-block label {
+      font-size: 0.86rem;
       font-weight: 800;
-      color: #334155;
+      color: var(--text-main);
     }
 
-    .form-field-unit label span.req-star {
-      color: #d90429;
+    .input-field-block label span.star {
+      color: var(--discount-red);
     }
 
-    .form-field-unit input,
-    .form-field-unit select,
-    .form-field-unit textarea {
-      padding: 12px 16px;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 10px;
+    .input-field-block input,
+    .input-field-block select,
+    .input-field-block textarea {
+      padding: 11px 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-xs);
       font-family: inherit;
-      font-size: 0.92rem;
-      color: #0f1111;
-      background: #ffffff;
+      font-size: 0.9rem;
+      color: var(--text-main);
+      background: var(--bg-surface);
       outline: none;
-      transition: all 0.25s ease;
+      transition: var(--transition-normal);
     }
 
-    .form-field-unit input:focus,
-    .form-field-unit select:focus,
-    .form-field-unit textarea:focus {
-      border-color: #0056b3;
-      box-shadow: 0 0 0 4px rgba(0, 86, 179, 0.12);
+    .input-field-block input:focus,
+    .input-field-block select:focus,
+    .input-field-block textarea:focus {
+      border-color: var(--dream-green);
+      box-shadow: 0 0 0 3px var(--dream-green-glow);
     }
 
-    .field-hint-text {
-      font-size: 0.76rem;
-      color: #64748b;
+    .input-note-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
     }
 
-    /* خيارات طرق الدفع */
-    .payment-options-grid {
+    .duo-inputs-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
+    }
+
+    /* خيار الدفع النقدي عند الاستلام */
+    .cash-option-box {
+      border: 1.5px solid var(--dream-green);
+      background: var(--dream-green-light);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
       margin-top: 10px;
     }
 
-    .payment-radio-label {
-      border: 1.5px solid #cbd5e1;
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      background: #ffffff;
+    body.dark-mode .cash-option-box {
+      background: rgba(124, 179, 66, 0.12);
+      border-color: rgba(124, 179, 66, 0.4);
     }
 
-    .payment-radio-label:hover {
-      border-color: #0056b3;
+    .cash-option-box i {
+      font-size: 1.8rem;
+      color: var(--dream-green);
     }
 
-    .payment-radio-label.selected {
-      border-color: #0056b3;
-      background: #f0f7ff;
-    }
-
-    .payment-radio-label input[type="radio"] {
-      accent-color: #0056b3;
-      width: 18px;
-      height: 18px;
-    }
-
-    .radio-text-wrap strong {
+    .cash-option-texts strong {
       display: block;
       font-size: 0.92rem;
-      color: #0b1a30;
+      color: var(--text-main);
     }
 
-    .radio-text-wrap small {
+    .cash-option-texts small {
       font-size: 0.78rem;
-      color: #64748b;
+      color: var(--text-muted);
     }
 
-    /* عمود ملخص الفاتورة المثبت (Order Summary Sidebar) */
-    .order-sidebar-card {
-      background: #ffffff;
-      border: 1px solid #eaeded;
-      border-radius: 16px;
-      padding: 26px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-      position: sticky;
-      top: 90px;
-    }
-
-    .order-sidebar-card h3 {
-      font-size: 1.25rem;
-      font-weight: 900;
-      color: #0b1a30;
-      margin-bottom: 18px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    /* قائمة المنتجات المصغرة داخل الفاتورة */
-    .order-items-mini-list {
-      max-height: 280px;
-      overflow-y: auto;
-      padding-left: 6px;
-      margin-bottom: 18px;
-    }
-
-    .mini-product-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid #f8fafc;
-    }
-
-    .mini-item-thumb {
-      width: 50px;
-      height: 50px;
-      background: #f8fafc;
-      border: 1px solid #eaeded;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4px;
-      flex-shrink: 0;
-    }
-
-    .mini-item-thumb img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-
-    .mini-item-details {
-      flex: 1;
-    }
-
-    .mini-item-details h5 {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #0f1111;
-      line-height: 1.3;
-      margin-bottom: 4px;
-    }
-
-    .mini-item-details span {
-      font-size: 0.78rem;
-      color: #64748b;
-    }
-
-    .mini-item-price {
-      font-size: 0.95rem;
-      font-weight: 900;
-      color: #004b93;
-    }
-
-    /* خطوط الحساب المالي */
-    .receipt-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      font-size: 0.9rem;
-      color: #475569;
-    }
-
-    .receipt-row strong {
-      color: #0b1a30;
-      font-weight: 800;
-    }
-
-    .receipt-separator {
-      border: none;
-      border-top: 1px dashed #cbd5e1;
-      margin: 16px 0;
-    }
-
-    .receipt-total-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 22px;
-    }
-
-    .receipt-total-line span {
-      font-size: 1.05rem;
-      font-weight: 900;
-      color: #0b1a30;
-    }
-
-    .receipt-total-line strong {
-      font-size: 1.65rem;
-      font-weight: 900;
-      color: #004b93;
-    }
-
-    /* مؤشرات الثقة وضمان المعاينة */
-    .inspection-trust-box {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 10px;
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .inspection-trust-box i {
-      font-size: 1.5rem;
-      color: #16a34a;
-    }
-
-    .inspection-trust-box p {
-      font-size: 0.8rem;
-      color: #166534;
-      font-weight: 700;
-      line-height: 1.4;
-    }
-
-    /* زر تأكيد الطلب المباشر عبر الواتساب */
-    .btn-confirm-whatsapp-order {
+    /* زر تأكيد الطلب للواتساب */
+    .btn-send-whatsapp-order {
       width: 100%;
-      background-color: #25d366;
+      background-color: var(--whatsapp-color);
       color: #ffffff;
       border: none;
-      padding: 15px 20px;
-      border-radius: 50px;
+      padding: 15px;
+      border-radius: var(--radius-pill);
       font-size: 1.05rem;
       font-weight: 900;
       display: flex;
@@ -369,244 +213,366 @@
       gap: 10px;
       cursor: pointer;
       box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
-      transition: all 0.25s ease;
+      transition: var(--transition-normal);
+      margin-top: 10px;
     }
 
-    .btn-confirm-whatsapp-order:hover {
+    .btn-send-whatsapp-order:hover {
       background-color: #1ebc57;
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
     }
 
+    /* عمود الفاتورة المثبت */
+    .checkout-summary-sidebar {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      box-shadow: var(--shadow-card);
+      position: sticky;
+      top: 85px;
+    }
+
+    .checkout-summary-sidebar h3 {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--text-main);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .checkout-mini-items-list {
+      max-height: 250px;
+      overflow-y: auto;
+      margin-bottom: 14px;
+      padding-left: 4px;
+    }
+
+    .mini-cart-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .mini-cart-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 6px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px;
+      flex-shrink: 0;
+    }
+
+    .mini-cart-thumb img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .mini-cart-desc {
+      flex: 1;
+    }
+
+    .mini-cart-desc h5 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.3;
+      margin-bottom: 2px;
+    }
+
+    .mini-cart-desc span {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .mini-cart-total {
+      font-size: 0.88rem;
+      font-weight: 900;
+      color: var(--discount-red);
+    }
+
+    .summary-calc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .summary-calc-row strong {
+      color: var(--text-main);
+      font-weight: 800;
+    }
+
+    .summary-calc-divider {
+      border: none;
+      border-top: 1px dashed var(--border-color);
+      margin: 14px 0;
+    }
+
+    .summary-final-due {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .summary-final-due span {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--text-main);
+    }
+
+    .summary-final-due strong {
+      font-size: 1.55rem;
+      font-weight: 900;
+      color: var(--discount-red);
+    }
+
+    .inspection-badge-note {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xs);
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .inspection-badge-note i {
+      font-size: 1.3rem;
+      color: var(--dream-green);
+    }
+
     @media (max-width: 992px) {
-      .checkout-two-columns {
+      .checkout-content-grid {
         grid-template-columns: 1fr;
       }
-      .form-row-duo {
-        grid-template-columns: 1fr;
-      }
-      .payment-options-grid {
-        grid-template-columns: 1fr;
-      }
-      .order-sidebar-card {
+      .checkout-summary-sidebar {
         position: static;
+      }
+      .duo-inputs-row {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- 1. شريط التنقل العلوي -->
-  <nav class="raya-top-nav-bar">
-    <div class="container nav-top-flex">
-      <ul class="top-categories-list">
-        <li><a href="index.html#offers" class="active-badge"><i class="fa-solid fa-gift"></i> عروض عباسكو الحصرية</a></li>
-        <li><a href="index.html#cases">كفرات iPhone وسامسونج</a></li>
-        <li><a href="index.html#chargers">شواحن GaN السريعة</a></li>
-        <li><a href="index.html#screen-protectors">اسكرينات 9D وعدسات</a></li>
-        <li><a href="index.html#powerbanks">بنوك طاقة (باور بانك)</a></li>
-        <li><a href="index.html#audio">سماعات بلوتوث</a></li>
-      </ul>
+  <!-- 1. شريط الإعلانات العلوي المتحرك -->
+  <div class="dream-top-ticker">
+    <div class="ticker-track">
+      <span>🔥 عروض عباسكو الحصرية على جميع إكسسوارات الموبايل</span>
+      <span>•</span>
+      <span>🚚 معاينة الشحنة بالكامل والتأكد من سلامتها أمام المندوب قبل الدفع</span>
+      <span>•</span>
+      <span>⚡ شواحن GaN معتمدة وكفرات MagSafe أصلية بضمان استبدال فوري</span>
+      <span>•</span>
+      <span>💵 الدفع نقداً عند الاستلام كاش بكل أمان</span>
     </div>
-  </nav>
+  </div>
 
-  <!-- 2. رأس الموقع الرسمي -->
-  <header class="raya-main-header">
-    <div class="container raya-header-flex">
-      <a href="index.html" class="raya-brand-logo">
-        <div class="logo-symbol"><i class="fa-solid fa-bolt-lightning"></i></div>
-        <div class="logo-text-group">
-          <span class="arabic-logo">عباسكو</span>
-          <span class="english-logo">ABASCO</span>
+  <!-- 2. رأس المتجر الموحد -->
+  <header class="dream-header">
+    <div class="container header-inner">
+      <a href="index.html" class="dream-brand">
+        <div class="brand-badge-icon">
+          <i class="fa-solid fa-bolt-lightning"></i>
+        </div>
+        <div class="brand-titles">
+          <span class="brand-ar">عباسكو</span>
+          <span class="brand-en">Abassco <small>Store</small></span>
         </div>
       </a>
 
-      <div class="raya-header-actions">
-        <a href="cart.html" class="lang-switch-btn"><i class="fa-solid fa-cart-shopping"></i> العودة للسلة</a>
-        <div class="header-divider"></div>
-        <a href="index.html" class="lang-switch-btn"><i class="fa-solid fa-house"></i> الرئيسية</a>
+      <div class="dream-header-tools">
+        <div class="dark-mode-toggle-wrap" title="تبديل الوضع الليلي / الفاتح">
+          <label class="switch-ui" for="dark-mode-checkbox">
+            <input type="checkbox" id="dark-mode-checkbox">
+            <span class="slider-switch round">
+              <i class="fa-solid fa-sun icon-sun"></i>
+              <i class="fa-solid fa-moon icon-moon"></i>
+            </span>
+          </label>
+        </div>
+
+        <div class="header-v-divider"></div>
+
+        <a href="cart.html" class="dream-brand" style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted);">
+          <i class="fa-solid fa-cart-shopping"></i> العودة للسلة
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- 3. منطقة إتمام الطلب وتأكيد الشحن -->
-  <main class="checkout-canvas">
+  <!-- 3. مساحة تأكيد الشحن والفاتورة -->
+  <main class="checkout-main-canvas">
     <div class="container">
       
-      <!-- شريط مؤشرات الخطوات -->
-      <div class="checkout-stepper-bar">
-        <div class="step-node completed">
-          <div class="step-circle"><i class="fa-solid fa-check"></i></div>
+      <!-- مؤشر مسار الخطوات -->
+      <div class="checkout-flow-stepper">
+        <div class="flow-step done">
+          <div class="flow-step-number"><i class="fa-solid fa-check"></i></div>
           <span>عربة التسوق</span>
         </div>
-        <div class="step-line-divider"></div>
-        <div class="step-node active">
-          <div class="step-circle">2</div>
-          <span>بيانات الشحن والعنوان</span>
+        <div class="flow-step-connector"></div>
+        <div class="flow-step active">
+          <div class="flow-step-number">2</div>
+          <span>بيانات التوصيل والعنوان</span>
         </div>
-        <div class="step-line-divider"></div>
-        <div class="step-node">
-          <div class="step-circle">3</div>
-          <span>التأكيد والاستلام</span>
+        <div class="flow-step-connector"></div>
+        <div class="flow-step">
+          <div class="flow-step-number">3</div>
+          <span>المعاينة والاستلام</span>
         </div>
       </div>
 
-      <div class="checkout-two-columns">
+      <div class="checkout-content-grid">
         
-        <!-- نموذج إدخال بيانات المشتري بالتفصيل -->
-        <div class="checkout-main-forms">
-          
-          <form id="order-dispatch-form">
-            <!-- صندوق البيانات الشخصية وأرقام التواصل -->
-            <section class="checkout-panel-card">
-              <h2 class="panel-header-title">
-                <i class="fa-solid fa-user-shield"></i> بيانات المشتري وأرقام التواصل
-              </h2>
+        <!-- استمارة كتابة العنوان والبيانات -->
+        <div class="checkout-forms-column">
+          <form id="checkout-dispatch-form">
+            
+            <!-- الصندوق الأول: بيانات المشتري -->
+            <section class="checkout-card-panel">
+              <h2><i class="fa-solid fa-user-check"></i> بيانات المشتري وأرقام التواصل</h2>
 
-              <div class="form-field-unit">
-                <label for="cust-fullname">الاسم الثلاثي بالكامل <span class="req-star">*</span></label>
-                <input type="text" id="cust-fullname" placeholder="مثال: محمود أحمد علي" required autocomplete="name">
-                <span class="field-hint-text">يُرجى كتابة الاسم كما هو مدون في البطاقة لتسهيل استلام الشحنة.</span>
+              <div class="input-field-block">
+                <label for="order-fullname">الاسم الثلاثي بالكامل <span class="star">*</span></label>
+                <input type="text" id="order-fullname" placeholder="أدخل اسمك الثلاثي" required>
+                <span class="input-note-hint">الاسم المدون لتسليم الشحنة لك شخصياً.</span>
               </div>
 
-              <div class="form-row-duo">
-                <div class="form-field-unit">
-                  <label for="cust-phone-primary">رقم الهاتف الأساسي (الواتساب) <span class="req-star">*</span></label>
-                  <input type="tel" id="cust-phone-primary" placeholder="01012345678" maxlength="11" pattern="^01[0125][0-9]{8}$" required autocomplete="tel">
-                  <span class="field-hint-text">سيتواصل معك المندوب على هذا الرقم قبل التوصيل.</span>
+              <div class="duo-inputs-row">
+                <div class="input-field-block">
+                  <label for="order-phone1">رقم الهاتف الأساسي (الواتساب) <span class="star">*</span></label>
+                  <input type="tel" id="order-phone1" placeholder="01012345678" maxlength="11" pattern="^01[0125][0-9]{8}$" required>
+                  <span class="input-note-hint">سيتواصل معك المندوب على هذا الرقم قبل الوصول.</span>
                 </div>
 
-                <div class="form-field-unit">
-                  <label for="cust-phone-alt">رقم هاتف إضافي / للطوارئ <span class="req-star">*</span></label>
-                  <input type="tel" id="cust-phone-alt" placeholder="01198765432" maxlength="11" required>
-                  <span class="field-hint-text">رقم بديل لأحد الأقارب أو هاتف أرضي لضمان الوصول.</span>
+                <div class="input-field-block">
+                  <label for="order-phone2">رقم هاتف إضافي <span class="star">*</span></label>
+                  <input type="tel" id="order-phone2" placeholder="01198765432" maxlength="11" required>
+                  <span class="input-note-hint">رقم بديل للطوارئ لضمان استلامك للطلب.</span>
                 </div>
               </div>
             </section>
 
-            <!-- صندوق العنوان والموقع الجغرافي بالتفصيل -->
-            <section class="checkout-panel-card">
-              <h2 class="panel-header-title">
-                <i class="fa-solid fa-truck-ramp-box"></i> عنوان التوصيل والشحن
-              </h2>
+            <!-- الصندوق الثاني: العنوان وحساب الشحن -->
+            <section class="checkout-card-panel">
+              <h2><i class="fa-solid fa-location-dot"></i> عنوان التوصيل والشحن</h2>
 
-              <div class="form-row-duo">
-                <div class="form-field-unit">
-                  <label for="cust-governorate">المحافظة <span class="req-star">*</span></label>
-                  <select id="cust-governorate" required>
-                    <option value="">اختر محافظتك لحساب الشحن...</option>
-                    <option value="القاهرة" data-shipping="35">القاهرة (شحن: 35 ج.م)</option>
-                    <option value="الجيزة" data-shipping="35">الجيزة (شحن: 35 ج.م)</option>
-                    <option value="الإسكندرية" data-shipping="45">الإسكندرية (شحن: 45 ج.م)</option>
-                    <option value="القليوبية" data-shipping="40">القليوبية (شحن: 40 ج.م)</option>
-                    <option value="الشرقية" data-shipping="45">الشرقية (شحن: 45 ج.م)</option>
-                    <option value="الدقهلية" data-shipping="45">الدقهلية (شحن: 45 ج.م)</option>
-                    <option value="الغربية" data-shipping="45">الغربية (شحن: 45 ج.م)</option>
-                    <option value="المنوفية" data-shipping="45">المنوفية (شحن: 45 ج.م)</option>
-                    <option value="البحيرة" data-shipping="45">البحيرة (شحن: 45 ج.م)</option>
-                    <option value="كفر الشيخ" data-shipping="45">كفر الشيخ (شحن: 45 ج.م)</option>
-                    <option value="دمياط" data-shipping="45">دمياط (شحن: 45 ج.م)</option>
-                    <option value="بورسعيد" data-shipping="50">بورسعيد (شحن: 50 ج.م)</option>
-                    <option value="الإسماعيلية" data-shipping="50">الإسماعيلية (شحن: 50 ج.م)</option>
-                    <option value="السويس" data-shipping="50">السويس (شحن: 50 ج.م)</option>
-                    <option value="الفيوم" data-shipping="50">الفيوم (شحن: 50 ج.م)</option>
-                    <option value="بني سويف" data-shipping="50">بني سويف (شحن: 50 ج.م)</option>
-                    <option value="المنيا" data-shipping="55">المنيا (شحن: 55 ج.م)</option>
-                    <option value="أسيوط" data-shipping="55">أسيوط (شحن: 55 ج.م)</option>
-                    <option value="سوهاج" data-shipping="55">سوهاج (شحن: 55 ج.م)</option>
-                    <option value="قنا" data-shipping="60">قنا (شحن: 60 ج.م)</option>
-                    <option value="الأقصر" data-shipping="60">الأقصر (شحن: 60 ج.م)</option>
-                    <option value="أسوان" data-shipping="60">أسوان (شحن: 60 ج.م)</option>
-                    <option value="مطروح" data-shipping="65">مطروح (شحن: 65 ج.م)</option>
-                    <option value="البحر الأحمر" data-shipping="65">البحر الأحمر (شحن: 65 ج.م)</option>
+              <div class="duo-inputs-row">
+                <div class="input-field-block">
+                  <label for="order-gov">المحافظة <span class="star">*</span></label>
+                  <select id="order-gov" required>
+                    <option value="">حدد المحافظة لحساب الشحن...</option>
+                    <option value="القاهرة" data-shipping="35">القاهرة (35 ج.م)</option>
+                    <option value="الجيزة" data-shipping="35">الجيزة (35 ج.م)</option>
+                    <option value="الإسكندرية" data-shipping="45">الإسكندرية (45 ج.م)</option>
+                    <option value="القليوبية" data-shipping="40">القليوبية (40 ج.م)</option>
+                    <option value="الشرقية" data-shipping="45">الشرقية (45 ج.م)</option>
+                    <option value="الدقهلية" data-shipping="45">الدقهلية (45 ج.م)</option>
+                    <option value="الغربية" data-shipping="45">الغربية (45 ج.م)</option>
+                    <option value="المنوفية" data-shipping="45">المنوفية (45 ج.م)</option>
+                    <option value="البحيرة" data-shipping="45">البحيرة (45 ج.م)</option>
+                    <option value="كفر الشيخ" data-shipping="45">كفر الشيخ (45 ج.م)</option>
+                    <option value="دمياط" data-shipping="45">دمياط (45 ج.م)</option>
+                    <option value="بورسعيد" data-shipping="50">بورسعيد (50 ج.م)</option>
+                    <option value="الإسماعيلية" data-shipping="50">الإسماعيلية (50 ج.م)</option>
+                    <option value="السويس" data-shipping="50">السويس (50 ج.م)</option>
+                    <option value="الفيوم" data-shipping="50">الفيوم (50 ج.م)</option>
+                    <option value="بني سويف" data-shipping="50">بني سويف (50 ج.م)</option>
+                    <option value="المنيا" data-shipping="55">المنيا (55 ج.م)</option>
+                    <option value="أسيوط" data-shipping="55">أسيوط (55 ج.م)</option>
+                    <option value="سوهاج" data-shipping="55">سوهاج (55 ج.م)</option>
+                    <option value="قنا" data-shipping="60">قنا (60 ج.م)</option>
+                    <option value="الأقصر" data-shipping="60">الأقصر (60 ج.م)</option>
+                    <option value="أسوان" data-shipping="60">أسوان (60 ج.م)</option>
+                    <option value="مطروح" data-shipping="65">مطروح (65 ج.م)</option>
+                    <option value="البحر الأحمر" data-shipping="65">البحر الأحمر (65 ج.م)</option>
                   </select>
                 </div>
 
-                <div class="form-field-unit">
-                  <label for="cust-district">المدينة / المركز / الحي <span class="req-star">*</span></label>
-                  <input type="text" id="cust-district" placeholder="مثال: مدينة نصر / الدقي / سموحة" required>
+                <div class="input-field-block">
+                  <label for="order-city">المدينة / الحي / المنطقة <span class="star">*</span></label>
+                  <input type="text" id="order-city" placeholder="مثال: شبرا / الدقي / سموحة" required>
                 </div>
               </div>
 
-              <div class="form-field-unit">
-                <label for="cust-full-address">العنوان التفصيلي <span class="req-star">*</span></label>
-                <textarea id="cust-full-address" rows="3" placeholder="اسم الشارع بالتفصيل، رقم العمارة، الدور، رقم الشقة، وأقرب علامة مميزة بجوارك..." required></textarea>
+              <div class="input-field-block">
+                <label for="order-address">العنوان بالتفصيل <span class="star">*</span></label>
+                <textarea id="order-address" rows="3" placeholder="اسم الشارع بالتفصيل، رقم العمارة، الدور، رقم الشقة، وأقرب علامة مميزة بجوارك..." required></textarea>
               </div>
 
-              <div class="form-field-unit">
-                <label for="cust-delivery-notes">ملاحظات لمندوب التوصيل (اختياري)</label>
-                <input type="text" id="cust-delivery-notes" placeholder="مثال: متواجد بعد الساعة 3 عصراً، الاتصال مسبقاً...">
-              </div>
-            </section>
-
-            <!-- اختيار وسيلة الدفع المفضلة -->
-            <section class="checkout-panel-card">
-              <h2 class="panel-header-title">
-                <i class="fa-solid fa-wallet"></i> طريقة الدفع المفضلة
-              </h2>
-
-              <div class="payment-options-grid">
-                <label class="payment-radio-label selected" id="lbl-cod">
-                  <input type="radio" name="paymentMethod" value="الدفع نقداً عند الاستلام" checked>
-                  <div class="radio-text-wrap">
-                    <strong>الدفع عند الاستلام (COD)</strong>
-                    <small>افتح الشحنة وعاينها قبل الدفع</small>
-                  </div>
-                </label>
-
-                <label class="payment-radio-label" id="lbl-wallet">
-                  <input type="radio" name="paymentMethod" value="فودافون كاش / إنستاباي">
-                  <div class="radio-text-wrap">
-                    <strong>فودافون كاش / InstaPay</strong>
-                    <small>تحويل مسبق سريع وآمن</small>
-                  </div>
-                </label>
+              <div class="input-field-block">
+                <label for="order-notes">ملاحظات لمندوب الشحن (اختياري)</label>
+                <input type="text" id="order-notes" placeholder="مثال: يرجى الاتصال قبل الوصول بربع ساعة...">
               </div>
             </section>
 
-            <button type="submit" class="btn-confirm-whatsapp-order">
-              <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem;"></i>
-              <span>تأكيد الطلب وإرسال الفاتورة للواتساب</span>
-            </button>
+            <!-- الصندوق الثالث: تأكيد طريقة الدفع كاش -->
+            <section class="checkout-card-panel">
+              <h2><i class="fa-solid fa-hand-holding-dollar"></i> طريقة السداد</h2>
+              
+              <div class="cash-option-box">
+                <i class="fa-solid fa-money-bill-wave"></i>
+                <div class="cash-option-texts">
+                  <strong>الدفع نقداً عند الاستلام كاش</strong>
+                  <small>افتح الشحنة وتأكد من ملحقات هاتفك بنفسك قبل دفع مليم واحد للمندوب.</small>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-send-whatsapp-order">
+                <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem;"></i>
+                <span>تأكيد الطلب وإرسال الفاتورة لواتساب عباسكو</span>
+              </button>
+            </section>
+
           </form>
-
         </div>
 
-        <!-- عمود الفاتورة والملخص المالي المثبت (Sidebar) -->
-        <aside class="order-sidebar-card">
-          <h3>ملخص مشترياتك (<span id="summary-items-count">0</span>)</h3>
+        <!-- عمود الفاتورة والملخص المالي الجانبي -->
+        <aside class="checkout-summary-sidebar">
+          <h3>ملخص الفاتورة (<span id="cart-items-qty">0</span>)</h3>
 
-          <div class="order-items-mini-list" id="mini-products-list">
-            <!-- يتم تعبئة المنتجات هنا تلقائياً من السلة -->
+          <div class="checkout-mini-items-list" id="mini-order-items">
+            <!-- يتم حقن المنتجات المختصرة هنا -->
           </div>
 
-          <div class="receipt-row">
+          <div class="summary-calc-row">
             <span>إجمالي الملحقات:</span>
-            <strong id="receipt-subtotal">0 ج.م</strong>
+            <strong id="mini-subtotal-val">0.00 ج.م</strong>
           </div>
 
-          <div class="receipt-row">
-            <span>مصاريف الشحن والتوصيل:</span>
-            <strong id="receipt-shipping">اختر المحافظة</strong>
+          <div class="summary-calc-row">
+            <span>مصاريف الشحن:</span>
+            <strong id="mini-shipping-val">حدد المحافظة</strong>
           </div>
 
-          <div class="receipt-row" id="free-shipping-tag" style="display: none; color: #16a34a;">
-            <span>عرض عباسكو:</span>
-            <strong>شحن مجاني (للطلبات +400 ج.م)</strong>
-          </div>
+          <hr class="summary-calc-divider">
 
-          <hr class="receipt-separator">
-
-          <div class="receipt-total-line">
+          <div class="summary-final-due">
             <span>المبلغ المستحق:</span>
-            <strong id="receipt-grand-total">0 ج.م</strong>
+            <strong id="mini-grand-total">0.00 ج.م</strong>
           </div>
 
-          <div class="inspection-trust-box">
-            <i class="fa-solid fa-shield-check"></i>
-            <p>
-              حق المعاينة مكفول: افتح كرتونة الشحن وتأكد من ملحقاتك قبل دفع مليم واحد للمندوب.
-            </p>
+          <div class="inspection-badge-note">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>معاينة حقيقية وضمان محلي: يحق لك فتح كرتونة الشحن بالكامل والتأكد من سلامتها.</span>
           </div>
         </aside>
 
@@ -615,158 +581,205 @@
     </div>
   </main>
 
-  <!-- 4. تذييل الموقع -->
-  <footer class="raya-blue-footer">
-    <div class="container">
-      <div class="footer-bottom-row" style="justify-content: center; padding: 20px 0;">
-        <p>&copy; 2026 جميع الحقوق محفوظة لمتجر <strong>عباسكو (Abasco)</strong></p>
+  <!-- 4. تذييل المتجر الموحد -->
+  <footer class="dream-footer">
+    <div class="container footer-content-row">
+      <div class="footer-shop-about">
+        <div class="footer-brand-title">محل عباسكو لإكسسوارات الموبايل</div>
+        <p>محلك المفضل لتوريد أحدث ملحقات الهواتف المحمولة الأصلية. متاح المعاينة بالكامل قبل الدفع نقداً عند الاستلام كاش.</p>
+        <p class="store-hours"><i class="fa-regular fa-clock"></i> مواعيد العمل: يومياً من 10 صباحاً حتى 11 مساءً</p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>روابط سريعة</h4>
+        <ul>
+          <li><a href="index.html">الصفحة الرئيسية</a></li>
+          <li><a href="cart.html">عربة التسوق</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-contact-box">
+        <h4>راسلنا فوراً</h4>
+        <a href="https://wa.me/201000000000" class="hotline-pill">
+          <i class="fa-brands fa-whatsapp"></i> 01000000000
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom-copyright">
+      <div class="container copyright-flex">
+        <span>© 2026 محل عباسكو (Abassco Store) - جميع الحقوق محفوظة.</span>
+        <div class="payment-method-text">
+          <i class="fa-solid fa-hand-holding-dollar"></i> الدفع نقداً عند الاستلام كاش
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- 5. المحرك البرمجي لمعالجة البيانات وإرسالها للواتساب -->
+  <!-- 5. زر المحادثة العائم المتناوب (واتساب / ماسنجر كل 5 ثوانٍ) -->
+  <div class="alternating-chat-widget" id="alternating-chat-btn" title="تواصل معنا">
+    <a href="https://wa.me/201000000000" target="_blank" class="chat-circle-link whatsapp-mode" id="chat-link">
+      <i class="fa-brands fa-whatsapp chat-icon" id="chat-icon"></i>
+    </a>
+  </div>
+
+  <!-- المحرك البرمجي لحساب الشحن وإرسال الرسالة للواتساب -->
   <script>
     'use strict';
 
-    // قراءة محتويات السلة من الذاكرة المحلية
-    const cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];
+    const cart = JSON.parse(localStorage.getItem('abassco_raya_cart')) || [];
     
-    // إعادة التوجيه للسلة إذا كانت فارغة
+    // توجيه تلقائي للصفحة الرئيسية إذا كانت السلة فارغة
     if (cart.length === 0) {
-      alert('عربة التسوق فارغة حالياً! سيتم توجيهك لاختيار المنتجات.');
+      alert('سلة المشتريات فارغة! اختر ملحقاتك أولاً.');
       window.location.href = 'index.html';
     }
 
-    const itemsContainer = document.getElementById('mini-products-list');
-    const itemsCountEl = document.getElementById('summary-items-count');
-    const subtotalEl = document.getElementById('receipt-subtotal');
-    const shippingEl = document.getElementById('receipt-shipping');
-    const grandTotalEl = document.getElementById('receipt-grand-total');
-    const freeShippingTag = document.getElementById('free-shipping-tag');
-    const govSelect = document.getElementById('cust-governorate');
-    const form = document.getElementById('order-dispatch-form');
+    const itemsContainer = document.getElementById('mini-order-items');
+    const qtyBadge = document.getElementById('cart-items-qty');
+    const subtotalEl = document.getElementById('mini-subtotal-val');
+    const shippingEl = document.getElementById('mini-shipping-val');
+    const grandTotalEl = document.getElementById('mini-grand-total');
+    const govSelect = document.getElementById('order-gov');
+    const dispatchForm = document.getElementById('checkout-dispatch-form');
 
-    // حساب المجموع الإجمالي المبدئي
-    const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    const totalQty = cart.reduce((acc, item) => acc + item.quantity, 0);
+    const totalQuantity = cart.reduce((acc, i) => acc + i.quantity, 0);
+    const subtotalPrice = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
 
-    itemsCountEl.textContent = totalQty;
-    subtotalEl.textContent = `${subtotal.toLocaleString('ar-EG')} ج.م`;
+    qtyBadge.textContent = totalQuantity;
+    subtotalEl.textContent = `LE ${subtotalPrice.toFixed(2)}`;
 
     // عرض عناصر المنتجات المصغرة
     itemsContainer.innerHTML = cart.map(item => `
-      <div class="mini-product-item">
-        <div class="mini-item-thumb">
+      <div class="mini-cart-item">
+        <div class="mini-cart-thumb">
           <img src="${item.image}" alt="${item.name}">
         </div>
-        <div class="mini-item-details">
+        <div class="mini-cart-desc">
           <h5>${item.name}</h5>
-          <span>الكمية: ${item.quantity} × ${item.price.toLocaleString('ar-EG')} ج.م</span>
+          <span>الكمية: (${item.quantity}) × LE ${item.price.toFixed(2)}</span>
         </div>
-        <div class="mini-item-price">
-          ${(item.price * item.quantity).toLocaleString('ar-EG')} ج.م
+        <div class="mini-cart-total">
+          LE ${(item.price * item.quantity).toFixed(2)}
         </div>
       </div>
     `).join('');
 
-    let currentShippingFee = 0;
+    let activeShippingFee = 0;
 
-    // دالة تحديث الحساب المالي عند اختيار المحافظة
-    function updateFinancialTotals() {
+    function recalculateGrandTotal() {
       const selectedOption = govSelect.options[govSelect.selectedIndex];
-      const baseShipping = parseFloat(selectedOption.getAttribute('data-shipping')) || 0;
+      const fee = parseFloat(selectedOption.getAttribute('data-shipping')) || 0;
 
-      // شحن مجاني إذا كانت الفاتورة 400 جنيه أو أكثر
-      if (subtotal >= 400) {
-        currentShippingFee = 0;
-        freeShippingTag.style.display = 'flex';
-        shippingEl.innerHTML = '<span style="color: #16a34a; font-weight: 800;">مجاني</span>';
-      } else if (baseShipping > 0) {
-        currentShippingFee = baseShipping;
-        freeShippingTag.style.display = 'none';
-        shippingEl.textContent = `${currentShippingFee} ج.م`;
+      if (fee > 0) {
+        activeShippingFee = fee;
+        shippingEl.textContent = `LE ${activeShippingFee.toFixed(2)}`;
       } else {
-        currentShippingFee = 0;
-        shippingEl.textContent = 'اختر المحافظة';
+        activeShippingFee = 0;
+        shippingEl.textContent = 'حدد المحافظة';
       }
 
-      const grandTotal = subtotal + currentShippingFee;
-      grandTotalEl.textContent = `${grandTotal.toLocaleString('ar-EG')} ج.م`;
+      const grandTotal = subtotalPrice + activeShippingFee;
+      grandTotalEl.textContent = `LE ${grandTotal.toFixed(2)}`;
     }
 
-    govSelect.addEventListener('change', updateFinancialTotals);
+    govSelect.addEventListener('change', recalculateGrandTotal);
 
-    // تغيير تنسيق خيارات الدفع عند النقر
-    document.querySelectorAll('.payment-radio-label').forEach(label => {
-      label.addEventListener('click', () => {
-        document.querySelectorAll('.payment-radio-label').forEach(l => l.classList.remove('selected'));
-        label.classList.add('selected');
-      });
-    });
-
-    // معالجة نموذج الطلب وتجهيز رسالة الواتساب المتكاملة
-    form.addEventListener('submit', (e) => {
+    // معالجة النموذج وتجهيز رسالة الواتساب الفورية
+    dispatchForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const fullName = document.getElementById('cust-fullname').value.trim();
-      const phonePrimary = document.getElementById('cust-phone-primary').value.trim();
-      const phoneAlt = document.getElementById('cust-phone-alt').value.trim();
+      const fullName = document.getElementById('order-fullname').value.trim();
+      const phone1 = document.getElementById('order-phone1').value.trim();
+      const phone2 = document.getElementById('order-phone2').value.trim();
       const governorate = govSelect.value;
-      const district = document.getElementById('cust-district').value.trim();
-      const addressDetails = document.getElementById('cust-full-address').value.trim();
-      const deliveryNotes = document.getElementById('cust-delivery-notes').value.trim();
-      const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+      const city = document.getElementById('order-city').value.trim();
+      const address = document.getElementById('order-address').value.trim();
+      const notes = document.getElementById('order-notes').value.trim();
 
       if (!governorate) {
-        alert('من فضلك حدد المحافظة لحساب مصاريف الشحن وتأكيد الطلب.');
+        alert('يرجى تحديد المحافظة لحساب تكلفة التوصيل بدقة.');
         govSelect.focus();
         return;
       }
 
-      // تجهيز قائمة المنتجات المنسقة نصياً
-      const itemsListFormatted = cart.map((item, idx) => 
-        `🔹 *${idx + 1}.* ${item.name}%0A   الكمية: (${item.quantity} قطع) | السعر: ${item.price * item.quantity} ج.م`
+      // بناء قائمة الملحقات المطلوبة نصياً
+      const itemsListText = cart.map((item, idx) => 
+        `🔹 *${idx + 1}.* ${item.name}%0A   الكمية: (${item.quantity} قطع) | السعر: LE ${(item.price * item.quantity).toFixed(2)}`
       ).join('%0A');
 
-      const finalAmount = subtotal + currentShippingFee;
+      const finalAmount = subtotalPrice + activeShippingFee;
       const orderDate = new Date().toLocaleDateString('ar-EG', { dateStyle: 'full' });
 
-      // صياغة رسالة الواتساب الاحترافية الجاهزة
-      const whatsappMessage = 
-        `🌟 *طلب شراء جديد - متجر عباسكو (Abasco)*%0A` +
-        `📅 *التاريخ:* ${orderDate}%0A` +
+      // صياغة الفاتورة الموجهة لرقم المتجر
+      const whatsappBill = 
+        `⚡ *طلب شراء جديد - محل عباسكو (Abassco)*%0A` +
+        `📅 *تاريخ الطلب:* ${orderDate}%0A` +
         `----------------------------------------%0A` +
-        `👤 *بيانات العميل:*%0A` +
+        `👤 *بيانات المستلم:*%0A` +
         `• *الاسم بالكامل:* ${fullName}%0A` +
-        `• *رقم الهاتف (واتساب):* ${phonePrimary}%0A` +
-        `• *رقم هاتف إضافي:* ${phoneAlt}%0A` +
+        `• *رقم الهاتف (الواتساب):* ${phone1}%0A` +
+        `• *رقم هاتف بديل:* ${phone2}%0A` +
         `----------------------------------------%0A` +
-        `📍 *عنوان التوصيل:*%0A` +
+        `📍 *عنوان الشحن بالتفصيل:*%0A` +
         `• *المحافظة:* ${governorate}%0A` +
-        `• *المركز / الحي:* ${district}%0A` +
-        `• *العنوان بالتفصيل:* ${addressDetails}%0A` +
-        (deliveryNotes ? `• *ملاحظات الشحن:* ${deliveryNotes}%0A` : '') +
+        `• *المدينة / الحي:* ${city}%0A` +
+        `• *العنوان:* ${address}%0A` +
+        (notes ? `• *ملاحظات التوصيل:* ${notes}%0A` : '') +
         `----------------------------------------%0A` +
-        `📦 *المنتجات المطلوبة:*%0A${itemsListFormatted}%0A` +
+        `📦 *المنتجات المطلوبة:*%0A${itemsListText}%0A` +
         `----------------------------------------%0A` +
         `💵 *الحساب المالي:*%0A` +
-        `• المجموع الفرعي: ${subtotal} ج.م%0A` +
-        `• تكلفة الشحن: ${currentShippingFee === 0 ? 'مجاني' : currentShippingFee + ' ج.م'}%0A` +
-        `• *المبلغ الإجمالي المستحق:* ${finalAmount} جنيه مصري%0A` +
-        `• *طريقة الدفع:* ${paymentMethod}%0A` +
+        `• إجمالي الملحقات: LE ${subtotalPrice.toFixed(2)}%0A` +
+        `• مصاريف الشحن: LE ${activeShippingFee.toFixed(2)}%0A` +
+        `• *المبلغ الإجمالي المستحق:* LE ${finalAmount.toFixed(2)}%0A` +
+        `• *طريقة الدفع:* الدفع نقداً عند الاستلام كاش مع المعاينة.%0A` +
         `----------------------------------------%0A` +
-        `🛡️ *ملاحظة:* يرجى تأكيد موعد وصول المندوب للمعاينة والاستلام.`;
+        `🛡️ *تأكيد المحل:* يتم تسليم الشحنة مع حق فتح الكرتونة والمعاينة قبل السداد.`;
 
-      // رقم واتساب المتجر (يمكنك استبدال الأصفار برقم الهاتف الفعلي)
-      const storePhone = '201000000000';
-      const whatsappUrl = `https://wa.me/${storePhone}?text=${whatsappMessage}`;
-
-      // فتح محادثة الواتساب في نافذة جديدة
-      window.open(whatsappUrl, '_blank');
+      // استبدل الأصفار برقم هاتف المحل الفعلي
+      const storeWhatsAppNumber = '201000000000';
+      window.open(`https://wa.me/${storeWhatsAppNumber}?text=${whatsappBill}`, '_blank');
     });
 
-    // التشغيل المبدئي
-    updateFinancialTotals();
+    // مزامنة الدارك مود
+    const darkCheckbox = document.getElementById('dark-mode-checkbox');
+    if (localStorage.getItem('abassco_dark_mode') === 'enabled') {
+      document.body.classList.add('dark-mode');
+      if (darkCheckbox) darkCheckbox.checked = true;
+    }
+    darkCheckbox?.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('abassco_dark_mode', 'enabled');
+      } else {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('abassco_dark_mode', 'disabled');
+      }
+    });
+
+    // تشغيل الزر المتناوب بين واتساب وماسنجر كل 5 ثوانٍ
+    const chatLink = document.getElementById('chat-link');
+    const chatIcon = document.getElementById('chat-icon');
+    let isWhatsApp = true;
+    setInterval(() => {
+      isWhatsApp = !isWhatsApp;
+      chatIcon.classList.add('rotate-anim');
+      setTimeout(() => {
+        if (isWhatsApp) {
+          chatLink.className = 'chat-circle-link whatsapp-mode';
+          chatLink.href = 'https://wa.me/201125408111';
+          chatIcon.className = 'fa-brands fa-whatsapp chat-icon';
+        } else {
+          chatLink.className = 'chat-circle-link messenger-mode';
+          chatLink.href = 'https://m.me/abasscostore';
+          chatIcon.className = 'fa-brands fa-facebook-messenger chat-icon';
+        }
+        chatIcon.classList.remove('rotate-anim');
+      }, 250);
+    }, 5000);
+
+    recalculateGrandTotal();
   </script>
 </body>
 </html>
