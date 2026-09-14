@@ -3,34 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>عباسكو | لوحة تحكم الإدارة (Seller Central)</title>
+  <title>عباسكو | لوحة تحكم المتجر (Seller Central)</title>
   
-  <!-- خط كايرو والأيقونات -->
+  <!-- خط كايرو والأيقونات الرسمية -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
     :root {
-      --admin-nav-dark: #131921;
-      --admin-sub-dark: #232f3e;
-      --admin-orange: #febd69;
-      --admin-orange-hover: #f3a847;
-      --admin-cta-yellow: #ffd814;
-      --admin-success: #067d62;
-      --admin-danger: #cc0c39;
-      --admin-warning: #e77600;
-      --admin-info: #007185;
-      --bg-light: #f4f6f8;
-      --bg-white: #ffffff;
-      --border-color: #d5d9d9;
-      --border-light: #e7e7e7;
-      --text-dark: #0f1111;
-      --text-muted: #565959;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 14px rgba(0,0,0,0.08);
-      --radius: 8px;
+      --admin-green: #7cb342;
+      --admin-green-hover: #689f38;
+      --admin-green-light: #f1f8e9;
+      --admin-dark-sidebar: #131921;
+      --admin-dark-header: #1e293b;
+      --admin-bg: #f8fafc;
+      --admin-surface: #ffffff;
+      --admin-border: #e2e8f0;
+      --admin-border-focus: #7cb342;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.04);
+      --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.08);
     }
 
     * {
@@ -41,8 +41,8 @@
     }
 
     body {
-      background-color: var(--bg-light);
-      color: var(--text-dark);
+      background-color: var(--admin-bg);
+      color: var(--text-main);
       display: flex;
       min-height: 100vh;
       direction: rtl;
@@ -51,7 +51,7 @@
     /* الشريط الجانبي */
     .admin-sidebar {
       width: 260px;
-      background-color: var(--admin-sub-dark);
+      background-color: var(--admin-dark-sidebar);
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -59,34 +59,40 @@
       top: 0;
       height: 100vh;
       flex-shrink: 0;
+      z-index: 100;
     }
 
-    .sidebar-header {
-      padding: 24px 20px;
-      background-color: var(--admin-nav-dark);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+    .sidebar-brand-box {
+      padding: 20px;
+      background: #0b0f14;
       display: flex;
       align-items: center;
       gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .sidebar-brand {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #fff;
+    .sidebar-brand-logo {
+      height: 46px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .sidebar-brand-titles h2 {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #ffffff;
       line-height: 1.2;
     }
 
-    .sidebar-brand span {
-      display: block;
+    .sidebar-brand-titles span {
       font-size: 0.7rem;
-      color: var(--admin-orange);
-      letter-spacing: 2px;
+      color: var(--admin-green);
+      font-weight: 700;
     }
 
     .sidebar-menu {
       list-style: none;
-      padding: 20px 0;
+      padding: 16px 0;
       flex: 1;
       overflow-y: auto;
     }
@@ -95,37 +101,49 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      padding: 12px 22px;
-      color: #cbd5e1;
+      padding: 13px 22px;
+      color: #94a3b8;
       text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 600;
+      font-size: 0.92rem;
+      font-weight: 700;
       border-right: 4px solid transparent;
       transition: all 0.2s ease;
+      cursor: pointer;
     }
 
     .sidebar-menu li a:hover,
     .sidebar-menu li.active a {
-      background-color: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border-right-color: var(--admin-orange);
+      background-color: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+      border-right-color: var(--admin-green);
     }
 
     .sidebar-menu li a i {
-      font-size: 1.15rem;
-      width: 24px;
+      font-size: 1.1rem;
+      width: 22px;
       text-align: center;
-      color: var(--admin-orange);
+      color: var(--admin-green);
     }
 
-    .sidebar-footer {
-      padding: 18px 20px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      font-size: 0.82rem;
+    .sidebar-footer-badge {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.8rem;
       color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    /* المحتوى الرئيسي */
+    .status-online-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    /* المنطقة الرئيسية */
     .admin-main {
       flex: 1;
       display: flex;
@@ -134,140 +152,153 @@
     }
 
     .admin-topbar {
-      background: var(--bg-white);
-      height: 68px;
-      padding: 0 30px;
+      background: var(--admin-surface);
+      height: 70px;
+      padding: 0 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--border-color);
-      box-shadow: var(--shadow-sm);
+      border-bottom: 1px solid var(--admin-border);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
     }
 
-    .view-store-btn {
+    .topbar-title-wrap h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--text-main);
+    }
+
+    .topbar-tools {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-view-store {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 8px 16px;
-      background: #fff;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      color: var(--text-dark);
+      background: var(--admin-green);
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 800;
       text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 700;
       transition: all 0.2s;
     }
 
-    .view-store-btn:hover {
-      background: var(--bg-light);
-      border-color: var(--text-dark);
+    .btn-view-store:hover {
+      background: var(--admin-green-hover);
+      transform: translateY(-1px);
     }
 
-    .admin-profile {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: var(--admin-orange);
-      color: #111;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-    }
-
-    .content-area {
-      padding: 30px;
+    .content-canvas {
+      padding: 28px;
       overflow-y: auto;
     }
 
-    /* مؤشرات الأداء KPIs */
+    /* التبويبات والمحتويات */
+    .tab-section {
+      display: none;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    .tab-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* مؤشرات الأداء */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
-      margin-bottom: 30px;
+      margin-bottom: 26px;
     }
 
     .kpi-card {
-      background: var(--bg-white);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
+      background: var(--admin-surface);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--radius-md);
       padding: 20px;
       display: flex;
       align-items: center;
-      gap: 18px;
-      box-shadow: var(--shadow-sm);
+      gap: 16px;
+      box-shadow: var(--shadow-card);
     }
 
-    .kpi-icon-wrapper {
-      width: 52px;
-      height: 52px;
-      border-radius: var(--radius);
+    .kpi-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-md);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
     }
 
-    .kpi-icon-1 { background: #e8f4fd; color: #007185; }
-    .kpi-icon-2 { background: #e6f7f2; color: #067d62; }
-    .kpi-icon-3 { background: #fff4e5; color: #e77600; }
-    .kpi-icon-4 { background: #fde8ec; color: #cc0c39; }
+    .kpi-1 { background: #e0f2fe; color: #0284c7; }
+    .kpi-2 { background: #dcfce7; color: #16a34a; }
+    .kpi-3 { background: #fef3c7; color: #d97706; }
+    .kpi-4 { background: #fee2e2; color: #dc2626; }
 
-    .kpi-info small {
+    .kpi-meta small {
       font-size: 0.82rem;
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
     }
 
-    .kpi-info h3 {
+    .kpi-meta h3 {
       font-size: 1.45rem;
-      font-weight: 800;
+      font-weight: 900;
+      color: var(--text-main);
       margin-top: 2px;
     }
 
-    /* شبكة لوحة التحكم */
-    .dashboard-grid {
+    /* تقسيم نموذج الإضافة والجدول */
+    .admin-grid-layout {
       display: grid;
-      grid-template-columns: 420px 1fr;
-      gap: 25px;
+      grid-template-columns: 460px 1fr;
+      gap: 24px;
+      align-items: flex-start;
     }
 
     .admin-card {
-      background: var(--bg-white);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
+      background: var(--admin-surface);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-card);
       overflow: hidden;
     }
 
-    .card-title-bar {
+    .admin-card-header {
       padding: 16px 20px;
-      border-bottom: 1px solid var(--border-light);
-      background: #fafafa;
+      border-bottom: 1px solid var(--admin-border);
+      background: #fafbfc;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .card-title-bar h2 {
+    .admin-card-header h2 {
       font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--text-dark);
+      font-weight: 900;
+      color: var(--text-main);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
-    .card-body {
+    .admin-card-header h2 i {
+      color: var(--admin-green);
+    }
+
+    .admin-card-body {
       padding: 20px;
     }
 
@@ -278,38 +309,188 @@
     .form-group label {
       display: block;
       font-size: 0.84rem;
-      font-weight: 700;
-      margin-bottom: 5px;
-      color: #333;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--text-main);
     }
 
     .form-control {
       width: 100%;
-      padding: 9px 12px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
+      padding: 9px 13px;
+      border: 1.5px solid var(--admin-border);
+      border-radius: var(--radius-sm);
       font-size: 0.88rem;
+      font-family: inherit;
       outline: none;
-      transition: border-color 0.2s;
+      transition: all 0.2s;
+      background: var(--admin-surface);
     }
 
     .form-control:focus {
-      border-color: var(--admin-warning);
-      box-shadow: 0 0 0 3px rgba(254, 189, 105, 0.4);
+      border-color: var(--admin-border-focus);
+      box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.18);
     }
 
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .submit-btn {
+    /* منطقة رفع 4 صور */
+    .file-upload-zone {
+      border: 2px dashed #cbd5e1;
+      background: #f8fafc;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .file-upload-zone:hover {
+      border-color: var(--admin-green);
+    }
+
+    .file-upload-zone i {
+      font-size: 1.8rem;
+      color: var(--admin-green);
+      margin-bottom: 6px;
+    }
+
+    .file-upload-zone p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .preview-thumbs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .thumb-slot {
+      height: 65px;
+      background: #ffffff;
+      border: 1px solid var(--admin-border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      font-size: 0.7rem;
+      color: #94a3b8;
+    }
+
+    .thumb-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 2px;
+    }
+
+    /* الألوان والمخزون لكل لون */
+    .color-variants-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--admin-border);
+    }
+
+    .color-variant-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: #ffffff;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid #e2e8f0;
+    }
+
+    .color-variant-row label {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .color-stock-input {
+      width: 110px;
+      padding: 5px 8px;
+      font-size: 0.82rem;
+      border: 1px solid var(--admin-border);
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    /* مواصفات مرقمة ديناميكية */
+    .specs-stack-builder {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .spec-input-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spec-number-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--admin-green-light);
+      color: var(--admin-green);
+      font-weight: 900;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid var(--admin-green);
+    }
+
+    .btn-add-spec-row {
+      background: none;
+      border: 1.5px dashed var(--admin-green);
+      color: var(--admin-green);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .btn-add-spec-row:hover {
+      background: var(--admin-green-light);
+    }
+
+    /* أزرار الحفظ والإلغاء */
+    .btn-submit-action {
       width: 100%;
       padding: 12px;
-      background: var(--admin-cta-yellow);
-      border: 1px solid #d4b106;
-      border-radius: var(--radius);
+      background: var(--admin-green);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-sm);
       font-size: 0.95rem;
       font-weight: 800;
       cursor: pointer;
@@ -317,28 +498,35 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 2px 5px rgba(213,217,217,0.5);
+      box-shadow: 0 3px 10px rgba(124, 179, 66, 0.3);
       transition: all 0.2s;
-      margin-top: 10px;
+      margin-top: 14px;
     }
 
-    .submit-btn:hover {
-      background: #f7ca00;
+    .btn-submit-action:hover {
+      background: var(--admin-green-hover);
     }
 
-    /* جدول المخزون والطلبات */
-    .table-toolbar {
+    .btn-cancel-edit {
+      display: none;
+      width: 100%;
+      padding: 10px;
+      background: #e2e8f0;
+      color: #475569;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 800;
+      cursor: pointer;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* جدول الجرد والبحث */
+    .table-tools-strip {
       display: flex;
       gap: 12px;
       margin-bottom: 14px;
-    }
-
-    .search-table-input {
-      flex: 1;
-      padding: 8px 14px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      font-size: 0.88rem;
     }
 
     .admin-table {
@@ -349,283 +537,386 @@
     }
 
     .admin-table th {
-      background: #f8f9fa;
+      background: #f8fafc;
       padding: 10px 12px;
-      font-weight: 700;
-      border-bottom: 2px solid var(--border-color);
+      font-weight: 800;
+      border-bottom: 2px solid var(--admin-border);
       color: var(--text-muted);
     }
 
     .admin-table td {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border-light);
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--admin-border);
       vertical-align: middle;
     }
 
     .admin-table tr:hover {
-      background-color: #fafbfc;
+      background-color: #f8fafc;
     }
 
-    .product-cell {
+    .product-row-preview {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .status-badge {
+    .product-row-preview img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      border-radius: 4px;
+      background: #fff;
+      border: 1px solid var(--admin-border);
+    }
+
+    .stock-pill {
       display: inline-block;
       padding: 3px 8px;
       border-radius: 4px;
       font-size: 0.74rem;
-      font-weight: 700;
+      font-weight: 800;
     }
 
-    .badge-in-stock { background: #e6f7f2; color: var(--admin-success); }
-    .badge-low-stock { background: #fff4e5; color: var(--admin-warning); }
-    .badge-out-stock { background: #fde8ec; color: var(--admin-danger); }
+    .stock-available { background: #dcfce7; color: #15803d; }
+    .stock-low { background: #fef3c7; color: #b45309; }
+    .stock-out { background: #fee2e2; color: #b91c1c; }
 
-    .tbl-btn {
+    .action-icons-wrap {
+      display: flex;
+      gap: 6px;
+    }
+
+    .action-btn-mini {
       width: 30px;
       height: 30px;
       border-radius: 6px;
-      border: 1px solid var(--border-color);
-      background: #fff;
+      border: 1px solid var(--admin-border);
+      background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       transition: all 0.2s;
     }
 
-    .tbl-btn-delete { color: var(--admin-danger); }
-    .tbl-btn-delete:hover { background: var(--admin-danger); color: #fff; }
+    .btn-edit-action { color: #0284c7; }
+    .btn-edit-action:hover { background: #0284c7; color: #fff; }
 
-    .orders-section {
-      margin-top: 25px;
-    }
+    .btn-delete-action { color: var(--danger); }
+    .btn-delete-action:hover { background: var(--danger); color: #fff; }
 
-    @media (max-width: 1100px) {
-      .dashboard-grid { grid-template-columns: 1fr; }
+    @media (max-width: 1150px) {
+      .admin-grid-layout { grid-template-columns: 1fr; }
       .admin-sidebar { width: 70px; }
-      .sidebar-brand span, .sidebar-menu li a span, .sidebar-footer { display: none; }
+      .sidebar-brand-titles, .sidebar-menu li a span, .sidebar-footer-badge span { display: none; }
+      .sidebar-menu li a { justify-content: center; padding: 14px; }
     }
   </style>
 
-  <!-- مكتبات Firebase الأساسية -->
+  <!-- مكتبات Firebase الحية -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
-  <!-- الشريط الجانبي للإدارة -->
+  <!-- 1. القائمة الجانبية الموحدة مع لوجو المتجر -->
   <aside class="admin-sidebar">
-    <div class="sidebar-header">
-      <i class="fa-solid fa-cube" style="font-size: 1.8rem; color: var(--admin-orange);"></i>
-      <div class="sidebar-brand">
-        عباسكو
-        <span>لوحة الإدارة v2.0</span>
+    <div class="sidebar-brand-box">
+      <img src="logo.png" alt="عباسكو" class="sidebar-brand-logo">
+      <div class="sidebar-brand-titles">
+        <h2>متجر عباسكو</h2>
+        <span>لوحة التحكم الإدارية</span>
       </div>
     </div>
 
     <ul class="sidebar-menu">
-      <li class="active"><a href="#dashboard"><i class="fa-solid fa-chart-pie"></i> <span>نظرة عامة</span></a></li>
-      <li><a href="#products"><i class="fa-solid fa-boxes-stacked"></i> <span>إدارة الملحقات</span></a></li>
-      <li><a href="#orders"><i class="fa-solid fa-truck-ramp-box"></i> <span>الطلبات والشحنات</span></a></li>
+      <li class="active" data-target="tab-dashboard">
+        <a onclick="switchAdminTab('tab-dashboard')"><i class="fa-solid fa-chart-pie"></i> <span>نظرة عامة</span></a>
+      </li>
+      <li data-target="tab-products">
+        <a onclick="switchAdminTab('tab-products')"><i class="fa-solid fa-boxes-stacked"></i> <span>إدارة الملحقات</span></a>
+      </li>
+      <li data-target="tab-orders">
+        <a onclick="switchAdminTab('tab-orders')"><i class="fa-solid fa-truck-ramp-box"></i> <span>الطلبات والشحنات</span></a>
+      </li>
+      <li data-target="tab-settings">
+        <a onclick="switchAdminTab('tab-settings')"><i class="fa-solid fa-sliders"></i> <span>الشريط والإعدادات</span></a>
+      </li>
     </ul>
 
-    <div class="sidebar-footer">
-      متصل: <strong>أحمد عباس (مدير النظام)</strong>
+    <div class="sidebar-footer-badge">
+      <span class="status-online-dot"></span>
+      <span>النظام متصل بقاعدة البيانات</span>
     </div>
   </aside>
 
-  <!-- مساحة العمل الرئيسية -->
+  <!-- 2. مساحة العمل ومحتوى الصفحات -->
   <div class="admin-main">
     
     <header class="admin-topbar">
-      <h2>لوحة التحكم المباشرة - Seller Central</h2>
-      <div class="topbar-left">
-        <a href="index.html" target="_blank" class="view-store-btn">
-          <i class="fa-solid fa-arrow-up-right-from-square"></i> عرض المتجر للعملاء
+      <div class="topbar-title-wrap">
+        <h1 id="topbar-heading">نظرة عامة على المتجر</h1>
+      </div>
+      <div class="topbar-tools">
+        <a href="index.html" target="_blank" class="btn-view-store">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> عرض واجهة المتجر
         </a>
-        <div class="admin-profile">
-          <div class="avatar">ع</div>
-          <div>
-            <strong>أحمد عباس</strong>
-            <small style="display: block; color: var(--text-muted); font-size: 0.75rem;">مسؤول المتجر</small>
-          </div>
-        </div>
       </div>
     </header>
 
-    <main class="content-area">
+    <main class="content-canvas">
 
-      <!-- مؤشرات الأداء الحية KPIs -->
-      <section class="kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-icon-wrapper kpi-icon-1"><i class="fa-solid fa-sack-dollar"></i></div>
-          <div class="kpi-info"><small>إجمالي مبيعات المتجر</small><h3>24,500 ج.م</h3></div>
+      <!-- ================================================================== -->
+      <!-- التبويب 1: نظرة عامة (Dashboard) -->
+      <!-- ================================================================== -->
+      <section class="tab-section active" id="tab-dashboard">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-icon kpi-1"><i class="fa-solid fa-sack-dollar"></i></div>
+            <div class="kpi-meta"><small>إجمالي قيمة المعروض</small><h3 id="stat-total-val">0 ج.م</h3></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon kpi-2"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <div class="kpi-meta"><small>الملحقات المعروضة</small><h3 id="stat-products-count">0 منتج</h3></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon kpi-3"><i class="fa-solid fa-cart-shopping"></i></div>
+            <div class="kpi-meta"><small>الطلبات الواردة</small><h3 id="stat-orders-count">0 طلب</h3></div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon kpi-4"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <div class="kpi-meta"><small>تنبيهات انخفاض المخزون</small><h3 id="stat-low-stock">0 منتج</h3></div>
+          </div>
         </div>
-        <div class="kpi-card">
-          <div class="kpi-icon-wrapper kpi-icon-2"><i class="fa-solid fa-cart-flatbed"></i></div>
-          <div class="kpi-info"><small>الطلبات الواردة</small><h3 id="stat-orders-count">0 طلب</h3></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-icon-wrapper kpi-icon-3"><i class="fa-solid fa-mobile-screen-button"></i></div>
-          <div class="kpi-info"><small>الملحقات المعروضة</small><h3 id="stat-products-count">0 منتج</h3></div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-icon-wrapper kpi-icon-4"><i class="fa-solid fa-triangle-exclamation"></i></div>
-          <div class="kpi-info"><small>تنبيهات انخفاض المخزون</small><h3 id="stat-low-stock">0 منتج</h3></div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h2><i class="fa-solid fa-bolt"></i> روابط وإجراءات سريعة</h2>
+          </div>
+          <div class="admin-card-body" style="display: flex; gap: 14px; flex-wrap: wrap;">
+            <button class="btn-view-store" onclick="switchAdminTab('tab-products')"><i class="fa-solid fa-plus"></i> إضافة ملحق جديد فوراً</button>
+            <button class="btn-view-store" style="background:#0284c7;" onclick="switchAdminTab('tab-orders')"><i class="fa-solid fa-truck"></i> مراجعة الشحنات المعلقة</button>
+            <button class="btn-view-store" style="background:#475569;" onclick="switchAdminTab('tab-settings')"><i class="fa-solid fa-bullhorn"></i> تعديل شريط العروض العلوي</button>
+          </div>
         </div>
       </section>
 
-      <!-- شبكة إضافة منتج وجرد المخزون -->
-      <div class="dashboard-grid">
-        
-        <!-- نموذج إضافة منتج متكامل مع 4 صور زوايا وألوان -->
-        <section class="admin-card">
-          <div class="card-title-bar">
-            <h2><i class="fa-solid fa-circle-plus" style="color: var(--admin-info);"></i> إضافة ملحق جديد للمتجر</h2>
-          </div>
-          <div class="card-body">
-            <form id="add-product-form">
-              <div class="form-group">
-                <label for="prod-name">اسم الملحق بالكامل <span style="color:red">*</span></label>
-                <input type="text" id="prod-name" class="form-control" placeholder="مثال: أنكر زولو شاحن 30 واط..." required>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="prod-brand">الماركة (Brand)</label>
-                  <select id="prod-brand" class="form-control" required>
-                    <option value="Samsung">Samsung</option>
-                    <option value="Anker">Anker</option>
-                    <option value="Apple">Apple</option>
-                    <option value="Xiaomi">Xiaomi</option>
-                    <option value="Baseus">Baseus</option>
-                    <option value="Ugreen">Ugreen</option>
-                    <option value="Hoco">Hoco</option>
-                    <option value="Oraimo">Oraimo</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="prod-category">الفئة الرئيسية</label>
-                  <select id="prod-category" class="form-control" required>
-                    <option value="chargers">شواحن ووصلات</option>
-                    <option value="powerbanks">بنوك طاقة (باور بانك)</option>
-                    <option value="cases">كفرات وحماية</option>
-                    <option value="audio">سماعات وصوتيات</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="prod-price">سعر البيع (ج.م) <span style="color:red">*</span></label>
-                  <input type="number" id="prod-price" class="form-control" placeholder="729" required>
-                </div>
-                <div class="form-group">
-                  <label for="prod-old-price">السعر قبل الخصم (للتشطيب)</label>
-                  <input type="number" id="prod-old-price" class="form-control" placeholder="859">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="prod-stock">الكمية المتوفرة بالمخزن <span style="color:red">*</span></label>
-                <input type="number" id="prod-stock" class="form-control" placeholder="15" value="15" required>
-              </div>
-
-              <!-- حقول الـ 4 صور للـ Hover بالصفحة الرئيسية -->
-              <div class="form-group" style="background:#f8f9fa; padding:10px; border-radius:6px; border:1px solid #e2e8f0;">
-                <label style="color:#007185; font-weight:800; margin-bottom:8px;"><i class="fa-solid fa-images"></i> روابط الـ 4 صور الخاصة بالمعاينة (Hover)</label>
-                <input type="url" id="prod-img-1" class="form-control" placeholder="رابط الصورة الأولى الأساسية (رئيسية)" style="margin-bottom:6px;" required>
-                <input type="url" id="prod-img-2" class="form-control" placeholder="رابط الصورة الثانية (زاوية جانبية)" style="margin-bottom:6px;">
-                <input type="url" id="prod-img-3" class="form-control" placeholder="رابط الصورة الثالثة (منفذ الشحن / الخلف)" style="margin-bottom:6px;">
-                <input type="url" id="prod-img-4" class="form-control" placeholder="رابط الصورة الرابعة (العبوة أو الإكسسوار)">
-              </div>
-
-              <!-- اختيار الألوان المتاحة للمنتج -->
-              <div class="form-group">
-                <label>الألوان المتاحة للملحق</label>
-                <div style="display: flex; gap: 14px; flex-wrap: row; margin-top: 6px;">
-                  <label style="font-weight: normal; cursor: pointer;"><input type="checkbox" name="prod-colors" value="أسود" checked> أسود</label>
-                  <label style="font-weight: normal; cursor: pointer;"><input type="checkbox" name="prod-colors" value="أبيض"> أبيض</label>
-                  <label style="font-weight: normal; cursor: pointer;"><input type="checkbox" name="prod-colors" value="أزرق"> أزرق</label>
-                  <label style="font-weight: normal; cursor: pointer;"><input type="checkbox" name="prod-colors" value="رمادي"> رمادي</label>
-                  <label style="font-weight: normal; cursor: pointer;"><input type="checkbox" name="prod-colors" value="ذهبي"> ذهبي</label>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="prod-specs">المواصفات الفنية (افصل بينها بـ |)</label>
-                <input type="text" id="prod-specs" class="form-control" placeholder="شحن سريع بقوة 30 واط | منفذ USB-C | ضمان 14 يوم">
-              </div>
-
-              <button type="submit" class="submit-btn">
-                <i class="fa-solid fa-cloud-arrow-up"></i> نشر الملحق في المتجر فوراً (Firebase)
-              </button>
-            </form>
-          </div>
-        </section>
-
-        <!-- جدول جرد المخزون الحي -->
-        <section class="admin-card">
-          <div class="card-title-bar">
-            <h2><i class="fa-solid fa-warehouse" style="color: var(--admin-info);"></i> جرد المخزون المباشر</h2>
-          </div>
-          <div class="card-body">
-            <div class="table-toolbar">
-              <input type="text" id="filter-inventory" class="search-table-input" placeholder="ابحث باسم الملحق أو الماركة...">
+      <!-- ================================================================== -->
+      <!-- التبويب 2: إدارة الملحقات (Products CRUD) -->
+      <!-- ================================================================== -->
+      <section class="tab-section" id="tab-products">
+        <div class="admin-grid-layout">
+          
+          <!-- نموذج إضافة / تعديل الملحق -->
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h2 id="form-header-title"><i class="fa-solid fa-plus-circle"></i> إضافة ملحق جديد</h2>
             </div>
+            <div class="admin-card-body">
+              <form id="product-master-form">
+                
+                <div class="form-group">
+                  <label for="prod-name">اسم الملحق بالكامل <span style="color:red">*</span></label>
+                  <input type="text" id="prod-name" class="form-control" placeholder="مثال: شاحن أنكر 30 واط GaN سريع..." required>
+                </div>
 
-            <div style="overflow-x: auto; max-height: 520px;">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="prod-brand">الماركة (Brand)</label>
+                    <input type="text" id="prod-brand" class="form-control" placeholder="مثال: Anker أو Samsung" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="prod-category">الفئة</label>
+                    <select id="prod-category" class="form-control" required>
+                      <option value="chargers">شواحن وكابلات</option>
+                      <option value="powerbanks">بنوك طاقة (باور بانك)</option>
+                      <option value="cases">كفرات وحماية</option>
+                      <option value="audio">سماعات وصوتيات</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="prod-price">سعر البيع (ج.م) <span style="color:red">*</span></label>
+                    <input type="number" id="prod-price" class="form-control" placeholder="729" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="prod-old-price">السعر قبل الخصم (للتشطيب)</label>
+                    <input type="number" id="prod-old-price" class="form-control" placeholder="859">
+                  </div>
+                </div>
+
+                <!-- 1. رفع 4 صور من الجهاز مباشرة -->
+                <div class="form-group">
+                  <label><i class="fa-solid fa-images" style="color:var(--admin-green);"></i> صور الملحق الأربعة (اختر من جهازك)</label>
+                  <div class="file-upload-zone" onclick="document.getElementById('prod-file-input').click()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p>اضغط لاختيار حتى 4 صور من ملفاتك (للمعاينة بالماوس وتغيير الزوايا)</p>
+                    <input type="file" id="prod-file-input" multiple accept="image/*" style="display:none">
+                  </div>
+                  <div class="preview-thumbs-grid" id="thumbs-preview-box">
+                    <div class="thumb-slot">صورة 1 (رئيسية)</div>
+                    <div class="thumb-slot">صورة 2</div>
+                    <div class="thumb-slot">صورة 3</div>
+                    <div class="thumb-slot">صورة 4</div>
+                  </div>
+                </div>
+
+                <!-- 2. الألوان والكمية المتاحة من كل لون -->
+                <div class="form-group">
+                  <label><i class="fa-solid fa-palette" style="color:var(--admin-green);"></i> الألوان المتاحة والمخزون لكل لون</label>
+                  <div class="color-variants-stack">
+                    <div class="color-variant-row">
+                      <label><input type="checkbox" class="chk-color-toggle" value="أسود" checked> أسود</label>
+                      <input type="number" class="color-stock-input" data-color="أسود" placeholder="الكمية" value="10" min="0">
+                    </div>
+                    <div class="color-variant-row">
+                      <label><input type="checkbox" class="chk-color-toggle" value="أبيض"> أبيض</label>
+                      <input type="number" class="color-stock-input" data-color="أبيض" placeholder="الكمية" value="5" min="0">
+                    </div>
+                    <div class="color-variant-row">
+                      <label><input type="checkbox" class="chk-color-toggle" value="أزرق"> أزرق</label>
+                      <input type="number" class="color-stock-input" data-color="أزرق" placeholder="الكمية" value="5" min="0">
+                    </div>
+                    <div class="color-variant-row">
+                      <label><input type="checkbox" class="chk-color-toggle" value="رمادي"> رمادي</label>
+                      <input type="number" class="color-stock-input" data-color="رمادي" placeholder="الكمية" value="5" min="0">
+                    </div>
+                    <div class="color-variant-row">
+                      <label><input type="checkbox" class="chk-color-toggle" value="ذهبي"> ذهبي</label>
+                      <input type="number" class="color-stock-input" data-color="ذهبي" placeholder="الكمية" value="5" min="0">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 3. المواصفات الفنية المرقمة 1، 2، 3 مع زر (+) -->
+                <div class="form-group">
+                  <label><i class="fa-solid fa-list-ol" style="color:var(--admin-green);"></i> المواصفات الفنية للملحق</label>
+                  <div class="specs-stack-builder" id="specs-input-container">
+                    <div class="spec-input-item">
+                      <span class="spec-number-badge">1</span>
+                      <input type="text" class="form-control spec-val-box" placeholder="مثال: قدرة 30 واط شحن فائق السرعة">
+                    </div>
+                    <div class="spec-input-item">
+                      <span class="spec-number-badge">2</span>
+                      <input type="text" class="form-control spec-val-box" placeholder="مثال: منفذ USB Type-C ذكي">
+                    </div>
+                    <div class="spec-input-item">
+                      <span class="spec-number-badge">3</span>
+                      <input type="text" class="form-control spec-val-box" placeholder="مثال: ضمان استبدال فوري 14 يوماً">
+                    </div>
+                  </div>
+                  <button type="button" class="btn-add-spec-row" id="btn-add-spec-row">
+                    <i class="fa-solid fa-plus"></i> إضافة خاصية جديدة
+                  </button>
+                </div>
+
+                <button type="submit" class="btn-submit-action" id="btn-submit-main">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> نشر الملحق في المتجر فوراً
+                </button>
+                <button type="button" class="btn-cancel-edit" id="btn-cancel-edit" onclick="cancelProductEdit()">
+                  إلغاء التعديل
+                </button>
+
+              </form>
+            </div>
+          </div>
+
+          <!-- جدول جرد المخزون والتحكم -->
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h2><i class="fa-solid fa-warehouse"></i> جرد المخزون المعروض في المتجر</h2>
+            </div>
+            <div class="admin-card-body">
+              <div class="table-tools-strip">
+                <input type="text" id="inventory-search" class="form-control" placeholder="ابحث باسم الملحق أو الماركة...">
+              </div>
+
+              <div style="overflow-x: auto; max-height: 600px;">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>الملحق</th>
+                      <th>الماركة</th>
+                      <th>السعر</th>
+                      <th>المخزون الإجمالي</th>
+                      <th>الحالة</th>
+                      <th>إجراءات</th>
+                    </tr>
+                  </thead>
+                  <tbody id="inventory-tbody">
+                    <!-- يُملأ ديناميكياً -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================================================== -->
+      <!-- التبويب 3: الطلبات والشحنات (Orders) -->
+      <!-- ================================================================== -->
+      <section class="tab-section" id="tab-orders">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h2><i class="fa-solid fa-truck-fast"></i> سجل طلبات الشراء الواردة</h2>
+          </div>
+          <div class="admin-card-body">
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">الطلبات الواردة من صفحة إنهاء الطلب يتم مزامنتها هنا لمتابعة تسليمها لشركات الشحن.</p>
+            <div style="overflow-x: auto;">
               <table class="admin-table">
                 <thead>
                   <tr>
-                    <th>الملحق</th>
-                    <th>الماركة</th>
-                    <th>السعر</th>
-                    <th>المخزون</th>
+                    <th>رقم الطلب</th>
+                    <th>العميل</th>
+                    <th>رقم الهاتف</th>
+                    <th>العنوان / المحافظة</th>
+                    <th>المبلغ</th>
                     <th>الحالة</th>
-                    <th>حذف</th>
+                    <th>إجراء</th>
                   </tr>
                 </thead>
-                <tbody id="inventory-table-body">
-                  <!-- يُملأ ديناميكياً -->
+                <tbody id="orders-tbody">
+                  <tr>
+                    <td colspan="7" style="text-align: center; padding: 24px; color: var(--text-muted);">لا توجد طلبات معلقة حالياً.</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
-        </section>
-
-      </div>
-
-      <!-- قسم متابعة الطلبات الواردة -->
-      <section class="admin-card orders-section">
-        <div class="card-title-bar">
-          <h2><i class="fa-solid fa-truck-fast" style="color: var(--admin-info);"></i> سجل الطلبات الواردة عبر واتساب المتجر</h2>
         </div>
-        <div class="card-body">
-          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 12px;">جميع الطلبات يتم إرسالها من صفحة إتمام الشراء وتظهر هنا لمتابعة تسليمها للمندوب.</p>
-          <div style="overflow-x: auto;">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>رقم الطلب</th>
-                  <th>التاريخ والوقت</th>
-                  <th>اسم العميل</th>
-                  <th>رقم الهاتف</th>
-                  <th>العنوان والمحافظة</th>
-                  <th>الحالة</th>
-                </tr>
-              </thead>
-              <tbody id="orders-table-body">
-                <tr>
-                  <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">لا توجد طلبات معلقة حالياً.</td>
-                </tr>
-              </tbody>
-            </table>
+      </section>
+
+      <!-- ================================================================== -->
+      <!-- التبويب 4: الشريط والإعدادات (Settings & Ticker) -->
+      <!-- ================================================================== -->
+      <section class="tab-section" id="tab-settings">
+        <div class="admin-card" style="max-width: 650px;">
+          <div class="admin-card-header">
+            <h2><i class="fa-solid fa-bullhorn"></i> تخصيص الشريط الإعلاني المتحرك (Ticker)</h2>
+          </div>
+          <div class="admin-card-body">
+            <form id="ticker-settings-form">
+              <div class="form-group">
+                <label>نص العرض الإعلاني 1</label>
+                <input type="text" id="ticker-msg-1" class="form-control" value="🔥 عروض عباسكو الحصرية على شواحن وكابلات GaN الأصلية">
+              </div>
+              <div class="form-group">
+                <label>نص العرض الإعلاني 2</label>
+                <input type="text" id="ticker-msg-2" class="form-control" value="🚚 معاينة الشحنة بالكامل وفحص المنتج أمام المندوب قبل دفع أي مبالغ">
+              </div>
+              <div class="form-group">
+                <label>نص العرض الإعلاني 3</label>
+                <input type="text" id="ticker-msg-3" class="form-control" value="💵 الدفع نقداً عند الاستلام كاش بكل أمان">
+              </div>
+              <button type="submit" class="btn-submit-action" style="background:#0284c7;">
+                <i class="fa-solid fa-floppy-disk"></i> حفظ ونشر العروض بالمتجر
+              </button>
+            </form>
           </div>
         </div>
       </section>
@@ -633,10 +924,11 @@
     </main>
   </div>
 
-  <!-- ربط لوحة التحكم بـ Firebase Firestore الحي -->
+  <!-- المحرك البرمجي المتكامل للوحة التحكم -->
   <script>
     'use strict';
 
+    // 1. تهيئة مشروع Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyBhOo-nzA3TztOFQlxPQaOTrLtPDjKb_xU",
       authDomain: "abbasko-store.firebaseapp.com",
@@ -647,57 +939,119 @@
       measurementId: "G-B1866569VZ"
     };
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    let inventory = [];
-    const tbody = document.getElementById('inventory-table-body');
-    const addForm = document.getElementById('add-product-form');
-    const filterInput = document.getElementById('filter-inventory');
+    let adminInventory = [];
+    let uploadedImagesBase64 = [];
+    let editingDocId = null;
 
-    // جلب المخزون الحقيقي من Firebase
-    async function loadAdminInventory() {
-      if (tbody) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px;"><i class="fa-solid fa-spinner fa-spin"></i> جاري مزامنة المخزون من قاعدة البيانات...</td></tr>`;
+    // 2. التنقل بين التبويبات بسلاسة 100%
+    window.switchAdminTab = function(tabId) {
+      document.querySelectorAll('.tab-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+
+      const targetSection = document.getElementById(tabId);
+      if (targetSection) targetSection.classList.add('active');
+
+      const targetMenuItem = document.querySelector(`.sidebar-menu li[data-target="${tabId}"]`);
+      if (targetMenuItem) targetMenuItem.classList.add('active');
+
+      const headingMap = {
+        'tab-dashboard': 'نظرة عامة على المتجر',
+        'tab-products': 'إدارة الملحقات والمخزون',
+        'tab-orders': 'الطلبات وشحنات العملاء',
+        'tab-settings': 'تخصيص العروض والإعدادات'
+      };
+      document.getElementById('topbar-heading').textContent = headingMap[tabId] || 'لوحة التحكم';
+    };
+
+    // 3. قراءة الصور من الجهاز وتحويلها لـ Base64 مع المعاينة الفورية
+    document.getElementById('prod-file-input')?.addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files).slice(0, 4);
+      if (files.length === 0) return;
+
+      uploadedImagesBase64 = [];
+      const thumbsBox = document.getElementById('thumbs-preview-box');
+      thumbsBox.innerHTML = '';
+
+      for (let i = 0; i < files.length; i++) {
+        const base64 = await convertFileToBase64(files[i]);
+        uploadedImagesBase64.push(base64);
+        thumbsBox.innerHTML += `
+          <div class="thumb-slot">
+            <img src="${base64}" alt="صورة ${i + 1}">
+          </div>
+        `;
       }
-      try {
-        const snapshot = await db.collection('products').get();
-        inventory = [];
-        snapshot.forEach(doc => {
-          inventory.push({ id: doc.id, ...doc.data() });
-        });
-        renderInventory(inventory);
-      } catch (err) {
-        console.error("خطأ في جلب البيانات:", err);
-        if (tbody) {
-          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">تعذر الاتصال بقاعدة البيانات. تأكد من إعدادات الـ Rules.</td></tr>`;
-        }
+
+      // إكمال الخانات الأربعة لو تم رفع أقل من 4 صور
+      while (uploadedImagesBase64.length < 4 && uploadedImagesBase64.length > 0) {
+        uploadedImagesBase64.push(uploadedImagesBase64[0]);
       }
+    });
+
+    function convertFileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = err => reject(err);
+      });
     }
 
-    // عرض المنتجات في جدول الإدارة
-    function renderInventory(items) {
+    // 4. إضافة حقول مواصفات جديدة بالضغط على زر (+)
+    document.getElementById('btn-add-spec-row')?.addEventListener('click', () => {
+      const container = document.getElementById('specs-input-container');
+      const count = container.querySelectorAll('.spec-input-item').length + 1;
+      const row = document.createElement('div');
+      row.className = 'spec-input-item';
+      row.innerHTML = `
+        <span class="spec-number-badge">${count}</span>
+        <input type="text" class="form-control spec-val-box" placeholder="خاصية رقم ${count}...">
+      `;
+      container.appendChild(row);
+    });
+
+    // 5. جلب المخزون والمنتجات الحقيقية
+    async function loadInventoryData() {
+      const tbody = document.getElementById('inventory-tbody');
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px;"><i class="fa-solid fa-spinner fa-spin"></i> جاري مزامنة المنتجات...</td></tr>`;
+
+      try {
+        const snapshot = await db.collection('products').get();
+        adminInventory = [];
+        snapshot.forEach(doc => {
+          adminInventory.push({ id: doc.id, ...doc.data() });
+        });
+      } catch (err) {
+        console.warn("استخدام الذاكرة المحلية كحماية:", err.message);
+        adminInventory = JSON.parse(localStorage.getItem('abasco_store_inventory')) || [];
+      }
+
+      renderInventoryTable(adminInventory);
+      updateDashboardKPIs();
+    }
+
+    function renderInventoryTable(items) {
+      const tbody = document.getElementById('inventory-tbody');
       if (!tbody) return;
 
       if (items.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px;">لا توجد ملحقات مسجلة حالياً.</td></tr>`;
-        document.getElementById('stat-products-count').textContent = '0 منتج';
-        document.getElementById('stat-low-stock').textContent = '0 منتج';
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:24px;">لا توجد ملحقات مسجلة حالياً. أضف أول ملحق الآن!</td></tr>`;
         return;
       }
 
       tbody.innerHTML = items.map(item => {
-        const stockQty = Number(item.stock) || 15;
-        let badgeClass = 'badge-in-stock';
-        let statusText = 'متوفر';
+        const stockQty = Number(item.stock) || 0;
+        let badgeClass = 'stock-available';
+        let statusText = 'متوفر بالمخزن';
 
         if (stockQty === 0 || item.inStock === false) {
-          badgeClass = 'badge-out-stock';
+          badgeClass = 'stock-out';
           statusText = 'نفذ المخزون';
         } else if (stockQty < 5) {
-          badgeClass = 'badge-low-stock';
+          badgeClass = 'stock-low';
           statusText = `منخفض (${stockQty})`;
         }
 
@@ -706,18 +1060,21 @@
         return `
           <tr>
             <td>
-              <div class="product-cell">
-                <img src="${mainImg}" style="width:36px; height:36px; object-fit:contain; border-radius:4px; border:1px solid #ddd; background:#fff;">
+              <div class="product-row-preview">
+                <img src="${mainImg}" alt="${item.title}">
                 <strong>${item.title}</strong>
               </div>
             </td>
             <td><strong>${item.brand || 'عام'}</strong></td>
             <td><strong>${Number(item.price).toFixed(2)} ج.م</strong></td>
-            <td>${stockQty} قطعة</td>
-            <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
+            <td><strong>${stockQty}</strong> قطعة</td>
+            <td><span class="stock-pill ${badgeClass}">${statusText}</span></td>
             <td>
-              <div class="action-btns">
-                <button class="tbl-btn tbl-btn-delete" onclick="deleteProduct('${item.id}')" title="حذف نهائي">
+              <div class="action-icons-wrap">
+                <button class="action-btn-mini btn-edit-action" onclick="editProduct('${item.id}')" title="تعديل الملحق">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+                <button class="action-btn-mini btn-delete-action" onclick="deleteProduct('${item.id}')" title="حذف نهائي">
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </div>
@@ -725,85 +1082,188 @@
           </tr>
         `;
       }).join('');
-
-      document.getElementById('stat-products-count').textContent = `${items.length} منتجات`;
-      const lowCount = items.filter(i => (Number(i.stock) || 15) < 5 || i.inStock === false).length;
-      document.getElementById('stat-low-stock').textContent = `${lowCount} منتج`;
     }
 
-    // إضافة منتج جديد متكامل مع الـ 4 صور والألوان
-    addForm?.addEventListener('submit', async (e) => {
+    // 6. حفظ / تعديل الملحق في الفايربيز
+    document.getElementById('product-master-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const submitBtn = addForm.querySelector('.submit-btn');
+      const submitBtn = document.getElementById('btn-submit-main');
       submitBtn.disabled = true;
-      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري النشر في قاعدة البيانات...`;
+      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...`;
 
       const price = parseFloat(document.getElementById('prod-price').value) || 0;
       const oldPrice = parseFloat(document.getElementById('prod-old-price').value) || (price + 100);
-      const stock = parseInt(document.getElementById('prod-stock').value) || 15;
 
-      const img1 = document.getElementById('prod-img-1').value.trim();
-      const img2 = document.getElementById('prod-img-2').value.trim();
-      const img3 = document.getElementById('prod-img-3').value.trim();
-      const img4 = document.getElementById('prod-img-4').value.trim();
+      // تجميع المتغيرات والألوان والمخزون لكل لون
+      const colorVariants = [];
+      let totalStock = 0;
+      document.querySelectorAll('.color-variant-row').forEach(row => {
+        const chk = row.querySelector('.chk-color-toggle');
+        const input = row.querySelector('.color-stock-input');
+        if (chk.checked) {
+          const qty = parseInt(input.value) || 0;
+          colorVariants.push({ color: chk.value, stock: qty });
+          totalStock += qty;
+        }
+      });
 
-      const imagesList = [img1, img2 || img1, img3 || img1, img4 || img1].filter(Boolean);
-      const selectedColors = Array.from(document.querySelectorAll('input[name="prod-colors"]:checked')).map(cb => cb.value);
+      // تجميع المواصفات المرقمة
+      const specTexts = [];
+      document.querySelectorAll('.spec-val-box').forEach(box => {
+        if (box.value.trim() !== '') specTexts.push(box.value.trim());
+      });
 
-      const newProduct = {
+      const productPayload = {
         title: document.getElementById('prod-name').value.trim(),
-        brand: document.getElementById('prod-brand').value,
+        brand: document.getElementById('prod-brand').value.trim(),
         category: document.getElementById('prod-category').value,
         price: price,
         oldPrice: oldPrice,
         discount: (oldPrice - price).toFixed(2),
-        stock: stock,
-        inStock: stock > 0,
+        stock: totalStock > 0 ? totalStock : 15,
+        inStock: (totalStock > 0),
         rating: 5,
         ratingCount: 12,
-        image: img1,
-        images: imagesList,
-        colors: selectedColors.length > 0 ? selectedColors : ['أسود', 'أبيض'],
-        specs: document.getElementById('prod-specs').value.trim() || 'ملحق أصلي معتمد من متجر عباسكو'
+        colors: colorVariants.map(c => c.color),
+        colorVariants: colorVariants,
+        specs: specTexts.join(' | ') || 'ملحق أصلي معتمد'
       };
 
+      // إذا رفع صوراً جديدة نعتمدها
+      if (uploadedImagesBase64.length > 0) {
+        productPayload.image = uploadedImagesBase64[0];
+        productPayload.images = uploadedImagesBase64;
+      }
+
       try {
-        await db.collection('products').add(newProduct);
-        alert('تم نشر الملحق بنجاح في متجر عباسكو وأصبح متاحاً للعملاء فوراً!');
-        addForm.reset();
-        loadAdminInventory();
+        if (editingDocId) {
+          await db.collection('products').doc(editingDocId).update(productPayload);
+          alert('تم تحديث بيانات الملحق بنجاح!');
+        } else {
+          // صورة افتراضية إن لم يتم رفع صورة
+          if (!productPayload.image) {
+            productPayload.image = 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80';
+            productPayload.images = [productPayload.image, productPayload.image, productPayload.image, productPayload.image];
+          }
+          await db.collection('products').add(productPayload);
+          alert('تم نشر الملحق الجديد في متجر عباسكو بنجاح!');
+        }
+
+        cancelProductEdit();
+        loadInventoryData();
       } catch (err) {
-        alert('تعذر النشر: ' + err.message);
+        alert('حدث خطأ أثناء الحفظ: ' + err.message);
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> نشر الملحق في المتجر فوراً (Firebase)`;
+        submitBtn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> نشر الملحق في المتجر فوراً`;
       }
     });
 
-    // حذف منتج من Firebase
-    window.deleteProduct = async function(docId) {
-      if (confirm('هل أنت متأكد من حذف هذا الملحق نهائياً من قاعدة بيانات المتجر؟')) {
+    // 7. وظيفة التعديل: ملء النموذج وتغيير الحالة
+    window.editProduct = function(id) {
+      const prod = adminInventory.find(p => String(p.id) === String(id));
+      if (!prod) return;
+
+      editingDocId = id;
+      document.getElementById('form-header-title').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> تعديل الملحق: ${prod.title}`;
+      document.getElementById('btn-submit-main').innerHTML = `<i class="fa-solid fa-floppy-disk"></i> حفظ التعديلات`;
+      document.getElementById('btn-cancel-edit').style.display = 'block';
+
+      document.getElementById('prod-name').value = prod.title || '';
+      document.getElementById('prod-brand').value = prod.brand || '';
+      document.getElementById('prod-category').value = prod.category || 'chargers';
+      document.getElementById('prod-price').value = prod.price || '';
+      document.getElementById('prod-old-price').value = prod.oldPrice || '';
+
+      // ملء الألوان
+      if (prod.colorVariants && Array.isArray(prod.colorVariants)) {
+        document.querySelectorAll('.color-variant-row').forEach(row => {
+          const chk = row.querySelector('.chk-color-toggle');
+          const input = row.querySelector('.color-stock-input');
+          const found = prod.colorVariants.find(c => c.color === chk.value);
+          if (found) {
+            chk.checked = true;
+            input.value = found.stock;
+          } else {
+            chk.checked = false;
+          }
+        });
+      }
+
+      // ملء المواصفات المرقمة
+      const specsContainer = document.getElementById('specs-input-container');
+      specsContainer.innerHTML = '';
+      const specsArr = (prod.specs || '').split('|');
+      specsArr.forEach((s, idx) => {
+        if (s.trim()) {
+          specsContainer.innerHTML += `
+            <div class="spec-input-item">
+              <span class="spec-number-badge">${idx + 1}</span>
+              <input type="text" class="form-control spec-val-box" value="${s.trim()}">
+            </div>
+          `;
+        }
+      });
+
+      // صور المنتج
+      if (prod.images && prod.images.length > 0) {
+        const thumbsBox = document.getElementById('thumbs-preview-box');
+        thumbsBox.innerHTML = prod.images.map(img => `
+          <div class="thumb-slot"><img src="${img}"></div>
+        `).join('');
+      }
+
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    };
+
+    window.cancelProductEdit = function() {
+      editingDocId = null;
+      document.getElementById('product-master-form').reset();
+      document.getElementById('form-header-title').innerHTML = `<i class="fa-solid fa-plus-circle"></i> إضافة ملحق جديد`;
+      document.getElementById('btn-submit-main').innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> نشر الملحق في المتجر فوراً`;
+      document.getElementById('btn-cancel-edit').style.display = 'none';
+      document.getElementById('thumbs-preview-box').innerHTML = `
+        <div class="thumb-slot">صورة 1 (رئيسية)</div>
+        <div class="thumb-slot">صورة 2</div>
+        <div class="thumb-slot">صورة 3</div>
+        <div class="thumb-slot">صورة 4</div>
+      `;
+      uploadedImagesBase64 = [];
+    };
+
+    // 8. حذف منتج من الفايربيز
+    window.deleteProduct = async function(id) {
+      if (confirm('هل أنت متأكد من حذف هذا الملحق نهائياً؟')) {
         try {
-          await db.collection('products').doc(docId).delete();
-          alert('تم الحذف بنجاح!');
-          loadAdminInventory();
+          await db.collection('products').doc(id).delete();
+          alert('تم حذف الملحق بنجاح!');
+          loadInventoryData();
         } catch (err) {
           alert('تعذر الحذف: ' + err.message);
         }
       }
     };
 
-    // فلترة سريعة بالبحث
-    filterInput?.addEventListener('input', (e) => {
+    // 9. البحث في جدول المخزون
+    document.getElementById('inventory-search')?.addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase();
-      const filtered = inventory.filter(i => 
-        (i.title && i.title.toLowerCase().includes(q)) || 
-        (i.brand && i.brand.toLowerCase().includes(q))
+      const filtered = adminInventory.filter(item => 
+        (item.title && item.title.toLowerCase().includes(q)) ||
+        (item.brand && item.brand.toLowerCase().includes(q))
       );
-      renderInventory(filtered);
+      renderInventoryTable(filtered);
     });
 
-    document.addEventListener('DOMContentLoaded', loadAdminInventory);
+    // 10. تحديث الإحصائيات في الصفحة الرئيسية
+    function updateDashboardKPIs() {
+      document.getElementById('stat-products-count').textContent = `${adminInventory.length} منتجات`;
+      const totalVal = adminInventory.reduce((acc, i) => acc + (Number(i.price) * (Number(i.stock) || 1)), 0);
+      document.getElementById('stat-total-val').textContent = `${totalVal.toLocaleString('ar-EG')} ج.م`;
+      const lowStock = adminInventory.filter(i => (Number(i.stock) || 0) < 5).length;
+      document.getElementById('stat-low-stock').textContent = `${lowStock} منتج`;
+    }
+
+    document.addEventListener('DOMContentLoaded', loadInventoryData);
   </script>
 </body>
 </html>
