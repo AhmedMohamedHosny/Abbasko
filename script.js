@@ -178,67 +178,64 @@ function renderCatalog(items) {
 
   DOM.productsCounterBadge.textContent = `${items.length} من ${abascoInventory.length} منتجات`;
 
-  DOM.productsContainer.innerHTML = items.map(product => {
+DOM.productsContainer.innerHTML = items.map(product => {
     const qty = state.quantities[product.id] || 1;
     return `
       <article class="dream-product-card" data-id="${product.id}">
-        <span class="discount-ribbon-tag">وفر ${product.discount} جنيه</span>
         
-<div class="card-media-box">
-  <a href="product.html?id=${product.id}">
-    <img src="${product.image}" alt="${product.title}" loading="lazy">
-  </a>
-  <button class="quick-view-eye-btn" onclick="openQuickModal(${product.id})" title="معاينة سريعة">
-    <i class="fa-solid fa-eye"></i>
-  </button>
-</div>
-
-<!-- شريط المؤشرات الأربعة أسفل صورة المنتج -->
-<div class="image-dash-indicators">
-  <span class="active"></span>
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
-
-        <div class="card-meta-box">
-          <span class="brand-label-text">${product.brand}</span>
+        <!-- الجزء العلوي: تفاصيل يميناً وصورة يساراً -->
+        <div class="card-top-horizontal-split">
           
-          <h3 class="product-item-title">
-            <a href="product.html?id=${product.id}">${product.title}</a>
-          </h3>
+          <div class="card-details-pane">
+            <span class="brand-label-text">${product.brand}</span>
+            <h3 class="product-item-title">
+              <a href="product.html?id=${product.id}">${product.title}</a>
+            </h3>
+            
+            <div class="card-stars-row">
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <span>(${product.ratingCount})</span>
+            </div>
 
-          <div class="card-stars-row">
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <span>(${product.ratingCount})</span>
-          </div>
+            <div class="price-block-dream">
+              <span class="price-val-red">LE ${product.price.toFixed(2)}</span>
+              <span class="price-struck-gray">LE ${product.oldPrice.toFixed(2)}</span>
+            </div>
 
-          <div class="price-block-dream">
-            <span class="price-val-red">LE ${product.price.toFixed(2)}</span>
-            <span class="price-struck-gray">LE ${product.oldPrice.toFixed(2)}</span>
-          </div>
+            <p class="specs-summary-text">${product.specs}</p>
 
-          <p class="specs-summary-list-view">${product.specs}</p>
-
-          <div class="stock-dot-indicator">
-            <span class="blue-dot"></span>
-            <span>في المخزن</span>
-          </div>
-
-          <div class="card-bottom-action-row">
-            <button class="btn-dream-quick-list" onclick="openQuickModal(${product.id})">نظرة سريعة</button>
-            <button class="btn-dream-choose" onclick="addToCartDirect(${product.id})">Choose option</button>
-            <div class="item-mini-stepper">
-              <button class="mini-step-btn" onclick="modifyCardQty(${product.id}, 1)">+</button>
-              <span class="mini-step-val" id="stepper-val-${product.id}">${qty}</span>
-              <button class="mini-step-btn" onclick="modifyCardQty(${product.id}, -1)">-</button>
+            <div class="stock-dot-indicator">
+              <span class="blue-dot"></span>
+              <span>في المخزن</span>
             </div>
           </div>
+
+          <div class="card-image-pane">
+            <span class="discount-ribbon-tag">وفر ${product.discount} جنيه</span>
+            <div class="media-square-box">
+              <a href="product.html?id=${product.id}">
+                <img src="${product.image}" alt="${product.title}" loading="lazy">
+              </a>
+            </div>
+          </div>
+
         </div>
+
+        <!-- الجزء السفلي: الأزرار الثلاثة بعرض الكارت -->
+        <div class="card-bottom-actions-full">
+          <button class="btn-quick-view-olive" onclick="openQuickModal(${product.id})">نظرة سريعة</button>
+          <button class="btn-choose-option-green" onclick="addToCartDirect(${product.id})">Choose option</button>
+          <div class="item-mini-stepper">
+            <button class="mini-step-btn" onclick="modifyCardQty(${product.id}, 1)">+</button>
+            <span class="mini-step-val" id="stepper-val-${product.id}">${qty}</span>
+            <button class="mini-step-btn" onclick="modifyCardQty(${product.id}, -1)">-</button>
+          </div>
+        </div>
+
       </article>
     `;
   }).join('');
