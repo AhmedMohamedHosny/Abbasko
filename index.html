@@ -165,7 +165,20 @@
           </div>
 
         </section>
-
+<!-- شريط آراء وتقييمات العملاء المضموم والمتحرك -->
+      <section class="reviews-section-compact">
+        <div style="text-align: center; margin-bottom: 12px;">
+          <h3 style="font-size: 1.15rem; font-weight: 900; color: var(--text-main);">
+            <i class="fa-brands fa-whatsapp" style="color: #25d366;"></i> تجارب مشتري عباسكو على واتساب
+          </h3>
+          <p style="font-size: 0.78rem; color: var(--text-muted);">معاينات حقيقية وصور المنتجات على الطبيعة بعد الاستلام</p>
+        </div>
+        <div class="reviews-compact-marquee">
+          <div class="reviews-compact-track" id="reviews-compact-track">
+            <!-- تتولد الصور تلقائياً بالجافاسكريبت وتتكرر -->
+          </div>
+        </div>
+      </section>
 <!-- الشريط الجانبي للتصفية الشاملة -->
         <aside class="dream-filters-sidebar">
           
@@ -388,7 +401,9 @@
   </main>
 
   <!-- 4. تذييل محل عباسكو البسيط (بدون شركات أو فروع) -->
-  <footer class="dream-footer">
+<footer class="dream-footer">
+    <!-- طبقة النور السفلي الصاعد -->
+    <div class="footer-bottom-glow"></div>    
     <div class="container footer-content-row">
       <div class="footer-shop-about">
         <div class="footer-brand-title">محل عباسكو لإكسسوارات الموبايل</div>
@@ -480,5 +495,27 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="script.js"></script>
+  <!-- نافذة تكبير سكرينات الآراء -->
+  <div class="abasco-lightbox" id="reviews-lightbox" onclick="this.classList.remove('open')">
+    <img id="lightbox-img" src="" alt="رأي العميل">
+  </div>
+
+  <!-- عنصر إشعار التوست السريع -->
+  <div class="abasco-toast" id="abasco-toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toast-text">تمت الإضافة إلى السلة بنجاح</span>
+  </div>
+
+  <!-- شاشة إغلاق المتجر والصيانة (تُفتح تلقائياً عند تفعيلها) -->
+  <div class="store-closed-screen" id="store-closed-modal" style="display: none;">
+    <div class="closed-glass-box">
+      <img src="logo.png" alt="عباسكو" style="height: 55px; margin: 0 auto;">
+      <h2>جاري جرد المخزون والتحديث</h2>
+      <p>نقوم حالياً بجرد ملحقات الهواتف وإضافة شحنات جديدة بأحدث الإصدارات والأسعار.<br>نعود إليكم في أبهى حلة خلال وقت قصير بإذن الله.</p>
+      <a href="https://wa.me/201000000000" target="_blank" class="btn-send-whatsapp-order" style="margin: 0 auto; max-width: 280px;">
+        <i class="fa-brands fa-whatsapp"></i> تواصل مع الإدارة مباشرة
+      </a>
+    </div>
+  </div>
 </body>
 </html>
