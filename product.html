@@ -1093,11 +1093,11 @@
     // 6. معرض الصور والتبديل كل ثانيتين
     function setupImageSlider(prod) {
       if (prod.images && Array.isArray(prod.images) && prod.images.length > 0) {
-        activeImages = prod.images;
+        activeImages = prod.images.filter(Boolean);
       } else if (prod.image) {
-        activeImages = [prod.image, prod.image, prod.image, prod.image];
+        activeImages = [prod.image];
       } else {
-        activeImages = ['logo.png', 'logo.png', 'logo.png', 'logo.png'];
+        activeImages = ['logo.png'];
       }
 
       currentImgIndex = 0;
