@@ -428,7 +428,19 @@
         <!-- ملخص الفاتورة بدون أي تقسيط -->
         <aside class="cart-invoice-sidebar">
           <h2>ملخص الفاتورة</h2>
+<!-- خانة كوبون الخصم التفاعلي -->
+          <div style="margin-bottom: 16px;">
+            <div style="display: flex; gap: 6px;">
+              <input type="text" id="coupon-code-input" placeholder="كود الخصم (مثال: ABASCO10)" style="flex: 1; padding: 8px 12px; border: 1.5px solid var(--border-color); border-radius: 4px; font-size: 0.82rem; text-transform: uppercase; outline: none;">
+              <button type="button" id="apply-coupon-btn" style="background: var(--dream-green); color: #fff; border: none; padding: 0 14px; border-radius: 4px; font-weight: 800; font-size: 0.82rem; cursor: pointer;">تطبيق</button>
+            </div>
+            <div id="coupon-msg" style="font-size: 0.78rem; margin-top: 4px; display: none; font-weight: 800;"></div>
+          </div>
 
+          <div class="invoice-line" id="discount-row" style="display: none; color: var(--discount-red);">
+            <span>قيمة الخصم:</span>
+            <strong id="discount-display">- 0.00 ج.م</strong>
+          </div>
           <div class="invoice-line">
             <span>إجمالي الملحقات:</span>
             <strong id="subtotal-display">0.00 ج.م</strong>
