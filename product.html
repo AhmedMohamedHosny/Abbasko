@@ -641,7 +641,16 @@
               <i class="fa-solid fa-bolt"></i> شراء الآن
             </button>
           </div>
-
+<div style="background: var(--bg-elevated); border: 1.5px dashed var(--dream-green); border-radius: 8px; padding: 12px 16px; margin-bottom: 22px;">
+            <label style="display:block; font-size:0.82rem; font-weight:800; color:var(--text-main); margin-bottom:6px;">
+              <i class="fa-solid fa-ticket" style="color:var(--dream-green);"></i> هل تمتلك كود خصم لهذا المنتج؟
+            </label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="prod-coupon-input" placeholder="اكتب كود الخصم (مثال: ABASCO10)" style="flex:1; padding:8px 12px; border:1px solid var(--border-color); border-radius:4px; font-size:0.85rem; text-transform:uppercase; outline:none; background:var(--bg-surface); color:var(--text-main);">
+              <button type="button" id="btn-apply-prod-coupon" style="background:var(--dream-green); color:#fff; border:none; padding:0 16px; border-radius:4px; font-weight:800; font-size:0.85rem; cursor:pointer;" onclick="applyProductCoupon()">تطبيق</button>
+            </div>
+            <div id="prod-coupon-msg" style="font-size:0.8rem; font-weight:800; margin-top:6px; display:none;"></div>
+          </div>
           <!-- ضمانات ومعاملات محل عباسكو -->
           <div class="shop-perks-list">
             <div class="shop-perk-item">
@@ -704,8 +713,8 @@
       <div class="footer-contact-box">
         <h4>تواصل معنا فوراً</h4>
         <p>للطلبات والاستفسارات السريعة كلمنا أو راسلنا عبر الواتساب:</p>
-        <a href="https://wa.me/201000000000" class="hotline-pill">
-          <i class="fa-brands fa-whatsapp"></i> 01000000000
+        <a href="https://wa.me/201125408111" class="hotline-pill">
+          <i class="fa-brands fa-whatsapp"></i> 01125408111
         </a>
       </div>
     </div>
@@ -733,7 +742,7 @@
       </div>
       <span>السلة</span>
     </a>
-    <a href="https://wa.me/201000000000" target="_blank" class="mob-nav-item" style="color: #25d366;">
+    <a href="https://wa.me/201125408111" target="_blank" class="mob-nav-item" style="color: #25d366;">
       <i class="fa-brands fa-whatsapp"></i>
       <span>راسلنا</span>
     </a>
@@ -741,7 +750,7 @@
 
   <!-- 6. زر المحادثة العائم المتناوب (واتساب / ماسنجر كل 5 ثوانٍ) -->
   <div class="alternating-chat-widget" id="alternating-chat-btn" title="تواصل معنا">
-    <a href="https://wa.me/201000000000" target="_blank" class="chat-circle-link whatsapp-mode" id="chat-link">
+    <a href="https://wa.me/201125408111" target="_blank" class="chat-circle-link whatsapp-mode" id="chat-link">
       <i class="fa-brands fa-whatsapp chat-icon" id="chat-icon"></i>
     </a>
   </div>
@@ -1161,7 +1170,38 @@
       if (cartEl) cartEl.textContent = count;
       if (mobCartEl) mobCartEl.textContent = count;
     }
+let productAppliedDiscountPercent = 0;
 
+    window.applyProductCoupon = function() {
+      const input = document.getElementById('prod-coupon-input');
+      const msg = document.getElementById('prod-coupon-msg');
+      const code = input ? input.value.trim().toUpperCase() : '';
+      const coupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || { 'ABASCO10': 10 };
+
+      if (!code) return;
+
+      if (coupons[code]) {
+        productAppliedDiscountPercent = coupons[code];
+        const basePrice = Number(currentProduct.price);
+        const discountedPrice = basePrice - (basePrice * (productAppliedDiscountPercent / 100));
+
+        msg.style.display = 'block';
+        msg.style.color = 'var(--dream-green)';
+        msg.innerHTML = `✅ تم تفعيل الكود وخصم ${productAppliedDiscountPercent}%! السعر الجديد: <strong>LE ${discountedPrice.toFixed(2)}</strong>`;
+
+        const priceEl = document.getElementById('detail-price');
+        const oldPriceEl = document.getElementById('detail-old-price');
+        if (priceEl) priceEl.textContent = `LE ${discountedPrice.toFixed(2)}`;
+        if (oldPriceEl) {
+          oldPriceEl.textContent = `LE ${basePrice.toFixed(2)}`;
+          oldPriceEl.style.display = 'inline';
+        }
+      } else {
+        msg.style.display = 'block';
+        msg.style.color = 'var(--discount-red)';
+        msg.textContent = '❌ كود الخصم غير صحيح أو غير مفعل!';
+      }
+    };
     function addProductToCart(quantity) {
       if (chosenColorStock <= 0 || currentProduct.inStock === false) {
         alert("عذراً، هذا الملحق نفذت كميته تماماً!");
@@ -1178,8 +1218,12 @@
         cart.push({
           id: currentProduct.id,
           cartId: cartItemId,
-          name: `${currentProduct.title} - لون (${chosenColor})`,
-          price: Number(currentProduct.price),
+name: productAppliedDiscountPercent > 0 
+                ? `${currentProduct.title} - لون (${chosenColor}) [خصم ${productAppliedDiscountPercent}%]`
+                : `${currentProduct.title} - لون (${chosenColor})`,
+          price: productAppliedDiscountPercent > 0 
+                ? Number(currentProduct.price) * (1 - (productAppliedDiscountPercent / 100))
+                : Number(currentProduct.price),
           image: (currentProduct.images && currentProduct.images[0]) || currentProduct.image || 'logo.png',
           color: chosenColor,
           quantity: quantity
@@ -1227,7 +1271,7 @@
       setTimeout(() => {
         if (isWhatsApp) {
           chatLink.className = 'chat-circle-link whatsapp-mode';
-          chatLink.href = 'https://wa.me/201000000000';
+          chatLink.href = 'https://wa.me/201125408111';
           chatIcon.className = 'fa-brands fa-whatsapp chat-icon';
         } else {
           chatLink.className = 'chat-circle-link messenger-mode';
