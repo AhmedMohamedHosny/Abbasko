@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <link rel="stylesheet" href="style.css">
+  
 <!-- مكتبات Firebase لقراءة بيانات المنتج الحقيقي -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -754,7 +755,17 @@
       <i class="fa-brands fa-whatsapp chat-icon" id="chat-icon"></i>
     </a>
   </div>
-
+  <!-- شاشة إغلاق المتجر والصيانة -->
+  <div class="store-closed-screen" id="store-closed-modal" style="display: none;">
+    <div class="closed-glass-box">
+      <img src="logo.png" alt="عباسكو" style="height: 55px; margin: 0 auto;">
+      <h2>جاري جرد المخزون والتحديث</h2>
+      <p>نقوم حالياً بجرد ملحقات الهواتف وإضافة شحنات جديدة بأحدث الإصدارات والأسعار.<br>نعود إليكم في أبهى حلة خلال وقت قصير بإذن الله.</p>
+      <a href="https://wa.me/201125408111" target="_blank" class="btn-send-whatsapp-order" style="margin: 0 auto; max-width: 280px;">
+        <i class="fa-brands fa-whatsapp"></i> تواصل مع الإدارة مباشرة
+      </a>
+    </div>
+  </div>
 <!-- المحرك البرمجي الفوري لصفحة المنتج (مربوط حياً بـ Firebase لجلب كافة الألوان الحقيقية) -->
   <script>
     'use strict';
@@ -1286,6 +1297,27 @@ name: productAppliedDiscountPercent > 0
     document.addEventListener('DOMContentLoaded', () => {
       fetchLiveProductDetails();
       syncCartCounter();
+    });
+
+    // مزامنة حالة إغلاق المتجر لحظياً
+    function applyStoreClosedState(isClosed) {
+      const modal = document.getElementById('store-closed-modal');
+      if (!modal) return;
+      if (isClosed) {
+        modal.style.setProperty('display', 'flex', 'important');
+        document.body.style.overflow = 'hidden';
+      } else {
+        modal.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+      }
+    }
+    applyStoreClosedState(localStorage.getItem('abasco_store_closed') === 'true');
+    db.collection('settings').doc('status').onSnapshot(doc => {
+      if (doc.exists) {
+        const closed = doc.data().isClosed === true;
+        localStorage.setItem('abasco_store_closed', closed ? 'true' : 'false');
+        applyStoreClosedState(closed);
+      }
     });
   </script>
 </body>
