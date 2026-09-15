@@ -1178,16 +1178,19 @@
                   <input type="text" id="store-admin-pass" class="form-control" value="abasco2026" required>
                   <small style="color:var(--text-muted); font-size:0.75rem;">الرمز السري لدخول اللوحة عبر اختصار لوحة المفاتيح أو النقر على اللوجو.</small>
                 </div>
-
-                <div class="form-row">
-                  <div class="form-group">
-                    <label>شحن القاهرة والجيزة (ج.م)</label>
-                    <input type="number" id="ship-cairo" class="form-control" value="35">
+<div style="background: #f8fafc; border: 1.5px dashed var(--admin-green); border-radius: 8px; padding: 14px; margin-bottom: 14px;">
+                  <label style="font-weight: 800; color: var(--admin-green); margin-bottom: 8px; display:block;">
+                    <i class="fa-solid fa-ticket"></i> إضافة كوبون خصم جديد للمتجر
+                  </label>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;">
+                    <input type="text" id="new-cpn-code" class="form-control" placeholder="كود الكوبون (مثال: ABASCO10)" style="text-transform: uppercase;">
+                    <input type="number" id="new-cpn-discount" class="form-control" placeholder="نسبة الخصم المئوية (مثال: 10)">
                   </div>
-                  <div class="form-group">
-                    <label>شحن باقي المحافظات (ج.م)</label>
-                    <input type="number" id="ship-other" class="form-control" value="45">
-                  </div>
+                  <button type="button" class="btn-submit-action" style="margin-top:0; padding:8px; font-size:0.82rem; background:#0284c7;" onclick="adminSaveNewCoupon()">
+                    <i class="fa-solid fa-plus"></i> تفعيل وحفظ الكوبون
+                  </button>
+                  <div id="admin-coupons-list" style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
+                    </div>
                 </div>
 
                 <button type="submit" class="btn-submit-action">
@@ -1286,27 +1289,27 @@ window.switchAdminTab = function(tabId) {
     // =========================================================================
     // 3. منظومة الـ 20 لون وتدرج للواجهة الخارجية
     // =========================================================================
-    const PRESET_THEMES = [
-      { name: "دريم كلاسيك", color: "#7cb342" },
-      { name: "زمردي ملكي", color: "#10b981" },
-      { name: "أخضر سراقة", color: "#16a34a" },
-      { name: "أزرق تيتانيوم", color: "#0284c7" },
-      { name: "نيلي داكن", color: "#2563eb" },
-      { name: "ذهبي نيون", color: "#e2c07d" },
-      { name: "عنبر أصيل", color: "#d97706" },
-      { name: "برتقالي ناري", color: "#ea580c" },
-      { name: "أحمر ياقوتي", color: "#dc2626" },
-      { name: "قرمزي أنكر", color: "#e11d48" },
-      { name: "بنفسجي سايبر", color: "#8b5cf6" },
-      { name: "أرجواني ملكي", color: "#7c3aed" },
-      { name: "وردي فاقع", color: "#ec4899" },
-      { name: "تيركواز بحري", color: "#06b6d4" },
-      { name: "أكوا ناعم", color: "#14b8a6" },
-      { name: "تدرج دريم-نيون", color: "linear-gradient(135deg, #7cb342, #a2d95b)" },
-      { name: "تدرج ذهب-زمرد", color: "linear-gradient(135deg, #d4af37, #10b981)" },
-      { name: "تدرج أزرق-كهربائي", color: "linear-gradient(135deg, #0284c7, #38bdf8)" },
-      { name: "تدرج شفق-قرمزي", color: "linear-gradient(135deg, #e11d48, #f59e0b)" },
-      { name: "تدرج أرجواني-ليلي", color: "linear-gradient(135deg, #6366f1, #a855f7)" }
+const PRESET_THEMES = [
+      { name: "الأبيض الصريح (Default)", color: "#ffffff", textColor: "#000000" },
+      { name: "دريم الأخضر", color: "#7cb342", textColor: "#ffffff" },
+      { name: "الزمردي الملكي", color: "#10b981", textColor: "#ffffff" },
+      { name: "أزرق تيتانيوم", color: "#0284c7", textColor: "#ffffff" },
+      { name: "نيلي داكن", color: "#2563eb", textColor: "#ffffff" },
+      { name: "ذهبي نيون", color: "#e2c07d", textColor: "#071914" },
+      { name: "عنبر فخم", color: "#d97706", textColor: "#ffffff" },
+      { name: "برتقالي ناري", color: "#ea580c", textColor: "#ffffff" },
+      { name: "أحمر ياقوتي", color: "#dc2626", textColor: "#ffffff" },
+      { name: "قرمزي أنكر", color: "#e11d48", textColor: "#ffffff" },
+      { name: "بنفسجي سايبر", color: "#8b5cf6", textColor: "#ffffff" },
+      { name: "أرجواني ملكي", color: "#7c3aed", textColor: "#ffffff" },
+      { name: "وردي ناعم", color: "#ec4899", textColor: "#ffffff" },
+      { name: "تيركواز بحري", color: "#06b6d4", textColor: "#ffffff" },
+      { name: "أسود فحمي", color: "#18181b", textColor: "#ffffff" },
+      { name: "تدرج أخضر نيون", color: "linear-gradient(135deg, #7cb342, #a2d95b)", textColor: "#ffffff" },
+      { name: "تدرج ذهب وزمرد", color: "linear-gradient(135deg, #d4af37, #10b981)", textColor: "#ffffff" },
+      { name: "تدرج أزرق كهربائي", color: "linear-gradient(135deg, #0284c7, #38bdf8)", textColor: "#ffffff" },
+      { name: "تدرج شفق قرمزي", color: "linear-gradient(135deg, #e11d48, #f59e0b)", textColor: "#ffffff" },
+      { name: "تدرج أرجواني ليلي", color: "linear-gradient(135deg, #6366f1, #a855f7)", textColor: "#ffffff" }
     ];
 
     function initThemePalette() {
@@ -1495,14 +1498,62 @@ window.selectThemeColor = async function(colorVal, name) {
       } catch (e) {}
       alert('✅ تم حفظ وتحديث أسعار شحن الـ 27 محافظة كاملة في المتجر بنجاح!');
     };
+// إدارة الكوبونات الفعالة
+    window.adminSaveNewCoupon = async function() {
+      const codeInput = document.getElementById('new-cpn-code');
+      const discInput = document.getElementById('new-cpn-discount');
+      const code = codeInput.value.trim().toUpperCase();
+      const disc = parseFloat(discInput.value);
 
+      if (!code || isNaN(disc) || disc <= 0) {
+        alert("يرجى كتابة كود الخصم ونسبة الخصم بشكل صحيح!");
+        return;
+      }
+
+      let coupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || {};
+      coupons[code] = disc;
+      localStorage.setItem('abasco_coupons_db', JSON.stringify(coupons));
+
+      try {
+        await db.collection('settings').doc('coupons').set(coupons);
+      } catch (e) {}
+
+      alert(`✅ تم حفظ وتفعيل كوبون [${code}] بخصم ${disc}% بنجاح!`);
+      codeInput.value = '';
+      discInput.value = '';
+      renderAdminCoupons();
+    };
+
+    window.adminDeleteCoupon = async function(code) {
+      if (!confirm(`هل تريد حذف كوبون [${code}]؟`)) return;
+      let coupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || {};
+      delete coupons[code];
+      localStorage.setItem('abasco_coupons_db', JSON.stringify(coupons));
+      try {
+        await db.collection('settings').doc('coupons').set(coupons);
+      } catch (e) {}
+      renderAdminCoupons();
+    };
+
+    function renderAdminCoupons() {
+      const listEl = document.getElementById('admin-coupons-list');
+      if (!listEl) return;
+      const coupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || { 'ABASCO10': 10 };
+      listEl.innerHTML = Object.keys(coupons).map(code => `
+        <div style="display:flex; justify-content:space-between; align-items:center; background:#fff; padding:6px 10px; border:1px solid #cbd5e1; border-radius:4px; font-size:0.8rem;">
+          <span><strong>${code}</strong> (خصم ${coupons[code]}%)</span>
+          <button type="button" onclick="adminDeleteCoupon('${code}')" style="color:var(--danger); border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      `).join('');
+    }
     // استدعاء الوظائف المضافة عند فتح اللوحة
     const originalDOMContentLoaded = document.addEventListener;
     document.addEventListener('DOMContentLoaded', () => {
+      
       initThemePalette();
       initShippingRatesUI();
       loadAdminReviews();
-      
+      renderAdminCoupons();
       const isClosed = localStorage.getItem('abasco_store_closed') === 'true';
       const toggle = document.getElementById('store-maintenance-toggle');
       if (toggle) {
