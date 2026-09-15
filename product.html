@@ -488,6 +488,80 @@
         font-size: 1.25rem;
       }
     }
+
+    /* تلميم كامل للموبايل + إخفاء شريط البحث بصفحة المنتج */
+    @media (max-width: 768px) {
+      .dream-header .dream-search-bar { display: none !important; }
+
+      .product-page-canvas { padding: 12px 0 40px; }
+
+      .dream-breadcrumbs { font-size: 0.74rem; margin-bottom: 14px; }
+
+      .product-single-card {
+        padding: 12px;
+        gap: 14px;
+        border-radius: 10px;
+      }
+
+      .main-image-viewport {
+        height: 220px;
+        padding: 12px;
+      }
+
+      .gallery-nav-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+      }
+
+      .single-discount-badge {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+      }
+
+      .overview-brand-tag { font-size: 0.76rem; }
+
+      .overview-title {
+        font-size: 1.05rem;
+        margin-bottom: 8px;
+      }
+
+      .overview-stars-strip {
+        font-size: 0.76rem;
+        gap: 8px !important;
+        margin-bottom: 12px;
+      }
+
+      .overview-pricing-panel {
+        padding: 10px 14px;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .overview-price-red { font-size: 1.4rem; }
+      .overview-price-old { font-size: 0.9rem; }
+
+      .overview-stock-pill {
+        font-size: 0.78rem;
+        margin-bottom: 16px;
+      }
+
+      .color-selection-panel { padding: 10px 12px; margin-bottom: 16px; }
+      .color-panel-header { font-size: 0.8rem; }
+      .color-swatch-badge { padding: 5px 10px; font-size: 0.76rem; }
+
+      .purchase-actions-row { gap: 8px; margin-bottom: 18px; }
+      .detail-stepper-box, .btn-detail-add-cart, .btn-detail-buy-now { height: 42px; }
+      .btn-detail-add-cart, .btn-detail-buy-now { font-size: 0.86rem; }
+      .btn-detail-buy-now { padding: 0 16px; }
+
+      .shop-perk-item { font-size: 0.78rem; }
+
+      .product-specs-section { padding: 16px; }
+      .specs-header-tab { font-size: 1rem; }
+      .spec-table-label { width: 130px; font-size: 0.8rem; }
+      .spec-table-value { font-size: 0.8rem; }
+    }
   </style>
 </head>
 <body>
