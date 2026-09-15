@@ -841,29 +841,46 @@ window.showToast = function(message) {
   setTimeout(() => toast.classList.remove('show'), 3200);
 };
 
-// 2. شريط آراء العملاء وسكرينات الواتساب المصغرة
-(function initCompactReviews() {
+// 2. فحص وعرض سكرينات آراء العملاء الحقيقية فقط
+(async function initCompactReviews() {
   const track = document.getElementById('reviews-compact-track');
-  if (!track) return;
+  const section = document.querySelector('.reviews-section-compact');
+  if (!track || !section) return;
 
-  // صور وسكرينات تقييمات واقعية لملحقات الموبايل
-  const reviewImages = [
-    'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
-    'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
-    'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80',
-    'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=400&q=80',
-    'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
-    'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80'
-  ];
+  let realReviews = [];
 
-  const html = reviewImages.map(img => `
+  // جلب الصور الحقيقية من Firestore إن وُجدت
+  try {
+    const snap = await db.collection('reviews').get();
+    snap.forEach(doc => {
+      const data = doc.data();
+      if (data.image) realReviews.push(data.image);
+    });
+  } catch (e) {
+    // في حالة عدم وجود كولكشن reviews يتم فحص التخزين المحلي
+    realReviews = JSON.parse(localStorage.getItem('abasco_store_reviews')) || [];
+  }
+
+  // إذا لم يتم رفع أي سكرينات بعد
+  if (realReviews.length === 0) {
+    track.parentElement.innerHTML = `
+      <div style="text-align: center; padding: 24px; background: var(--bg-surface); border: 1px dashed var(--border-color); border-radius: 12px; margin: 10px auto; max-width: 500px;">
+        <i class="fa-regular fa-clock" style="font-size: 1.8rem; color: var(--dream-green); margin-bottom: 8px;"></i>
+        <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">لم يتم نشر تجارب أو محادثات بعد</h4>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">سيتم إضافة لقطات شاشة لآراء المشترين فور استلام وتقييم الشحنات الأولى.</p>
+      </div>
+    `;
+    return;
+  }
+
+  // عرض السكرينات الحقيقية وتكرارها للشريط الانسيابي
+  const html = realReviews.map(img => `
     <div class="review-mini-card" onclick="openReviewLightbox('${img}')">
       <img src="${img}" alt="رأي العميل">
     </div>
   `).join('');
 
-  // مضاعفة العناصر لتتحرك كشريط انسيابي مستمر
-  track.innerHTML = html + html;
+  track.innerHTML = realReviews.length > 2 ? (html + html) : html;
 })();
 
 window.openReviewLightbox = function(src) {
