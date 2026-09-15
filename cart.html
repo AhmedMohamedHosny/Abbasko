@@ -731,17 +731,43 @@ subtotalEl.textContent = `LE ${totalPrice.toFixed(2)}`;
     }, 5000);
 
     document.addEventListener('DOMContentLoaded', renderCart);
-      applyBtn.addEventListener('click', () => {
-    const code = input.value.trim().toUpperCase();
-    const cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];
-    const totalPrice = cart.reduce((acc, i) => acc + (Number(i.price) * (Number(i.quantity) || 1)), 0);
 
-    if (totalPrice <= 0) return;
+    // نظام كوبونات الخصم في السلة
+    const applyBtn = document.getElementById('apply-coupon-btn');
+    const couponInput = document.getElementById('coupon-code-input');
+    const couponMsg = document.getElementById('coupon-msg');
+    const discountRow = document.getElementById('discount-row');
+    const discountDisplay = document.getElementById('discount-display');
 
-    const validCoupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || { 'ABASCO10': 10 };
+    applyBtn?.addEventListener('click', () => {
+      const code = couponInput.value.trim().toUpperCase();
+      const cart = getCart();
+      const totalPrice = cart.reduce((acc, i) => acc + (Number(i.price) * (Number(i.quantity) || 1)), 0);
 
-    if (validCoupons[code]) {
-      const discountVal = totalPrice * (validCoupons[code] / 100);
+      if (totalPrice <= 0 || !code) return;
+
+      const validCoupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || { 'ABASCO10': 10 };
+
+      if (validCoupons[code]) {
+        const discountVal = totalPrice * (validCoupons[code] / 100);
+
+        couponMsg.style.display = 'block';
+        couponMsg.style.color = 'var(--dream-green)';
+        couponMsg.textContent = `✅ تم تفعيل الكود وخصم ${discountVal.toFixed(2)} ج.م بنجاح!`;
+
+        discountRow.style.display = 'flex';
+        discountDisplay.textContent = `- LE ${discountVal.toFixed(2)}`;
+
+        const currentShip = Number(localStorage.getItem('abasco_cart_shipping_fee')) || 0;
+        const newTotal = Math.max(0, totalPrice - discountVal + currentShip);
+        document.getElementById('final-total-display').textContent = `LE ${newTotal.toFixed(2)}`;
+        localStorage.setItem('abasco_discount_val', discountVal);
+      } else {
+        couponMsg.style.display = 'block';
+        couponMsg.style.color = 'var(--discount-red)';
+        couponMsg.textContent = '❌ كود الخصم غير صحيح أو منتهي الصلاحية!';
+      }
+    });
   </script>
 </body>
 </html>
