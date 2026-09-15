@@ -2115,36 +2115,20 @@ uploadedCloudinaryUrls = [];
       if (!tbody) return;
 
       try {
-        const snap = await db.collection('orders').get();
+        const snap = await db.collection('orders').orderBy('createdAt', 'desc').get();
         adminOrders = [];
         snap.forEach(d => adminOrders.push({ id: d.id, ...d.data() }));
       } catch (e) {
-        // عينة تجريبية فورية إن كانت قاعدة البيانات جديدة
-        adminOrders = [
-          {
-            id: 'ABS-1092',
-            customerName: 'محمد طارق',
-            phone: '01012345678',
-            gov: 'القاهرة',
-            address: 'مدينة نصر، مكرم عبيد، عمارة 14 الدور 3',
-            items: 'شاحن أنكر 30 واط (1) + كابل تايب سي (1)',
-            total: 948,
-            status: 'قيد التجهيز ⏳'
-          },
-          {
-            id: 'ABS-1091',
-            customerName: 'إسلام خيري',
-            phone: '01198765432',
-            gov: 'الإسكندرية',
-            address: 'سموحة، شارع فوزي معاذ',
-            items: 'شاحن سامسونج 45 واط (1)',
-            total: 2044,
-            status: 'تم الشحن 🚚'
-          }
-        ];
+        adminOrders = [];
+        console.warn('تعذر تحميل الطلبات:', e.message);
       }
 
       document.getElementById('stat-orders-count').textContent = `${adminOrders.length} طلبات`;
+
+      if (adminOrders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px;">لا توجد طلبات واردة حتى الآن.</td></tr>`;
+        return;
+      }
 
       tbody.innerHTML = adminOrders.map(order => `
         <tr>
