@@ -650,24 +650,54 @@
       .sidebar-brand-titles, .sidebar-menu li a span, .sidebar-footer-badge span { display: none; }
       .sidebar-menu li a { justify-content: center; padding: 14px; }
     }
-    /* الدارك مود للوحة التحكم */
+/* الوضع الليلي الفخم للوحة التحكم */
     body.admin-dark {
-      --admin-bg: #0b0f14;
-      --admin-surface: #151c24;
-      --admin-border: #232f3e;
-      --text-main: #f1f5f9;
+      --admin-bg: #0f172a;
+      --admin-surface: #1e293b;
+      --admin-border: #334155;
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
     }
-    body.admin-dark .admin-card-header,
-    body.admin-dark .file-upload-zone {
-      background: #111822;
+    body.admin-dark .admin-topbar {
+      background: #1e293b;
+      border-bottom-color: #334155;
     }
-    body.admin-dark .form-control {
-      background: #0f172a;
-      color: #fff;
+    body.admin-dark .admin-card-header {
+      background: #162032;
+      border-bottom-color: #334155;
+    }
+    body.admin-dark .form-control,
+    body.admin-dark .gov-rate-input,
+    body.admin-dark .color-stock-input {
+      background: #0f172a !important;
+      color: #ffffff !important;
+      border-color: #475569 !important;
+    }
+    body.admin-dark #governorates-rates-grid > div,
+    body.admin-dark .color-variant-row,
+    body.admin-dark .color-preset-pill {
+      background: #1e293b !important;
+      border-color: #334155 !important;
+      color: #f8fafc !important;
+    }
+    body.admin-dark #governorates-rates-grid span {
+      color: #f8fafc !important;
     }
     body.admin-dark .admin-table th {
-      background: #111822;
+      background: #162032;
+      color: #94a3b8;
+      border-bottom-color: #334155;
+    }
+    body.admin-dark .admin-table td {
+      border-bottom-color: #334155;
+      color: #f8fafc;
+    }
+    body.admin-dark .admin-table tr:hover {
+      background-color: #243247;
+    }
+    body.admin-dark .kpi-card {
+      background: #1e293b;
+      border-color: #334155;
     }
 
     /* شبكة الـ 20 لون وتدرج */
