@@ -508,9 +508,16 @@
                 </div>
               </div>
 
-              <div class="input-field-block">
-                <label for="order-address">العنوان بالتفصيل <span class="star">*</span></label>
+<div class="input-field-block">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <label for="order-address" style="margin:0;">العنوان بالتفصيل <span class="star">*</span></label>
+                  <button type="button" id="btn-geo-location" style="background: var(--dream-green-light); border: 1px dashed var(--dream-green); color: var(--dream-green); padding: 4px 10px; border-radius: 4px; font-size: 0.76rem; font-weight: 800; cursor: pointer;">
+                    <i class="fa-solid fa-location-crosshairs"></i> تحديد موقعي الحالي تلقائياً
+                  </button>
+                </div>
                 <textarea id="order-address" rows="3" placeholder="اسم الشارع بالتفصيل، رقم العمارة، الدور، رقم الشقة، وأقرب علامة مميزة بجوارك..." required></textarea>
+                <input type="hidden" id="geo-map-link">
+                <span id="geo-status-text" style="font-size: 0.74rem; color: var(--dream-green); font-weight: 700; display: none;"></span>
               </div>
 
               <div class="input-field-block">
