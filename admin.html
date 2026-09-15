@@ -1322,13 +1322,19 @@ window.switchAdminTab = function(tabId) {
       `).join('');
     }
 
-    window.selectThemeColor = async function(colorVal, name) {
+window.selectThemeColor = async function(colorVal, name) {
       document.querySelectorAll('.color-preset-pill').forEach(p => p.classList.remove('active'));
+      event?.currentTarget?.classList.add('active');
+      
       localStorage.setItem('abasco_primary_color', colorVal);
-      document.getElementById('active-color-name-label').textContent = `اللون الحالي: ${name}`;
+      const label = document.getElementById('active-color-name-label');
+      if (label) label.textContent = `اللون الحالي: ${name}`;
+
       try {
         await db.collection('settings').doc('appearance').set({ primaryColor: colorVal }, { merge: true });
-      } catch (e) {}
+      } catch (e) {
+        console.warn("حفظ الثيم محلياً:", e.message);
+      }
       alert(`🎨 تم تطبيق ثيم [${name}] على المتجر الخارجي بنجاح!`);
     };
 
