@@ -827,3 +827,142 @@ window.setCardSlice = function(productId, sliceIndex) {
 window.resetCardSlice = function(productId) {
   window.setCardSlice(productId, 0);
 };
+/* =========================================================
+   تشغيل الميزات الإضافية لمحل عباسكو
+   ========================================================= */
+
+// 1. تشغيل التوست السريع
+window.showToast = function(message) {
+  const toast = document.getElementById('abasco-toast');
+  const text = document.getElementById('toast-text');
+  if (!toast || !text) return;
+  text.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3200);
+};
+
+// 2. شريط آراء العملاء وسكرينات الواتساب المصغرة
+(function initCompactReviews() {
+  const track = document.getElementById('reviews-compact-track');
+  if (!track) return;
+
+  // صور وسكرينات تقييمات واقعية لملحقات الموبايل
+  const reviewImages = [
+    'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80',
+    'https://images.unsplash.com/photo-1616348436168-de43ad0db179?auto=format&fit=crop&w=400&q=80'
+  ];
+
+  const html = reviewImages.map(img => `
+    <div class="review-mini-card" onclick="openReviewLightbox('${img}')">
+      <img src="${img}" alt="رأي العميل">
+    </div>
+  `).join('');
+
+  // مضاعفة العناصر لتتحرك كشريط انسيابي مستمر
+  track.innerHTML = html + html;
+})();
+
+window.openReviewLightbox = function(src) {
+  const lb = document.getElementById('reviews-lightbox');
+  const img = document.getElementById('lightbox-img');
+  if (lb && img) {
+    img.src = src;
+    lb.classList.add('open');
+  }
+};
+
+// 3. نظام كوبونات الخصم في السلة
+(function initCouponSystem() {
+  const applyBtn = document.getElementById('apply-coupon-btn');
+  const input = document.getElementById('coupon-code-input');
+  const msg = document.getElementById('coupon-msg');
+  const discountRow = document.getElementById('discount-row');
+  const discountDisplay = document.getElementById('discount-display');
+  const finalTotalEl = document.getElementById('final-total-display');
+
+  if (!applyBtn || !input) return;
+
+  const validCoupons = {
+    'ABASCO10': 0.10, // خصم 10%
+    'ABASCO50': 50    // خصم 50 جنيه
+  };
+
+  applyBtn.addEventListener('click', () => {
+    const code = input.value.trim().toUpperCase();
+    const cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];
+    const totalPrice = cart.reduce((acc, i) => acc + (Number(i.price) * (Number(i.quantity) || 1)), 0);
+
+    if (totalPrice <= 0) return;
+
+    if (validCoupons[code]) {
+      let discountVal = 0;
+      if (validCoupons[code] < 1) {
+        discountVal = totalPrice * validCoupons[code];
+      } else {
+        discountVal = validCoupons[code];
+      }
+
+      msg.style.display = 'block';
+      msg.style.color = 'var(--dream-green)';
+      msg.textContent = `✅ تم تفعيل الكود وخصم ${discountVal.toFixed(2)} ج.م بنجاح!`;
+
+      discountRow.style.display = 'flex';
+      discountDisplay.textContent = `- LE ${discountVal.toFixed(2)}`;
+
+      const newTotal = Math.max(0, totalPrice - discountVal);
+      if (finalTotalEl) finalTotalEl.textContent = `LE ${newTotal.toFixed(2)}`;
+      localStorage.setItem('abasco_discount_val', discountVal);
+    } else {
+      msg.style.display = 'block';
+      msg.style.color = 'var(--discount-red)';
+      msg.textContent = '❌ كود الخصم غير صحيح أو منتهي الصلاحية!';
+    }
+  });
+})();
+
+// 4. تقييم النجوم التفاعلي
+(function initInteractiveRating() {
+  const stars = document.querySelectorAll('#user-star-picker .star-item');
+  const feedback = document.getElementById('rating-feedback');
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      stars.forEach(s => s.classList.remove('active'));
+      star.classList.add('active');
+      if (feedback) feedback.style.display = 'inline';
+      window.showToast?.("شكراً لتقييمك للمنتج! ⭐");
+    });
+  });
+})();
+
+// 5. جلب الموقع الجغرافي بالخريطة في صفحة الـ Checkout
+document.getElementById('btn-geo-location')?.addEventListener('click', () => {
+  const statusText = document.getElementById('geo-status-text');
+  const mapInput = document.getElementById('geo-map-link');
+  const addressBox = document.getElementById('order-address');
+
+  if (!navigator.geolocation) {
+    alert("خاصية تحديد الموقع غير مدعومة في متصفحك.");
+    return;
+  }
+
+  statusText.style.display = 'block';
+  statusText.textContent = "جاري التقاط إحداثيات موقعك عبر الأقمار الصناعية...";
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+      if (mapInput) mapInput.value = mapUrl;
+      if (addressBox) addressBox.value += `\n[موقعي على الخريطة: ${mapUrl}]`;
+      statusText.textContent = "✅ تم تثبيت موقعك الجغرافي بنجاح لمساعدة المندوب!";
+    },
+    (err) => {
+      statusText.textContent = "تعذر تحديد الموقع تلقائياً. يرجى كتابة العنوان يدوياً.";
+    }
+  );
+});
