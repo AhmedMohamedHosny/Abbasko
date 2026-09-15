@@ -672,7 +672,30 @@
     `).join('');
 
     let activeShippingFee = 0;
+// قراءة أسعار الـ 27 محافظة المحفوظة من لوحة التحكم وتحديث قائمة الاختيار
+    (function syncGovRatesToCheckout() {
+      const customRates = JSON.parse(localStorage.getItem('abasco_gov_shipping_rates'));
+      if (!customRates || !govSelect) return;
 
+      const govIdMap = {
+        "القاهرة": "cairo", "الجيزة": "giza", "الإسكندرية": "alex", "القليوبية": "qalyubia",
+        "الشرقية": "sharqia", "الدقهلية": "dakahlia", "الغربية": "gharbia", "المنوفية": "monufia",
+        "البحيرة": "beheira", "كفر الشيخ": "kafr_el_sheikh", "دمياط": "damietta", "بورسعيد": "port_said",
+        "الإسماعيلية": "ismailia", "السويس": "suez", "الفيوم": "fayoum", "بني سويف": "beni_suef",
+        "المنيا": "minya", "أسيوط": "assiut", "سوهاج": "sohag", "قنا": "qena", "الأقصر": "luxor",
+        "أسوان": "aswan", "مطروح": "matrouh", "البحر الأحمر": "red_sea", "الوادي الجديد": "new_valley",
+        "شمال سيناء": "north_sinai", "جنوب سيناء": "south_sinai"
+      };
+
+      Array.from(govSelect.options).forEach(opt => {
+        const govKey = govIdMap[opt.value];
+        if (govKey && customRates[govKey] !== undefined) {
+          const newFee = customRates[govKey];
+          opt.setAttribute('data-shipping', newFee);
+          opt.textContent = `${opt.value} (${newFee} ج.م)`;
+        }
+      });
+    })();
     function recalculateGrandTotal() {
       const selectedOption = govSelect.options[govSelect.selectedIndex];
       const fee = parseFloat(selectedOption.getAttribute('data-shipping')) || 0;
