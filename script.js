@@ -983,22 +983,101 @@ document.getElementById('btn-geo-location')?.addEventListener('click', () => {
     }
   );
 });
-// 1. تطبيق لون الثيم المختار من لوحة الإدارة تلقائياً
-(function applyLiveThemeColor() {
-  const savedColor = localStorage.getItem('abasco_primary_color');
-  if (savedColor) {
-    document.documentElement.style.setProperty('--dream-green', savedColor);
-    document.documentElement.style.setProperty('--dream-green-hover', savedColor);
-    document.documentElement.style.setProperty('--dream-green-glow', 'rgba(124, 179, 66, 0.35)');
+// =========================================================
+// المحرك الحي لتطبيق الألوان الفورية وحالة الصيانة
+// =========================================================
+
+// 1. تطبيق اللون أو التدرج فوراً مع فرض النفاذ على كل عناصر الواجهة
+function applyLiveThemeEngine(colorVal) {
+  if (!colorVal) return;
+  
+  // تحديث متغيرات CSS الرئيسية
+  document.documentElement.style.setProperty('--dream-green', colorVal);
+  document.documentElement.style.setProperty('--dream-green-hover', colorVal);
+  
+  // إنشاء ستايل إجباري فوري لحقن اللون والتدرجات بدون أي مقاومة من ملف الـ CSS
+  let dynamicStyle = document.getElementById('abasco-live-theme-injector');
+  if (!dynamicStyle) {
+    dynamicStyle = document.createElement('style');
+    dynamicStyle.id = 'abasco-live-theme-injector';
+    document.head.appendChild(dynamicStyle);
+  }
+
+  // دعم الألوان الفردية والتدرجات الخطية (Gradients)
+  const isGrad = colorVal.includes('gradient');
+  const bgRule = isGrad ? `background: ${colorVal} !important; background-image: ${colorVal} !important;` : `background-color: ${colorVal} !important;`;
+
+  dynamicStyle.innerHTML = `
+    .btn-choose-option-green,
+    .btn-detail-add-cart,
+    .btn-proceed-checkout,
+    .single-center-badge,
+    .search-submit-btn,
+    .switch-ui input:checked + .slider-switch,
+    .capsule-verified-tag,
+    .dream-pagination-bar .page-num.active {
+      ${bgRule}
+      color: #ffffff !important;
+      border-color: transparent !important;
+    }
+    .brand-en,
+    .overview-brand-tag,
+    .dream-product-card:hover .product-item-title a,
+    .store-hours {
+      color: ${isGrad ? '#7cb342' : colorVal} !important;
+    }
+    .dream-product-card:hover {
+      border-color: ${isGrad ? '#7cb342' : colorVal} !important;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+    }
+    .dream-product-card::before {
+      background: conic-gradient(transparent 0deg, transparent 180deg, ${isGrad ? '#7cb342' : colorVal} 270deg, transparent 320deg) !important;
+    }
+  `;
+}
+
+// تشغيل اللون المحفوظ محلياً ومزامنته حياً مع Firebase
+(function initColorSync() {
+  const localCol = localStorage.getItem('abasco_primary_color');
+  if (localCol) applyLiveThemeEngine(localCol);
+
+  if (typeof db !== 'undefined') {
+    db.collection('settings').doc('appearance').onSnapshot(doc => {
+      if (doc.exists && doc.data().primaryColor) {
+        const col = doc.data().primaryColor;
+        localStorage.setItem('abasco_primary_color', col);
+        applyLiveThemeEngine(col);
+      }
+    }, err => {});
   }
 })();
 
-// 2. إظهار شاشة الصيانة إن كان المتجر مغلقاً من لوحة الإدارة
-(function checkMaintenanceStatus() {
-  const isClosed = localStorage.getItem('abasco_store_closed') === 'true';
+// 2. المزامنة الحية لشاشة إغلاق المتجر (تفتح وتغلق تلقائياً في ثوانٍ)
+(function initLiveMaintenanceSync() {
   const modal = document.getElementById('store-closed-modal');
-  if (modal && isClosed) {
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+  if (!modal) return;
+
+  function setClosedUI(closed) {
+    if (closed) {
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    } else {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+  }
+
+  // فحص أولي من الذاكرة المحلية
+  setClosedUI(localStorage.getItem('abasco_store_closed') === 'true');
+
+  // استماع مباشر ولحظي من Firebase
+  if (typeof db !== 'undefined') {
+    db.collection('settings').doc('status').onSnapshot(doc => {
+      if (doc.exists) {
+        const isClosed = doc.data().isClosed === true;
+        localStorage.setItem('abasco_store_closed', isClosed ? 'true' : 'false');
+        setClosedUI(isClosed);
+      }
+    }, err => {});
   }
 })();
