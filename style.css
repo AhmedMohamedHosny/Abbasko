@@ -1861,17 +1861,127 @@ body.view-grid-active .card-image-pane {
   font-size: 1.1rem;
 }
 
-/* ================= شريط آراء العملاء المضموم المدمج ================= */
+/* ================= شريط آراء العملاء أسفل المتجر ================= */
 .reviews-section-compact {
-  padding: 40px 0 20px;
+  padding: 45px 0 25px;
+  width: 100%;
+  clear: both;
 }
+
+/* الكبسولة المدورة المضيئة */
+.reviews-header-capsule {
+  max-width: 780px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, rgba(124, 179, 66, 0.12) 0%, rgba(37, 211, 102, 0.08) 50%, rgba(26, 38, 22, 0.05) 100%);
+  border: 1.5px solid rgba(124, 179, 66, 0.4);
+  border-radius: 60px; /* مستطيل مدور كبسولي ناعم */
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 8px 25px rgba(124, 179, 66, 0.12), inset 0 0 15px rgba(124, 179, 66, 0.05);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+body.dark-mode .reviews-header-capsule {
+  background: linear-gradient(135deg, rgba(124, 179, 66, 0.18) 0%, rgba(20, 30, 18, 0.7) 100%);
+  border-color: rgba(124, 179, 66, 0.35);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.reviews-header-capsule:hover {
+  border-color: var(--dream-green);
+  box-shadow: 0 10px 30px rgba(124, 179, 66, 0.22);
+  transform: translateY(-2px);
+}
+
+.capsule-icon-glow {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 0 16px rgba(37, 211, 102, 0.5);
+  flex-shrink: 0;
+}
+
+.capsule-text-col {
+  flex: 1;
+  text-align: right;
+}
+
+.capsule-text-col h3 {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--text-main);
+  margin-bottom: 2px;
+}
+
+.capsule-text-col p {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 0;
+}
+
+.capsule-verified-tag {
+  background: var(--dream-green);
+  color: #ffffff;
+  padding: 5px 12px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px var(--dream-green-glow);
+}
+
+/* شريط السكرينات */
 .reviews-compact-marquee {
   width: 100%;
   overflow: hidden;
   position: relative;
-  padding: 15px 0;
-  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  padding: 10px 0;
+  mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+
+.reviews-compact-track {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  animation: reviewsScroll 28s linear infinite;
+}
+
+.reviews-compact-track:hover {
+  animation-play-state: paused;
+}
+
+@media (max-width: 768px) {
+  .reviews-header-capsule {
+    border-radius: 20px;
+    padding: 12px 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .capsule-verified-tag {
+    display: none;
+  }
+  .capsule-text-col h3 {
+    font-size: 0.92rem;
+  }
+  .capsule-text-col p {
+    font-size: 0.7rem;
+  }
 }
 .reviews-compact-track {
   display: flex;
