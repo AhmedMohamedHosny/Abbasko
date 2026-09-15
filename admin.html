@@ -1001,20 +1001,15 @@
                     <input type="number" id="prod-old-price" class="form-control" placeholder="859">
                   </div>
                 </div>
-
-                <!-- 1. رفع 4 صور من الجهاز مباشرة -->
                 <div class="form-group">
-                  <label><i class="fa-solid fa-images" style="color:var(--admin-green);"></i> صور الملحق الأربعة (اختر من جهازك)</label>
+                  <label><i class="fa-solid fa-images" style="color:var(--admin-green);"></i> صور الملحق (من صورة واحدة وحتى 4 صور)</label>
                   <div class="file-upload-zone" onclick="document.getElementById('prod-file-input').click()">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <p>اضغط لاختيار حتى 4 صور من ملفاتك (للمعاينة بالماوس وتغيير الزوايا)</p>
+                    <p>اختر صورة واحدة أو حتى 4 صور من جهازك — العدد اللي تختاره هو اللي هيظهر ويتبدل تلقائياً كل ثانيتين في المتجر</p>
                     <input type="file" id="prod-file-input" multiple accept="image/*" style="display:none">
                   </div>
                   <div class="preview-thumbs-grid" id="thumbs-preview-box">
-                    <div class="thumb-slot">صورة 1 (رئيسية)</div>
-                    <div class="thumb-slot">صورة 2</div>
-                    <div class="thumb-slot">صورة 3</div>
-                    <div class="thumb-slot">صورة 4</div>
+                    <div class="thumb-slot">لسه محددتش صور</div>
                   </div>
                 </div>
 
@@ -1253,7 +1248,7 @@
               <form id="store-config-form">
                 <div class="form-group">
                   <label><i class="fa-brands fa-whatsapp" style="color:#25d366;"></i> رقم واتساب استقبال الطلبات</label>
-                  <input type="tel" id="store-whatsapp-num" class="form-control" placeholder="201000000000" value="201000000000" required>
+                  <input type="tel" id="store-whatsapp-num" class="form-control" placeholder="201125408111" value="201125408111" required>
                   <small style="color:var(--text-muted); font-size:0.75rem;">الرقم الذي تُرسل إليه فواتير العملاء تلقائياً عند إتمام الطلب.</small>
                 </div>
 
@@ -1793,7 +1788,7 @@ window.selectThemeColor = async function(colorVal, name) {
         }
       }
 
-      // رسم المعاينة بالصور المرفوعة سحابياً
+      // رسم المعاينة بعدد الصور الفعلي اللي اخترته من غير أي تكرار
       thumbsBox.innerHTML = '';
       uploadedCloudinaryUrls.forEach((url, idx) => {
         thumbsBox.innerHTML += `
@@ -1802,11 +1797,6 @@ window.selectThemeColor = async function(colorVal, name) {
           </div>
         `;
       });
-
-      // إكمال الخانات الأربعة بالصورة الأولى لو اختار المستخدم أقل من 4 لتفعيل الـ Hover
-      while (uploadedCloudinaryUrls.length < 4 && uploadedCloudinaryUrls.length > 0) {
-        uploadedCloudinaryUrls.push(uploadedCloudinaryUrls[0]);
-      }
     });
 
     // 5. زر إضافة خاصية مرقمة للمواصفات (+)
@@ -1982,7 +1972,7 @@ window.selectThemeColor = async function(colorVal, name) {
         } else {
           if (!productPayload.image) {
             productPayload.image = 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=400&q=80';
-            productPayload.images = [productPayload.image, productPayload.image, productPayload.image, productPayload.image];
+            productPayload.images = [productPayload.image];
           }
           await db.collection('products').add(productPayload);
           alert('تم نشر الملحق الجديد في متجر عباسكو بنجاح!');
@@ -2058,12 +2048,7 @@ window.selectThemeColor = async function(colorVal, name) {
       document.getElementById('form-header-title').innerHTML = `<i class="fa-solid fa-plus-circle"></i> إضافة ملحق جديد`;
       document.getElementById('btn-submit-main').innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> نشر الملحق في المتجر فوراً`;
       document.getElementById('btn-cancel-edit').style.display = 'none';
-      document.getElementById('thumbs-preview-box').innerHTML = `
-        <div class="thumb-slot">صورة 1 (رئيسية)</div>
-        <div class="thumb-slot">صورة 2</div>
-        <div class="thumb-slot">صورة 3</div>
-        <div class="thumb-slot">صورة 4</div>
-      `;
+      document.getElementById('thumbs-preview-box').innerHTML = `<div class="thumb-slot">لسه محددتش صور</div>`;
 uploadedCloudinaryUrls = [];
     };
 
