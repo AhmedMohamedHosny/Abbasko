@@ -650,6 +650,58 @@
       .sidebar-brand-titles, .sidebar-menu li a span, .sidebar-footer-badge span { display: none; }
       .sidebar-menu li a { justify-content: center; padding: 14px; }
     }
+    /* الدارك مود للوحة التحكم */
+    body.admin-dark {
+      --admin-bg: #0b0f14;
+      --admin-surface: #151c24;
+      --admin-border: #232f3e;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+    body.admin-dark .admin-card-header,
+    body.admin-dark .file-upload-zone {
+      background: #111822;
+    }
+    body.admin-dark .form-control {
+      background: #0f172a;
+      color: #fff;
+    }
+    body.admin-dark .admin-table th {
+      background: #111822;
+    }
+
+    /* شبكة الـ 20 لون وتدرج */
+    .theme-palette-matrix {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 10px;
+    }
+    .color-preset-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1.5px solid var(--admin-border);
+      border-radius: 8px;
+      background: var(--admin-surface);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 800;
+      transition: all 0.2s;
+    }
+    .color-preset-pill:hover,
+    .color-preset-pill.active {
+      border-color: var(--admin-green);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .palette-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.15);
+      flex-shrink: 0;
+    }
   </style>
 
   <!-- مكتبات Firebase الحية -->
@@ -668,18 +720,27 @@
       </div>
     </div>
 
-    <ul class="sidebar-menu">
+<ul class="sidebar-menu">
       <li class="active" data-target="tab-dashboard">
-        <a onclick="switchAdminTab('tab-dashboard')"><i class="fa-solid fa-chart-pie"></i> <span>نظرة عامة</span></a>
+        <a onclick="switchAdminTab('tab-dashboard')"><i class="fa-solid fa-chart-pie"></i> <span>نظرة عامة وتحليلات</span></a>
+      </li>
+      <li data-target="tab-appearance">
+        <a onclick="switchAdminTab('tab-appearance')"><i class="fa-solid fa-palette"></i> <span>مظهر وحالة المتجر</span></a>
       </li>
       <li data-target="tab-products">
-        <a onclick="switchAdminTab('tab-products')"><i class="fa-solid fa-boxes-stacked"></i> <span>إدارة الملحقات</span></a>
+        <a onclick="switchAdminTab('tab-products')"><i class="fa-solid fa-boxes-stacked"></i> <span>إدارة الملحقات والمخزون</span></a>
       </li>
       <li data-target="tab-orders">
-        <a onclick="switchAdminTab('tab-orders')"><i class="fa-solid fa-truck-ramp-box"></i> <span>الطلبات والشحنات</span></a>
+        <a onclick="switchAdminTab('tab-orders')"><i class="fa-solid fa-truck-ramp-box"></i> <span>الطلبات المباشرة</span></a>
+      </li>
+      <li data-target="tab-reviews">
+        <a onclick="switchAdminTab('tab-reviews')"><i class="fa-solid fa-comments"></i> <span>إدارة آراء وتجارب العملاء</span></a>
+      </li>
+      <li data-target="tab-shipping">
+        <a onclick="switchAdminTab('tab-shipping')"><i class="fa-solid fa-map-location-dot"></i> <span>أسعار شحن المحافظات (27)</span></a>
       </li>
       <li data-target="tab-settings">
-        <a onclick="switchAdminTab('tab-settings')"><i class="fa-solid fa-sliders"></i> <span>الشريط والإعدادات</span></a>
+        <a onclick="switchAdminTab('tab-settings')"><i class="fa-solid fa-sliders"></i> <span>الأمان والشريط والكوبونات</span></a>
       </li>
     </ul>
 
@@ -696,7 +757,10 @@
       <div class="topbar-title-wrap">
         <h1 id="topbar-heading">نظرة عامة على المتجر</h1>
       </div>
-      <div class="topbar-tools">
+<div class="topbar-tools">
+        <button type="button" id="admin-theme-toggle" class="btn-view-store" style="background:#334155;" onclick="toggleAdminDarkMode()">
+          <i class="fa-solid fa-moon"></i> <span id="admin-theme-text">الوضع الليلي</span>
+        </button>
         <a href="index.html" target="_blank" class="btn-view-store">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> عرض واجهة المتجر
         </a>
@@ -739,7 +803,53 @@
           </div>
         </div>
       </section>
+<!-- ================================================================== -->
+      <!-- التبويب الجديد: مظهر وحالة المتجر (Colors & Maintenance) -->
+      <!-- ================================================================== -->
+      <section class="tab-section" id="tab-appearance">
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 20px;">
+          
+          <!-- مفتاح إغلاق وفتح المتجر الفوري -->
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h2><i class="fa-solid fa-power-off"></i> حالة تشغيل المتجر (Maintenance)</h2>
+            </div>
+            <div class="admin-card-body">
+              <p style="font-size:0.86rem; color:var(--text-muted); margin-bottom:14px;">تفعيل هذا الخيار يعرض شاشة الإغلاق الزجاجية الفاخرة للزوار لمنع الطلبات أثناء الجرد مع زر تواصل واتساب.</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:14px; border-radius:8px; border:1px solid var(--admin-border);">
+                <strong>قفل المتجر مؤقتاً (وضع الصيانة)</strong>
+                <label class="clean-switch">
+                  <input type="checkbox" id="store-maintenance-toggle" onchange="toggleStoreMaintenance(this.checked)">
+                  <span class="clean-slider"></span>
+                </label>
+              </div>
+              <div id="maintenance-status-badge" style="margin-top:10px; font-weight:800; font-size:0.84rem; color:var(--success);">
+                ● المتجر يعمل ويستقبل طلبات الزوار بصورة طبيعية
+              </div>
+            </div>
+          </div>
 
+          <!-- مصفوفة الألوان الـ 20 والتدرجات للواجهة الخارجية -->
+          <div class="admin-card" style="grid-column: 1 / -1;">
+            <div class="admin-card-header">
+              <h2><i class="fa-solid fa-paint-roller"></i> تخصيص هوية ولون المتجر الخارجي (20+ لون وتدرج)</h2>
+            </div>
+            <div class="admin-card-body">
+              <p style="font-size:0.86rem; color:var(--text-muted); margin-bottom:14px;">اختر أي لون مخصص أو تدرج لوني لتطبيقه على أزرار المتجر، الإطارات، وهوية الموقع الخارجية فورياً بضغطة واحدة:</p>
+              <div class="theme-palette-matrix" id="theme-colors-palette">
+                <!-- يتم توليد الألوان وتدرجات النيون بالجافاسكريبت -->
+              </div>
+              <div style="margin-top:16px; display:flex; align-items:center; gap:12px;">
+                <label style="font-size:0.85rem; font-weight:800;">أو اختر لونك الخاص عبر المحقنة:</label>
+                <input type="color" id="custom-color-picker" style="border:none; width:40px; height:34px; cursor:pointer; background:none;" onchange="applyCustomPrimaryColor(this.value)">
+                <span id="active-color-name-label" style="font-size:0.82rem; font-weight:800; color:var(--admin-green);">اللون الحالي: دريم 2000 (#7cb342)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+      
       <!-- ================================================================== -->
       <!-- التبويب 2: إدارة الملحقات (Products CRUD) -->
       <!-- ================================================================== -->
@@ -951,7 +1061,73 @@
           </div>
         </div>
       </section>
+<!-- ================================================================== -->
+      <!-- التبويب الجديد: إدارة آراء وسكرينات العملاء (Reviews Management) -->
+      <!-- ================================================================== -->
+      <section class="tab-section" id="tab-reviews">
+        <div class="admin-grid-layout">
+          
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h2><i class="fa-solid fa-camera"></i> رفع سكرين رأي عميل جديد</h2>
+            </div>
+            <div class="admin-card-body">
+              <form id="review-upload-form">
+                <div class="form-group">
+                  <label>اختر صورة / سكرين شوت المحادثة من جهازك</label>
+                  <div class="file-upload-zone" onclick="document.getElementById('review-file-input').click()">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <p>اضغط لاختيار سكرين رأي العميل (PNG / JPG)</p>
+                    <input type="file" id="review-file-input" accept="image/*" style="display:none">
+                  </div>
+                  <div id="review-preview-holder" style="margin-top:10px; display:none; text-align:center;">
+                    <img id="review-preview-img" src="" style="max-height:160px; border-radius:8px; border:1px solid var(--admin-border);">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>اسم العميل أو تعليق مختصر (اختياري)</label>
+                  <input type="text" id="review-client-name" class="form-control" placeholder="مثال: أحمد من المعادي - وصل الشاحن ممتاز">
+                </div>
+                <button type="submit" class="btn-submit-action" id="btn-save-review">
+                  <i class="fa-solid fa-cloud-arrow-up"></i> نشر الرأي في شريط المتجر
+                </button>
+              </form>
+            </div>
+          </div>
 
+          <div class="admin-card">
+            <div class="admin-card-header">
+              <h2><i class="fa-solid fa-images"></i> السكرينات المنشورة حالياً في المتجر</h2>
+            </div>
+            <div class="admin-card-body">
+              <div id="reviews-gallery-admin" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:12px;">
+                <!-- يتم عرض الآراء هنا مع زر حذف لكل سكرين -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================================================================== -->
+      <!-- التبويب الجديد: شحن الـ 27 محافظة كاملة (Full Governorates Shipping) -->
+      <!-- ================================================================== -->
+      <section class="tab-section" id="tab-shipping">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h2><i class="fa-solid fa-truck"></i> تسعير الشحن والتوصيل لجميع محافظات مصر (27 محافظة)</h2>
+            <button type="button" class="btn-view-store" style="padding:6px 12px; font-size:0.8rem;" onclick="saveAllShippingRates()">
+              <i class="fa-solid fa-floppy-disk"></i> حفظ أسعار الشحن
+            </button>
+          </div>
+          <div class="admin-card-body">
+            <p style="font-size:0.86rem; color:var(--text-muted); margin-bottom:16px;">الأسعار المدخلة هنا تنعكس تلقائياً في صفحة إنهاء الطلب (Checkout) فور اختيار العميل لمحافظته:</p>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:12px;" id="governorates-rates-grid">
+              <!-- يتم توليد الـ 27 محافظة هنا تلقائياً -->
+            </div>
+          </div>
+        </div>
+      </section>
 <!-- ================================================================== -->
       <!-- التبويب 4: الشريط والإعدادات اللوجستية (Settings) -->
       <!-- ================================================================== -->
@@ -1050,8 +1226,7 @@
     let uploadedImagesBase64 = [];
     let editingDocId = null;
 
-    // 2. التنقل بين التبويبات
-    window.switchAdminTab = function(tabId) {
+window.switchAdminTab = function(tabId) {
       document.querySelectorAll('.tab-section').forEach(sec => sec.classList.remove('active'));
       document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
 
@@ -1062,13 +1237,273 @@
       if (targetMenuItem) targetMenuItem.classList.add('active');
 
       const headingMap = {
-        'tab-dashboard': 'نظرة عامة على المتجر',
+        'tab-dashboard': 'نظرة عامة على المتجر والتحليلات',
+        'tab-appearance': 'مظهر وحالة تشغيل المتجر',
         'tab-products': 'إدارة الملحقات والمخزون',
-        'tab-orders': 'الطلبات وشحنات العملاء',
-        'tab-settings': 'تخصيص العروض والإعدادات'
+        'tab-orders': 'الطلبات المباشرة وشحنات العملاء',
+        'tab-reviews': 'إدارة آراء وسكرينات العملاء',
+        'tab-shipping': 'أسعار شحن الـ 27 محافظة كاملة',
+        'tab-settings': 'تخصيص العروض والإعدادات والأمان'
       };
       document.getElementById('topbar-heading').textContent = headingMap[tabId] || 'لوحة التحكم';
     };
+
+    // =========================================================================
+    // 1. الدارك مود الخاص بلوحة الإدارة
+    // =========================================================================
+    window.toggleAdminDarkMode = function() {
+      document.body.classList.toggle('admin-dark');
+      const isDark = document.body.classList.contains('admin-dark');
+      localStorage.setItem('abasco_admin_dark', isDark ? 'enabled' : 'disabled');
+      const textEl = document.getElementById('admin-theme-text');
+      if (textEl) textEl.textContent = isDark ? 'الوضع الفاتح' : 'الوضع الليلي';
+    };
+
+    if (localStorage.getItem('abasco_admin_dark') === 'enabled') {
+      document.body.classList.add('admin-dark');
+      const textEl = document.getElementById('admin-theme-text');
+      if (textEl) textEl.textContent = 'الوضع الفاتح';
+    }
+
+    // =========================================================================
+    // 2. حالة إغلاق المتجر والصيانة
+    // =========================================================================
+    window.toggleStoreMaintenance = async function(isClosed) {
+      const badge = document.getElementById('maintenance-status-badge');
+      if (isClosed) {
+        badge.style.color = 'var(--danger)';
+        badge.textContent = '⛔ المتجر مغلق مؤقتاً وشاشة الصيانة معروضة للزوار';
+      } else {
+        badge.style.color = 'var(--success)';
+        badge.textContent = '● المتجر يعمل ويستقبل طلبات الزوار بصورة طبيعية';
+      }
+      localStorage.setItem('abasco_store_closed', isClosed ? 'true' : 'false');
+      try {
+        await db.collection('settings').doc('status').set({ isClosed: isClosed }, { merge: true });
+      } catch (e) {}
+    };
+
+    // =========================================================================
+    // 3. منظومة الـ 20 لون وتدرج للواجهة الخارجية
+    // =========================================================================
+    const PRESET_THEMES = [
+      { name: "دريم كلاسيك", color: "#7cb342" },
+      { name: "زمردي ملكي", color: "#10b981" },
+      { name: "أخضر سراقة", color: "#16a34a" },
+      { name: "أزرق تيتانيوم", color: "#0284c7" },
+      { name: "نيلي داكن", color: "#2563eb" },
+      { name: "ذهبي نيون", color: "#e2c07d" },
+      { name: "عنبر أصيل", color: "#d97706" },
+      { name: "برتقالي ناري", color: "#ea580c" },
+      { name: "أحمر ياقوتي", color: "#dc2626" },
+      { name: "قرمزي أنكر", color: "#e11d48" },
+      { name: "بنفسجي سايبر", color: "#8b5cf6" },
+      { name: "أرجواني ملكي", color: "#7c3aed" },
+      { name: "وردي فاقع", color: "#ec4899" },
+      { name: "تيركواز بحري", color: "#06b6d4" },
+      { name: "أكوا ناعم", color: "#14b8a6" },
+      { name: "تدرج دريم-نيون", color: "linear-gradient(135deg, #7cb342, #a2d95b)" },
+      { name: "تدرج ذهب-زمرد", color: "linear-gradient(135deg, #d4af37, #10b981)" },
+      { name: "تدرج أزرق-كهربائي", color: "linear-gradient(135deg, #0284c7, #38bdf8)" },
+      { name: "تدرج شفق-قرمزي", color: "linear-gradient(135deg, #e11d48, #f59e0b)" },
+      { name: "تدرج أرجواني-ليلي", color: "linear-gradient(135deg, #6366f1, #a855f7)" }
+    ];
+
+    function initThemePalette() {
+      const container = document.getElementById('theme-colors-palette');
+      if (!container) return;
+      const activeColor = localStorage.getItem('abasco_primary_color') || '#7cb342';
+
+      container.innerHTML = PRESET_THEMES.map(theme => `
+        <div class="color-preset-pill ${theme.color === activeColor ? 'active' : ''}" onclick="selectThemeColor('${theme.color}', '${theme.name}')">
+          <span class="palette-circle" style="background: ${theme.color};"></span>
+          <span>${theme.name}</span>
+        </div>
+      `).join('');
+    }
+
+    window.selectThemeColor = async function(colorVal, name) {
+      document.querySelectorAll('.color-preset-pill').forEach(p => p.classList.remove('active'));
+      localStorage.setItem('abasco_primary_color', colorVal);
+      document.getElementById('active-color-name-label').textContent = `اللون الحالي: ${name}`;
+      try {
+        await db.collection('settings').doc('appearance').set({ primaryColor: colorVal }, { merge: true });
+      } catch (e) {}
+      alert(`🎨 تم تطبيق ثيم [${name}] على المتجر الخارجي بنجاح!`);
+    };
+
+    window.applyCustomPrimaryColor = function(val) {
+      window.selectThemeColor(val, val);
+    };
+
+    // =========================================================================
+    // 4. إدارة ورفع آراء وسكرينات الواتساب
+    // =========================================================================
+    let uploadedReviewUrl = "";
+
+    document.getElementById('review-file-input')?.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        const holder = document.getElementById('review-preview-holder');
+        const img = document.getElementById('review-preview-img');
+        holder.style.display = 'block';
+        img.src = "https://i.gifer.com/ZZ5H.gif";
+        uploadedReviewUrl = await uploadFileToCloudinary(file);
+        img.src = uploadedReviewUrl;
+      } catch (err) {
+        alert('فشل رفع سكرين الرأي: ' + err.message);
+      }
+    });
+
+    document.getElementById('review-upload-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!uploadedReviewUrl) {
+        alert('يرجى اختيار صورة السكرين أولاً!');
+        return;
+      }
+      const clientName = document.getElementById('review-client-name').value.trim();
+      const reviewData = {
+        image: uploadedReviewUrl,
+        client: clientName || 'عميل موثق',
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await db.collection('reviews').add(reviewData);
+        alert('✅ تم نشر رأي العميل في المتجر بنجاح!');
+        document.getElementById('review-upload-form').reset();
+        document.getElementById('review-preview-holder').style.display = 'none';
+        uploadedReviewUrl = "";
+        loadAdminReviews();
+      } catch (err) {
+        // بديل محلي
+        let localRev = JSON.parse(localStorage.getItem('abasco_store_reviews')) || [];
+        localRev.unshift(reviewData);
+        localStorage.setItem('abasco_store_reviews', JSON.stringify(localRev));
+        alert('✅ تم نشر الرأي محلياً!');
+        loadAdminReviews();
+      }
+    });
+
+    async function loadAdminReviews() {
+      const gallery = document.getElementById('reviews-gallery-admin');
+      if (!gallery) return;
+      let reviews = [];
+      try {
+        const snap = await db.collection('reviews').get();
+        snap.forEach(d => reviews.push({ id: d.id, ...d.data() }));
+      } catch (e) {
+        reviews = JSON.parse(localStorage.getItem('abasco_store_reviews')) || [];
+      }
+
+      if (reviews.length === 0) {
+        gallery.innerHTML = `<p style="grid-column:1/-1; color:var(--text-muted); font-size:0.85rem;">لا توجد سكرينات آراء منشورة بعد.</p>`;
+        return;
+      }
+
+      gallery.innerHTML = reviews.map(r => `
+        <div style="position:relative; background:#fff; border:1px solid var(--admin-border); border-radius:8px; overflow:hidden; box-shadow:var(--shadow-card);">
+          <img src="${r.image}" style="width:100%; height:160px; object-fit:cover; object-position:top;">
+          <button type="button" onclick="deleteReview('${r.id || r.image}')" style="position:absolute; top:6px; left:6px; background:#ef4444; color:#fff; border:none; width:26px; height:26px; border-radius:50%; cursor:pointer;" title="حذف">
+            <i class="fa-solid fa-trash" style="font-size:0.75rem;"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    window.deleteReview = async function(id) {
+      if (confirm('هل أنت متأكد من حذف هذا السكرين من شريط المتجر؟')) {
+        try {
+          await db.collection('reviews').doc(id).delete();
+        } catch (e) {
+          let localRev = JSON.parse(localStorage.getItem('abasco_store_reviews')) || [];
+          localRev = localRev.filter(r => r.id !== id && r.image !== id);
+          localStorage.setItem('abasco_store_reviews', JSON.stringify(localRev));
+        }
+        loadAdminReviews();
+      }
+    };
+
+    // =========================================================================
+    // 5. شحن الـ 27 محافظة كاملة
+    // =========================================================================
+    const ALL_GOVERNORATES = [
+      { id: "cairo", name: "القاهرة", defaultRate: 35 },
+      { id: "giza", name: "الجيزة", defaultRate: 35 },
+      { id: "alex", name: "الإسكندرية", defaultRate: 45 },
+      { id: "qalyubia", name: "القليوبية", defaultRate: 40 },
+      { id: "sharqia", name: "الشرقية", defaultRate: 45 },
+      { id: "dakahlia", name: "الدقهلية", defaultRate: 45 },
+      { id: "gharbia", name: "الغربية", defaultRate: 45 },
+      { id: "monufia", name: "المنوفية", defaultRate: 45 },
+      { id: "beheira", name: "البحيرة", defaultRate: 45 },
+      { id: "kafr_el_sheikh", name: "كفر الشيخ", defaultRate: 45 },
+      { id: "damietta", name: "دمياط", defaultRate: 45 },
+      { id: "port_said", name: "بورسعيد", defaultRate: 50 },
+      { id: "ismailia", name: "الإسماعيلية", defaultRate: 50 },
+      { id: "suez", name: "السويس", defaultRate: 50 },
+      { id: "fayoum", name: "الفيوم", defaultRate: 50 },
+      { id: "beni_suef", name: "بني سويف", defaultRate: 50 },
+      { id: "minya", name: "المنيا", defaultRate: 55 },
+      { id: "assiut", name: "أسيوط", defaultRate: 55 },
+      { id: "sohag", name: "سوهاج", defaultRate: 55 },
+      { id: "qena", name: "قنا", defaultRate: 60 },
+      { id: "luxor", name: "الأقصر", defaultRate: 60 },
+      { id: "aswan", name: "أسوان", defaultRate: 60 },
+      { id: "matrouh", name: "مطروح", defaultRate: 65 },
+      { id: "red_sea", name: "البحر الأحمر", defaultRate: 65 },
+      { id: "new_valley", name: "الوادي الجديد", defaultRate: 70 },
+      { id: "north_sinai", name: "شمال سيناء", defaultRate: 70 },
+      { id: "south_sinai", name: "جنوب سيناء", defaultRate: 70 }
+    ];
+
+    function initShippingRatesUI() {
+      const grid = document.getElementById('governorates-rates-grid');
+      if (!grid) return;
+      const savedRates = JSON.parse(localStorage.getItem('abasco_gov_shipping_rates')) || {};
+
+      grid.innerHTML = ALL_GOVERNORATES.map(gov => {
+        const rate = savedRates[gov.id] !== undefined ? savedRates[gov.id] : gov.defaultRate;
+        return `
+          <div style="background:#f8fafc; border:1px solid var(--admin-border); border-radius:8px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.86rem; font-weight:800;">${gov.name}</span>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <input type="number" class="gov-rate-input" data-gov-id="${gov.id}" data-gov-name="${gov.name}" value="${rate}" style="width:70px; padding:5px; border:1px solid var(--admin-border); border-radius:4px; text-align:center; font-weight:800;">
+              <small style="font-weight:700; color:var(--text-muted);">ج.م</small>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.saveAllShippingRates = async function() {
+      const rates = {};
+      document.querySelectorAll('.gov-rate-input').forEach(input => {
+        const id = input.getAttribute('data-gov-id');
+        rates[id] = parseFloat(input.value) || 0;
+      });
+      localStorage.setItem('abasco_gov_shipping_rates', JSON.stringify(rates));
+      try {
+        await db.collection('settings').doc('shipping').set(rates);
+      } catch (e) {}
+      alert('✅ تم حفظ وتحديث أسعار شحن الـ 27 محافظة كاملة في المتجر بنجاح!');
+    };
+
+    // استدعاء الوظائف المضافة عند فتح اللوحة
+    const originalDOMContentLoaded = document.addEventListener;
+    document.addEventListener('DOMContentLoaded', () => {
+      initThemePalette();
+      initShippingRatesUI();
+      loadAdminReviews();
+      
+      const isClosed = localStorage.getItem('abasco_store_closed') === 'true';
+      const toggle = document.getElementById('store-maintenance-toggle');
+      if (toggle) {
+        toggle.checked = isClosed;
+        toggleStoreMaintenance(isClosed);
+      }
+    });
 
 // ==========================================================================
     // إدارة ومزامنة الماركات والأقسام الحية مع المتجر
