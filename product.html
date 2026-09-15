@@ -583,9 +583,23 @@
           <span class="overview-brand-tag" id="detail-brand">العلامة التجارية</span>
           <h1 class="overview-title" id="detail-title">جاري تحميل بيانات الملحق...</h1>
 
-          <div class="overview-stars-strip">
-            <span id="detail-stars-box"></span>
-            <span id="detail-reviews-num">(0 تقييم مشتري)</span>
+<div class="overview-stars-strip" style="flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span id="detail-stars-box"></span>
+              <span id="detail-reviews-num">(0 تقييم مشتري)</span>
+            </div>
+            <!-- تقييم الزائر التفاعلي -->
+            <div style="display: flex; align-items: center; gap: 6px; border-right: 2px solid var(--border-color); padding-right: 12px;">
+              <span style="font-size: 0.8rem; font-weight: 800; color: var(--text-main);">قيّم هذا الملحق:</span>
+              <div class="interactive-stars-wrap" id="user-star-picker">
+                <span class="star-item" data-val="5">★</span>
+                <span class="star-item" data-val="4">★</span>
+                <span class="star-item" data-val="3">★</span>
+                <span class="star-item" data-val="2">★</span>
+                <span class="star-item" data-val="1">★</span>
+              </div>
+              <small id="rating-feedback" style="color: var(--dream-green); font-weight: 800; font-size: 0.75rem; display: none;">شكراً لتقييمك!</small>
+            </div>
           </div>
 
           <div class="overview-pricing-panel">
