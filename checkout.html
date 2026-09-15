@@ -685,9 +685,14 @@
     `).join('');
 
     let activeShippingFee = 0;
-// قراءة أسعار الـ 27 محافظة المحفوظة من لوحة التحكم وتحديث قائمة الاختيار
-    (function syncGovRatesToCheckout() {
-      const customRates = JSON.parse(localStorage.getItem('abasco_gov_shipping_rates'));
+    // قراءة أسعار الـ 27 محافظة الحقيقية من قاعدة البيانات (مش من جهاز المشرف)
+    (async function syncGovRatesToCheckout() {
+      let customRates = null;
+      try {
+        const doc = await db.collection('settings').doc('shipping').get();
+        if (doc.exists) customRates = doc.data();
+      } catch (e) {}
+      if (!customRates) customRates = JSON.parse(localStorage.getItem('abasco_gov_shipping_rates'));
       if (!customRates || !govSelect) return;
 
       const govIdMap = {
