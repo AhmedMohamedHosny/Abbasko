@@ -354,6 +354,36 @@
         position: static;
       }
     }
+
+    /* تلميم كارت السلة على الموبايل */
+    @media (max-width: 768px) {
+      .cart-page-canvas { padding: 14px 0 60px; }
+      .cart-header-title h1 { font-size: 1.4rem; }
+      .cart-header-title p { font-size: 0.8rem; }
+
+      .cart-item-row-card {
+        padding: 10px 12px;
+        gap: 10px;
+      }
+
+      .cart-item-left-info { gap: 10px; }
+
+      .cart-thumb-box {
+        width: 60px;
+        height: 60px;
+      }
+
+      .cart-meta-info h3 {
+        font-size: 0.8rem;
+        margin-bottom: 6px;
+      }
+
+      .item-price-sum { font-size: 1rem; }
+
+      .cart-invoice-sidebar { padding: 16px; }
+      .cart-invoice-sidebar h2 { font-size: 1rem; }
+      .invoice-total-highlight strong { font-size: 1.25rem; }
+    }
   </style>
 </head>
 <body>
