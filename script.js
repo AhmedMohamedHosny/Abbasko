@@ -983,3 +983,22 @@ document.getElementById('btn-geo-location')?.addEventListener('click', () => {
     }
   );
 });
+// 1. تطبيق لون الثيم المختار من لوحة الإدارة تلقائياً
+(function applyLiveThemeColor() {
+  const savedColor = localStorage.getItem('abasco_primary_color');
+  if (savedColor) {
+    document.documentElement.style.setProperty('--dream-green', savedColor);
+    document.documentElement.style.setProperty('--dream-green-hover', savedColor);
+    document.documentElement.style.setProperty('--dream-green-glow', 'rgba(124, 179, 66, 0.35)');
+  }
+})();
+
+// 2. إظهار شاشة الصيانة إن كان المتجر مغلقاً من لوحة الإدارة
+(function checkMaintenanceStatus() {
+  const isClosed = localStorage.getItem('abasco_store_closed') === 'true';
+  const modal = document.getElementById('store-closed-modal');
+  if (modal && isClosed) {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+})();
