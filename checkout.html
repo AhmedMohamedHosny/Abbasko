@@ -16,6 +16,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
     /* --------------------------------------------------------------------------
@@ -633,8 +635,19 @@
   <script>
     'use strict';
 
-    const cart = JSON.parse(localStorage.getItem('abassco_raya_cart')) || [];
-    
+    const firebaseConfig = {
+      apiKey: "AIzaSyBhOo-nzA3TztOFQlxPQaOTrLtPDjKb_xU",
+      authDomain: "abbasko-store.firebaseapp.com",
+      projectId: "abbasko-store",
+      storageBucket: "abbasko-store.firebasestorage.app",
+      messagingSenderId: "475025963892",
+      appId: "1:475025963892:web:8790442f8bc83539368a21",
+      measurementId: "G-B1866569VZ"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];  
     // توجيه تلقائي للصفحة الرئيسية إذا كانت السلة فارغة
     if (cart.length === 0) {
       alert('سلة المشتريات فارغة! اختر ملحقاتك أولاً.');
@@ -715,7 +728,7 @@
     govSelect.addEventListener('change', recalculateGrandTotal);
 
     // معالجة النموذج وتجهيز رسالة الواتساب الفورية
-    dispatchForm.addEventListener('submit', (e) => {
+    dispatchForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const fullName = document.getElementById('order-fullname').value.trim();
@@ -766,24 +779,41 @@
         `----------------------------------------%0A` +
         `🛡️ *تأكيد المحل:* يتم تسليم الشحنة مع حق فتح الكرتونة والمعاينة قبل السداد.`;
 
-      // استبدل الأصفار برقم هاتف المحل الفعلي
-      const storeWhatsAppNumber = '201000000000';
+      // حفظ الطلب في قاعدة البيانات علشان يظهر في لوحة التحكم فعلياً
+      try {
+        await db.collection('orders').add({
+          customerName: fullName,
+          phone: phone1,
+          phone2: phone2,
+          gov: governorate,
+          address: `${city} - ${address}`,
+          items: cart.map(i => `${i.name} (${i.quantity}) × LE ${i.price.toFixed(2)}`).join(' | '),
+          total: finalAmount,
+          status: 'قيد التجهيز ⏳',
+          createdAt: new Date().toISOString()
+        });
+        localStorage.removeItem('abasco_raya_cart');
+      } catch (err) {
+        console.warn('تعذر حفظ الطلب:', err.message);
+      }
+
+      const storeWhatsAppNumber = '201125408111';
       window.open(`https://wa.me/${storeWhatsAppNumber}?text=${whatsappBill}`, '_blank');
     });
 
     // مزامنة الدارك مود
     const darkCheckbox = document.getElementById('dark-mode-checkbox');
-    if (localStorage.getItem('abassco_dark_mode') === 'enabled') {
+    if (localStorage.getItem('abasco_dark_mode') === 'enabled') {
       document.body.classList.add('dark-mode');
       if (darkCheckbox) darkCheckbox.checked = true;
     }
     darkCheckbox?.addEventListener('change', (e) => {
       if (e.target.checked) {
         document.body.classList.add('dark-mode');
-        localStorage.setItem('abassco_dark_mode', 'enabled');
+        localStorage.setItem('abasco_dark_mode', 'enabled');
       } else {
         document.body.classList.remove('dark-mode');
-        localStorage.setItem('abassco_dark_mode', 'disabled');
+        localStorage.setItem('abasco_dark_mode', 'disabled');
       }
     });
 
