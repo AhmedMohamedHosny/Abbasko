@@ -227,33 +227,26 @@ function renderCatalog(items) {
             </div>
           </div>
 
-<div class="card-image-pane" onmouseleave="resetCardSlice('${product.id}')">
-            ${product.discount ? `<span class="discount-ribbon-tag">وفر ${product.discount} جنيه</span>` : ''}
+<div class="card-image-pane">
+${product.discount ? `<span class="discount-ribbon-tag">وفر ${product.discount} جنيه</span>` : ''}
             
             <!-- زر العين الخضراء السريع -->
             <button class="quick-hover-eye" onclick="window.location.href='product.html?id=${product.id}'" title="نظرة سريعة">
               <i class="fa-solid fa-eye"></i>
             </button>
 
-            <div class="media-square-box">
-              <img id="prod-img-${product.id}" src="${(product.images && product.images[0]) || product.image || 'logo.png'}" alt="${product.title}" loading="lazy">
-              
-              <!-- 4 شرائح أفقية شفافة تستجيب لحركة الماوس وعند النقر تفتح المنتج -->
-              <div class="hover-slices-overlay">
-                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 0)" onclick="window.location.href='product.html?id=${product.id}'"></div>
-                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 1)" onclick="window.location.href='product.html?id=${product.id}'"></div>
-                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 2)" onclick="window.location.href='product.html?id=${product.id}'"></div>
-                <div class="hover-slice-item" onmouseenter="setCardSlice('${product.id}', 3)" onclick="window.location.href='product.html?id=${product.id}'"></div>
-              </div>
+<div class="media-square-box" onclick="window.location.href='product.html?id=${product.id}'" style="cursor:pointer;">
+              <img id="prod-img-${product.id}" src="${(product.images && product.images.filter(Boolean)[0]) || product.image || 'logo.png'}" alt="${product.title}" loading="lazy">
             </div>
 
-            <!-- خط المؤشرات الأربعة أسفل الصورة -->
-            <div class="image-dash-indicators" id="dashes-${product.id}">
-              <span class="active"></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
+            <!-- خط المؤشرات بعدد الصور الفعلي (1 إلى 4) -->
+            ${(() => {
+              const imgCount = (product.images && product.images.filter(Boolean).length) || 1;
+              if (imgCount <= 1) return '';
+              let dashes = '';
+              for (let i = 0; i < imgCount; i++) dashes += `<span class="${i === 0 ? 'active' : ''}"></span>`;
+              return `<div class="image-dash-indicators" id="dashes-${product.id}">${dashes}</div>`;
+            })()}
           </div>
         </div>
 
@@ -273,6 +266,9 @@ function renderCatalog(items) {
   }).join('');
 
   renderPaginationControls(totalPages);
+
+  stopAllCardSliders();
+  startCardSliders(currentItemsPage);
 }
 
 // أزرار أرقام الصفحات (Pagination)
@@ -795,38 +791,30 @@ document.querySelector('.main-store-logo')?.addEventListener('click', (e) => {
     requestAdminAccess();
   }
 });
-// ==========================================================================
-// محرك تبديل الصور الأربعة بالماوس (Scrub on Hover)
-// ==========================================================================
-window.setCardSlice = function(productId, sliceIndex) {
-  const prod = abascoInventory.find(p => String(p.id) === String(productId));
-  if (!prod) return;
+let cardSliderIntervals = {};
 
-  const imgEl = document.getElementById(`prod-img-${productId}`);
-  const dashesBox = document.getElementById(`dashes-${productId}`);
+function stopAllCardSliders() {
+  Object.values(cardSliderIntervals).forEach(id => clearInterval(id));
+  cardSliderIntervals = {};
+}
 
-  // تغيير مسار الصورة للربع المستهدف
-  if (imgEl && prod.images && prod.images[sliceIndex]) {
-    imgEl.src = prod.images[sliceIndex];
-  }
+function startCardSliders(items) {
+  items.forEach(product => {
+    const imgs = (product.images && product.images.filter(Boolean)) || (product.image ? [product.image] : []);
+    if (imgs.length <= 1) return; // منتج بصورة واحدة مايتبدلش
 
-  // تحريك الخط الأسود للربع النشط
-  if (dashesBox) {
-    const dashes = dashesBox.querySelectorAll('span');
-    dashes.forEach((d, idx) => {
-      if (idx === sliceIndex) {
-        d.classList.add('active');
-      } else {
-        d.classList.remove('active');
+    let idx = 0;
+    cardSliderIntervals[product.id] = setInterval(() => {
+      idx = (idx + 1) % imgs.length;
+      const imgEl = document.getElementById(`prod-img-${product.id}`);
+      const dashesBox = document.getElementById(`dashes-${product.id}`);
+      if (imgEl) imgEl.src = imgs[idx];
+      if (dashesBox) {
+        dashesBox.querySelectorAll('span').forEach((d, i) => d.classList.toggle('active', i === idx));
       }
-    });
-  }
-};
-
-// إعادة الصورة للوضع الأصلي عند خروج الماوس من الكارت
-window.resetCardSlice = function(productId) {
-  window.setCardSlice(productId, 0);
-};
+    }, 2000);
+  });
+}
 /* =========================================================
    تشغيل الميزات الإضافية لمحل عباسكو
    ========================================================= */
