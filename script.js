@@ -751,17 +751,8 @@ document.addEventListener('DOMContentLoaded', () => {
    نظام الدخول السري للوحة تحكم المدير (Admin Secret Access)
    ========================================================================== */
 
-// كلمة المرور السرية الخاصة بك للدخول (يمكنك تغييرها لاحقاً)
-const ADMIN_SECRET_PASS = "abasco2026";
-
 function requestAdminAccess() {
-  const pass = prompt("🔐 منطقة إدارة محل عباسكو\nيرجى إدخال كلمة المرور:");
-  if (pass === ADMIN_SECRET_PASS) {
-    alert("مرحباً بك يا قدوة! جاري التوجيه للوحة التحكم...");
-    window.location.href = "admin.html";
-  } else if (pass !== null) {
-    alert("❌ كلمة المرور غير صحيحة!");
-  }
+  window.location.href = "admin.html";
 }
 
 // 1. الدخول عبر اختصار لوحة المفاتيح: Ctrl + Shift + A
