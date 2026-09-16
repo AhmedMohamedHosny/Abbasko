@@ -2198,8 +2198,7 @@ body.dark-mode .reviews-header-capsule {
 /* ==========================================================================
    10. وضع الموبايل الأفقي (Landscape) - يقرب من شكل الكمبيوتر
    ========================================================================== */
-@media (orientation: landscape) and (max-height: 500px) {
-
+@media (orientation: landscape) and (max-width: 992px) {
   /* استرجاع الهيدر بشكله الأفقي العادي */
   .header-inner {
     flex-wrap: nowrap !important;
