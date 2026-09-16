@@ -1256,35 +1256,61 @@
       if (mobCartEl) mobCartEl.textContent = count;
     }
 let productAppliedDiscountPercent = 0;
+let productAppliedCouponCode = '';
 
     window.applyProductCoupon = function() {
       const input = document.getElementById('prod-coupon-input');
       const msg = document.getElementById('prod-coupon-msg');
       const code = input ? input.value.trim().toUpperCase() : '';
-      const coupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || { 'ABASCO10': 10 };
+      const coupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || {};
 
       if (!code) return;
 
-      if (coupons[code]) {
-        productAppliedDiscountPercent = coupons[code];
-        const basePrice = Number(currentProduct.price);
-        const discountedPrice = basePrice - (basePrice * (productAppliedDiscountPercent / 100));
-
-        msg.style.display = 'block';
-        msg.style.color = 'var(--dream-green)';
-        msg.innerHTML = `✅ تم تفعيل الكود وخصم ${productAppliedDiscountPercent}%! السعر الجديد: <strong>LE ${discountedPrice.toFixed(2)}</strong>`;
-
-        const priceEl = document.getElementById('detail-price');
-        const oldPriceEl = document.getElementById('detail-old-price');
-        if (priceEl) priceEl.textContent = `LE ${discountedPrice.toFixed(2)}`;
-        if (oldPriceEl) {
-          oldPriceEl.textContent = `LE ${basePrice.toFixed(2)}`;
-          oldPriceEl.style.display = 'inline';
-        }
-      } else {
+      const raw = coupons[code];
+      if (!raw) {
         msg.style.display = 'block';
         msg.style.color = 'var(--discount-red)';
         msg.textContent = '❌ كود الخصم غير صحيح أو غير مفعل!';
+        return;
+      }
+
+      // دعم الشكل القديم (رقم) والجديد (كائن فيه حد استخدامات ونطاق تطبيق)
+      const disc = typeof raw === 'object' ? raw.discount : raw;
+      const maxUses = typeof raw === 'object' ? (raw.maxUses || 0) : 0;
+      const usedCount = typeof raw === 'object' ? (raw.usedCount || 0) : 0;
+      const scope = typeof raw === 'object' ? (raw.scope || 'all') : 'all';
+      const productIds = typeof raw === 'object' ? (raw.productIds || []) : [];
+
+      if (maxUses > 0 && usedCount >= maxUses) {
+        msg.style.display = 'block';
+        msg.style.color = 'var(--discount-red)';
+        msg.textContent = `❌ انتهت مرات استخدام هذا الكود (كان متاح لأول ${maxUses} عميل فقط)!`;
+        return;
+      }
+
+      if (scope === 'specific' && !productIds.includes(String(currentProduct.id))) {
+        msg.style.display = 'block';
+        msg.style.color = 'var(--discount-red)';
+        msg.textContent = '❌ هذا الكود غير صالح على هذا المنتج تحديداً!';
+        return;
+      }
+
+      productAppliedDiscountPercent = disc;
+      productAppliedCouponCode = code;
+      const basePrice = Number(currentProduct.price);
+      const discountedPrice = basePrice - (basePrice * (productAppliedDiscountPercent / 100));
+
+      msg.style.display = 'block';
+      msg.style.color = 'var(--dream-green)';
+      const remainingText = maxUses > 0 ? ` (باقي ${maxUses - usedCount} استخدام)` : '';
+      msg.innerHTML = `✅ تم تفعيل الكود وخصم ${productAppliedDiscountPercent}%!${remainingText} السعر الجديد: <strong>LE ${discountedPrice.toFixed(2)}</strong>`;
+
+      const priceEl = document.getElementById('detail-price');
+      const oldPriceEl = document.getElementById('detail-old-price');
+      if (priceEl) priceEl.textContent = `LE ${discountedPrice.toFixed(2)}`;
+      if (oldPriceEl) {
+        oldPriceEl.textContent = `LE ${basePrice.toFixed(2)}`;
+        oldPriceEl.style.display = 'inline';
       }
     };
     function addProductToCart(quantity) {
@@ -1311,7 +1337,8 @@ name: productAppliedDiscountPercent > 0
                 : Number(currentProduct.price),
           image: (currentProduct.images && currentProduct.images[0]) || currentProduct.image || 'logo.png',
           color: chosenColor,
-          quantity: quantity
+          quantity: quantity,
+          couponCode: productAppliedCouponCode || ''
         });
       }
 
@@ -1366,10 +1393,53 @@ name: productAppliedDiscountPercent > 0
       }, 250);
     }, 5000);
 
+    // تقييم النجوم الحقيقي المتصل بقاعدة البيانات
+    let hasRatedThisSession = false;
+
+    async function submitProductRating(newRating) {
+      if (!currentProduct || hasRatedThisSession) return;
+      hasRatedThisSession = true;
+
+      try {
+        const prodRef = db.collection('products').doc(String(currentProduct.id));
+        await db.runTransaction(async (t) => {
+          const doc = await t.get(prodRef);
+          if (!doc.exists) return;
+          const data = doc.data();
+          const oldCount = Number(data.ratingCount) || 0;
+          const oldAvg = Number(data.rating) || 0;
+          const newCount = oldCount + 1;
+          const newAvg = ((oldAvg * oldCount) + newRating) / newCount;
+          t.update(prodRef, { rating: newAvg, ratingCount: newCount });
+        });
+      } catch (e) {
+        console.warn('تعذر حفظ التقييم:', e.message);
+      }
+    }
+
+    function initInteractiveRatingOnProduct() {
+      const stars = document.querySelectorAll('#user-star-picker .star-item');
+      const feedback = document.getElementById('rating-feedback');
+      stars.forEach(star => {
+        star.addEventListener('click', () => {
+          if (hasRatedThisSession) return;
+          const val = Number(star.getAttribute('data-val'));
+          stars.forEach(s => s.classList.remove('active'));
+          star.classList.add('active');
+          if (feedback) {
+            feedback.style.display = 'inline';
+            feedback.textContent = 'شكراً لتقييمك! تم حفظه بنجاح ✅';
+          }
+          submitProductRating(val);
+        });
+      });
+    }
+
     // بدء الاتصال اللحظي ومزامنة السلة
     document.addEventListener('DOMContentLoaded', () => {
       fetchLiveProductDetails();
       syncCartCounter();
+      initInteractiveRatingOnProduct();
     });
 
     // مزامنة حالة إغلاق المتجر لحظياً
