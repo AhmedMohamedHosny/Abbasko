@@ -1137,9 +1137,14 @@
         <div class="admin-card">
           <div class="admin-card-header">
             <h2><i class="fa-solid fa-truck-fast"></i> إدارة الطلبات والشحنات الحية</h2>
-            <button class="btn-view-store" style="background:#0284c7; padding:6px 12px; font-size:0.8rem;" onclick="loadOrdersData()">
-              <i class="fa-solid fa-arrows-rotate"></i> تحديث الطلبات
-            </button>
+            <div style="display:flex; gap:8px;">
+              <button class="btn-view-store" style="background:#0284c7; padding:6px 12px; font-size:0.8rem;" onclick="loadOrdersData()">
+                <i class="fa-solid fa-arrows-rotate"></i> تحديث الطلبات
+              </button>
+              <button class="btn-view-store" style="background:var(--danger); padding:6px 12px; font-size:0.8rem;" onclick="deleteAllOrders()">
+                <i class="fa-solid fa-trash"></i> حذف كل الطلبات
+              </button>
+            </div>
           </div>
           <div class="admin-card-body">
             <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px;">يمكنك متابعة حالة كل طلب، وتغيير حالته فورياً، ونسخ بوليصة الشحن بضغطة واحدة لإرسالها لشركة التوصيل.</p>
@@ -1284,9 +1289,23 @@
                   <label style="font-weight: 800; color: var(--admin-green); margin-bottom: 8px; display:block;">
                     <i class="fa-solid fa-ticket"></i> إضافة كوبون خصم جديد للمتجر
                   </label>
-                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 8px;">
                     <input type="text" id="new-cpn-code" class="form-control" placeholder="كود الكوبون (مثال: ABASCO10)" style="text-transform: uppercase;">
-                    <input type="number" id="new-cpn-discount" class="form-control" placeholder="نسبة الخصم المئوية (مثال: 10)">
+                    <input type="number" id="new-cpn-discount" class="form-control" placeholder="نسبة الخصم % (مثال: 10)">
+                    <input type="number" id="new-cpn-maxuses" class="form-control" placeholder="عدد الاستخدامات (فاضي = غير محدود)">
+                  </div>
+
+                  <div style="margin-bottom: 8px;">
+                    <label style="display:flex; align-items:center; gap:8px; font-size:0.82rem; font-weight:800; cursor:pointer; margin-bottom:8px;">
+                      <input type="checkbox" id="cpn-all-products-toggle" checked onchange="toggleCouponProductPicker(this.checked)">
+                      ينطبق على كل منتجات المتجر
+                    </label>
+
+                    <div id="cpn-products-picker-box" style="display:none; max-height:180px; overflow-y:auto; background:#fff; border:1px solid var(--admin-border); border-radius:6px; padding:8px;">
+                      <div id="cpn-products-checklist" style="display:flex; flex-direction:column; gap:6px;">
+                        <!-- يتم توليد قائمة المنتجات هنا -->
+                      </div>
+                    </div>
                   </div>
                   <button type="button" class="btn-submit-action" style="margin-top:0; padding:8px; font-size:0.82rem; background:#0284c7;" onclick="adminSaveNewCoupon()">
                     <i class="fa-solid fa-plus"></i> تفعيل وحفظ الكوبون
@@ -1622,29 +1641,77 @@ window.selectThemeColor = async function(colorVal, name) {
       } catch (e) {}
       alert('✅ تم حفظ وتحديث أسعار شحن الـ 27 محافظة كاملة في المتجر بنجاح!');
     };
-// إدارة الكوبونات الفعالة
+    // إظهار/إخفاء قائمة اختيار المنتجات حسب نوع الكوبون
+    window.toggleCouponProductPicker = function(isAllProducts) {
+      const box = document.getElementById('cpn-products-picker-box');
+      if (box) box.style.display = isAllProducts ? 'none' : 'block';
+      if (!isAllProducts) renderCouponProductsChecklist();
+    };
+
+    // توليد قائمة المنتجات كـ checkboxes لاختيار كوبون على منتجات محددة
+    function renderCouponProductsChecklist() {
+      const container = document.getElementById('cpn-products-checklist');
+      if (!container) return;
+      if (!adminInventory || adminInventory.length === 0) {
+        container.innerHTML = `<span style="font-size:0.8rem; color:var(--text-muted);">لا توجد منتجات مضافة بعد.</span>`;
+        return;
+      }
+      container.innerHTML = adminInventory.map(p => `
+        <label style="display:flex; align-items:center; gap:8px; font-size:0.8rem; cursor:pointer;">
+          <input type="checkbox" class="cpn-product-chk" value="${p.id}">
+          ${p.title}
+        </label>
+      `).join('');
+    }
+
     window.adminSaveNewCoupon = async function() {
       const codeInput = document.getElementById('new-cpn-code');
       const discInput = document.getElementById('new-cpn-discount');
+      const maxUsesInput = document.getElementById('new-cpn-maxuses');
+      const allProductsChk = document.getElementById('cpn-all-products-toggle');
       const code = codeInput.value.trim().toUpperCase();
       const disc = parseFloat(discInput.value);
+      const maxUsesRaw = maxUsesInput.value.trim();
+      const maxUses = maxUsesRaw === '' ? 0 : parseInt(maxUsesRaw); // 0 = غير محدود
 
       if (!code || isNaN(disc) || disc <= 0) {
         alert("يرجى كتابة كود الخصم ونسبة الخصم بشكل صحيح!");
         return;
       }
 
+      const isAllProducts = allProductsChk?.checked !== false;
+      let productIds = [];
+
+      if (!isAllProducts) {
+        productIds = Array.from(document.querySelectorAll('.cpn-product-chk:checked')).map(c => c.value);
+        if (productIds.length === 0) {
+          alert("يرجى اختيار منتج واحد على الأقل، أو فعّل خيار كل المنتجات!");
+          return;
+        }
+      }
+
       let coupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || {};
-      coupons[code] = disc;
+      coupons[code] = {
+        discount: disc,
+        maxUses: maxUses,
+        usedCount: 0,
+        scope: isAllProducts ? 'all' : 'specific',
+        productIds: productIds
+      };
       localStorage.setItem('abasco_coupons_db', JSON.stringify(coupons));
 
       try {
         await db.collection('settings').doc('coupons').set(coupons);
       } catch (e) {}
 
-      alert(`✅ تم حفظ وتفعيل كوبون [${code}] بخصم ${disc}% بنجاح!`);
+      const usesText = maxUses > 0 ? `لأول ${maxUses} عميل` : 'غير محدود الاستخدام';
+      const scopeText = isAllProducts ? 'على كل المنتجات' : `على ${productIds.length} منتج محدد`;
+      alert(`✅ تم حفظ وتفعيل كوبون [${code}] بخصم ${disc}% (${usesText}) ${scopeText}!`);
       codeInput.value = '';
       discInput.value = '';
+      maxUsesInput.value = '';
+      allProductsChk.checked = true;
+      toggleCouponProductPicker(true);
       renderAdminCoupons();
     };
 
@@ -1662,13 +1729,34 @@ window.selectThemeColor = async function(colorVal, name) {
     function renderAdminCoupons() {
       const listEl = document.getElementById('admin-coupons-list');
       if (!listEl) return;
-      const coupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || { 'ABASCO10': 10 };
-      listEl.innerHTML = Object.keys(coupons).map(code => `
+      const coupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || {};
+      listEl.innerHTML = Object.keys(coupons).map(code => {
+        const c = coupons[code];
+        const disc = typeof c === 'object' ? c.discount : c;
+        const maxUses = typeof c === 'object' ? (c.maxUses || 0) : 0;
+        const usedCount = typeof c === 'object' ? (c.usedCount || 0) : 0;
+        const scope = typeof c === 'object' ? (c.scope || 'all') : 'all';
+        const productIds = typeof c === 'object' ? (c.productIds || []) : [];
+
+        let statusText = 'غير محدود';
+        let statusColor = 'var(--admin-green)';
+        if (maxUses > 0) {
+          const remaining = Math.max(0, maxUses - usedCount);
+          statusText = remaining > 0 ? `باقي ${remaining} من ${maxUses}` : 'انتهت الاستخدامات ❌';
+          statusColor = remaining > 0 ? '#0284c7' : 'var(--danger)';
+        }
+
+        const scopeText = scope === 'all'
+          ? 'كل المنتجات'
+          : `${productIds.length} منتج محدد`;
+
+        return `
         <div style="display:flex; justify-content:space-between; align-items:center; background:#fff; padding:6px 10px; border:1px solid #cbd5e1; border-radius:4px; font-size:0.8rem;">
-          <span><strong>${code}</strong> (خصم ${coupons[code]}%)</span>
+          <span><strong>${code}</strong> (خصم ${disc}%) — <span style="color:${statusColor}; font-weight:800;">${statusText}</span> — <span style="color:#64748b;">${scopeText}</span></span>
           <button type="button" onclick="adminDeleteCoupon('${code}')" style="color:var(--danger); border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
     // استدعاء الوظائف المضافة عند فتح اللوحة
     const originalDOMContentLoaded = document.addEventListener;
@@ -2146,13 +2234,43 @@ uploadedCloudinaryUrls = [];
             </select>
           </td>
           <td>
-            <button onclick="copyShipmentDetails('${order.id}')" class="btn-view-store" style="padding:4px 8px; font-size:0.75rem; background:#0284c7;" title="نسخ بيانات الشحن للمندوب">
-              <i class="fa-solid fa-copy"></i> نسخ البوليصة
-            </button>
+            <div style="display:flex; gap:6px;">
+              <button onclick="copyShipmentDetails('${order.id}')" class="btn-view-store" style="padding:4px 8px; font-size:0.75rem; background:#0284c7;" title="نسخ بيانات الشحن للمندوب">
+                <i class="fa-solid fa-copy"></i> نسخ
+              </button>
+              <button onclick="deleteOrder('${order.id}')" class="btn-view-store" style="padding:4px 8px; font-size:0.75rem; background:var(--danger);" title="حذف الطلب">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
           </td>
         </tr>
       `).join('');
     }
+
+    window.deleteOrder = async function(orderId) {
+      if (!confirm(`هل أنت متأكد من حذف الطلب #${orderId} نهائياً؟`)) return;
+      try {
+        await db.collection('orders').doc(orderId).delete();
+        alert('✅ تم حذف الطلب بنجاح.');
+        loadOrdersData();
+      } catch (e) {
+        alert('تعذر حذف الطلب: ' + e.message);
+      }
+    };
+
+    window.deleteAllOrders = async function() {
+      if (!confirm('⚠️ هل أنت متأكد من حذف كل الطلبات نهائياً؟ هذا الإجراء لا يمكن التراجع عنه!')) return;
+      try {
+        const snap = await db.collection('orders').get();
+        const batch = db.batch();
+        snap.forEach(doc => batch.delete(doc.ref));
+        await batch.commit();
+        alert('✅ تم حذف جميع الطلبات بنجاح.');
+        loadOrdersData();
+      } catch (e) {
+        alert('تعذر حذف الطلبات: ' + e.message);
+      }
+    };
 
     window.updateOrderStatus = async function(orderId, newStatus) {
       try {
