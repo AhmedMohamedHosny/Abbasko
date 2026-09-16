@@ -608,8 +608,8 @@
 
       <div class="footer-contact-box">
         <h4>راسلنا فوراً</h4>
-        <a href="https://wa.me/201000000000" class="hotline-pill">
-          <i class="fa-brands fa-whatsapp"></i> 01000000000
+        <a href="https://wa.me/201125408111" class="hotline-pill">
+          <i class="fa-brands fa-whatsapp"></i> 01125408111
         </a>
       </div>
     </div>
@@ -626,9 +626,21 @@
 
   <!-- 5. زر المحادثة العائم المتناوب (واتساب / ماسنجر كل 5 ثوانٍ) -->
   <div class="alternating-chat-widget" id="alternating-chat-btn" title="تواصل معنا">
-    <a href="https://wa.me/201000000000" target="_blank" class="chat-circle-link whatsapp-mode" id="chat-link">
+    <a href="https://wa.me/201125408111" target="_blank" class="chat-circle-link whatsapp-mode" id="chat-link">
       <i class="fa-brands fa-whatsapp chat-icon" id="chat-icon"></i>
     </a>
+  </div>
+
+  <!-- شاشة إغلاق المتجر والصيانة -->
+  <div class="store-closed-screen" id="store-closed-modal" style="display: none;">
+    <div class="closed-glass-box">
+      <img src="logo.png" alt="عباسكو" style="height: 55px; margin: 0 auto;">
+      <h2>جاري جرد المخزون والتحديث</h2>
+      <p>نقوم حالياً بجرد ملحقات الهواتف وإضافة شحنات جديدة بأحدث الإصدارات والأسعار.<br>نعود إليكم في أبهى حلة خلال وقت قصير بإذن الله.</p>
+      <a href="https://wa.me/201125408111" target="_blank" class="btn-send-whatsapp-order" style="margin: 0 auto; max-width: 280px;">
+        <i class="fa-brands fa-whatsapp"></i> تواصل مع الإدارة مباشرة
+      </a>
+    </div>
   </div>
 
   <!-- المحرك البرمجي لحساب الشحن وإرسال الرسالة للواتساب -->
@@ -646,6 +658,27 @@
     };
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
+    // مزامنة حالة إغلاق المتجر لحظياً
+    function applyStoreClosedState(isClosed) {
+      const modal = document.getElementById('store-closed-modal');
+      if (!modal) return;
+      if (isClosed) {
+        modal.style.setProperty('display', 'flex', 'important');
+        document.body.style.overflow = 'hidden';
+      } else {
+        modal.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+      }
+    }
+    applyStoreClosedState(localStorage.getItem('abasco_store_closed') === 'true');
+    db.collection('settings').doc('status').onSnapshot(doc => {
+      if (doc.exists) {
+        const closed = doc.data().isClosed === true;
+        localStorage.setItem('abasco_store_closed', closed ? 'true' : 'false');
+        applyStoreClosedState(closed);
+      }
+    }, err => {});
 
     const cart = JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];  
     // توجيه تلقائي للصفحة الرئيسية إذا كانت السلة فارغة
@@ -676,6 +709,7 @@
         </div>
         <div class="mini-cart-desc">
           <h5>${item.name}</h5>
+          ${item.color ? `<span style="color:var(--dream-green); font-weight:800; display:block;">اللون: ${item.color}</span>` : ''}
           <span>الكمية: (${item.quantity}) × LE ${item.price.toFixed(2)}</span>
         </div>
         <div class="mini-cart-total">
@@ -752,7 +786,7 @@
 
       // بناء قائمة الملحقات المطلوبة نصياً
       const itemsListText = cart.map((item, idx) => 
-        `🔹 *${idx + 1}.* ${item.name}%0A   الكمية: (${item.quantity} قطع) | السعر: LE ${(item.price * item.quantity).toFixed(2)}`
+        `🔹 *${idx + 1}.* ${item.name}%0A   🎨 *اللون:* ${item.color || 'غير محدد'}%0A   الكمية: (${item.quantity} قطع) | السعر: LE ${(item.price * item.quantity).toFixed(2)}`
       ).join('%0A');
 
       const finalAmount = subtotalPrice + activeShippingFee;
@@ -792,12 +826,54 @@
           phone2: phone2,
           gov: governorate,
           address: `${city} - ${address}`,
-          items: cart.map(i => `${i.name} (${i.quantity}) × LE ${i.price.toFixed(2)}`).join(' | '),
+          items: cart.map(i => `${i.name} [لون: ${i.color || 'غير محدد'}] (${i.quantity}) × LE ${i.price.toFixed(2)}`).join(' | '),
+          itemsDetailed: cart.map(i => ({
+            productId: i.id,
+            name: i.name,
+            color: i.color || '',
+            quantity: Number(i.quantity) || 1,
+            price: Number(i.price)
+          })),
           total: finalAmount,
           status: 'قيد التجهيز ⏳',
           createdAt: new Date().toISOString()
         });
+
+        // خصم الكميات المطلوبة من المخزون تلقائياً لكل لون
+        for (const item of cart) {
+          try {
+            const prodRef = db.collection('products').doc(String(item.id));
+            const snap = await prodRef.get();
+            if (!snap.exists) continue;
+
+            const data = snap.data();
+            const qty = Number(item.quantity) || 1;
+            let newVariants = data.colorVariants;
+
+            if (Array.isArray(newVariants) && item.color) {
+              newVariants = newVariants.map(v =>
+                v.color === item.color
+                  ? { ...v, stock: Math.max(0, (Number(v.stock) || 0) - qty) }
+                  : v
+              );
+            }
+
+            const newTotalStock = Array.isArray(newVariants)
+              ? newVariants.reduce((acc, v) => acc + (Number(v.stock) || 0), 0)
+              : Math.max(0, (Number(data.stock) || 0) - qty);
+
+            await prodRef.update({
+              colorVariants: newVariants || data.colorVariants || [],
+              stock: newTotalStock,
+              inStock: newTotalStock > 0
+            });
+          } catch (e) {
+            console.warn('تعذر خصم المخزون لمنتج:', e.message);
+          }
+        }
+
         localStorage.removeItem('abasco_raya_cart');
+        localStorage.removeItem('abasco_discount_val');
       } catch (err) {
         console.warn('تعذر حفظ الطلب:', err.message);
       }
