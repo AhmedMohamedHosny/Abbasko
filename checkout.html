@@ -363,6 +363,61 @@
       color: var(--dream-green);
     }
 
+    .payment-tab-option {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      transition: var(--transition-normal);
+    }
+
+    .payment-tab-option i {
+      font-size: 1.1rem;
+    }
+
+    .payment-tab-option.active {
+      border-color: var(--dream-green);
+      background: var(--dream-green-light);
+      color: var(--dream-green);
+      box-shadow: 0 0 0 1px var(--dream-green);
+    }
+
+    body.dark-mode .payment-tab-option.active {
+      background: rgba(124, 179, 66, 0.12);
+    }
+
+    .btn-confirm-order-final {
+      width: 100%;
+      background: linear-gradient(135deg, var(--dream-green), var(--dream-green-hover));
+      color: #ffffff;
+      border: none;
+      padding: 16px;
+      border-radius: var(--radius-pill);
+      font-size: 1.05rem;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px var(--dream-green-glow);
+      transition: var(--transition-normal);
+      margin-top: 10px;
+    }
+
+    .btn-confirm-order-final:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--dream-green-glow);
+    }
+
     @media (max-width: 992px) {
       .checkout-content-grid {
         grid-template-columns: 1fr;
@@ -516,12 +571,16 @@
 
 <div class="input-field-block">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                  <label for="order-address" style="margin:0;">العنوان بالتفصيل <span class="star">*</span></label>
+                  <label style="margin:0;">العنوان بالتفصيل <span class="star">*</span></label>
                   <button type="button" id="btn-geo-location" style="background: var(--dream-green-light); border: 1px dashed var(--dream-green); color: var(--dream-green); padding: 4px 10px; border-radius: 4px; font-size: 0.76rem; font-weight: 800; cursor: pointer;">
                     <i class="fa-solid fa-location-crosshairs"></i> تحديد موقعي الحالي تلقائياً
                   </button>
                 </div>
-                <textarea id="order-address" rows="3" placeholder="اسم الشارع بالتفصيل، رقم العمارة، الدور، رقم الشقة، وأقرب علامة مميزة بجوارك..." required></textarea>
+                <div class="duo-inputs-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                  <input type="text" id="order-street" placeholder="اسم الشارع" required>
+                  <input type="text" id="order-building" placeholder="رقم العمارة" required>
+                  <input type="text" id="order-floor-flat" placeholder="الدور / الشقة" required>
+                </div>
                 <input type="hidden" id="geo-map-link">
                 <span id="geo-status-text" style="font-size: 0.74rem; color: var(--dream-green); font-weight: 700; display: none;"></span>
               </div>
@@ -532,11 +591,24 @@
               </div>
             </section>
 
-            <!-- الصندوق الثالث: تأكيد طريقة الدفع كاش -->
+            <!-- الصندوق الثالث: اختيار طريقة الدفع -->
             <section class="checkout-card-panel">
               <h2><i class="fa-solid fa-hand-holding-dollar"></i> طريقة السداد</h2>
-              
-              <div class="cash-option-box">
+
+              <div style="display:flex; gap:10px; margin-bottom:16px;">
+                <label class="payment-tab-option active" id="tab-cash-label">
+                  <input type="radio" name="payment-method" value="cash" checked style="display:none;">
+                  <i class="fa-solid fa-money-bill-wave"></i>
+                  <span>كاش عند الاستلام</span>
+                </label>
+                <label class="payment-tab-option" id="tab-vodafone-label">
+                  <input type="radio" name="payment-method" value="vodafone" style="display:none;">
+                  <i class="fa-solid fa-mobile-screen-button"></i>
+                  <span>فودافون كاش</span>
+                </label>
+              </div>
+
+              <div class="cash-option-box" id="cash-method-details">
                 <i class="fa-solid fa-money-bill-wave"></i>
                 <div class="cash-option-texts">
                   <strong>الدفع نقداً عند الاستلام كاش</strong>
@@ -544,9 +616,17 @@
                 </div>
               </div>
 
-              <button type="submit" class="btn-send-whatsapp-order">
-                <i class="fa-brands fa-whatsapp" style="font-size: 1.4rem;"></i>
-                <span>تأكيد الطلب وإرسال الفاتورة لواتساب عباسكو</span>
+              <div class="cash-option-box" id="vodafone-method-details" style="display:none;">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+                <div class="cash-option-texts">
+                  <strong>الدفع عبر فودافون كاش</strong>
+                  <small>هيتواصل معاك المندوب عبر الواتساب برقم فودافون كاش المحل لإتمام التحويل قبل الشحن.</small>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-confirm-order-final">
+                <span>تأكيد الطلب</span>
+                <i class="fa-solid fa-arrow-left"></i>
               </button>
             </section>
 
@@ -718,6 +798,50 @@
       </div>
     `).join('');
 
+    // تبديل تبويبات طريقة الدفع
+    let selectedPaymentMethod = 'cash';
+    document.getElementById('tab-cash-label')?.addEventListener('click', () => {
+      selectedPaymentMethod = 'cash';
+      document.getElementById('tab-cash-label').classList.add('active');
+      document.getElementById('tab-vodafone-label').classList.remove('active');
+      document.getElementById('cash-method-details').style.display = 'flex';
+      document.getElementById('vodafone-method-details').style.display = 'none';
+    });
+    document.getElementById('tab-vodafone-label')?.addEventListener('click', () => {
+      selectedPaymentMethod = 'vodafone';
+      document.getElementById('tab-vodafone-label').classList.add('active');
+      document.getElementById('tab-cash-label').classList.remove('active');
+      document.getElementById('vodafone-method-details').style.display = 'flex';
+      document.getElementById('cash-method-details').style.display = 'none';
+    });
+
+    // زر تحديد الموقع الجغرافي تلقائياً
+    document.getElementById('btn-geo-location')?.addEventListener('click', () => {
+      const statusText = document.getElementById('geo-status-text');
+      const mapInput = document.getElementById('geo-map-link');
+
+      if (!navigator.geolocation) {
+        alert("خاصية تحديد الموقع غير مدعومة في متصفحك.");
+        return;
+      }
+
+      statusText.style.display = 'block';
+      statusText.textContent = "جاري التقاط إحداثيات موقعك عبر الأقمار الصناعية...";
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+          if (mapInput) mapInput.value = mapUrl;
+          statusText.textContent = "✅ تم تثبيت موقعك الجغرافي بنجاح لمساعدة المندوب!";
+        },
+        (err) => {
+          statusText.textContent = "تعذر تحديد الموقع تلقائياً. يرجى ملء الحقول يدوياً، أو التأكد من السماح بإذن الموقع من المتصفح.";
+        }
+      );
+    });
+
     let activeShippingFee = 0;
     // قراءة أسعار الـ 27 محافظة الحقيقية من قاعدة البيانات (مش من جهاز المشرف)
     (async function syncGovRatesToCheckout() {
@@ -775,8 +899,13 @@
       const phone2 = document.getElementById('order-phone2').value.trim();
       const governorate = govSelect.value;
       const city = document.getElementById('order-city').value.trim();
-      const address = document.getElementById('order-address').value.trim();
+      const street = document.getElementById('order-street').value.trim();
+      const building = document.getElementById('order-building').value.trim();
+      const floorFlat = document.getElementById('order-floor-flat').value.trim();
+      const address = `${street} / ${building} / ${floorFlat}`;
       const notes = document.getElementById('order-notes').value.trim();
+      const mapLink = document.getElementById('geo-map-link').value.trim();
+      const paymentMethodText = selectedPaymentMethod === 'vodafone' ? 'فودافون كاش' : 'كاش عند الاستلام';
 
       if (!governorate) {
         alert('يرجى تحديد المحافظة لحساب تكلفة التوصيل بدقة.');
@@ -805,7 +934,10 @@
         `📍 *عنوان الشحن بالتفصيل:*%0A` +
         `• *المحافظة:* ${governorate}%0A` +
         `• *المدينة / الحي:* ${city}%0A` +
-        `• *العنوان:* ${address}%0A` +
+        `• *الشارع:* ${street}%0A` +
+        `• *رقم العمارة:* ${building}%0A` +
+        `• *الدور / الشقة:* ${floorFlat}%0A` +
+        (mapLink ? `• *الموقع على الخريطة:* ${mapLink}%0A` : '') +
         (notes ? `• *ملاحظات التوصيل:* ${notes}%0A` : '') +
         `----------------------------------------%0A` +
         `📦 *المنتجات المطلوبة:*%0A${itemsListText}%0A` +
@@ -814,7 +946,7 @@
         `• إجمالي الملحقات: LE ${subtotalPrice.toFixed(2)}%0A` +
         `• مصاريف الشحن: LE ${activeShippingFee.toFixed(2)}%0A` +
         `• *المبلغ الإجمالي المستحق:* LE ${finalAmount.toFixed(2)}%0A` +
-        `• *طريقة الدفع:* الدفع نقداً عند الاستلام كاش مع المعاينة.%0A` +
+        `• *طريقة الدفع:* ${paymentMethodText} مع المعاينة.%0A` +
         `----------------------------------------%0A` +
         `🛡️ *تأكيد المحل:* يتم تسليم الشحنة مع حق فتح الكرتونة والمعاينة قبل السداد.`;
 
@@ -826,6 +958,7 @@
           phone2: phone2,
           gov: governorate,
           address: `${city} - ${address}`,
+          paymentMethod: paymentMethodText,
           items: cart.map(i => `${i.name} [لون: ${i.color || 'غير محدد'}] (${i.quantity}) × LE ${i.price.toFixed(2)}`).join(' | '),
           itemsDetailed: cart.map(i => ({
             productId: i.id,
