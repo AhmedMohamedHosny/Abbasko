@@ -253,7 +253,7 @@ ${product.discount ? `<span class="discount-ribbon-tag">وفر ${product.discoun
         <div class="card-bottom-actions-full">
 <button class="btn-quick-view-olive" onclick="window.location.href='product.html?id=${product.id}'">نظرة سريعة</button>          
           <button class="btn-choose-option-green" onclick="addToCartDirect('${product.id}')" ${!isAvailable ? 'disabled style="opacity:0.6; cursor:not-allowed;"' : ''}>
-            ${isAvailable ? 'Choose option' : 'غير متوفر'}
+            ${isAvailable ? 'اختر اللون' : 'غير متوفر'}            
           </button>
           <div class="item-mini-stepper">
             <button class="mini-step-btn" onclick="modifyCardQty('${product.id}', 1)">+</button>
@@ -501,27 +501,8 @@ window.modifyCardQty = function(id, delta) {
 
 // إضافة للسلة
 window.addToCartDirect = function(productId) {
-  const product = abascoInventory.find(p => String(p.id) === String(productId));
-  if (!product) return;
-
-  const addedQty = state.quantities[productId] || 1;
-  const existing = state.cart.find(item => String(item.id) === String(productId));
-
-  if (existing) {
-    existing.quantity += addedQty;
-  } else {
-    state.cart.push({
-      id: product.id,
-      name: product.title,
-      price: Number(product.price),
-      image: product.image || 'logo.png',
-      quantity: addedQty
-    });
-  }
-
-  localStorage.setItem('abasco_raya_cart', JSON.stringify(state.cart));
-  syncCartBadge();
-  alert(`تمت إضافة (${addedQty}) قطعة من "${product.title}" إلى عربة التسوق بنجاح!`);
+  // توجيه العميل لصفحة المنتج علشان يختار اللون المطلوب
+  window.location.href = `product.html?id=${productId}`;
 };
 
 function syncCartBadge() {
