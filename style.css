@@ -2095,3 +2095,103 @@ body.dark-mode .reviews-header-capsule {
   line-height: 1.7;
   margin-bottom: 22px;
 }
+
+/* ==========================================================================
+   10. وضع الموبايل الأفقي (Landscape) - يقرب من شكل الكمبيوتر
+   ========================================================================== */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* استرجاع الهيدر بشكله الأفقي العادي */
+  .header-inner {
+    flex-wrap: nowrap !important;
+    padding: 10px 0 !important;
+  }
+
+  .dream-brand { order: initial !important; }
+  .main-store-logo { height: 46px !important; max-height: 46px !important; }
+
+  .dream-header-tools { order: initial !important; }
+
+  .dream-search-bar {
+    order: initial !important;
+    flex-basis: auto !important;
+    max-width: 420px !important;
+    height: 40px !important;
+  }
+
+  .search-cat-picker { display: flex !important; }
+
+  .single-center-badge { font-size: 0.85rem; padding: 6px 16px; }
+
+  /* شبكة المنتجات: 3 أعمدة بدل عمودين */
+  .dream-products-grid,
+  body.view-grid-active .dream-products-grid,
+  body.view-list-active .dream-products-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .catalog-top-bar {
+    flex-wrap: nowrap !important;
+    padding: 8px 14px !important;
+  }
+
+  .custom-sort-container {
+    order: initial !important;
+    flex-basis: auto !important;
+  }
+
+  .view-modes { order: initial !important; margin-right: 0 !important; }
+  .count-text { display: inline !important; }
+  .desktop-filter-btn span { display: inline !important; }
+
+  /* بطاقة المنتج: ترجع لوضعها الأفقي الطبيعي */
+  .card-top-horizontal-split,
+  body.view-grid-active .card-top-horizontal-split {
+    flex-direction: column-reverse !important;
+  }
+
+  .specs-summary-text,
+  body.view-grid-active .specs-summary-text {
+    display: block !important;
+  }
+
+  .btn-quick-view-olive,
+  body.view-grid-active .btn-quick-view-olive {
+    display: flex !important;
+    width: auto !important;
+    height: 30px !important;
+    padding: 6px 12px !important;
+    font-size: 0.72rem !important;
+    border-radius: var(--radius-xs) !important;
+  }
+  .btn-quick-view-olive::before { content: none !important; }
+
+  .item-mini-stepper,
+  body.view-grid-active .item-mini-stepper {
+    display: flex !important;
+  }
+
+  /* إخفاء شريط الموبايل السفلي في الوضع الأفقي (زي سطح المكتب) */
+  .mobile-bottom-nav { display: none !important; }
+
+  body { padding-bottom: 0 !important; }
+
+  .alternating-chat-widget {
+    bottom: 20px !important;
+    left: 20px !important;
+  }
+
+  .chat-circle-link { width: 48px; height: 48px; font-size: 1.4rem; }
+
+  /* التذييل: يرجع لعمودين/تلاتة بدل عمود واحد */
+  .footer-content-row {
+    grid-template-columns: 2fr 1fr 1.5fr !important;
+    text-align: right !important;
+  }
+
+  .copyright-flex {
+    flex-direction: row !important;
+    text-align: right !important;
+  }
+}
