@@ -818,7 +818,7 @@
         `----------------------------------------%0A` +
         `🛡️ *تأكيد المحل:* يتم تسليم الشحنة مع حق فتح الكرتونة والمعاينة قبل السداد.`;
 
-      // حفظ الطلب في قاعدة البيانات علشان يظهر في لوحة التحكم فعلياً
+      // حفظ الطلب في قاعدة البيانات علشان يظهر في لوحة التحكم فوراً
       try {
         await db.collection('orders').add({
           customerName: fullName,
@@ -838,6 +838,18 @@
           status: 'قيد التجهيز ⏳',
           createdAt: new Date().toISOString()
         });
+
+        // زيادة عداد استخدام أي كوبون تم استخدامه في هذا الطلب
+        const usedCoupons = [...new Set(cart.map(i => i.couponCode).filter(Boolean))];
+        for (const code of usedCoupons) {
+          try {
+            await db.collection('settings').doc('coupons').update({
+              [`${code}.usedCount`]: firebase.firestore.FieldValue.increment(1)
+            });
+          } catch (e) {
+            console.warn('تعذر تحديث عداد الكوبون:', e.message);
+          }
+        }
 
         // خصم الكميات المطلوبة من المخزون تلقائياً لكل لون
         for (const item of cart) {
