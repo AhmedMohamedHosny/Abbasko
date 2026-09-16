@@ -723,10 +723,102 @@ async function syncLiveTaxonomy() {
   }
 }
 
+// ==========================================================================
+// نظام العروض النارية فوق شريط الأقسام
+// ==========================================================================
+let offersSlideIndex = 0;
+let offersSlideInterval = null;
+let offersDataList = [];
+
+async function loadHotOffersBanner() {
+  const section = document.getElementById('hot-offers-section');
+  const track = document.getElementById('offers-slides-track');
+  const dotsBox = document.getElementById('offers-dots-strip');
+  if (!section || !track || !dotsBox) return;
+
+  try {
+    const doc = await db.collection('settings').doc('offers').get();
+    if (!doc.exists || !doc.data().items || doc.data().items.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+
+    const offerItems = doc.data().items;
+    const productDocs = await Promise.all(
+      offerItems.map(o => db.collection('products').doc(String(o.productId)).get())
+    );
+
+    offersDataList = [];
+    productDocs.forEach((pDoc, idx) => {
+      if (pDoc.exists) {
+        offersDataList.push({ ...pDoc.data(), id: pDoc.id, badge: offerItems[idx].badge || '🔥 عرض النار' });
+      }
+    });
+
+    if (offersDataList.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+
+    track.innerHTML = offersDataList.map(item => `
+      <div class="offer-slide-card" onclick="window.location.href='product.html?id=${item.id}'">
+        <div class="offer-slide-image">
+          <img src="${(item.images && item.images[0]) || item.image || 'logo.png'}" alt="${item.title}">
+        </div>
+        <div class="offer-slide-info">
+          <span class="offer-slide-badge">${item.badge}</span>
+          <div class="offer-slide-title">${item.title}</div>
+          <div class="offer-slide-prices">
+            <span class="offer-slide-price-new">LE ${Number(item.price).toFixed(2)}</span>
+            ${item.oldPrice ? `<span class="offer-slide-price-old">LE ${Number(item.oldPrice).toFixed(2)}</span>` : ''}
+          </div>
+        </div>
+        <span class="offer-slide-cta">اطلب الآن <i class="fa-solid fa-arrow-left"></i></span>
+      </div>
+    `).join('');
+
+    dotsBox.innerHTML = offersDataList.length > 1
+      ? offersDataList.map((_, idx) => `<span class="offer-dot-item ${idx === 0 ? 'active' : ''}" onclick="goToOfferSlide(${idx})"></span>`).join('')
+      : '';
+
+    offersSlideIndex = 0;
+    updateOffersSliderPosition();
+    startOffersAutoSlide();
+  } catch (e) {
+    console.warn('تعذر تحميل العروض:', e.message);
+    section.style.display = 'none';
+  }
+}
+
+function updateOffersSliderPosition() {
+  const track = document.getElementById('offers-slides-track');
+  if (track) track.style.transform = `translateX(${-offersSlideIndex * 100}%)`;
+  document.querySelectorAll('.offer-dot-item').forEach((dot, idx) => dot.classList.toggle('active', idx === offersSlideIndex));
+}
+
+window.goToOfferSlide = function(idx) {
+  offersSlideIndex = idx;
+  updateOffersSliderPosition();
+  stopOffersAutoSlide();
+  startOffersAutoSlide();
+};
+
+function startOffersAutoSlide() {
+  stopOffersAutoSlide();
+  if (offersDataList.length <= 1) return;
+  offersSlideInterval = setInterval(() => {
+    offersSlideIndex = (offersSlideIndex + 1) % offersDataList.length;
+    updateOffersSliderPosition();
+  }, 3000);
+}
+
+function stopOffersAutoSlide() {
+  if (offersSlideInterval) clearInterval(offersSlideInterval);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   syncLiveTaxonomy();
   fetchProductsFromFirebase();
   syncCartBadge();
+  loadHotOffersBanner();
 });
 /* ==========================================================================
    نظام الدخول السري للوحة تحكم المدير (Admin Secret Access)
