@@ -1064,26 +1064,10 @@
                   </div>
                 </div>
 
-                <!-- 3. المواصفات الفنية المرقمة 1، 2، 3 مع زر (+) -->
+                <!-- المواصفات الفنية - رسالة واحدة كاملة -->
                 <div class="form-group">
-                  <label><i class="fa-solid fa-list-ol" style="color:var(--admin-green);"></i> المواصفات الفنية للملحق</label>
-                  <div class="specs-stack-builder" id="specs-input-container">
-                    <div class="spec-input-item">
-                      <span class="spec-number-badge">1</span>
-                      <input type="text" class="form-control spec-val-box" placeholder="مثال: قدرة 30 واط شحن فائق السرعة">
-                    </div>
-                    <div class="spec-input-item">
-                      <span class="spec-number-badge">2</span>
-                      <input type="text" class="form-control spec-val-box" placeholder="مثال: منفذ USB Type-C ذكي">
-                    </div>
-                    <div class="spec-input-item">
-                      <span class="spec-number-badge">3</span>
-                      <input type="text" class="form-control spec-val-box" placeholder="مثال: ضمان استبدال فوري 14 يوماً">
-                    </div>
-                  </div>
-                  <button type="button" class="btn-add-spec-row" id="btn-add-spec-row">
-                    <i class="fa-solid fa-plus"></i> إضافة خاصية جديدة
-                  </button>
+                  <label><i class="fa-solid fa-align-right" style="color:var(--admin-green);"></i> المواصفات الفنية للملحق (اكتبها كاملة هنا)</label>
+                  <textarea id="prod-specs-text" class="form-control" rows="4" placeholder="مثال: شحن سريع 30 واط، منفذ USB Type-C، متوافق مع جميع الأجهزة، ضمان استبدال فوري 14 يوم..."></textarea>
                 </div>
 
                 <button type="submit" class="btn-submit-action" id="btn-submit-main">
@@ -1933,17 +1917,7 @@ window.selectThemeColor = async function(colorVal, name) {
     });
 
     // 5. زر إضافة خاصية مرقمة للمواصفات (+)
-    document.getElementById('btn-add-spec-row')?.addEventListener('click', () => {
-      const container = document.getElementById('specs-input-container');
-      const count = container.querySelectorAll('.spec-input-item').length + 1;
-      const row = document.createElement('div');
-      row.className = 'spec-input-item';
-      row.innerHTML = `
-        <span class="spec-number-badge">${count}</span>
-        <input type="text" class="form-control spec-val-box" placeholder="خاصية رقم ${count}...">
-      `;
-      container.appendChild(row);
-    });
+
 
     // 6. جلب وعرض بيانات المخزون
     async function loadInventoryData() {
@@ -2057,24 +2031,19 @@ window.selectThemeColor = async function(colorVal, name) {
       const price = parseFloat(document.getElementById('prod-price').value) || 0;
       const oldPrice = parseFloat(document.getElementById('prod-old-price').value) || (price + 100);
 
-      // تجميع الألوان والكميات
+      // تجميع الألوان المضافة يدوياً والكميات
       const colorVariants = [];
       let totalStock = 0;
       document.querySelectorAll('.color-variant-row').forEach(row => {
-        const chk = row.querySelector('.chk-color-toggle');
         const input = row.querySelector('.color-stock-input');
-        if (chk.checked) {
-          const qty = parseInt(input.value) || 0;
-          colorVariants.push({ color: chk.value, stock: qty });
-          totalStock += qty;
-        }
+        const colorName = input.getAttribute('data-color');
+        const qty = parseInt(input.value) || 0;
+        colorVariants.push({ color: colorName, stock: qty });
+        totalStock += qty;
       });
 
-      // تجميع المواصفات المرقمة
-      const specTexts = [];
-      document.querySelectorAll('.spec-val-box').forEach(box => {
-        if (box.value.trim() !== '') specTexts.push(box.value.trim());
-      });
+      // المواصفات كرسالة واحدة كاملة
+      const specsText = document.getElementById('prod-specs-text').value.trim();
 
       const productPayload = {
         title: document.getElementById('prod-name').value.trim(),
@@ -2089,7 +2058,7 @@ window.selectThemeColor = async function(colorVal, name) {
         ratingCount: 12,
         colors: colorVariants.map(c => c.color),
         colorVariants: colorVariants,
-        specs: specTexts.join(' | ') || 'ملحق أصلي معتمد'
+        specs: specsText || 'ملحق أصلي معتمد'
       };
 
 // حفظ روابط الصور السحابية القادمة من Cloudinary
@@ -2136,33 +2105,13 @@ window.selectThemeColor = async function(colorVal, name) {
       document.getElementById('prod-price').value = prod.price || '';
       document.getElementById('prod-old-price').value = prod.oldPrice || '';
 
+      const colorContainer = document.getElementById('color-variants-container');
+      colorContainer.innerHTML = '';
       if (prod.colorVariants && Array.isArray(prod.colorVariants)) {
-        document.querySelectorAll('.color-variant-row').forEach(row => {
-          const chk = row.querySelector('.chk-color-toggle');
-          const input = row.querySelector('.color-stock-input');
-          const found = prod.colorVariants.find(c => c.color === chk.value);
-          if (found) {
-            chk.checked = true;
-            input.value = found.stock;
-          } else {
-            chk.checked = false;
-          }
-        });
+        prod.colorVariants.forEach(v => addColorVariantRow(v.color, v.stock));
       }
 
-      const specsContainer = document.getElementById('specs-input-container');
-      specsContainer.innerHTML = '';
-      const specsArr = (prod.specs || '').split('|');
-      specsArr.forEach((s, idx) => {
-        if (s.trim()) {
-          specsContainer.innerHTML += `
-            <div class="spec-input-item">
-              <span class="spec-number-badge">${idx + 1}</span>
-              <input type="text" class="form-control spec-val-box" value="${s.trim()}">
-            </div>
-          `;
-        }
-      });
+      document.getElementById('prod-specs-text').value = prod.specs || '';
 
       if (prod.images && prod.images.length > 0) {
         const thumbsBox = document.getElementById('thumbs-preview-box');
@@ -2182,6 +2131,8 @@ window.selectThemeColor = async function(colorVal, name) {
       document.getElementById('btn-submit-main').innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> نشر الملحق في المتجر فوراً`;
       document.getElementById('btn-cancel-edit').style.display = 'none';
       document.getElementById('thumbs-preview-box').innerHTML = `<div class="thumb-slot">لسه محددتش صور</div>`;
+      document.getElementById('color-variants-container').innerHTML = '';
+      addColorVariantRow('أسود', 10);
 uploadedCloudinaryUrls = [];
     };
 
