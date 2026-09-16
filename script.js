@@ -1136,3 +1136,29 @@ window.applyStoreClosedState = function(isClosed) {
     }, err => {});
   }
 })();
+// محرك تبديل نصوص الشريط الإعلاني كل 3 ثوانٍ بتأثير التلاشي
+(function initFadingTicker() {
+  const tickerEl = document.getElementById('fade-ticker-text');
+  if (!tickerEl) return;
+
+  const savedTicker = JSON.parse(localStorage.getItem('abasco_ticker_data'));
+  const messages = (savedTicker && savedTicker.length) ? savedTicker.filter(Boolean) : [
+    '🔥 عروض عباسكو الحصرية على شواحن وكابلات GaN الأصلية',
+    '🚚 معاينة الشحنة بالكامل وفحص المنتج أمام المندوب قبل دفع أي مبالغ',
+    '⚡ شواحن أنكر وسامسونج ويوجرين الأصلية بضمان استبدال فوري',
+    '💵 الدفع نقداً عند الاستلام كاش بكل أمان'
+  ];
+
+  let currentIndex = 0;
+  tickerEl.textContent = messages[0];
+
+  setInterval(() => {
+    tickerEl.classList.add('fade-out');
+
+    setTimeout(() => {
+      currentIndex = (currentIndex + 1) % messages.length;
+      tickerEl.textContent = messages[currentIndex];
+      tickerEl.classList.remove('fade-out');
+    }, 400);
+  }, 3000);
+})();
