@@ -1171,23 +1171,20 @@
       restartAutoSlide();
     });
 
-    // 7. المواصفات الفنية المرقمة
+    // 7. المواصفات الفنية - رسالة واحدة
     function renderSpecsTable(specs) {
       const specsContainer = document.getElementById('specs-table-body');
       if (!specsContainer) return;
 
       if (typeof specs === 'string' && specs.trim()) {
-        const parts = specs.split('|');
-        specsContainer.innerHTML = parts.map((part, idx) => `
-          <div class="spec-table-row">
-            <span class="spec-table-label">خاصية ${idx + 1}</span>
-            <span class="spec-table-value">${part.trim()}</span>
+        specsContainer.innerHTML = `
+          <div class="spec-table-row" style="display:block;">
+            <span class="spec-table-value" style="white-space:pre-line; line-height:1.9;">${specs.trim()}</span>
           </div>
-        `).join('');
+        `;
       } else {
         specsContainer.innerHTML = `
           <div class="spec-table-row">
-            <span class="spec-table-label">الضمان والمصدر</span>
             <span class="spec-table-value">إكسسوار أصلي معتمد مع حق المعاينة بالكامل قبل الدفع.</span>
           </div>
         `;
