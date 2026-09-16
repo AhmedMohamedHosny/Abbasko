@@ -16,6 +16,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <style>
     .cart-page-canvas {
@@ -462,19 +464,6 @@
         <!-- ملخص الفاتورة بدون أي تقسيط -->
         <aside class="cart-invoice-sidebar">
           <h2>ملخص الفاتورة</h2>
-<!-- خانة كوبون الخصم التفاعلي -->
-          <div style="margin-bottom: 16px;">
-            <div style="display: flex; gap: 6px;">
-              <input type="text" id="coupon-code-input" placeholder="كود الخصم (مثال: ABASCO10)" style="flex: 1; padding: 8px 12px; border: 1.5px solid var(--border-color); border-radius: 4px; font-size: 0.82rem; text-transform: uppercase; outline: none;">
-              <button type="button" id="apply-coupon-btn" style="background: var(--dream-green); color: #fff; border: none; padding: 0 14px; border-radius: 4px; font-weight: 800; font-size: 0.82rem; cursor: pointer;">تطبيق</button>
-            </div>
-            <div id="coupon-msg" style="font-size: 0.78rem; margin-top: 4px; display: none; font-weight: 800;"></div>
-          </div>
-
-          <div class="invoice-line" id="discount-row" style="display: none; color: var(--discount-red);">
-            <span>قيمة الخصم:</span>
-            <strong id="discount-display">- 0.00 ج.م</strong>
-          </div>
           <div class="invoice-line">
             <span>إجمالي الملحقات:</span>
             <strong id="subtotal-display">0.00 ج.م</strong>
@@ -555,21 +544,61 @@
     </a>
   </div>
 
+  <!-- شاشة إغلاق المتجر والصيانة -->
+  <div class="store-closed-screen" id="store-closed-modal" style="display: none;">
+    <div class="closed-glass-box">
+      <img src="logo.png" alt="عباسكو" style="height: 55px; margin: 0 auto;">
+      <h2>جاري جرد المخزون والتحديث</h2>
+      <p>نقوم حالياً بجرد ملحقات الهواتف وإضافة شحنات جديدة بأحدث الإصدارات والأسعار.<br>نعود إليكم في أبهى حلة خلال وقت قصير بإذن الله.</p>
+      <a href="https://wa.me/201125408111" target="_blank" class="btn-send-whatsapp-order" style="margin: 0 auto; max-width: 280px; display:flex; align-items:center; justify-content:center; gap:10px; background:#25d366; color:#fff; padding:14px; border-radius:50px; font-weight:900;">
+        <i class="fa-brands fa-whatsapp"></i> تواصل مع الإدارة مباشرة
+      </a>
+    </div>
+  </div>
+
   <!-- المحرك البرمجي للسلة -->
   <script>
     'use strict';
 
-// قراءة السلة من أي اسم تم الحفظ به لضمان عدم ضياع أي منتج
+    const firebaseConfig = {
+      apiKey: "AIzaSyBhOo-nzA3TztOFQlxPQaOTrLtPDjKb_xU",
+      authDomain: "abbasko-store.firebaseapp.com",
+      projectId: "abbasko-store",
+      storageBucket: "abbasko-store.firebasestorage.app",
+      messagingSenderId: "475025963892",
+      appId: "1:475025963892:web:8790442f8bc83539368a21",
+      measurementId: "G-B1866569VZ"
+    };
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // مزامنة حالة إغلاق المتجر لحظياً
+    function applyStoreClosedState(isClosed) {
+      const modal = document.getElementById('store-closed-modal');
+      if (!modal) return;
+      if (isClosed) {
+        modal.style.setProperty('display', 'flex', 'important');
+        document.body.style.overflow = 'hidden';
+      } else {
+        modal.style.setProperty('display', 'none', 'important');
+        document.body.style.overflow = '';
+      }
+    }
+    applyStoreClosedState(localStorage.getItem('abasco_store_closed') === 'true');
+    db.collection('settings').doc('status').onSnapshot(doc => {
+      if (doc.exists) {
+        const closed = doc.data().isClosed === true;
+        localStorage.setItem('abasco_store_closed', closed ? 'true' : 'false');
+        applyStoreClosedState(closed);
+      }
+    }, err => {});
+
     function getCart() {
-      return JSON.parse(localStorage.getItem('abasco_raya_cart')) || 
-             JSON.parse(localStorage.getItem('abassco_raya_cart')) || 
-             [];
+      return JSON.parse(localStorage.getItem('abasco_raya_cart')) || [];
     }
 
-    // حفظ التعديلات في الاسمين معاً لتوحيد العداد في كل الصفحات
     function saveCart(cart) {
       localStorage.setItem('abasco_raya_cart', JSON.stringify(cart));
-      localStorage.setItem('abassco_raya_cart', JSON.stringify(cart));
       renderCart();
     }
 
@@ -600,7 +629,9 @@
       filledBox.style.display = 'grid';
       subtitle.textContent = `لديك (${totalItems}) ملحقات في عربة التسوق`;
 
-      itemsContainer.innerHTML = cart.map(item => `
+      itemsContainer.innerHTML = cart.map(item => {
+        const key = item.cartId || item.id;
+        return `
         <div class="cart-item-row-card">
           <div class="cart-item-left-info">
             <div class="cart-thumb-box">
@@ -608,87 +639,46 @@
             </div>
             <div class="cart-meta-info">
               <h3>${item.name}</h3>
+              ${item.color ? `<div style="font-size:0.78rem; font-weight:800; color:var(--dream-green); margin-bottom:6px;"><i class="fa-solid fa-palette"></i> اللون: ${item.color}</div>` : ''}
               <div class="cart-item-stepper">
-                <button class="stepper-action-btn" onclick="updateItemQuantity('${item.id}', 1)">+</button>
+                <button class="stepper-action-btn" onclick="updateItemQuantity('${key}', 1)">+</button>
                 <span class="stepper-count-val">${item.quantity}</span>
-                <button class="stepper-action-btn" onclick="updateItemQuantity('${item.id}', -1)">-</button>
+                <button class="stepper-action-btn" onclick="updateItemQuantity('${key}', -1)">-</button>
               </div>
             </div>
           </div>
 
           <div class="cart-item-right-pricing">
-            <button class="btn-trash-item" onclick="deleteCartItem('${item.id}')" title="حذف الملحق">
+            <button class="btn-trash-item" onclick="deleteCartItem('${key}')" title="حذف الملحق">
               <i class="fa-regular fa-trash-can"></i>
             </button>
             <span class="item-price-sum">LE ${(Number(item.price) * Number(item.quantity)).toFixed(2)}</span>
           </div>
         </div>
-      `).join('');
+      `;}).join('');
 
-subtotalEl.textContent = `LE ${totalPrice.toFixed(2)}`;
-      
-      const currentShip = Number(localStorage.getItem('abasco_cart_shipping_fee')) || 0;
-      const shipEl = document.getElementById('shipping-display');
-      if (shipEl) {
-        shipEl.textContent = currentShip > 0 ? `LE ${currentShip.toFixed(2)}` : 'حدد المحافظة';
-      }
-      finalTotalEl.textContent = `LE ${(totalPrice + currentShip).toFixed(2)}`;
+      subtotalEl.textContent = `LE ${totalPrice.toFixed(2)}`;
+      finalTotalEl.textContent = `LE ${totalPrice.toFixed(2)}`;
     }
 
-    // تعبئة الـ 27 محافظة وحساب الشحن الحقيقي
-    (function initCartGovs() {
-      const select = document.getElementById('cart-gov-select');
-      if (!select) return;
 
-      const defaultGovs = [
-        { id: "cairo", name: "القاهرة", rate: 35 }, { id: "giza", name: "الجيزة", rate: 35 },
-        { id: "alex", name: "الإسكندرية", rate: 45 }, { id: "qalyubia", name: "القليوبية", rate: 40 },
-        { id: "sharqia", name: "الشرقية", rate: 45 }, { id: "dakahlia", name: "الدقهلية", rate: 45 },
-        { id: "gharbia", name: "الغربية", rate: 45 }, { id: "monufia", name: "المنوفية", rate: 45 },
-        { id: "beheira", name: "البحيرة", rate: 45 }, { id: "kafr_el_sheikh", name: "كفر الشيخ", rate: 45 },
-        { id: "damietta", name: "دمياط", rate: 45 }, { id: "port_said", name: "بورسعيد", rate: 50 },
-        { id: "ismailia", name: "الإسماعيلية", rate: 50 }, { id: "suez", name: "السويس", rate: 50 },
-        { id: "fayoum", name: "الفيوم", rate: 50 }, { id: "beni_suef", name: "بني سويف", rate: 50 },
-        { id: "minya", name: "المنيا", rate: 55 }, { id: "assiut", name: "أسيوط", rate: 55 },
-        { id: "sohag", name: "سوهاج", rate: 55 }, { id: "qena", name: "قنا", rate: 60 },
-        { id: "luxor", name: "الأقصر", rate: 60 }, { id: "aswan", name: "أسوان", rate: 60 },
-        { id: "matrouh", name: "مطروح", rate: 65 }, { id: "red_sea", name: "البحر الأحمر", rate: 65 },
-        { id: "new_valley", name: "الوادي الجديد", rate: 70 }, { id: "north_sinai", name: "شمال سيناء", rate: 70 },
-        { id: "south_sinai", name: "جنوب سيناء", rate: 70 }
-      ];
-
-      const savedRates = JSON.parse(localStorage.getItem('abasco_gov_shipping_rates')) || {};
-
-      select.innerHTML = `<option value="">اختر محافظتك...</option>` + defaultGovs.map(g => {
-        const fee = savedRates[g.id] !== undefined ? savedRates[g.id] : g.rate;
-        return `<option value="${g.name}" data-fee="${fee}">${g.name} (${fee} ج.م)</option>`;
-      }).join('');
-
-      select.addEventListener('change', () => {
-        const opt = select.options[select.selectedIndex];
-        const fee = parseFloat(opt.getAttribute('data-fee')) || 0;
-        localStorage.setItem('abasco_cart_shipping_fee', fee);
-        renderCart();
-      });
-    })();
-
-    // تعديل الكمية (+ أو -)
-    window.updateItemQuantity = function(id, delta) {
+    // تعديل الكمية (+ أو -) بالمفتاح الفريد لكل لون
+    window.updateItemQuantity = function(key, delta) {
       let cart = getCart();
-      const item = cart.find(i => String(i.id) === String(id));
+      const item = cart.find(i => String(i.cartId || i.id) === String(key));
       if (!item) return;
 
       item.quantity = (Number(item.quantity) || 1) + delta;
       if (item.quantity <= 0) {
-        cart = cart.filter(i => String(i.id) !== String(id));
+        cart = cart.filter(i => String(i.cartId || i.id) !== String(key));
       }
       saveCart(cart);
     };
 
-    // حذف منتج بالكامل من السلة
-    window.deleteCartItem = function(id) {
+    // حذف منتج بالكامل من السلة بالمفتاح الفريد
+    window.deleteCartItem = function(key) {
       let cart = getCart();
-      cart = cart.filter(i => String(i.id) !== String(id));
+      cart = cart.filter(i => String(i.cartId || i.id) !== String(key));
       saveCart(cart);
     };
 
@@ -732,42 +722,6 @@ subtotalEl.textContent = `LE ${totalPrice.toFixed(2)}`;
 
     document.addEventListener('DOMContentLoaded', renderCart);
 
-    // نظام كوبونات الخصم في السلة
-    const applyBtn = document.getElementById('apply-coupon-btn');
-    const couponInput = document.getElementById('coupon-code-input');
-    const couponMsg = document.getElementById('coupon-msg');
-    const discountRow = document.getElementById('discount-row');
-    const discountDisplay = document.getElementById('discount-display');
-
-    applyBtn?.addEventListener('click', () => {
-      const code = couponInput.value.trim().toUpperCase();
-      const cart = getCart();
-      const totalPrice = cart.reduce((acc, i) => acc + (Number(i.price) * (Number(i.quantity) || 1)), 0);
-
-      if (totalPrice <= 0 || !code) return;
-
-      const validCoupons = JSON.parse(localStorage.getItem('abasco_coupons_db')) || { 'ABASCO10': 10 };
-
-      if (validCoupons[code]) {
-        const discountVal = totalPrice * (validCoupons[code] / 100);
-
-        couponMsg.style.display = 'block';
-        couponMsg.style.color = 'var(--dream-green)';
-        couponMsg.textContent = `✅ تم تفعيل الكود وخصم ${discountVal.toFixed(2)} ج.م بنجاح!`;
-
-        discountRow.style.display = 'flex';
-        discountDisplay.textContent = `- LE ${discountVal.toFixed(2)}`;
-
-        const currentShip = Number(localStorage.getItem('abasco_cart_shipping_fee')) || 0;
-        const newTotal = Math.max(0, totalPrice - discountVal + currentShip);
-        document.getElementById('final-total-display').textContent = `LE ${newTotal.toFixed(2)}`;
-        localStorage.setItem('abasco_discount_val', discountVal);
-      } else {
-        couponMsg.style.display = 'block';
-        couponMsg.style.color = 'var(--discount-red)';
-        couponMsg.textContent = '❌ كود الخصم غير صحيح أو منتهي الصلاحية!';
-      }
-    });
-  </script>
+   </script>
 </body>
 </html>
