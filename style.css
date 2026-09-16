@@ -92,26 +92,34 @@ img { max-width: 100%; display: block; }
 .main-store-logo:hover {
   transform: scale(1.2);
 }
-/* 1. شريط الإعلانات الترويجي */
+/* 1. شريط الإعلانات الترويجي (تلاشي وتثبيت في المنتصف) */
 .dream-top-ticker {
   background-color: #1a1a1a;
   color: #d1d5db;
-  font-size: 0.82rem;
-  font-weight: 600;
-  padding: 8px 0;
+  font-size: 0.84rem;
+  font-weight: 700;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  white-space: nowrap;
 }
 
 .ticker-track {
-  display: inline-flex;
-  gap: 20px;
-  animation: marqueeScroll 26s linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  padding: 0 16px;
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
 }
 
-@keyframes marqueeScroll {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0%); }
+.ticker-track.fade-out {
+  opacity: 0;
+  transform: translateY(-4px);
 }
 
 /* 2. رأس المتجر والبحث */
