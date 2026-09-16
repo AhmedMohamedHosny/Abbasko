@@ -835,6 +835,9 @@
       <li data-target="tab-products">
         <a onclick="switchAdminTab('tab-products')"><i class="fa-solid fa-boxes-stacked"></i> <span>إدارة الملحقات والمخزون</span></a>
       </li>
+      <li data-target="tab-offers">
+        <a onclick="switchAdminTab('tab-offers')"><i class="fa-solid fa-fire"></i> <span>العروض النارية</span></a>
+      </li>
       <li data-target="tab-orders">
         <a onclick="switchAdminTab('tab-orders')"><i class="fa-solid fa-truck-ramp-box"></i> <span>الطلبات المباشرة</span></a>
       </li>
@@ -1037,30 +1040,18 @@
                   </div>
                 </div>
 
-                <!-- 2. الألوان والكمية المتاحة من كل لون -->
+                <!-- الألوان والكمية - إضافة حرة -->
                 <div class="form-group">
                   <label><i class="fa-solid fa-palette" style="color:var(--admin-green);"></i> الألوان المتاحة والمخزون لكل لون</label>
-                  <div class="color-variants-stack">
-                    <div class="color-variant-row">
-                      <label><input type="checkbox" class="chk-color-toggle" value="أسود" checked> أسود</label>
-                      <input type="number" class="color-stock-input" data-color="أسود" placeholder="الكمية" value="10" min="0">
-                    </div>
-                    <div class="color-variant-row">
-                      <label><input type="checkbox" class="chk-color-toggle" value="أبيض"> أبيض</label>
-                      <input type="number" class="color-stock-input" data-color="أبيض" placeholder="الكمية" value="5" min="0">
-                    </div>
-                    <div class="color-variant-row">
-                      <label><input type="checkbox" class="chk-color-toggle" value="أزرق"> أزرق</label>
-                      <input type="number" class="color-stock-input" data-color="أزرق" placeholder="الكمية" value="5" min="0">
-                    </div>
-                    <div class="color-variant-row">
-                      <label><input type="checkbox" class="chk-color-toggle" value="رمادي"> رمادي</label>
-                      <input type="number" class="color-stock-input" data-color="رمادي" placeholder="الكمية" value="5" min="0">
-                    </div>
-                    <div class="color-variant-row">
-                      <label><input type="checkbox" class="chk-color-toggle" value="ذهبي"> ذهبي</label>
-                      <input type="number" class="color-stock-input" data-color="ذهبي" placeholder="الكمية" value="5" min="0">
-                    </div>
+                  <div style="display:flex; gap:8px; margin-bottom:10px;">
+                    <input type="text" id="new-color-name-input" class="form-control" placeholder="اسم اللون (مثال: أحمر)">
+                    <input type="number" id="new-color-stock-input" class="form-control" placeholder="الكمية" min="0" style="max-width:110px;">
+                    <button type="button" id="btn-add-color-row" class="btn-add-spec-row" style="width:auto; padding:0 18px; margin-top:0;">
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+                  <div class="color-variants-stack" id="color-variants-container">
+                    <!-- تتولد صفوف الألوان هنا ديناميكياً -->
                   </div>
                 </div>
 
@@ -1111,6 +1102,33 @@
             </div>
           </div>
 
+        </div>
+      </section>
+
+      <!-- ================================================================== -->
+      <!-- تبويب العروض النارية -->
+      <!-- ================================================================== -->
+      <section class="tab-section" id="tab-offers">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h2><i class="fa-solid fa-fire"></i> العروض النارية (تظهر أعلى المتجر)</h2>
+            <button type="button" class="btn-view-store" style="padding:6px 12px; font-size:0.8rem;" onclick="saveHotOffers()">
+              <i class="fa-solid fa-floppy-disk"></i> حفظ ونشر العروض
+            </button>
+          </div>
+          <div class="admin-card-body">
+            <p style="font-size:0.86rem; color:var(--text-muted); margin-bottom:16px;">أضف أي منتج كعرض ناري، هيظهر أعلى المتجر فوق "إكسسوارات الموبايل" ويتبدل تلقائياً كل 3 ثوانٍ. لو مفيش أي عرض مضاف، الشريط مش هيظهر خالص.</p>
+
+            <div style="display:flex; gap:10px; margin-bottom:16px;">
+              <select id="offer-product-select" class="form-control"></select>
+              <input type="text" id="offer-badge-input" class="form-control" placeholder="نص الشارة (مثال: 🔥 عرض النار)" style="max-width:220px;">
+              <button type="button" class="btn-add-spec-row" style="width:auto; padding:0 18px; margin-top:0;" onclick="addHotOfferItem()">
+                <i class="fa-solid fa-plus"></i> إضافة
+              </button>
+            </div>
+
+            <div id="hot-offers-admin-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+          </div>
         </div>
       </section>
 
@@ -1370,6 +1388,7 @@ window.switchAdminTab = function(tabId) {
         'tab-dashboard': 'نظرة عامة على المتجر والتحليلات',
         'tab-appearance': 'مظهر وحالة تشغيل المتجر',
         'tab-products': 'إدارة الملحقات والمخزون',
+        'tab-offers': 'إدارة العروض النارية فوق المتجر',
         'tab-orders': 'الطلبات المباشرة وشحنات العملاء',
         'tab-reviews': 'إدارة آراء وسكرينات العملاء',
         'tab-shipping': 'أسعار شحن الـ 27 محافظة كاملة',
@@ -1916,8 +1935,126 @@ window.selectThemeColor = async function(colorVal, name) {
       });
     });
 
-    // 5. زر إضافة خاصية مرقمة للمواصفات (+)
+    // إدارة الألوان الحرة (إضافة/حذف)
+    function addColorVariantRow(colorName, stock) {
+      const container = document.getElementById('color-variants-container');
+      const row = document.createElement('div');
+      row.className = 'color-variant-row';
+      row.innerHTML = `
+        <span style="font-weight:800; font-size:0.86rem;">${colorName}</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <input type="number" class="color-stock-input" data-color="${colorName}" value="${stock}" min="0" style="width:90px;">
+          <button type="button" class="action-btn-mini btn-delete-action" onclick="this.closest('.color-variant-row').remove()" title="حذف اللون">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      `;
+      container.appendChild(row);
+    }
 
+    document.getElementById('btn-add-color-row')?.addEventListener('click', () => {
+      const nameInput = document.getElementById('new-color-name-input');
+      const stockInput = document.getElementById('new-color-stock-input');
+      const name = nameInput.value.trim();
+      const stock = parseInt(stockInput.value) || 0;
+      if (!name) { alert('يرجى كتابة اسم اللون أولاً!'); return; }
+      const existing = Array.from(document.querySelectorAll('.color-stock-input')).find(i => i.getAttribute('data-color') === name);
+      if (existing) { alert('هذا اللون مضاف بالفعل!'); return; }
+      addColorVariantRow(name, stock);
+      nameInput.value = '';
+      stockInput.value = '';
+    });
+    // إدارة العروض النارية
+    let currentHotOffers = [];
+
+    function populateOfferProductSelect() {
+      const sel = document.getElementById('offer-product-select');
+      if (!sel) return;
+      sel.innerHTML = adminInventory.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
+    }
+
+    window.addHotOfferItem = function() {
+      const sel = document.getElementById('offer-product-select');
+      const badgeInput = document.getElementById('offer-badge-input');
+      if (!sel || !sel.value) { alert('لا توجد منتجات متاحة للإضافة!'); return; }
+
+      const productId = sel.value;
+      if (currentHotOffers.find(o => String(o.productId) === String(productId))) {
+        alert('هذا المنتج مضاف بالفعل كعرض!');
+        return;
+      }
+
+      currentHotOffers.push({ productId: productId, badge: badgeInput.value.trim() || '🔥 عرض النار' });
+      badgeInput.value = '';
+      renderHotOffersAdminList();
+    };
+
+    window.removeHotOfferItem = function(productId) {
+      currentHotOffers = currentHotOffers.filter(o => String(o.productId) !== String(productId));
+      renderHotOffersAdminList();
+    };
+
+    window.moveHotOfferItem = function(productId, direction) {
+      const idx = currentHotOffers.findIndex(o => String(o.productId) === String(productId));
+      if (idx === -1) return;
+      const newIdx = idx + direction;
+      if (newIdx < 0 || newIdx >= currentHotOffers.length) return;
+      [currentHotOffers[idx], currentHotOffers[newIdx]] = [currentHotOffers[newIdx], currentHotOffers[idx]];
+      renderHotOffersAdminList();
+    };
+
+    window.updateHotOfferBadge = function(productId, newBadge) {
+      const item = currentHotOffers.find(o => String(o.productId) === String(productId));
+      if (item) item.badge = newBadge.trim() || '🔥 عرض النار';
+    };
+
+    function renderHotOffersAdminList() {
+      const listEl = document.getElementById('hot-offers-admin-list');
+      if (!listEl) return;
+
+      if (currentHotOffers.length === 0) {
+        listEl.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted);">لا توجد عروض مضافة حالياً. الشريط لن يظهر للعملاء.</p>`;
+        return;
+      }
+
+      listEl.innerHTML = currentHotOffers.map(o => {
+        const prod = adminInventory.find(p => String(p.id) === String(o.productId));
+        const title = prod ? prod.title : `منتج (${o.productId})`;
+        return `
+          <div style="display:flex; align-items:center; gap:10px; background:#fff; padding:8px 12px; border:1px solid #e2e8f0; border-radius:6px;">
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <button type="button" onclick="moveHotOfferItem('${o.productId}', -1)" style="background:none; border:none; cursor:pointer; color:#64748b;"><i class="fa-solid fa-chevron-up"></i></button>
+              <button type="button" onclick="moveHotOfferItem('${o.productId}', 1)" style="background:none; border:none; cursor:pointer; color:#64748b;"><i class="fa-solid fa-chevron-down"></i></button>
+            </div>
+            <div style="flex:1; min-width:0;"><strong style="font-size:0.85rem;">${title}</strong></div>
+            <input type="text" value="${o.badge}" onchange="updateHotOfferBadge('${o.productId}', this.value)" class="form-control" style="max-width:180px; font-size:0.78rem;">
+            <button type="button" class="action-btn-mini btn-delete-action" onclick="removeHotOfferItem('${o.productId}')"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.saveHotOffers = async function() {
+      try {
+        await db.collection('settings').doc('offers').set({ items: currentHotOffers });
+        alert('✅ تم حفظ ونشر العروض النارية في المتجر بنجاح!');
+      } catch (e) {
+        alert('تعذر حفظ العروض: ' + e.message);
+      }
+    };
+
+    async function loadHotOffersAdmin() {
+      try {
+        const doc = await db.collection('settings').doc('offers').get();
+        if (doc.exists && doc.data().items) currentHotOffers = doc.data().items;
+      } catch (e) {}
+      renderHotOffersAdminList();
+    }
+
+    // 6. جلب وعرض بيانات المخزون
+    async function loadInventoryData() {
+    // 6. جلب وعرض بيانات المخزون
+    async function loadInventoryData() {
 
     // 6. جلب وعرض بيانات المخزون
     async function loadInventoryData() {
@@ -1939,6 +2076,8 @@ window.selectThemeColor = async function(colorVal, name) {
 
       renderInventoryTable(adminInventory);
       updateDashboardKPIs();
+      populateOfferProductSelect();
+      renderHotOffersAdminList();
     }
 
     function renderInventoryTable(items) {
@@ -2348,7 +2487,7 @@ document.addEventListener('DOMContentLoaded', () => {
       syncTaxonomyWithFirebase();
       loadInventoryData();
       loadOrdersData();
-
+      loadHotOffersAdmin();
 
       const savedWhatsApp = localStorage.getItem('abasco_whatsapp_number');
       if (savedWhatsApp && document.getElementById('store-whatsapp-num')) {
