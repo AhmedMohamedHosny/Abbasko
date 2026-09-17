@@ -1286,71 +1286,287 @@ body.view-grid-active .card-image-pane {
   100% { opacity: 0.25; transform: translateX(-50%) translateY(10px) scale(0.9); }
 }
 
+/* ================= تقسيم فوتر دريم 2000 الخماسي ================= */
 .footer-content-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1.5fr;
-  gap: 35px;
-  margin-bottom: 25px;
+  grid-template-columns: 1.8fr 1.1fr 1.1fr 1.1fr 1.4fr;
+  gap: 26px;
+  align-items: flex-start;
+  margin-bottom: 35px;
 }
 
-.footer-brand-title {
-  font-size: 1.2rem;
-  font-weight: 900;
-  color: #fff;
-  margin-bottom: 8px;
+/* العمود 1: الشعار والهاتف */
+.footer-brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.footer-shop-about p {
-  font-size: 0.84rem;
+.footer-brand-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footer-logo-img {
+  height: 58px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+}
+
+.footer-brand-slogan {
+  font-size: 0.8rem;
   color: #9ca3af;
-  line-height: 1.6;
+  font-weight: 600;
+  line-height: 1.5;
 }
 
-.store-hours {
-  color: var(--dream-green) !important;
-  font-weight: 700;
-  margin-top: 8px;
+.footer-hotline-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 14px;
+  border-radius: 10px;
+  width: fit-content;
 }
 
-.footer-links-group h4, .footer-contact-box h4 {
-  font-size: 1rem;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 12px;
-}
-
-.footer-links-group ul li a {
-  color: #9ca3af;
-  font-size: 0.84rem;
-}
-
-.footer-links-group ul li a:hover {
+.hotline-icon-headset {
+  font-size: 1.4rem;
   color: var(--dream-green);
 }
 
-.hotline-pill {
+.hotline-numbers {
+  display: flex;
+  flex-direction: column;
+}
+
+.hotline-label {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  font-weight: 700;
+}
+
+.hotline-val {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.footer-trust-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footer-trust-tags span {
+  font-size: 0.76rem;
+  color: #cbd5e1;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-trust-tags span i {
+  color: var(--dream-green);
+  font-size: 0.85rem;
+}
+
+/* الأعمدة 2 و 3 و 4: القوائم وعناوينها الخضراء */
+.footer-col-title {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: var(--dream-green);
+  margin-bottom: 14px;
+  letter-spacing: -0.3px;
+}
+
+.footer-icon-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-icon-links li a {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background-color: var(--whatsapp-color);
-  color: #fff;
-  font-size: 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #9ca3af;
+  transition: all 0.2s ease;
+}
+
+.footer-icon-links li a i {
+  font-size: 0.8rem;
+  color: #64748b;
+  width: 14px;
+  text-align: center;
+  transition: color 0.2s ease;
+}
+
+.footer-icon-links li a:hover {
+  color: #ffffff;
+  transform: translateX(-3px);
+}
+
+.footer-icon-links li a:hover i {
+  color: var(--dream-green);
+}
+
+/* العمود 5: كارت المحل والواجهة */
+.footer-store-card-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-store-visual-card {
+  width: 100%;
+  max-width: 210px;
+  height: 125px;
+  background: radial-gradient(circle at center, rgba(124, 179, 66, 0.15) 0%, rgba(15, 23, 42, 0.8) 100%);
+  border: 1.5px solid rgba(124, 179, 66, 0.35);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.footer-store-visual-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--dream-green);
+}
+
+.store-facade-img {
+  max-height: 85%;
+  max-width: 85%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+}
+
+.store-card-meta h4 {
+  font-size: 0.95rem;
   font-weight: 900;
-  padding: 8px 18px;
-  border-radius: var(--radius-pill);
+  color: #ffffff;
+  margin-top: 10px;
 }
 
+.store-card-meta p {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.store-card-meta p i {
+  color: var(--dream-green);
+}
+
+/* ================= شريط الحقوق السفلي المقفل بنمط دريم 2000 ================= */
 .footer-bottom-copyright {
-  border-top: 1px solid #2d2d2d;
-  padding-top: 16px;
-  font-size: 0.78rem;
-  color: #6b7280;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 20px;
 }
 
-.copyright-flex {
+.copyright-flex-dream {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 10px 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
+}
+
+.footer-copy-right span {
+  font-size: 0.78rem;
+  color: #9ca3af;
+  font-weight: 600;
+}
+
+/* يسار الشريط: توقيع المطور الإنجليزي باللون المميز والنيون */
+.footer-dev-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 0.8rem;
+}
+
+.dev-label-eng {
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.dev-eng-highlight {
+  color: #a2d95b !important;
+  font-weight: 900 !important;
+  text-decoration: none !important;
+  background: rgba(124, 179, 66, 0.12);
+  border: 1px solid rgba(162, 217, 91, 0.4);
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+  text-shadow: 0 0 10px rgba(162, 217, 91, 0.35);
+}
+
+.dev-eng-highlight:hover {
+  background: var(--dream-green);
+  color: #ffffff !important;
+  border-color: #a2d95b;
+  transform: translateY(-2px);
+  box-shadow: 0 0 16px rgba(124, 179, 66, 0.7);
+  text-shadow: none;
+}
+
+/* تجاوب الشاشات الصغيرة */
+@media (max-width: 1100px) {
+  .footer-content-row {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+  .footer-brand-col {
+    grid-column: span 3;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-store-card-col {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content-row {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 22px;
+  }
+  .footer-icon-links li a {
+    justify-content: center;
+  }
+  .footer-hotline-box {
+    margin: 0 auto;
+  }
+  .footer-trust-tags {
+    align-items: center;
+  }
+  .copyright-flex-dream {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
 }
 
 .alternating-chat-widget {
