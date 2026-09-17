@@ -836,24 +836,26 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// 2. الدخول بالنقر 5 مرات متتالية على اللوجو
+// 2. الدخول للوحة التحكم بالنقر 3 مرات سريعة على اللوجو (مخصص للموبايل والكمبيوتر)
 let logoClickCount = 0;
 let logoTimer = null;
 
-document.querySelector('.main-store-logo')?.addEventListener('click', (e) => {
-  logoClickCount++;
-  clearTimeout(logoTimer);
+document.querySelectorAll('.main-store-logo, .dream-brand').forEach(el => {
+  el.addEventListener('click', (e) => {
+    logoClickCount++;
+    clearTimeout(logoTimer);
 
-  // إعادة تصفير العداد بعد ثانيتين ونصف إذا لم تكتمل النقرات
-  logoTimer = setTimeout(() => {
-    logoClickCount = 0;
-  }, 2500);
+    // إذا لم يكمل 3 نقرات خلال ثانيتين يعود اللوجو كرابط عادي
+    logoTimer = setTimeout(() => {
+      logoClickCount = 0;
+    }, 2000);
 
-  if (logoClickCount >= 5) {
-    e.preventDefault();
-    logoClickCount = 0;
-    requestAdminAccess();
-  }
+    if (logoClickCount >= 3) {
+      e.preventDefault();
+      logoClickCount = 0;
+      window.location.href = "admin.html";
+    }
+  });
 });
 let cardSliderIntervals = {};
 
