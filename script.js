@@ -1088,15 +1088,16 @@ window.applyLiveThemeEngine = function(colorVal) {
   `;
 };
 
-// 2. تطبيق وفحص حالة إغلاق المتجر (شاشة الصيانة)
+// 2. تطبيق وفحص حالة إغلاق المتجر (شاشة الصيانة بدون تأخير)
 window.applyStoreClosedState = function(isClosed) {
   const modal = document.getElementById('store-closed-modal');
-  if (!modal) return;
   if (isClosed) {
-    modal.style.setProperty('display', 'flex', 'important');
+    document.documentElement.classList.add('store-is-locked');
+    if (modal) modal.style.setProperty('display', 'flex', 'important');
     document.body.style.overflow = 'hidden';
   } else {
-    modal.style.setProperty('display', 'none', 'important');
+    document.documentElement.classList.remove('store-is-locked');
+    if (modal) modal.style.setProperty('display', 'none', 'important');
     document.body.style.overflow = '';
   }
 };
