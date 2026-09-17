@@ -2067,7 +2067,14 @@ body.dark-mode .reviews-header-capsule {
 .interactive-stars-wrap .star-item:active {
   transform: scale(1.3);
 }
+/* تفعيل شاشة القفل فوراً قبل أن يرسم المتصفح أي بكسل في الصفحة */
+html.store-is-locked #store-closed-modal {
+  display: flex !important;
+}
 
+html.store-is-locked body {
+  overflow: hidden !important;
+}
 /* ================= شاشة الصيانة وإغلاق المتجر الفاخرة ================= */
 .store-closed-screen {
   position: fixed;
