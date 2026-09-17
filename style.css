@@ -2405,3 +2405,35 @@ html.store-is-locked body {
     text-align: right !important;
   }
 }
+/* ================= الحماية ومنع النسخ وسحب الصور ================= */
+/* منع تحديد النصوص في المتجر بالكامل */
+body {
+  -webkit-user-select: none;  /* Safari/Chrome/Opera */
+  -moz-user-select: none;     /* Firefox */
+  -ms-user-select: none;      /* IE/Edge */
+  user-select: none;          /* القيمة القياسية */
+}
+
+/* منع ظهور قائمة السياق الشفافة في الايفون عند اللمس المطول */
+body * {
+  -webkit-touch-callout: none !important;
+}
+
+/* حماية خاصة للصور لمنع سحبها أو تفاعلها */
+img {
+  -webkit-user-drag: none;    /* منع سحب الصورة بالماوس */
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: none;       /* يمنع أي تفاعل (نقرة أو لمسة) مع الصورة */
+}
+
+/* استثناء المدخلات (Inuputs) ليتمكن العميل من الكتابة فيها */
+input, textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  pointer-events: auto; /* السماح بالتفاعل مع الحقول */
+}
