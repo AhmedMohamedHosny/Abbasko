@@ -1165,3 +1165,38 @@ window.applyStoreClosedState = function(isClosed) {
     }, 400);
   }, 3000);
 })();
+// ================= حماية المحتوى والمنع من النسخ والقوائم ================= //
+// 1. منع ظهور القائمة عند الضغط كليك يمين (أو لمس مطول) على المتجر كله
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+}, false);
+
+// 2. منع ظهور القائمة عند الضغط كليك يمين (أو لمس مطول) على الصور تحديداً كحماية إضافية
+document.querySelectorAll('img').forEach(function(img) {
+  img.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  }, false);
+});
+
+// 3. منع اختصارات لوحة التحكم الخاصة بالنسخ والقص والبحث (Ctrl+C, Ctrl+X, Ctrl+A, Ctrl+U)
+document.addEventListener('keydown', function(e) {
+  // تفعيل الـ PreventDefault في حالة استخدام Ctrl مع الأزرار المحددة
+  if (e.ctrlKey && (e.key === 'c' || e.key === 'x' || e.key === 'a' || e.key === 'u' || e.key === 'p' || e.key === 's')) {
+    e.preventDefault();
+    return false;
+  }
+  // لمنع فتح أدوات المطورين F12
+  if (e.key === 'F12') {
+    e.preventDefault();
+    return false;
+  }
+}, false);
+
+// 4. منع عمليات النسخ والقص عن طريق JavaScript مباشرة
+document.addEventListener('copy', function(e) {
+  e.preventDefault();
+}, false);
+
+document.addEventListener('cut', function(e) {
+  e.preventDefault();
+}, false);
