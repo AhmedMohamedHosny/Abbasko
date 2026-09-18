@@ -836,26 +836,46 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// 2. الدخول للوحة التحكم بالنقر 3 مرات سريعة على اللوجو (مخصص للموبايل والكمبيوتر)
-let logoClickCount = 0;
-let logoTimer = null;
+// 2. الدخول للوحة التحكم باللمس أو الضغط المطول على اللوجو لمدة 3 ثوانٍ متواصلة
+let pressTimer = null;
+let isLongPressTriggered = false;
 
 document.querySelectorAll('.main-store-logo, .dream-brand').forEach(el => {
-  el.addEventListener('click', (e) => {
-    logoClickCount++;
-    clearTimeout(logoTimer);
+  // بدء عداد الـ 3 ثوانٍ
+  const startPress = (e) => {
+    isLongPressTriggered = false;
+    clearTimeout(pressTimer);
 
-    // إذا لم يكمل 3 نقرات خلال ثانيتين يعود اللوجو كرابط عادي
-    logoTimer = setTimeout(() => {
-      logoClickCount = 0;
-    }, 2000);
-
-    if (logoClickCount >= 3) {
-      e.preventDefault();
-      logoClickCount = 0;
+    pressTimer = setTimeout(() => {
+      isLongPressTriggered = true;
+      // اهتزاز خفيف للموبايل إن كان مدعوماً لإعلامك بنجاح الـ 3 ثوانٍ
+      if (navigator.vibrate) navigator.vibrate(100);
       window.location.href = "admin.html";
+    }, 3000); // 3000 ملي ثانية = 3 ثوانٍ بالضبط
+  };
+
+  // إلغاء العداد لو رفع يده قبل اكتمال الـ 3 ثوانٍ
+  const cancelPress = (e) => {
+    clearTimeout(pressTimer);
+  };
+
+  // منع فتح الرابط العادي لو اكتملت الـ 3 ثوانٍ
+  el.addEventListener('click', (e) => {
+    if (isLongPressTriggered) {
+      e.preventDefault();
+      e.stopPropagation();
     }
   });
+
+  // أحداث اللمس لشاشات الموبايل (Touch Events)
+  el.addEventListener('touchstart', startPress, { passive: true });
+  el.addEventListener('touchend', cancelPress);
+  el.addEventListener('touchcancel', cancelPress);
+
+  // أحداث الماوس لأجهزة الكمبيوتر (Mouse Events)
+  el.addEventListener('mousedown', startPress);
+  el.addEventListener('mouseup', cancelPress);
+  el.addEventListener('mouseleave', cancelPress);
 });
 let cardSliderIntervals = {};
 
