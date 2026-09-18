@@ -580,9 +580,12 @@ body.view-grid-active .media-square-box {
 }
 
 body.view-grid-active .media-square-box img {
-  max-width: 88% !important;
-  max-height: 88% !important;
-  object-fit: contain !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important; /* تجعل الصورة تملأ المستطيل بالكامل بدون فراغات */
+  object-position: center !important;
   transition: opacity 0.15s ease !important;
 }
 
@@ -900,11 +903,14 @@ body.view-grid-active .card-image-pane {
 }
 
 .media-square-box img {
-  max-width: 90%;
-  max-height: 90%;
-  object-fit: contain;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
   transition: opacity 0.15s ease;
-  pointer-events: none; /* عشان الماوس يتفاعل مباشرة مع الشرائح */
+  pointer-events: none;
 }
 
 /* طبقة الشرائح الأربعة الشفافة فوق الصورة بالكامل */
