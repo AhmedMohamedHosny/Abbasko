@@ -2347,96 +2347,266 @@ html.store-is-locked body {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-/* ================= شريط العروض النارية ================= */
-.hot-offers-banner {
-  background: linear-gradient(135deg, #1a1a1a 0%, #0f140e 100%);
-  padding: 18px 0;
-  overflow: hidden;
+/* ================= سلايدر العروض النارية ثلاثي الأبعاد (3D Hero Showcase) ================= */
+.hero-3d-offers-banner {
+  padding: 16px 0 24px;
+  background: transparent;
+  perspective: 1200px;
 }
-.offers-slider-wrapper {
+
+.offers-stage-3d {
   position: relative;
-  border-radius: 16px;
+  width: 100%;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  background: radial-gradient(circle at 80% 20%, rgba(124, 179, 66, 0.22) 0%, #0d140c 70%, #070a06 100%);
+  border: 1.5px solid rgba(124, 179, 66, 0.35);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 30px rgba(124, 179, 66, 0.15);
+  transform-style: preserve-3d;
 }
-.offers-slides-track {
+
+.offers-track-3d {
   display: flex;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
 }
-.offer-slide-card {
+
+/* بطاقة العرض الفردية */
+.offer-card-3d {
   min-width: 100%;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  align-items: center;
+  gap: 30px;
+  padding: 35px 50px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* الجانب النصي والمعلومات */
+.offer-info-col {
+  text-align: right;
+  z-index: 3;
+}
+
+.offer-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #ea580c, #f59e0b);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 900;
+  padding: 5px 16px;
+  border-radius: 50px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.4);
+  animation: badgePulse 2s infinite alternate;
+}
+
+@keyframes badgePulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.04); }
+}
+
+.offer-title-main {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.offer-subtitle-desc {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* تسعير وباقة العرض */
+.offer-pricing-row {
   display: flex;
   align-items: center;
-  gap: 24px;
-  background: linear-gradient(135deg, #7cb342 0%, #33691e 100%);
-  padding: 22px 30px;
-  cursor: pointer;
-  color: #fff;
+  gap: 14px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
 }
-.offer-slide-image {
-  width: 110px;
-  height: 110px;
-  background: #fff;
-  border-radius: 12px;
+
+.offer-price-highlight {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #a2d95b;
+  text-shadow: 0 0 16px rgba(162, 217, 91, 0.4);
+}
+
+/* العداد التنازلي التفاعلي داخل العرض */
+.offer-countdown-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-bottom: 22px;
+}
+
+.timer-unit-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer-unit-slot span.num {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.timer-unit-slot span.lbl {
+  font-size: 0.62rem;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.timer-colon {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #ea580c;
+  line-height: 1;
+}
+
+/* زر طلب العرض */
+.btn-claim-offer-3d {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--dream-green);
+  color: #ffffff;
+  padding: 12px 28px;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 900;
+  text-decoration: none;
+  box-shadow: 0 6px 20px var(--dream-green-glow);
+  transition: all 0.25s ease;
+}
+
+.btn-claim-offer-3d:hover {
+  background: var(--dream-green-hover);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 10px 25px rgba(124, 179, 66, 0.4);
+}
+
+/* جانب صورة العرض الـ 3D مع تأثير الطفو */
+.offer-visual-col {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
-  flex-shrink: 0;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  position: relative;
+  z-index: 2;
 }
-.offer-slide-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
-.offer-slide-info { flex: 1; min-width: 0; }
-.offer-slide-badge {
-  display: inline-block;
-  background: #ffffff;
-  color: #1a1a1a;
-  font-weight: 900;
-  font-size: 0.78rem;
-  padding: 4px 14px;
-  border-radius: 30px;
-  margin-bottom: 8px;
+
+.offer-visual-col::before {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 179, 66, 0.4) 0%, transparent 70%);
+  filter: blur(28px);
+  z-index: 1;
 }
-.offer-slide-title {
-  font-size: 1.15rem;
-  font-weight: 900;
-  margin-bottom: 8px;
-  line-height: 1.4;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+
+.offer-hero-image-3d {
+  max-width: 100%;
+  max-height: 260px;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.6));
+  animation: floating3D 4s ease-in-out infinite alternate;
+  transform-style: preserve-3d;
 }
-.offer-slide-prices { display: flex; align-items: baseline; gap: 10px; }
-.offer-slide-price-new { font-size: 1.5rem; font-weight: 900; color: #fff; }
-.offer-slide-price-old { font-size: 0.95rem; color: rgba(255,255,255,0.7); text-decoration: line-through; }
-.offer-slide-cta {
-  background: #1a1a1a;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 30px;
-  font-weight: 800;
-  font-size: 0.85rem;
-  white-space: nowrap;
-  flex-shrink: 0;
+
+@keyframes floating3D {
+  0% { transform: translateY(0) rotate(-1deg); }
+  100% { transform: translateY(-12px) rotate(1.5deg) scale(1.02); }
 }
-.offers-dots-strip { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
-.offer-dot-item {
-  width: 34px;
-  height: 6px;
+
+/* أزرار الأسهم يمين ويسار */
+.offers-nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+
+.offers-nav-arrow:hover {
+  background: var(--dream-green);
+  border-color: var(--dream-green);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.arrow-prev { right: 14px; }
+.arrow-next { left: 14px; }
+
+/* نقاط المؤشرات بالأسفل */
+.offers-dots-strip-3d {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.offer-dot-pill {
+  width: 32px;
+  height: 5px;
   border-radius: 4px;
-  background: rgba(255,255,255,0.25);
+  background: rgba(255, 255, 255, 0.2);
   cursor: pointer;
   transition: all 0.25s ease;
 }
-.offer-dot-item.active { background: var(--dream-green); width: 50px; }
 
-@media (max-width: 768px) {
-  .offer-slide-card { padding: 16px; gap: 14px; }
-  .offer-slide-image { width: 75px; height: 75px; }
-  .offer-slide-title { font-size: 0.9rem; }
-  .offer-slide-price-new { font-size: 1.15rem; }
-  .offer-slide-cta { padding: 8px 14px; font-size: 0.76rem; }
+.offer-dot-pill.active {
+  background: var(--dream-green);
+  width: 52px;
+}
+
+/* تجاوب الشاشات الصغيرة والموبايل */
+@media (max-width: 992px) {
+  .offer-card-3d {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 28px 20px;
+    gap: 20px;
+  }
+  .offer-info-col { text-align: center; }
+  .offer-pricing-row { justify-content: center; }
+  .offer-title-main { font-size: 1.35rem; }
+  .offer-subtitle-desc { font-size: 0.85rem; }
+  .offer-hero-image-3d { max-height: 180px; }
+}
+
+@media (max-width: 600px) {
+  .offers-nav-arrow { display: none; } /* إخفاء الأسهم على الموبايل الصغير لراحة الشاشة */
 }
 /* ==========================================================================
    10. وضع الموبايل الأفقي (Landscape) - يقرب من شكل الكمبيوتر
