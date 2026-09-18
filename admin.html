@@ -1024,21 +1024,6 @@
                   <label><i class="fa-solid fa-align-right" style="color:var(--admin-green);"></i> المواصفات الفنية للملحق (اكتبها كاملة هنا)</label>
                   <textarea id="prod-specs-text" class="form-control" rows="4" placeholder="مثال: شحن سريع 30 واط، منفذ USB Type-C، متوافق مع جميع الأجهزة، ضمان استبدال فوري 14 يوم..."></textarea>
                 </div>
-                <!-- رفع فيديو توضيحي للملحق (اختياري) -->
-                <div class="form-group">
-                  <label><i class="fa-solid fa-video" style="color:var(--admin-green);"></i> فيديو توضيحي للملحق (اختياري - من هاتفك أو جهازك)</label>
-                  <div class="file-upload-zone" onclick="document.getElementById('prod-video-input').click()">
-                    <i class="fa-solid fa-film"></i>
-                    <p id="video-upload-status-text">اضغط لاختيار فيديو شرح وتجربة للمنتج (MP4 / MOV - اختياري)</p>
-                    <input type="file" id="prod-video-input" accept="video/*" style="display:none">
-                  </div>
-                  <div id="video-preview-holder" style="margin-top:10px; display:none; text-align:center;">
-                    <video id="admin-video-preview" controls style="max-width:100%; max-height:190px; border-radius:8px; border:1px solid var(--admin-border);"></video>
-                    <button type="button" onclick="removeProductVideo()" style="display:block; margin:6px auto 0; color:var(--danger); font-size:0.78rem; font-weight:800; background:none; border:none; cursor:pointer;">
-                      <i class="fa-solid fa-trash"></i> حذف الفيديو
-                    </button>
-                  </div>
-                </div>
 
                 <button type="submit" class="btn-submit-action" id="btn-submit-main">
                   <i class="fa-solid fa-cloud-arrow-up"></i> نشر الملحق في المتجر فوراً
@@ -1883,53 +1868,7 @@ window.selectThemeColor = async function(colorVal, name) {
       const data = await res.json();
       return data.secure_url; // الرابط السحابي السريع
     }
-// ==========================================================================
-    // محرك رفع ومعالجة الفيديو الاختياري للملحق (Cloudinary Video)
-    // ==========================================================================
-    let uploadedProductVideoUrl = "";
 
-    async function uploadVideoToCloudinary(file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/video/upload`, {
-        method: "POST",
-        body: formData
-      });
-
-      if (!res.ok) throw new Error("فشل الرفع لسيرفر الفيديو");
-      const data = await res.json();
-      return data.secure_url;
-    }
-
-    document.getElementById('prod-video-input')?.addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const statusText = document.getElementById('video-upload-status-text');
-      const holder = document.getElementById('video-preview-holder');
-      const preview = document.getElementById('admin-video-preview');
-
-      statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري رفع الفيديو لسيرفر Cloudinary...`;
-      try {
-        uploadedProductVideoUrl = await uploadVideoToCloudinary(file);
-        preview.src = uploadedProductVideoUrl;
-        holder.style.display = 'block';
-        statusText.innerHTML = `✅ تم رفع وتجهيز الفيديو بنجاح!`;
-      } catch (err) {
-        alert('حدث خطأ أثناء رفع الفيديو: ' + err.message);
-        statusText.textContent = `اضغط لاختيار فيديو شرح وتجربة للمنتج (اختياري)`;
-      }
-    });
-
-    window.removeProductVideo = function() {
-      uploadedProductVideoUrl = "";
-      document.getElementById('prod-video-input').value = "";
-      document.getElementById('video-preview-holder').style.display = 'none';
-      document.getElementById('admin-video-preview').src = "";
-      document.getElementById('video-upload-status-text').textContent = `اضغط لاختيار فيديو شرح وتجربة للمنتج (اختياري)`;
-    };
     // رفع الـ 4 صور فور اختيارهم من جهازك مع المعاينة الحية
     document.getElementById('prod-file-input')?.addEventListener('change', async (e) => {
       const files = Array.from(e.target.files).slice(0, 4);
@@ -2217,7 +2156,6 @@ window.selectThemeColor = async function(colorVal, name) {
         ratingCount: 12,
 colors: colorVariants.map(c => c.color),
         colorVariants: colorVariants,
-        specs: specsText || 'ملحق أصلي معتمد',
         video: uploadedProductVideoUrl || ''
       };
 
@@ -2272,14 +2210,7 @@ colors: colorVariants.map(c => c.color),
       }
 
       document.getElementById('prod-specs-text').value = prod.specs || '';
-if (prod.video && prod.video.trim() !== '') {
-        uploadedProductVideoUrl = prod.video;
-        document.getElementById('admin-video-preview').src = prod.video;
-        document.getElementById('video-preview-holder').style.display = 'block';
-        document.getElementById('video-upload-status-text').textContent = '✅ يوجد فيديو مرفق للمنتج';
-      } else {
-        removeProductVideo();
-      }
+
       if (prod.images && prod.images.length > 0) {
         const thumbsBox = document.getElementById('thumbs-preview-box');
         thumbsBox.innerHTML = prod.images.map(img => `
@@ -2301,7 +2232,6 @@ if (prod.video && prod.video.trim() !== '') {
       document.getElementById('color-variants-container').innerHTML = '';
       addColorVariantRow('أسود', 10);
 uploadedCloudinaryUrls = [];
-      removeProductVideo();
     };
 
     window.deleteProduct = async function(id) {
