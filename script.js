@@ -724,11 +724,13 @@ async function syncLiveTaxonomy() {
 }
 
 // ==========================================================================
-// نظام العروض النارية فوق شريط الأقسام
+// محرك سلايدر العروض ثلاثي الأبعاد (3D Hero Offers Engine)
+// تبديل تلقائي كل 3 ثوانٍ + تحكم الأسهم + عداد تنازلي دقيق
 // ==========================================================================
-let offersSlideIndex = 0;
-let offersSlideInterval = null;
-let offersDataList = [];
+let offers3DIndex = 0;
+let offers3DInterval = null;
+let offers3DData = [];
+let countdownInterval = null;
 
 async function loadHotOffersBanner() {
   const section = document.getElementById('hot-offers-section');
@@ -743,75 +745,131 @@ async function loadHotOffersBanner() {
       return;
     }
 
-    const offerItems = doc.data().items;
-    const productDocs = await Promise.all(
-      offerItems.map(o => db.collection('products').doc(String(o.productId)).get())
-    );
-
-    offersDataList = [];
-    productDocs.forEach((pDoc, idx) => {
-      if (pDoc.exists) {
-        offersDataList.push({ ...pDoc.data(), id: pDoc.id, badge: offerItems[idx].badge || '🔥 عرض النار' });
-      }
-    });
-
-    if (offersDataList.length === 0) { section.style.display = 'none'; return; }
+    offers3DData = doc.data().items;
     section.style.display = 'block';
 
-    track.innerHTML = offersDataList.map(item => `
-      <div class="offer-slide-card" onclick="window.location.href='product.html?id=${item.id}'">
-        <div class="offer-slide-image">
-          <img src="${(item.images && item.images[0]) || item.image || 'logo.png'}" alt="${item.title}">
-        </div>
-        <div class="offer-slide-info">
-          <span class="offer-slide-badge">${item.badge}</span>
-          <div class="offer-slide-title">${item.title}</div>
-          <div class="offer-slide-prices">
-            <span class="offer-slide-price-new">LE ${Number(item.price).toFixed(2)}</span>
-            ${item.oldPrice ? `<span class="offer-slide-price-old">LE ${Number(item.oldPrice).toFixed(2)}</span>` : ''}
+    // رسم شرائح العروض ثلاثية الأبعاد
+    track.innerHTML = offers3DData.map((o, idx) => `
+      <div class="offer-card-3d" id="offer-slide-${idx}">
+        <div class="offer-info-col">
+          <span class="offer-badge-pill"><i class="fa-solid fa-fire"></i> ${o.badge || 'عرض خاص'}</span>
+          <h2 class="offer-title-main">${o.title}</h2>
+          <p class="offer-subtitle-desc">${o.subtitle}</p>
+          
+          <div class="offer-pricing-row">
+            <span class="offer-price-highlight">${o.price}</span>
+          </div>
+
+          <div class="offer-countdown-box">
+            <span style="font-size:0.75rem; color:#f59e0b; font-weight:800;"><i class="fa-regular fa-clock"></i> ينتهي العرض خلال:</span>
+            <div class="timer-unit-slot"><span class="num" id="timer-h-${idx}">00</span><span class="lbl">ساعة</span></div>
+            <span class="timer-colon">:</span>
+            <div class="timer-unit-slot"><span class="num" id="timer-m-${idx}">00</span><span class="lbl">دقيقة</span></div>
+            <span class="timer-colon">:</span>
+            <div class="timer-unit-slot"><span class="num" id="timer-s-${idx}">00</span><span class="lbl">ثانية</span></div>
+          </div>
+
+          <div>
+            <a href="${o.link || '#catalog-products-container'}" class="btn-claim-offer-3d">
+              <span>اطلب العرض الآن</span> <i class="fa-solid fa-arrow-left"></i>
+            </a>
           </div>
         </div>
-        <span class="offer-slide-cta">اطلب الآن <i class="fa-solid fa-arrow-left"></i></span>
+
+        <div class="offer-visual-col">
+          <img src="${o.image || 'logo.png'}" alt="${o.title}" class="offer-hero-image-3d">
+        </div>
       </div>
     `).join('');
 
-    dotsBox.innerHTML = offersDataList.length > 1
-      ? offersDataList.map((_, idx) => `<span class="offer-dot-item ${idx === 0 ? 'active' : ''}" onclick="goToOfferSlide(${idx})"></span>`).join('')
+    // رسم النقاط
+    dotsBox.innerHTML = offers3DData.length > 1
+      ? offers3DData.map((_, idx) => `<span class="offer-dot-pill ${idx === 0 ? 'active' : ''}" onclick="goToOffer3DSlide(${idx})"></span>`).join('')
       : '';
 
-    offersSlideIndex = 0;
-    updateOffersSliderPosition();
-    startOffersAutoSlide();
+    offers3DIndex = 0;
+    updateOffers3DPosition();
+    startOffers3DAutoSlide();
+    startOffersCountdowns();
+
+    // ربط أزرار الأسهم
+    document.getElementById('offers-prev-arrow')?.addEventListener('click', () => {
+      offers3DIndex = (offers3DIndex - 1 + offers3DData.length) % offers3DData.length;
+      updateOffers3DPosition();
+      restartOffers3DAutoSlide();
+    });
+
+    document.getElementById('offers-next-arrow')?.addEventListener('click', () => {
+      offers3DIndex = (offers3DIndex + 1) % offers3DData.length;
+      updateOffers3DPosition();
+      restartOffers3DAutoSlide();
+    });
+
+    // إيقاف مؤقت عند وقوف الماوس
+    const stage = document.getElementById('offers-stage-3d');
+    stage?.addEventListener('mouseenter', stopOffers3DAutoSlide);
+    stage?.addEventListener('mouseleave', startOffers3DAutoSlide);
+
   } catch (e) {
-    console.warn('تعذر تحميل العروض:', e.message);
+    console.warn('تعذر تحميل عروض الـ 3D:', e.message);
     section.style.display = 'none';
   }
 }
 
-function updateOffersSliderPosition() {
+function updateOffers3DPosition() {
   const track = document.getElementById('offers-slides-track');
-  if (track) track.style.transform = `translateX(${-offersSlideIndex * 100}%)`;
-  document.querySelectorAll('.offer-dot-item').forEach((dot, idx) => dot.classList.toggle('active', idx === offersSlideIndex));
+  if (track) track.style.transform = `translateX(${-offers3DIndex * 100}%)`;
+  document.querySelectorAll('.offer-dot-pill').forEach((dot, idx) => {
+    dot.classList.toggle('active', idx === offers3DIndex);
+  });
 }
 
-window.goToOfferSlide = function(idx) {
-  offersSlideIndex = idx;
-  updateOffersSliderPosition();
-  stopOffersAutoSlide();
-  startOffersAutoSlide();
+window.goToOffer3DSlide = function(idx) {
+  offers3DIndex = idx;
+  updateOffers3DPosition();
+  restartOffers3DAutoSlide();
 };
 
-function startOffersAutoSlide() {
-  stopOffersAutoSlide();
-  if (offersDataList.length <= 1) return;
-  offersSlideInterval = setInterval(() => {
-    offersSlideIndex = (offersSlideIndex + 1) % offersDataList.length;
-    updateOffersSliderPosition();
-  }, 3000);
+function startOffers3DAutoSlide() {
+  stopOffers3DAutoSlide();
+  if (offers3DData.length <= 1) return;
+  offers3DInterval = setInterval(() => {
+    offers3DIndex = (offers3DIndex + 1) % offers3DData.length;
+    updateOffers3DPosition();
+  }, 3000); // تبديل كل 3 ثوانٍ
 }
 
-function stopOffersAutoSlide() {
-  if (offersSlideInterval) clearInterval(offersSlideInterval);
+function stopOffers3DAutoSlide() {
+  if (offers3DInterval) clearInterval(offers3DInterval);
+}
+
+function restartOffers3DAutoSlide() {
+  stopOffers3DAutoSlide();
+  startOffers3DAutoSlide();
+}
+
+// تشغيل عداد الوقت التنازلي التلقائي لجميع العروض
+function startOffersCountdowns() {
+  if (countdownInterval) clearInterval(countdownInterval);
+  countdownInterval = setInterval(() => {
+    const now = Date.now();
+    offers3DData.forEach((o, idx) => {
+      const exp = new Date(o.expiresAt).getTime();
+      const diff = Math.max(0, exp - now);
+
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const hEl = document.getElementById(`timer-h-${idx}`);
+      const mEl = document.getElementById(`timer-m-${idx}`);
+      const sEl = document.getElementById(`timer-s-${idx}`);
+
+      if (hEl) hEl.textContent = String(hours).padStart(2, '0');
+      if (mEl) mEl.textContent = String(mins).padStart(2, '0');
+      if (sEl) sEl.textContent = String(secs).padStart(2, '0');
+    });
+  }, 1000);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
