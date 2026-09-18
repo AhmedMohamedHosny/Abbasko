@@ -940,8 +940,8 @@ window.showToast = function(message) {
     track.parentElement.innerHTML = `
       <div style="text-align: center; padding: 24px; background: var(--bg-surface); border: 1px dashed var(--border-color); border-radius: 12px; margin: 10px auto; max-width: 500px;">
         <i class="fa-regular fa-clock" style="font-size: 1.8rem; color: var(--dream-green); margin-bottom: 8px;"></i>
-        <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">لم يتم نشر تجارب أو محادثات بعد</h4>
-        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">سيتم إضافة لقطات شاشة لآراء المشترين فور استلام وتقييم الشحنات الأولى.</p>
+        <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--text-main);">لم يتم نشر آراء العملاء بعد</h4>
+        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">سيتم إضافة صور آراء المشترين فور استلام وتقييم الشحنات الأولى.</p>
       </div>
     `;
     return;
