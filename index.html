@@ -87,12 +87,20 @@
     </div>
 
 <!-- شريط العروض النارية (يظهر فقط لو في عروض مفعّلة) -->
-  <section class="hot-offers-banner" id="hot-offers-section" style="display:none;">
+<section class="hero-3d-offers-banner" id="hot-offers-section" style="display:none;">
     <div class="container">
-      <div class="offers-slider-wrapper" id="offers-slider-wrapper">
-        <div class="offers-slides-track" id="offers-slides-track"></div>
+      <div class="offers-stage-3d" id="offers-stage-3d">
+        <button class="offers-nav-arrow arrow-prev" id="offers-prev-arrow" aria-label="العرض السابق">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <button class="offers-nav-arrow arrow-next" id="offers-next-arrow" aria-label="العرض التالي">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <div class="offers-track-3d" id="offers-slides-track"></div>
       </div>
-      <div class="offers-dots-strip" id="offers-dots-strip"></div>
+
+      <div class="offers-dots-strip-3d" id="offers-dots-strip"></div>
     </div>
   </section>
 
