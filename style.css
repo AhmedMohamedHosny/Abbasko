@@ -1286,195 +1286,55 @@ body.view-grid-active .card-image-pane {
   100% { opacity: 0.25; transform: translateX(-50%) translateY(10px) scale(0.9); }
 }
 
-/* ================= تقسيم فوتر دريم 2000 الخماسي ================= */
-.footer-content-row {
-  display: grid;
-  grid-template-columns: 1.8fr 1.1fr 1.1fr 1.1fr 1.4fr;
-  gap: 26px;
-  align-items: flex-start;
-  margin-bottom: 35px;
+/* ================= فوتر عباسكو النظيف والمبسط ================= */
+.dream-footer {
+  padding: 40px 0 25px !important;
+  margin-top: 40px;
 }
 
-/* العمود 1: الشعار والهاتف */
-.footer-brand-col {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.footer-brand-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.footer-logo-img {
-  height: 58px;
-  width: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
-}
-
-.footer-brand-slogan {
-  font-size: 0.8rem;
-  color: #9ca3af;
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-.footer-hotline-box {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 8px 14px;
-  border-radius: 10px;
-  width: fit-content;
-}
-
-.hotline-icon-headset {
-  font-size: 1.4rem;
-  color: var(--dream-green);
-}
-
-.hotline-numbers {
-  display: flex;
-  flex-direction: column;
-}
-
-.hotline-label {
-  font-size: 0.7rem;
-  color: #9ca3af;
-  font-weight: 700;
-}
-
-.hotline-val {
-  font-size: 1.05rem;
-  font-weight: 900;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-}
-
-.footer-trust-tags {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.footer-trust-tags span {
-  font-size: 0.76rem;
-  color: #cbd5e1;
-  font-weight: 700;
+.footer-simple-center {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
 }
 
-.footer-trust-tags span i {
-  color: var(--dream-green);
-  font-size: 0.85rem;
-}
-
-/* الأعمدة 2 و 3 و 4: القوائم وعناوينها الخضراء */
-.footer-col-title {
-  font-size: 0.96rem;
-  font-weight: 800;
-  color: var(--dream-green);
-  margin-bottom: 14px;
-  letter-spacing: -0.3px;
-}
-
-.footer-icon-links {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.footer-icon-links li a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #9ca3af;
-  transition: all 0.2s ease;
-}
-
-.footer-icon-links li a i {
-  font-size: 0.8rem;
-  color: #64748b;
-  width: 14px;
-  text-align: center;
-  transition: color 0.2s ease;
-}
-
-.footer-icon-links li a:hover {
-  color: #ffffff;
-  transform: translateX(-3px);
-}
-
-.footer-icon-links li a:hover i {
-  color: var(--dream-green);
-}
-
-/* العمود 5: كارت المحل والواجهة */
-.footer-store-card-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.footer-store-visual-card {
-  width: 100%;
-  max-width: 210px;
-  height: 125px;
+.footer-simple-card {
+  width: 140px;
+  height: 90px;
   background: radial-gradient(circle at center, rgba(124, 179, 66, 0.15) 0%, rgba(15, 23, 42, 0.8) 100%);
   border: 1.5px solid rgba(124, 179, 66, 0.35);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  padding: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
-.footer-store-visual-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--dream-green);
-}
-
-.store-facade-img {
-  max-height: 85%;
-  max-width: 85%;
+.footer-simple-card img {
+  max-height: 80%;
+  max-width: 80%;
   object-fit: contain;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
 }
 
-.store-card-meta h4 {
-  font-size: 0.95rem;
+.footer-simple-brand-text {
+  text-align: center;
+}
+
+.footer-simple-brand-text h3 {
+  font-size: 1.25rem;
   font-weight: 900;
   color: #ffffff;
-  margin-top: 10px;
+  margin-bottom: 4px;
 }
 
-.store-card-meta p {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  line-height: 1.5;
-  margin-top: 4px;
-}
-
-.store-card-meta p i {
+.footer-simple-brand-text p {
+  font-size: 0.82rem;
   color: var(--dream-green);
-}
-
-/* ================= شريط الحقوق السفلي المقفل بنمط دريم 2000 ================= */
-.footer-bottom-copyright {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 20px;
+  font-weight: 700;
 }
 
 .copyright-flex-dream {
@@ -1486,6 +1346,19 @@ body.view-grid-active .card-image-pane {
   justify-content: space-between;
   align-items: center;
   gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .footer-simple-center {
+    flex-direction: column;
+    gap: 14px;
+    text-align: center;
+  }
+  .copyright-flex-dream {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
 }
 
 .footer-copy-right span {
