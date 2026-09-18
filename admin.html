@@ -1110,18 +1110,82 @@ body {
                   </div>
                 </div>
 
-                <!-- الألوان والكمية - إضافة حرة -->
+                <!-- الألوان المتاحة - اختر من قائمة الألوان الشائعة -->
                 <div class="form-group">
                   <label><i class="fa-solid fa-palette" style="color:var(--admin-green);"></i> الألوان المتاحة والمخزون لكل لون</label>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid var(--admin-border); margin-bottom:10px;">
+                    <div class="preset-color-row" style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+                      <label style="display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; cursor:pointer; flex:1;">
+                        <input type="checkbox" class="preset-color-chk" value="أسود"> أسود
+                      </label>
+                      <input type="number" class="preset-color-qty" placeholder="الكمية" min="0" disabled style="width:75px; padding:4px; text-align:center; border:1px solid var(--admin-border); border-radius:4px;">
+                    </div>
+                    <div class="preset-color-row" style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+                      <label style="display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; cursor:pointer; flex:1;">
+                        <input type="checkbox" class="preset-color-chk" value="أبيض"> أبيض
+                      </label>
+                      <input type="number" class="preset-color-qty" placeholder="الكمية" min="0" disabled style="width:75px; padding:4px; text-align:center; border:1px solid var(--admin-border); border-radius:4px;">
+                    </div>
+                    <div class="preset-color-row" style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+                      <label style="display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; cursor:pointer; flex:1;">
+                        <input type="checkbox" class="preset-color-chk" value="أزرق"> أزرق
+                      </label>
+                      <input type="number" class="preset-color-qty" placeholder="الكمية" min="0" disabled style="width:75px; padding:4px; text-align:center; border:1px solid var(--admin-border); border-radius:4px;">
+                    </div>
+                    <div class="preset-color-row" style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+                      <label style="display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; cursor:pointer; flex:1;">
+                        <input type="checkbox" class="preset-color-chk" value="أحمر"> أحمر
+                      </label>
+                      <input type="number" class="preset-color-qty" placeholder="الكمية" min="0" disabled style="width:75px; padding:4px; text-align:center; border:1px solid var(--admin-border); border-radius:4px;">
+                    </div>
+                    <div class="preset-color-row" style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+                      <label style="display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; cursor:pointer; flex:1;">
+                        <input type="checkbox" class="preset-color-chk" value="أخضر"> أخضر
+                      </label>
+                      <input type="number" class="preset-color-qty" placeholder="الكمية" min="0" disabled style="width:75px; padding:4px; text-align:center; border:1px solid var(--admin-border); border-radius:4px;">
+                    </div>
+                    <div class="preset-color-row" style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+                      <label style="display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; cursor:pointer; flex:1;">
+                        <input type="checkbox" class="preset-color-chk" value="رمادي"> رمادي
+                      </label>
+                      <input type="number" class="preset-color-qty" placeholder="الكمية" min="0" disabled style="width:75px; padding:4px; text-align:center; border:1px solid var(--admin-border); border-radius:4px;">
+                    </div>
+                    <div class="preset-color-row" style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+                      <label style="display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; cursor:pointer; flex:1;">
+                        <input type="checkbox" class="preset-color-chk" value="ذهبي"> ذهبي
+                      </label>
+                      <input type="number" class="preset-color-qty" placeholder="الكمية" min="0" disabled style="width:75px; padding:4px; text-align:center; border:1px solid var(--admin-border); border-radius:4px;">
+                    </div>
+                    <div class="preset-color-row" style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+                      <label style="display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; cursor:pointer; flex:1;">
+                        <input type="checkbox" class="preset-color-chk" value="فضي"> فضي
+                      </label>
+                      <input type="number" class="preset-color-qty" placeholder="الكمية" min="0" disabled style="width:75px; padding:4px; text-align:center; border:1px solid var(--admin-border); border-radius:4px;">
+                    </div>
+                    <div class="preset-color-row" style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+                      <label style="display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; cursor:pointer; flex:1;">
+                        <input type="checkbox" class="preset-color-chk" value="وردي"> وردي
+                      </label>
+                      <input type="number" class="preset-color-qty" placeholder="الكمية" min="0" disabled style="width:75px; padding:4px; text-align:center; border:1px solid var(--admin-border); border-radius:4px;">
+                    </div>
+                    <div class="preset-color-row" style="display:flex; align-items:center; gap:8px; background:#fff; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+                      <label style="display:flex; align-items:center; gap:6px; font-size:0.82rem; font-weight:700; cursor:pointer; flex:1;">
+                        <input type="checkbox" class="preset-color-chk" value="بنفسجي"> بنفسجي
+                      </label>
+                      <input type="number" class="preset-color-qty" placeholder="الكمية" min="0" disabled style="width:75px; padding:4px; text-align:center; border:1px solid var(--admin-border); border-radius:4px;">
+                    </div>
+                  </div>
+
+                  <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:6px;">لون غير موجود بالقائمة؟ أضفه يدوياً هنا:</p>
                   <div style="display:flex; gap:8px; margin-bottom:10px;">
-                    <input type="text" id="new-color-name-input" class="form-control" placeholder="اسم اللون (مثال: أحمر)">
+                    <input type="text" id="new-color-name-input" class="form-control" placeholder="اسم اللون (مثال: كحلي)">
                     <input type="number" id="new-color-stock-input" class="form-control" placeholder="الكمية" min="0" style="max-width:110px;">
                     <button type="button" id="btn-add-color-row" class="btn-add-spec-row" style="width:auto; padding:0 18px; margin-top:0;">
                       <i class="fa-solid fa-plus"></i>
                     </button>
                   </div>
                   <div class="color-variants-stack" id="color-variants-container">
-                    <!-- تتولد صفوف الألوان هنا ديناميكياً -->
+                    <!-- تتولد صفوف الألوان المخصصة هنا ديناميكياً -->
                   </div>
                 </div>
 
@@ -2022,7 +2086,16 @@ window.selectThemeColor = async function(colorVal, name) {
       container.appendChild(row);
     }
 
-    document.getElementById('btn-add-color-row')?.addEventListener('click', () => {
+    // تفعيل/تعطيل خانة الكمية عند تحديد أي لون من القائمة الجاهزة
+    document.querySelectorAll('.preset-color-chk').forEach(chk => {
+      chk.addEventListener('change', () => {
+        const qtyInput = chk.closest('.preset-color-row').querySelector('.preset-color-qty');
+        qtyInput.disabled = !chk.checked;
+        if (chk.checked && !qtyInput.value) qtyInput.value = 10;
+      });
+    });
+
+    document.getElementById('btn-add-color-row')?.addEventListener('click', () => {      
       const nameInput = document.getElementById('new-color-name-input');
       const stockInput = document.getElementById('new-color-stock-input');
       const name = nameInput.value.trim();
@@ -2235,10 +2308,21 @@ window.selectThemeColor = async function(colorVal, name) {
       const price = parseFloat(document.getElementById('prod-price').value) || 0;
       const oldPrice = parseFloat(document.getElementById('prod-old-price').value) || (price + 100);
 
-      // تجميع الألوان المضافة يدوياً والكميات
+      // تجميع الألوان: المفضلة (Presets) + أي ألوان مخصصة أضيفت يدوياً
       const colorVariants = [];
       let totalStock = 0;
-      document.querySelectorAll('.color-variant-row').forEach(row => {
+
+      document.querySelectorAll('.preset-color-row').forEach(row => {
+        const chk = row.querySelector('.preset-color-chk');
+        const qtyInput = row.querySelector('.preset-color-qty');
+        if (chk.checked) {
+          const qty = parseInt(qtyInput.value) || 0;
+          colorVariants.push({ color: chk.value, stock: qty });
+          totalStock += qty;
+        }
+      });
+
+      document.querySelectorAll('#color-variants-container .color-variant-row').forEach(row => {
         const input = row.querySelector('.color-stock-input');
         const colorName = input.getAttribute('data-color');
         const qty = parseInt(input.value) || 0;
@@ -2260,9 +2344,9 @@ window.selectThemeColor = async function(colorVal, name) {
         inStock: (totalStock > 0),
         rating: 5,
         ratingCount: 12,
-colors: colorVariants.map(c => c.color),
+        colors: colorVariants.map(c => c.color),
         colorVariants: colorVariants,
-        video: uploadedProductVideoUrl || ''
+        specs: specsText || 'ملحق أصلي معتمد'
       };
 
 // حفظ روابط الصور السحابية القادمة من Cloudinary
@@ -2309,10 +2393,31 @@ colors: colorVariants.map(c => c.color),
       document.getElementById('prod-price').value = prod.price || '';
       document.getElementById('prod-old-price').value = prod.oldPrice || '';
 
+      // إعادة تصفير كل الألوان الجاهزة أولاً
+      document.querySelectorAll('.preset-color-row').forEach(row => {
+        const chk = row.querySelector('.preset-color-chk');
+        const qtyInput = row.querySelector('.preset-color-qty');
+        chk.checked = false;
+        qtyInput.value = '';
+        qtyInput.disabled = true;
+      });
+
       const colorContainer = document.getElementById('color-variants-container');
       colorContainer.innerHTML = '';
+
       if (prod.colorVariants && Array.isArray(prod.colorVariants)) {
-        prod.colorVariants.forEach(v => addColorVariantRow(v.color, v.stock));
+        prod.colorVariants.forEach(v => {
+          const presetRow = Array.from(document.querySelectorAll('.preset-color-row')).find(r => r.querySelector('.preset-color-chk').value === v.color);
+          if (presetRow) {
+            const chk = presetRow.querySelector('.preset-color-chk');
+            const qtyInput = presetRow.querySelector('.preset-color-qty');
+            chk.checked = true;
+            qtyInput.disabled = false;
+            qtyInput.value = v.stock;
+          } else {
+            addColorVariantRow(v.color, v.stock);
+          }
+        });
       }
 
       document.getElementById('prod-specs-text').value = prod.specs || '';
@@ -2336,7 +2441,13 @@ colors: colorVariants.map(c => c.color),
       document.getElementById('btn-cancel-edit').style.display = 'none';
       document.getElementById('thumbs-preview-box').innerHTML = `<div class="thumb-slot">لسه محددتش صور</div>`;
       document.getElementById('color-variants-container').innerHTML = '';
-      addColorVariantRow('أسود', 10);
+      document.querySelectorAll('.preset-color-row').forEach(row => {
+        const chk = row.querySelector('.preset-color-chk');
+        const qtyInput = row.querySelector('.preset-color-qty');
+        chk.checked = false;
+        qtyInput.value = '';
+        qtyInput.disabled = true;
+      });
 uploadedCloudinaryUrls = [];
     };
 
