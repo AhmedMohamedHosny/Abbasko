@@ -2260,8 +2260,8 @@ uploadedCloudinaryUrls = [];
         console.warn('تعذر تحميل الطلبات:', e.message);
       }
 
-      document.getElementById('stat-orders-count').textContent = `${adminOrders.length} طلبات`;
-
+const statOrdersEl = document.getElementById('stat-orders-count');
+      if (statOrdersEl) statOrdersEl.textContent = `${adminOrders.length} طلبات`;
       if (adminOrders.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px;">لا توجد طلبات واردة حتى الآن.</td></tr>`;
         return;
@@ -2371,12 +2371,21 @@ uploadedCloudinaryUrls = [];
       renderInventoryTable(filtered);
     });
 
-    function updateDashboardKPIs() {
-      document.getElementById('stat-products-count').textContent = `${adminInventory.length} منتجات`;
-      const totalVal = adminInventory.reduce((acc, i) => acc + (Number(i.price) * (Number(i.stock) || 1)), 0);
-      document.getElementById('stat-total-val').textContent = `${totalVal.toLocaleString('ar-EG')} ج.م`;
-      const lowStock = adminInventory.filter(i => (Number(i.stock) || 0) < 5).length;
-      document.getElementById('stat-low-stock').textContent = `${lowStock} منتج`;
+function updateDashboardKPIs() {
+      const statProdEl = document.getElementById('stat-products-count');
+      if (statProdEl) statProdEl.textContent = `${adminInventory.length} منتجات`;
+
+      const statTotalEl = document.getElementById('stat-total-val');
+      if (statTotalEl) {
+        const totalVal = adminInventory.reduce((acc, i) => acc + (Number(i.price) * (Number(i.stock) || 1)), 0);
+        statTotalEl.textContent = `${totalVal.toLocaleString('ar-EG')} ج.م`;
+      }
+
+      const statLowEl = document.getElementById('stat-low-stock');
+      if (statLowEl) {
+        const lowStock = adminInventory.filter(i => (Number(i.stock) || 0) < 5).length;
+        statLowEl.textContent = `${lowStock} منتج`;
+      }
     }
 // ==========================================================================
     // محرك تبديل الحالة بنقرة واحدة + إطلاق تأثير الشرار الناري
@@ -2443,6 +2452,11 @@ uploadedCloudinaryUrls = [];
       }
     }
 document.addEventListener('DOMContentLoaded', () => {
+      // فتح تبويب مظهر وحالة المتجر فوراً عند الدخول
+      if (typeof switchAdminTab === 'function') {
+        switchAdminTab('tab-appearance');
+      }
+
       syncTaxonomyWithFirebase();
       loadInventoryData();
       loadOrdersData();
