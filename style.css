@@ -2041,13 +2041,13 @@ body.dark-mode .reviews-header-capsule {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: #25d366;
+  background: var(--dream-green);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  box-shadow: 0 0 16px rgba(37, 211, 102, 0.5);
+  box-shadow: 0 0 16px var(--dream-green-glow);
   flex-shrink: 0;
 }
 
