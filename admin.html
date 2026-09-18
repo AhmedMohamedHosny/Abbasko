@@ -1239,29 +1239,69 @@ body {
         </div>
       </section>
 
-      <!-- ================================================================== -->
-      <!-- تبويب العروض النارية -->
-      <!-- ================================================================== -->
-      <section class="tab-section" id="tab-offers">
+<section class="tab-section" id="tab-offers">
         <div class="admin-card">
           <div class="admin-card-header">
-            <h2><i class="fa-solid fa-fire"></i> العروض النارية (تظهر أعلى المتجر)</h2>
-            <button type="button" class="btn-view-store" style="padding:6px 12px; font-size:0.8rem;" onclick="saveHotOffers()">
-              <i class="fa-solid fa-floppy-disk"></i> حفظ ونشر العروض
-            </button>
+            <h2><i class="fa-solid fa-fire-flame-curved" style="color:#ea580c;"></i> إنشاء وإدارة بانرات العروض النارية (3D Hero Banners)</h2>
           </div>
           <div class="admin-card-body">
-            <p style="font-size:0.86rem; color:var(--text-muted); margin-bottom:16px;">أضف أي منتج كعرض ناري، هيظهر أعلى المتجر فوق "إكسسوارات الموبايل" ويتبدل تلقائياً كل 3 ثوانٍ. لو مفيش أي عرض مضاف، الشريط مش هيظهر خالص.</p>
+            <p style="font-size:0.86rem; color:var(--text-muted); margin-bottom:16px;">
+              أنشئ عروضك الخاصة (مثل: اشتري 2 واحصل على 1 هدية، تصفيات GaN، باقات التوفير) مع رفع صورة البانر وتحديد وقت انتهاء العداد التنازلي الحقيقي:
+            </p>
 
-            <div style="display:flex; gap:10px; margin-bottom:16px;">
-              <select id="offer-product-select" class="form-control"></select>
-              <input type="text" id="offer-badge-input" class="form-control" placeholder="نص الشارة (مثال: 🔥 عرض النار)" style="max-width:220px;">
-              <button type="button" class="btn-add-spec-row" style="width:auto; padding:0 18px; margin-top:0;" onclick="addHotOfferItem()">
-                <i class="fa-solid fa-plus"></i> إضافة
+            <form id="create-banner-offer-form" style="background:#f8fafc; border:1px solid var(--admin-border); border-radius:12px; padding:18px; margin-bottom:20px;">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>نص الشارة (Badge)</label>
+                  <input type="text" id="b-offer-badge" class="form-control" value="🔥 عرض حصري لفترة محدودة" required>
+                </div>
+                <div class="form-group">
+                  <label>عنوان العرض الرئيسي</label>
+                  <input type="text" id="b-offer-title" class="form-control" placeholder="مثال: اشتري 2 سماعة Pro وخد الثالثة مجاناً!" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>تفاصيل العرض والمميزات</label>
+                  <input type="text" id="b-offer-subtitle" class="form-control" placeholder="مثال: صوت نقي مع عزل ضوضاء وضمان استبدال فوري + شحن مجاني" required>
+                </div>
+                <div class="form-group">
+                  <label>السعر بعد الخصم أو تفاصيل التوفير</label>
+                  <input type="text" id="b-offer-price" class="form-control" placeholder="مثال: 599 ج.م بدلاً من 900 ج.م" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>مدة صلاحية العرض (بالساعات من الآن لضبط العداد التنازلي)</label>
+                  <input type="number" id="b-offer-hours" class="form-control" value="48" min="1" required>
+                </div>
+                <div class="form-group">
+                  <label>رابط الزر (اختياري: معرف ملحق id أو رابط واتساب)</label>
+                  <input type="text" id="b-offer-link" class="form-control" placeholder="مثال: #catalog-products-container أو product.html?id=1">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label><i class="fa-solid fa-image" style="color:var(--admin-green);"></i> صورة البانر ثلاثية الأبعاد (شفافة أو عالية الجودة)</label>
+                <div class="file-upload-zone" onclick="document.getElementById('b-offer-img-input').click()">
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                  <p id="b-offer-img-status">اضغط لاختيار صورة العرض (PNG / JPG)</p>
+                  <input type="file" id="b-offer-img-input" accept="image/*" style="display:none">
+                </div>
+                <div id="b-offer-preview-box" style="display:none; text-align:center; margin-top:10px;">
+                  <img id="b-offer-preview-img" src="" style="max-height:120px; object-fit:contain;">
+                </div>
+              </div>
+
+              <button type="submit" class="btn-submit-action" id="btn-save-banner-offer" style="background:#ea580c;">
+                <i class="fa-solid fa-plus"></i> نشر العرض في واجهة المتجر فوراً
               </button>
-            </div>
+            </form>
 
-            <div id="hot-offers-admin-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+            <h3 style="font-size:1rem; font-weight:800; margin-bottom:12px; color:var(--text-main);">البانرات المنشورة حالياً في المتجر:</h3>
+            <div id="hot-offers-admin-list" style="display:flex; flex-direction:column; gap:10px;"></div>
           </div>
         </div>
       </section>
@@ -2107,48 +2147,71 @@ window.selectThemeColor = async function(colorVal, name) {
       nameInput.value = '';
       stockInput.value = '';
     });
-    // إدارة العروض النارية
+// ==========================================================================
+    // إدارة وحفظ بانرات العروض النارية ثلاثية الأبعاد
+    // ==========================================================================
     let currentHotOffers = [];
+    let uploadedOfferBannerUrl = "";
 
-    function populateOfferProductSelect() {
-      const sel = document.getElementById('offer-product-select');
-      if (!sel) return;
-      sel.innerHTML = adminInventory.map(p => `<option value="${p.id}">${p.title}</option>`).join('');
+    document.getElementById('b-offer-img-input')?.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const statusText = document.getElementById('b-offer-img-status');
+      const previewBox = document.getElementById('b-offer-preview-box');
+      const previewImg = document.getElementById('b-offer-preview-img');
+
+      statusText.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> جاري رفع صورة البانر...`;
+      try {
+        uploadedOfferBannerUrl = await uploadFileToCloudinary(file);
+        previewImg.src = uploadedOfferBannerUrl;
+        previewBox.style.display = 'block';
+        statusText.innerHTML = `✅ تم رفع صورة البانر بنجاح!`;
+      } catch (err) {
+        alert('فشل رفع الصورة: ' + err.message);
+        statusText.textContent = `اضغط لاختيار صورة العرض (PNG / JPG)`;
+      }
+    });
+
+    document.getElementById('create-banner-offer-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const hours = parseInt(document.getElementById('b-offer-hours').value) || 24;
+      const expireDate = new Date(Date.now() + hours * 3600 * 1000).toISOString();
+
+      const newOffer = {
+        id: 'offer_' + Date.now(),
+        badge: document.getElementById('b-offer-badge').value.trim(),
+        title: document.getElementById('b-offer-title').value.trim(),
+        subtitle: document.getElementById('b-offer-subtitle').value.trim(),
+        price: document.getElementById('b-offer-price').value.trim(),
+        link: document.getElementById('b-offer-link').value.trim() || '#catalog-products-container',
+        image: uploadedOfferBannerUrl || 'logo.png',
+        expiresAt: expireDate
+      };
+
+      currentHotOffers.unshift(newOffer);
+      await saveHotOffersToFirebase();
+      renderHotOffersAdminList();
+
+      document.getElementById('create-banner-offer-form').reset();
+      document.getElementById('b-offer-preview-box').style.display = 'none';
+      uploadedOfferBannerUrl = "";
+      alert('🎉 تم نشر العرض الجديد في واجهة المتجر بنجاح!');
+    });
+
+    async function saveHotOffersToFirebase() {
+      try {
+        await db.collection('settings').doc('offers').set({ items: currentHotOffers });
+      } catch (e) {
+        console.warn('تعذر حفظ العروض:', e.message);
+      }
     }
 
-    window.addHotOfferItem = function() {
-      const sel = document.getElementById('offer-product-select');
-      const badgeInput = document.getElementById('offer-badge-input');
-      if (!sel || !sel.value) { alert('لا توجد منتجات متاحة للإضافة!'); return; }
-
-      const productId = sel.value;
-      if (currentHotOffers.find(o => String(o.productId) === String(productId))) {
-        alert('هذا المنتج مضاف بالفعل كعرض!');
-        return;
+    window.removeHotOfferItem = async function(offerId) {
+      if (confirm('هل أنت متأكد من حذف هذا العرض من المتجر؟')) {
+        currentHotOffers = currentHotOffers.filter(o => o.id !== offerId);
+        await saveHotOffersToFirebase();
+        renderHotOffersAdminList();
       }
-
-      currentHotOffers.push({ productId: productId, badge: badgeInput.value.trim() || '🔥 عرض النار' });
-      badgeInput.value = '';
-      renderHotOffersAdminList();
-    };
-
-    window.removeHotOfferItem = function(productId) {
-      currentHotOffers = currentHotOffers.filter(o => String(o.productId) !== String(productId));
-      renderHotOffersAdminList();
-    };
-
-    window.moveHotOfferItem = function(productId, direction) {
-      const idx = currentHotOffers.findIndex(o => String(o.productId) === String(productId));
-      if (idx === -1) return;
-      const newIdx = idx + direction;
-      if (newIdx < 0 || newIdx >= currentHotOffers.length) return;
-      [currentHotOffers[idx], currentHotOffers[newIdx]] = [currentHotOffers[newIdx], currentHotOffers[idx]];
-      renderHotOffersAdminList();
-    };
-
-    window.updateHotOfferBadge = function(productId, newBadge) {
-      const item = currentHotOffers.find(o => String(o.productId) === String(productId));
-      if (item) item.badge = newBadge.trim() || '🔥 عرض النار';
     };
 
     function renderHotOffersAdminList() {
@@ -2156,35 +2219,24 @@ window.selectThemeColor = async function(colorVal, name) {
       if (!listEl) return;
 
       if (currentHotOffers.length === 0) {
-        listEl.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted);">لا توجد عروض مضافة حالياً. الشريط لن يظهر للعملاء.</p>`;
+        listEl.innerHTML = `<p style="font-size:0.85rem; color:var(--text-muted);">لا توجد عروض منشورة حالياً. لن يظهر السلايدر في المتجر.</p>`;
         return;
       }
 
-      listEl.innerHTML = currentHotOffers.map(o => {
-        const prod = adminInventory.find(p => String(p.id) === String(o.productId));
-        const title = prod ? prod.title : `منتج (${o.productId})`;
-        return `
-          <div style="display:flex; align-items:center; gap:10px; background:#fff; padding:8px 12px; border:1px solid #e2e8f0; border-radius:6px;">
-            <div style="display:flex; flex-direction:column; gap:2px;">
-              <button type="button" onclick="moveHotOfferItem('${o.productId}', -1)" style="background:none; border:none; cursor:pointer; color:#64748b;"><i class="fa-solid fa-chevron-up"></i></button>
-              <button type="button" onclick="moveHotOfferItem('${o.productId}', 1)" style="background:none; border:none; cursor:pointer; color:#64748b;"><i class="fa-solid fa-chevron-down"></i></button>
-            </div>
-            <div style="flex:1; min-width:0;"><strong style="font-size:0.85rem;">${title}</strong></div>
-            <input type="text" value="${o.badge}" onchange="updateHotOfferBadge('${o.productId}', this.value)" class="form-control" style="max-width:180px; font-size:0.78rem;">
-            <button type="button" class="action-btn-mini btn-delete-action" onclick="removeHotOfferItem('${o.productId}')"><i class="fa-solid fa-trash"></i></button>
+      listEl.innerHTML = currentHotOffers.map(o => `
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:14px; background:#fff; padding:10px 14px; border:1px solid #e2e8f0; border-radius:8px;">
+          <img src="${o.image}" style="width:65px; height:50px; object-fit:contain; border-radius:6px; background:#f8fafc; border:1px solid #cbd5e1;">
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:0.75rem; color:#ea580c; font-weight:800;">${o.badge}</div>
+            <strong style="font-size:0.88rem; color:#0f172a; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${o.title}</strong>
+            <small style="color:#64748b;">${o.price}</small>
           </div>
-        `;
-      }).join('');
+          <button type="button" class="action-btn-mini btn-delete-action" onclick="removeHotOfferItem('${o.id}')" title="حذف العرض">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      `).join('');
     }
-
-    window.saveHotOffers = async function() {
-      try {
-        await db.collection('settings').doc('offers').set({ items: currentHotOffers });
-        alert('✅ تم حفظ ونشر العروض النارية في المتجر بنجاح!');
-      } catch (e) {
-        alert('تعذر حفظ العروض: ' + e.message);
-      }
-    };
 
     async function loadHotOffersAdmin() {
       try {
