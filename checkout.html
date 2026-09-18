@@ -570,19 +570,16 @@
               </div>
 
 <div class="input-field-block">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                  <label style="margin:0;">العنوان بالتفصيل <span class="star">*</span></label>
-                  <button type="button" id="btn-geo-location" style="background: var(--dream-green-light); border: 1px dashed var(--dream-green); color: var(--dream-green); padding: 4px 10px; border-radius: 4px; font-size: 0.76rem; font-weight: 800; cursor: pointer;">
-                    <i class="fa-solid fa-location-crosshairs"></i> تحديد موقعي الحالي تلقائياً
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <label for="order-full-address" style="margin:0;">العنوان بالتفصيل <span class="star">*</span></label>
+                  <button type="button" id="btn-geo-location" style="background: var(--dream-green-light); border: 1px dashed var(--dream-green); color: var(--dream-green); padding: 5px 12px; border-radius: 6px; font-size: 0.76rem; font-weight: 800; cursor: pointer;">
+                    <i class="fa-solid fa-location-crosshairs"></i> تحديد موقعي تلقائياً
                   </button>
                 </div>
-                <div class="duo-inputs-row" style="grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
-                  <input type="text" id="order-street" placeholder="اسم الشارع" required>
-                  <input type="text" id="order-building" placeholder="رقم العمارة" required>
-                  <input type="text" id="order-floor-flat" placeholder="الدور / الشقة" required>
-                </div>
+                <input type="text" id="order-full-address" placeholder="اسم الشارع، رقم العمارة، الدور، الشقة، وأقرب علامة مميزة..." required style="width: 100%; padding: 12px 14px; font-size: 0.88rem;">
                 <input type="hidden" id="geo-map-link">
-                <span id="geo-status-text" style="font-size: 0.74rem; color: var(--dream-green); font-weight: 700; display: none;"></span>
+                <span id="geo-status-text" style="font-size: 0.74rem; color: var(--dream-green); font-weight: 700; display: none; margin-top: 4px;"></span>
+                <span class="input-note-hint">اكتب تفاصيل العنوان كاملة ليصلك المندوب لباب البيت مباشرة.</span>
               </div>
 
               <div class="input-field-block">
@@ -711,14 +708,17 @@
     </a>
   </div>
 
-  <!-- شاشة إغلاق المتجر والصيانة -->
-  <div class="store-closed-screen" id="store-closed-modal" style="display: none;">
-    <div class="closed-glass-box">
-      <img src="logo.png" alt="عباسكو" style="height: 55px; margin: 0 auto;">
+<!-- شاشة إغلاق المتجر والصيانة مع الصورتين والتوسيط الكامل للموبايل -->
+  <div class="store-closed-screen" id="store-closed-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; z-index: 9999999; margin: 0; padding: 16px; box-sizing: border-box;">
+    <div class="closed-ambient-glow glow-orb-1"></div>
+    <div class="closed-ambient-glow glow-orb-2"></div>
+
+    <div class="closed-glass-box" style="margin: auto; max-width: 92vw; width: 100%;">
+      <img src="logo.png" alt="عباسكو" style="height: 55px; margin: 0 auto 10px; display: block;">
       <h2>جاري جرد المخزون والتحديث</h2>
       <p>نقوم حالياً بجرد ملحقات الهواتف وإضافة شحنات جديدة بأحدث الإصدارات والأسعار.<br>نعود إليكم في أبهى حلة خلال وقت قصير بإذن الله.</p>
-      <a href="https://wa.me/201125408111" target="_blank" class="btn-send-whatsapp-order" style="margin: 0 auto; max-width: 280px;">
-        <i class="fa-brands fa-whatsapp"></i> تواصل مع الإدارة مباشرة
+      <a href="https://wa.me/201125408111" target="_blank" class="btn-choose-option-green" style="margin: 0 auto; max-width: 280px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 0.95rem; box-shadow: 0 4px 20px rgba(124, 179, 66, 0.4);">
+        <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> تواصل مع الإدارة مباشرة
       </a>
     </div>
   </div>
@@ -898,11 +898,8 @@
       const phone1 = document.getElementById('order-phone1').value.trim();
       const phone2 = document.getElementById('order-phone2').value.trim();
       const governorate = govSelect.value;
-      const city = document.getElementById('order-city').value.trim();
-      const street = document.getElementById('order-street').value.trim();
-      const building = document.getElementById('order-building').value.trim();
-      const floorFlat = document.getElementById('order-floor-flat').value.trim();
-      const address = `${street} / ${building} / ${floorFlat}`;
+const city = document.getElementById('order-city').value.trim();
+      const address = document.getElementById('order-full-address').value.trim();
       const notes = document.getElementById('order-notes').value.trim();
       const mapLink = document.getElementById('geo-map-link').value.trim();
       const paymentMethodText = selectedPaymentMethod === 'vodafone' ? 'فودافون كاش' : 'كاش عند الاستلام';
@@ -934,9 +931,7 @@
         `📍 *عنوان الشحن بالتفصيل:*%0A` +
         `• *المحافظة:* ${governorate}%0A` +
         `• *المدينة / الحي:* ${city}%0A` +
-        `• *الشارع:* ${street}%0A` +
-        `• *رقم العمارة:* ${building}%0A` +
-        `• *الدور / الشقة:* ${floorFlat}%0A` +
+`• *العنوان:* ${address}%0A` +
         (mapLink ? `• *الموقع على الخريطة:* ${mapLink}%0A` : '') +
         (notes ? `• *ملاحظات التوصيل:* ${notes}%0A` : '') +
         `----------------------------------------%0A` +
